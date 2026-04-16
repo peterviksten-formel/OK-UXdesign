@@ -20,7 +20,7 @@ export const sidtyper: CatalogEntry[] = [
 ];
 
 export const moduler: CatalogEntry[] = [
-  { slug: "elavtal-jamfor", title: "Jämför elavtal", subtitle: "Lägenhet / villa — sida-vid-sida", status: "wip" },
+  { slug: "elavtal-jamfor", title: "Jämför elavtal", subtitle: "Tre varianter (Trygg / Progressiv / Experimentell) med argumentation", status: "klar" },
   { slug: "produktlisting", title: "Produktlisting", subtitle: "Karusell / grid för smarta produkter", status: "stub" },
   { slug: "produktinfo", title: "Produktinfo", subtitle: "Pris, villkor, ehandel-känsla", status: "stub" },
   { slug: "formular-kop", title: "Formulär-köp", subtitle: "Beställningsflöde som känns som checkout", status: "stub" },
