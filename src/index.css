@@ -1,0 +1,156 @@
+/* ─── Centra No1 ──────────────────────────────────────────── */
+@font-face {
+  font-family: "Centra No1";
+  src: url("/fonts/CentraNo1-Light.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Centra No1";
+  src: url("/fonts/CentraNo1-Book.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Centra No1";
+  src: url("/fonts/CentraNo1-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Centra No1";
+  src: url("/fonts/CentraNo1-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─── Tokens ──────────────────────────────────────────────── */
+:root,
+[data-theme="light"] {
+  --brand-navy: #00205b;
+  --brand-cyan: #00a2e2;
+  --brand-coral: #ff3f56;
+  --tint-blue: #dff7ff;
+  --tint-pink: #ffedf5;
+  --tint-yellow: #fff5d4;
+
+  --color-bg-canvas: #ffffff;
+  --color-bg-surface: #ffffff;
+  --color-bg-elevated: #ffffff;
+
+  --color-text-primary: var(--brand-navy);
+  --color-text-secondary: #2a3b5e;
+  --color-text-muted: #6b7796;
+  --color-text-on-brand: #ffffff;
+
+  --color-brand-primary: var(--brand-navy);
+  --color-brand-accent: var(--brand-cyan);
+  --color-brand-highlight: var(--brand-coral);
+
+  --color-surface-info: var(--tint-blue);
+  --color-surface-highlight: var(--tint-pink);
+  --color-surface-notice: var(--tint-yellow);
+
+  --color-border-subtle: #e3e7f0;
+  --color-border-strong: #c4ccdb;
+  --color-focus: var(--brand-cyan);
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --color-bg-canvas: #050d24;
+  --color-bg-surface: #0c1738;
+  --color-bg-elevated: #142348;
+
+  --color-text-primary: #f5f8ff;
+  --color-text-secondary: #c2cce4;
+  --color-text-muted: #8a96b3;
+  --color-text-on-brand: #ffffff;
+
+  --color-brand-primary: var(--brand-cyan);
+  --color-brand-accent: var(--brand-cyan);
+  --color-brand-highlight: var(--brand-coral);
+
+  --color-surface-info: rgba(0, 162, 226, 0.12);
+  --color-surface-highlight: rgba(255, 63, 86, 0.12);
+  --color-surface-notice: rgba(255, 245, 212, 0.10);
+
+  --color-border-subtle: #1f2c4f;
+  --color-border-strong: #34416a;
+  --color-focus: var(--brand-cyan);
+
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+  }
+}
+
+/* ─── Tailwind ────────────────────────────────────────────── */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── Base ────────────────────────────────────────────────── */
+@layer base {
+  html {
+    font-family: "Centra No1", system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    margin: 0;
+    background: var(--color-bg-canvas);
+    color: var(--color-text-primary);
+    font-weight: 400;
+    transition: background-color 200ms ease, color 200ms ease;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin: 0;
+  }
+  p { margin: 0; }
+  :focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+}
+
+/* ─── Annotation overlay ──────────────────────────────────── */
+@layer components {
+  [data-annotated="true"] {
+    position: relative;
+    outline: 1px dashed var(--color-brand-highlight);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  [data-annotated="true"]::before {
+    content: attr(data-annotation-num);
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    z-index: 30;
+    background: var(--color-brand-highlight);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    width: 22px;
+    height: 22px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+  }
+}
