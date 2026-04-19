@@ -7,6 +7,9 @@ import { StubPage } from "./routes/Stub";
 import { ElavtalJamfor } from "./routes/moduler/ElavtalJamfor";
 import { KundserviceTriage } from "./routes/moduler/KundserviceTriage";
 import { Avbrottslista } from "./routes/moduler/Avbrottslista";
+import { Produktinfo } from "./routes/moduler/Produktinfo";
+import { Produktlisting } from "./routes/moduler/Produktlisting";
+import { FormularKop } from "./routes/moduler/FormularKop";
 
 export default function App() {
   return (
@@ -25,6 +28,9 @@ export default function App() {
             <Route path="/moduler/elavtal-jamfor" element={<ElavtalJamfor />} />
             <Route path="/moduler/kundservice-triage" element={<KundserviceTriage />} />
             <Route path="/moduler/avbrottslista" element={<Avbrottslista />} />
+            <Route path="/moduler/produktinfo" element={<Produktinfo />} />
+            <Route path="/moduler/produktlisting" element={<Produktlisting />} />
+            <Route path="/moduler/formular-kop" element={<FormularKop />} />
             <Route path="/moduler/:slug" element={<StubPage kind="modul" />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />
