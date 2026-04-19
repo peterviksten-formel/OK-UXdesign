@@ -11,12 +11,12 @@ export type CatalogEntry = {
 };
 
 export const sidtyper: CatalogEntry[] = [
-  { slug: "privat-elhandel", title: "Startsida undersida", subtitle: "Nyttighet — privat elhandel som exempel", status: "stub" },
-  { slug: "avbrottsinformation", title: "Avbrottsinformation", subtitle: "Status, planerade och pågående avbrott", status: "stub" },
-  { slug: "kundservice", title: "Kundservice", subtitle: "Triage — vart kunden ska", status: "stub" },
-  { slug: "produktsida", title: "Produktsida", subtitle: "Direktköp / leadsgenerering", status: "stub" },
-  { slug: "nyhetsrum", title: "Nyhetsrum", subtitle: "Startsida för nyhetshub", status: "stub" },
-  { slug: "artikel", title: "Artikel / blogg / nyhet / pressmeddelande", subtitle: "Variantmodell för redaktionellt innehåll", status: "stub" },
+  { slug: "privat-elhandel", title: "Startsida undersida", subtitle: "Det arbetade exemplet — hero, intentkort, jämförelse, FAQ, genvägar", status: "klar" },
+  { slug: "avbrottsinformation", title: "Avbrottsinformation", subtitle: "Dynamisk hero + avbrottslista inline + FAQ", status: "klar" },
+  { slug: "kundservice", title: "Kundservice", subtitle: "Triage + kontaktkanaler + Mina sidor CTA", status: "klar" },
+  { slug: "produktsida", title: "Produktsida", subtitle: "Produkt-hero + detaljer + relaterade produkter", status: "klar" },
+  { slug: "nyhetsrum", title: "Nyhetsrum", subtitle: "Kategorifilter + nyhetskort med typ-badges", status: "klar" },
+  { slug: "artikel", title: "Artikel / blogg / nyhet / pressmeddelande", subtitle: "4 innehållstyper, en mall — ton-guide för redaktör", status: "klar" },
 ];
 
 export const moduler: CatalogEntry[] = [

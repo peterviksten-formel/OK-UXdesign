@@ -10,6 +10,12 @@ import { Avbrottslista } from "./routes/moduler/Avbrottslista";
 import { Produktinfo } from "./routes/moduler/Produktinfo";
 import { Produktlisting } from "./routes/moduler/Produktlisting";
 import { FormularKop } from "./routes/moduler/FormularKop";
+import { PrivatElhandel } from "./routes/sidtyper/PrivatElhandel";
+import { Avbrottsinformation } from "./routes/sidtyper/Avbrottsinformation";
+import { Kundservice } from "./routes/sidtyper/Kundservice";
+import { Produktsida } from "./routes/sidtyper/Produktsida";
+import { Nyhetsrum } from "./routes/sidtyper/Nyhetsrum";
+import { Artikel } from "./routes/sidtyper/Artikel";
 
 export default function App() {
   return (
@@ -21,6 +27,12 @@ export default function App() {
 
             {/* Sidtyper */}
             <Route path="/sidtyper" element={<Navigate to="/" replace />} />
+            <Route path="/sidtyper/privat-elhandel" element={<PrivatElhandel />} />
+            <Route path="/sidtyper/avbrottsinformation" element={<Avbrottsinformation />} />
+            <Route path="/sidtyper/kundservice" element={<Kundservice />} />
+            <Route path="/sidtyper/produktsida" element={<Produktsida />} />
+            <Route path="/sidtyper/nyhetsrum" element={<Nyhetsrum />} />
+            <Route path="/sidtyper/artikel" element={<Artikel />} />
             <Route path="/sidtyper/:slug" element={<StubPage kind="sidtyp" />} />
 
             {/* Moduler */}
