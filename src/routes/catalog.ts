@@ -24,6 +24,6 @@ export const moduler: CatalogEntry[] = [
   { slug: "produktlisting", title: "Produktlisting", subtitle: "Karusell / grid för smarta produkter", status: "stub" },
   { slug: "produktinfo", title: "Produktinfo", subtitle: "Pris, villkor, ehandel-känsla", status: "stub" },
   { slug: "formular-kop", title: "Formulär-köp", subtitle: "Beställningsflöde som känns som checkout", status: "stub" },
-  { slug: "avbrottslista", title: "Avbrottslista", subtitle: "Planerade · pågående · avslutade", status: "stub" },
-  { slug: "kundservice-triage", title: "Kundservice-triage", subtitle: "'Jag behöver hjälp med…' interaktivt", status: "stub" },
+  { slug: "avbrottslista", title: "Avbrottslista", subtitle: "Två varianter (Trygg / Progressiv) — status + tidslinje", status: "klar" },
+  { slug: "kundservice-triage", title: "Kundservice-triage", subtitle: "Tre varianter — accordion / kort / konversation", status: "klar" },
 ];
