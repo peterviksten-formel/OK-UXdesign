@@ -5,6 +5,8 @@ export type BlockVariant = {
   key: string;
   label: string;
   render: () => ReactNode;
+  /** Optional schematic shown in the variant picker */
+  preview?: ReactNode;
 };
 
 export type BlockDef = {
@@ -123,29 +125,63 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
                     {active?.label ?? "Variant"} ▾
                   </button>
                   {menuOpen && (
-                    <div
-                      role="menu"
-                      className="absolute right-0 top-full mt-1 min-w-[200px] rounded-md border border-border-subtle bg-elevated shadow-lg py-1 z-30"
-                    >
-                      {def.variants.map((v) => (
-                        <button
-                          key={v.key}
-                          type="button"
-                          onClick={() => {
-                            update(pageId, def.id, { variant: v.key });
-                            setMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-3 py-1.5 text-xs hover:bg-tint-info ${
-                            v.key === activeKey ? "bg-tint-info font-medium text-brand-primary" : "text-ink-secondary"
-                          }`}
-                          role="menuitemradio"
-                          aria-checked={v.key === activeKey}
-                        >
-                          {v.key === activeKey ? "✓ " : "   "}
-                          {v.label}
-                        </button>
-                      ))}
-                    </div>
+                    <>
+                      <div
+                        className="fixed inset-0 z-20"
+                        onClick={() => setMenuOpen(false)}
+                        aria-hidden="true"
+                      />
+                      <div
+                        role="menu"
+                        className="absolute right-0 top-full mt-1 w-[280px] sm:w-[320px] rounded-md border border-border-subtle bg-elevated shadow-xl p-2 z-30"
+                      >
+                        <p className="text-[10px] uppercase tracking-wider text-ink-muted font-medium px-1 pb-1.5 pt-0.5">
+                          Välj variant
+                        </p>
+                        <ul className="grid grid-cols-1 gap-1.5">
+                          {def.variants.map((v) => {
+                            const selected = v.key === activeKey;
+                            return (
+                              <li key={v.key}>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    update(pageId, def.id, { variant: v.key });
+                                    setMenuOpen(false);
+                                  }}
+                                  className={`w-full text-left rounded-md border transition-colors overflow-hidden flex items-stretch ${
+                                    selected
+                                      ? "border-brand-accent bg-tint-info"
+                                      : "border-border-subtle hover:border-brand-accent hover:bg-tint-info"
+                                  }`}
+                                  role="menuitemradio"
+                                  aria-checked={selected}
+                                >
+                                  <div className="w-[96px] h-[64px] bg-canvas border-r border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
+                                    {v.preview ?? (
+                                      <span className="text-[10px] text-ink-muted">Ingen preview</span>
+                                    )}
+                                  </div>
+                                  <div className="flex-1 min-w-0 px-3 py-2 flex items-center justify-between gap-2">
+                                    <span className={`text-xs leading-tight ${selected ? "font-medium text-brand-primary" : "text-ink-secondary"}`}>
+                                      {v.label}
+                                    </span>
+                                    <span
+                                      className={`shrink-0 w-4 h-4 rounded-full border flex items-center justify-center text-[10px] ${
+                                        selected ? "bg-brand-accent border-brand-accent text-white" : "border-border-strong"
+                                      }`}
+                                      aria-hidden="true"
+                                    >
+                                      {selected ? "✓" : ""}
+                                    </span>
+                                  </div>
+                                </button>
+                              </li>
+                            );
+                          })}
+                        </ul>
+                      </div>
+                    </>
                   )}
                 </div>
               )}

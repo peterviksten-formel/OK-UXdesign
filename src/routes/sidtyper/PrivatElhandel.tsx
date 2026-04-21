@@ -4,6 +4,7 @@ import { Annotation } from "../../components/Annotation";
 import { Copy } from "../../components/Copy";
 import { PageBrief } from "../../components/PageBrief";
 import { BlockList, type BlockDef } from "../../components/Block";
+import { SketchFrame, Bar, Row, Box, Pill } from "../../components/Sketch";
 
 /**
  * SIDTYP 1 — Pilot for the editable/editorial-guided composition model.
@@ -32,6 +33,18 @@ export function PrivatElhandel() {
         {
           key: "standard",
           label: "Standard — handlingsorienterad",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={2} tone="muted" />
+              <Bar w="90%" h={8} tone="primary" />
+              <Bar w="75%" h={3} tone="muted" />
+              <Row gap={3}>
+                <Bar w={26} h={6} tone="primary" />
+                <Bar w={22} h={6} tone="line" />
+              </Row>
+              <Bar w="60%" h={2} tone="muted" />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Hero: tema + huvudhandling"
@@ -107,6 +120,16 @@ export function PrivatElhandel() {
         {
           key: "kompakt",
           label: "Kompakt — mindre luft",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={2} tone="muted" />
+              <Row gap={4} style={{ alignItems: "center" }}>
+                <Bar w="55%" h={6} tone="primary" />
+                <Bar w={28} h={6} tone="primary" />
+              </Row>
+              <Bar w="100%" h={1} tone="line" />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Hero (kompakt): mindre vertikal rymd"
@@ -137,6 +160,20 @@ export function PrivatElhandel() {
         {
           key: "split",
           label: "Split — med värdefält",
+          preview: (
+            <SketchFrame>
+              <Row gap={3} style={{ flex: 1 }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  <Bar w="70%" h={6} tone="primary" />
+                  <Bar w="90%" h={2} tone="muted" />
+                  <Bar w={22} h={5} tone="primary" />
+                </div>
+                <Box accent grow>
+                  <Pill accent /><Pill accent /><Pill accent />
+                </Box>
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Hero (split): H1 + 3 värdepunkter sida vid sida"
@@ -190,6 +227,28 @@ export function PrivatElhandel() {
         {
           key: "grid",
           label: "Grid — 5 intentioner",
+          preview: (
+            <SketchFrame>
+              <Bar w="35%" h={3} tone="primary" />
+              <Row gap={2} style={{ flex: 1 }}>
+                {[0, 1, 2].map((i) => (
+                  <Box key={i} grow>
+                    <Bar w="60%" h={2} tone="primary" />
+                    <Bar w="90%" h={1.5} tone="muted" />
+                  </Box>
+                ))}
+              </Row>
+              <Row gap={2} style={{ flex: 1 }}>
+                {[0, 1].map((i) => (
+                  <Box key={i} grow>
+                    <Bar w="60%" h={2} tone="primary" />
+                    <Bar w="90%" h={1.5} tone="muted" />
+                  </Box>
+                ))}
+                <div style={{ flex: 1 }} />
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Intentkort: 'Vad vill du göra?'"
@@ -233,6 +292,19 @@ export function PrivatElhandel() {
         {
           key: "list",
           label: "Vertikal lista — kompaktare",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              {[0, 1, 2, 3].map((i) => (
+                <Box key={i} style={{ padding: 3 }}>
+                  <Row gap={3} style={{ alignItems: "center" }}>
+                    <Bar w={6} h={6} tone="accent" />
+                    <Bar w="60%" h={2} tone="primary" />
+                  </Row>
+                </Box>
+              ))}
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Intentkort (lista): vertikal för smalare layout"
@@ -277,6 +349,22 @@ export function PrivatElhandel() {
         {
           key: "callout",
           label: "Blå callout — inline",
+          preview: (
+            <SketchFrame>
+              <div style={{ flex: 1 }} />
+              <Box accent style={{ padding: 4 }}>
+                <Row gap={3} style={{ alignItems: "flex-start" }}>
+                  <Bar w={4} h={20} tone="accent" rounded={false} />
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                    <Bar w="70%" h={3} tone="primary" />
+                    <Bar w="95%" h={1.5} tone="muted" />
+                    <Bar w="80%" h={1.5} tone="muted" />
+                  </div>
+                </Row>
+              </Box>
+              <div style={{ flex: 1 }} />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Elnät vs elhandel — inline callout"
@@ -309,6 +397,20 @@ export function PrivatElhandel() {
         {
           key: "expand",
           label: "Expanderbar — kompakt rad",
+          preview: (
+            <SketchFrame>
+              <div style={{ flex: 1 }} />
+              <Box accent style={{ padding: 4 }}>
+                <Row gap={3} style={{ alignItems: "center" }}>
+                  <Bar w={4} h={8} tone="accent" rounded={false} />
+                  <Bar w="60%" h={3} tone="primary" />
+                  <div style={{ flex: 1 }} />
+                  <Bar w={4} h={3} tone="muted" />
+                </Row>
+              </Box>
+              <div style={{ flex: 1 }} />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Elnät vs elhandel (expanderbar): en rad som öppnas vid klick"
@@ -341,6 +443,16 @@ export function PrivatElhandel() {
         {
           key: "cards",
           label: "3 kort — preview",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Row gap={2} style={{ flex: 1 }}>
+                <Box grow><Bar w="60%" h={2} tone="primary" /><Bar w="90%" h={1.5} tone="muted" /><Bar w="40%" h={4} tone="primary" /></Box>
+                <Box grow><Bar w="60%" h={2} tone="primary" /><Bar w="90%" h={1.5} tone="muted" /><Bar w="40%" h={4} tone="primary" /></Box>
+                <Box accent grow><Bar w="70%" h={1.5} tone="accent" /><Bar w="60%" h={2} tone="primary" /><Bar w="40%" h={4} tone="primary" /></Box>
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Avtalsjämförelse — preview + länk"
@@ -387,6 +499,23 @@ export function PrivatElhandel() {
         {
           key: "table",
           label: "Tabell — snabb skanning",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Box style={{ padding: 3, gap: 3 }}>
+                <Row gap={3}>
+                  <Bar w="22%" h={2} tone="primary" />
+                  <Bar w="22%" h={2} tone="primary" />
+                  <Bar w="22%" h={2} tone="primary" />
+                  <Bar w="22%" h={2} tone="accent" />
+                </Row>
+                <Bar w="100%" h={0.5} tone="line" />
+                <Row gap={3}><Bar w="22%" h={1.5} tone="muted" /><Bar w="22%" h={1.5} tone="muted" /><Bar w="22%" h={1.5} tone="muted" /><Bar w="22%" h={1.5} tone="muted" /></Row>
+                <Bar w="100%" h={0.5} tone="line" />
+                <Row gap={3}><Bar w="22%" h={1.5} tone="muted" /><Bar w="22%" h={1.5} tone="muted" /><Bar w="22%" h={1.5} tone="muted" /><Bar w="22%" h={1.5} tone="muted" /></Row>
+              </Box>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Avtalsjämförelse (tabell): alla egenskaper i en matris"
@@ -432,6 +561,19 @@ export function PrivatElhandel() {
         {
           key: "cta-only",
           label: "CTA-block — utan preview",
+          preview: (
+            <SketchFrame>
+              <div style={{ flex: 1 }} />
+              <div style={{ background: "var(--color-brand-primary)", padding: 6, borderRadius: 3, display: "flex", alignItems: "center", gap: 4 }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  <Bar w="80%" h={3} tone="line" />
+                  <Bar w="55%" h={1.5} tone="line" />
+                </div>
+                <div style={{ width: 28, height: 8, background: "#fff", borderRadius: 2 }} />
+              </div>
+              <div style={{ flex: 1 }} />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Avtalsjämförelse (CTA): kort banner som länkar till modulen"
@@ -464,6 +606,22 @@ export function PrivatElhandel() {
         {
           key: "cols",
           label: "3 kolumner",
+          preview: (
+            <SketchFrame>
+              <Bar w="50%" h={3} tone="primary" />
+              <Row gap={3} style={{ flex: 1 }}>
+                {[0, 1, 2].map((i) => (
+                  <div key={i} style={{ flex: 1, display: "flex", gap: 2 }}>
+                    <Bar w={6} h={6} tone="accent" />
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                      <Bar w="70%" h={2} tone="primary" />
+                      <Bar w="90%" h={1.5} tone="muted" />
+                    </div>
+                  </div>
+                ))}
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Värdeerbjudande — 3 kolumner"
@@ -494,6 +652,22 @@ export function PrivatElhandel() {
         {
           key: "banner",
           label: "Horisontell banner",
+          preview: (
+            <SketchFrame>
+              <div style={{ flex: 1 }} />
+              <Box accent style={{ padding: 4 }}>
+                <Row gap={5} style={{ alignItems: "center" }}>
+                  {[0, 1, 2].map((i) => (
+                    <div key={i} style={{ flex: 1, display: "flex", gap: 2, alignItems: "center" }}>
+                      <Bar w={4} h={4} tone="accent" />
+                      <Bar w="80%" h={2} tone="primary" />
+                    </div>
+                  ))}
+                </Row>
+              </Box>
+              <div style={{ flex: 1 }} />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Värdeerbjudande (banner): en rad med 3 argument"
@@ -526,6 +700,20 @@ export function PrivatElhandel() {
         {
           key: "accordion",
           label: "Accordion — 5 frågor",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              {[0, 1, 2, 3, 4].map((i) => (
+                <Box key={i} style={{ padding: 3, gap: 0 }}>
+                  <Row gap={2} style={{ alignItems: "center" }}>
+                    <Bar w="85%" h={2} tone="primary" />
+                    <div style={{ flex: 1 }} />
+                    <Bar w={3} h={2} tone="muted" />
+                  </Row>
+                </Box>
+              ))}
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="FAQ — topp 5 support-killers"
@@ -574,6 +762,21 @@ export function PrivatElhandel() {
         {
           key: "grouped",
           label: "Grupperad — tre kategorier",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Row gap={3} style={{ flex: 1 }}>
+                {[0, 1, 2].map((col) => (
+                  <div key={col} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                    <Bar w="90%" h={2} tone="accent" />
+                    <Bar w="80%" h={1.5} tone="muted" />
+                    <Bar w="85%" h={1.5} tone="muted" />
+                    <Bar w="75%" h={1.5} tone="muted" />
+                  </div>
+                ))}
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="FAQ (grupperad): Tre kategorier med 2–3 frågor var"
@@ -616,6 +819,22 @@ export function PrivatElhandel() {
         {
           key: "cards",
           label: "Bildkort — 3 kolumner",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Row gap={2} style={{ flex: 1 }}>
+                {[0, 1, 2].map((i) => (
+                  <Box key={i} grow style={{ padding: 0, gap: 0 }}>
+                    <div style={{ background: "var(--color-surface-info)", flex: 1, minHeight: 14 }} />
+                    <div style={{ padding: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+                      <Bar w="70%" h={2} tone="primary" />
+                      <Bar w="90%" h={1.5} tone="muted" />
+                    </div>
+                  </Box>
+                ))}
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Koppling till relaterade teman"
@@ -650,6 +869,29 @@ export function PrivatElhandel() {
         {
           key: "links",
           label: "Länklista — kompakt",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Row gap={4} style={{ flex: 1 }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  {[0, 1].map((i) => (
+                    <div key={i} style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                      <Bar w="60%" h={2} tone="primary" />
+                      <Bar w="90%" h={1.5} tone="muted" />
+                    </div>
+                  ))}
+                </div>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  {[0, 1].map((i) => (
+                    <div key={i} style={{ display: "flex", flexDirection: "column", gap: 1 }}>
+                      <Bar w="60%" h={2} tone="primary" />
+                      <Bar w="90%" h={1.5} tone="muted" />
+                    </div>
+                  ))}
+                </div>
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Relaterade teman (länklista): utan bilder"
@@ -686,6 +928,21 @@ export function PrivatElhandel() {
         {
           key: "cards",
           label: "3 kort — likvärdiga",
+          preview: (
+            <SketchFrame>
+              <Bar w="50%" h={3} tone="primary" />
+              <Row gap={2} style={{ flex: 1 }}>
+                {[0, 1, 2].map((i) => (
+                  <Box key={i} grow>
+                    <Row gap={2}><Bar w={10} h={1.5} tone="muted" /><Bar w={8} h={1.5} tone="accent" /></Row>
+                    <Bar w="85%" h={1.5} tone="primary" />
+                    <Bar w="70%" h={1.5} tone="primary" />
+                  </Box>
+                ))}
+              </Row>
+              <Bar w={20} h={1.5} tone="accent" />
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Nyhetsflöde"
@@ -717,6 +974,24 @@ export function PrivatElhandel() {
         {
           key: "featured",
           label: "Utvald + 2 små",
+          preview: (
+            <SketchFrame>
+              <Bar w="50%" h={3} tone="primary" />
+              <Row gap={2} style={{ flex: 1 }}>
+                <Box style={{ flex: 2, padding: 0 }}>
+                  <div style={{ background: "var(--color-surface-info)", height: 18 }} />
+                  <div style={{ padding: 2, display: "flex", flexDirection: "column", gap: 1 }}>
+                    <Bar w="60%" h={1.5} tone="muted" />
+                    <Bar w="90%" h={2} tone="primary" />
+                  </div>
+                </Box>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                  <Box><Bar w="70%" h={1.5} tone="muted" /><Bar w="90%" h={1.5} tone="primary" /></Box>
+                  <Box><Bar w="70%" h={1.5} tone="muted" /><Bar w="90%" h={1.5} tone="primary" /></Box>
+                </div>
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Nyhetsflöde (utvald): en stor + två små"
@@ -767,6 +1042,26 @@ export function PrivatElhandel() {
         {
           key: "grid",
           label: "Grid — med beskrivning",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Row gap={3} style={{ flex: 1 }}>
+                {[0, 1, 2].map((col) => (
+                  <div key={col} style={{ flex: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+                    {[0, 1].map((i) => (
+                      <div key={i} style={{ display: "flex", gap: 2, alignItems: "center" }}>
+                        <Bar w={3} h={2} tone="accent" />
+                        <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 1 }}>
+                          <Bar w="70%" h={1.5} tone="primary" />
+                          <Bar w="90%" h={1} tone="muted" />
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Genvägar / djuplänkar"
@@ -805,6 +1100,24 @@ export function PrivatElhandel() {
         {
           key: "tags",
           label: "Tag-cloud — kompakt",
+          preview: (
+            <SketchFrame>
+              <Bar w="40%" h={3} tone="primary" />
+              <Row gap={2}>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={12} h={2} tone="primary" /></div>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={16} h={2} tone="primary" /></div>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={10} h={2} tone="primary" /></div>
+              </Row>
+              <Row gap={2}>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={14} h={2} tone="primary" /></div>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={18} h={2} tone="primary" /></div>
+              </Row>
+              <Row gap={2}>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={10} h={2} tone="primary" /></div>
+                <div style={{ padding: "2px 6px", border: "1px solid var(--color-border-subtle)", borderRadius: 999 }}><Bar w={20} h={2} tone="primary" /></div>
+              </Row>
+            </SketchFrame>
+          ),
           render: () => (
             <Annotation
               label="Genvägar (tag-cloud): bara etiketter"
