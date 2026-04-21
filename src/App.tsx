@@ -3,6 +3,7 @@ import { ThemeProvider } from "./lib/ThemeContext";
 import { AnnotationProvider } from "./lib/AnnotationContext";
 import { EditorialGuideProvider } from "./lib/EditorialGuideContext";
 import { EditModeProvider } from "./lib/EditModeContext";
+import { ViewportProvider } from "./lib/ViewportContext";
 import { Layout } from "./components/Layout";
 import { IndexPage } from "./routes/Index";
 import { StubPage } from "./routes/Stub";
@@ -22,6 +23,7 @@ import { Artikel } from "./routes/sidtyper/Artikel";
 export default function App() {
   return (
     <ThemeProvider>
+      <ViewportProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<RouteShell />}>
@@ -51,6 +53,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </ViewportProvider>
     </ThemeProvider>
   );
 }

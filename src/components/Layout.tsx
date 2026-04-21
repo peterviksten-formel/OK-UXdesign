@@ -3,15 +3,27 @@ import { useTheme } from "../lib/ThemeContext";
 import { useAnnotations } from "../lib/AnnotationContext";
 import { useEditorialGuide } from "../lib/EditorialGuideContext";
 import { useEditMode } from "../lib/EditModeContext";
+import { useViewport, VIEWPORT_WIDTH, type Viewport } from "../lib/ViewportContext";
 import { AnnotationPanel } from "./AnnotationPanel";
 import { EditorialGuidePanel } from "./EditorialGuidePanel";
 import { EditModeBar } from "./EditModeBar";
+import { Icon } from "./Icon";
+
+const VP_OPTIONS: { key: Viewport; label: string; icon: string }[] = [
+  { key: "desktop", label: "Desktop", icon: "desktop_windows" },
+  { key: "tablet", label: "Tablet", icon: "tablet_mac" },
+  { key: "mobile", label: "Mobile", icon: "smartphone" },
+];
 
 export function Layout() {
   const { theme, toggle } = useTheme();
   const { enabled: annoOn, toggle: toggleAnno, list: annoList } = useAnnotations();
   const { enabled: copyOn, toggle: toggleCopy, list: copyList } = useEditorialGuide();
   const { enabled: editOn, toggle: toggleEdit } = useEditMode();
+  const { viewport, set: setViewport } = useViewport();
+
+  const vpWidth = VIEWPORT_WIDTH[viewport];
+  const framed = vpWidth != null;
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas text-ink">
@@ -53,7 +65,7 @@ export function Layout() {
             <button
               type="button"
               onClick={toggleAnno}
-              className={`text-xs px-2.5 py-1.5 rounded border transition-colors ${
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1 ${
                 annoOn
                   ? "bg-brand-highlight text-white border-brand-highlight"
                   : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-highlight"
@@ -61,13 +73,14 @@ export function Layout() {
               aria-pressed={annoOn}
               title={annoOn ? "Dölj designanteckningar" : "Visa designanteckningar"}
             >
-              {annoOn ? "✓ Anteckningar" : "Anteckningar"}
+              {annoOn && <Icon name="check" size={14} />}
+              Anteckningar
               {annoOn && annoList.length > 0 ? ` (${annoList.length})` : ""}
             </button>
             <button
               type="button"
               onClick={toggleCopy}
-              className={`text-xs px-2.5 py-1.5 rounded border transition-colors ${
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1 ${
                 copyOn
                   ? "bg-brand-primary text-white border-brand-primary"
                   : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
@@ -75,13 +88,14 @@ export function Layout() {
               aria-pressed={copyOn}
               title={copyOn ? "Dölj copy-guide" : "Visa copy-guide"}
             >
-              {copyOn ? "✓ Copy-guide" : "Copy-guide"}
+              {copyOn && <Icon name="check" size={14} />}
+              Copy-guide
               {copyOn && copyList.length > 0 ? ` (${copyList.length})` : ""}
             </button>
             <button
               type="button"
               onClick={toggleEdit}
-              className={`text-xs px-2.5 py-1.5 rounded border transition-colors ${
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1 ${
                 editOn
                   ? "bg-brand-accent text-white border-brand-accent"
                   : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
@@ -89,15 +103,47 @@ export function Layout() {
               aria-pressed={editOn}
               title={editOn ? "Avsluta redigering" : "Redigera sidtyp"}
             >
-              {editOn ? "✓ Redigera" : "Redigera"}
+              {editOn && <Icon name="check" size={14} />}
+              Redigera
             </button>
+
+            <div
+              role="radiogroup"
+              aria-label="Visningsstorlek"
+              className="inline-flex items-center rounded border border-border-strong overflow-hidden"
+            >
+              {VP_OPTIONS.map((opt) => {
+                const active = viewport === opt.key;
+                return (
+                  <button
+                    key={opt.key}
+                    type="button"
+                    onClick={() => setViewport(opt.key)}
+                    role="radio"
+                    aria-checked={active}
+                    title={opt.label}
+                    className={`px-2 py-1.5 transition-colors flex items-center justify-center ${
+                      active ? "bg-brand-primary text-white" : "text-ink-secondary hover:bg-tint-info"
+                    }`}
+                  >
+                    <Icon name={opt.icon} size={18} aria-label={opt.label} />
+                  </button>
+                );
+              })}
+            </div>
+
             <button
               type="button"
               onClick={toggle}
-              className="text-sm px-3 py-1.5 rounded border border-border-strong text-ink-secondary hover:bg-tint-info"
+              className="p-1.5 rounded border border-border-strong text-ink-secondary hover:bg-tint-info flex items-center justify-center"
               aria-label={theme === "light" ? "Aktivera mörkt läge" : "Aktivera ljust läge"}
+              title={theme === "light" ? "Mörkt läge" : "Ljust läge"}
             >
-              {theme === "light" ? "🌙" : "☀️"}
+              <Icon
+                name={theme === "light" ? "dark_mode" : "light_mode"}
+                size={18}
+                aria-label={theme === "light" ? "Mörkt läge" : "Ljust läge"}
+              />
             </button>
           </div>
         </div>
@@ -105,9 +151,30 @@ export function Layout() {
 
       <EditModeBar />
 
-      <main id="main" className="flex-1">
-        <Outlet />
-      </main>
+      {framed ? (
+        <div className="flex-1 py-6 bg-canvas">
+          <div
+            className="mx-auto bg-surface border border-border-strong rounded-2xl shadow-lg overflow-hidden transition-all duration-300"
+            style={{ maxWidth: vpWidth, width: "100%" }}
+          >
+            <div className="px-3 py-1.5 border-b border-border-subtle bg-tint-info flex items-center gap-1.5 text-[10px] text-ink-muted">
+              <Icon name="circle" size={8} filled style={{ color: "#FF5F57" }} />
+              <Icon name="circle" size={8} filled style={{ color: "#FFBD2E" }} />
+              <Icon name="circle" size={8} filled style={{ color: "#28C840" }} />
+              <span className="ml-2 font-medium">
+                {viewport === "tablet" ? "Tablet — 834 px" : "Mobile — 390 px"}
+              </span>
+            </div>
+            <main id="main">
+              <Outlet />
+            </main>
+          </div>
+        </div>
+      ) : (
+        <main id="main" className="flex-1">
+          <Outlet />
+        </main>
+      )}
 
       <footer className="border-t border-border-subtle py-6 text-center text-xs text-ink-muted">
         Prototyp · ej offentlig produkt · placeholder-innehåll

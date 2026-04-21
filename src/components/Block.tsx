@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { useEditMode } from "../lib/EditModeContext";
+import { Icon } from "./Icon";
 
 export type BlockVariant = {
   key: string;
@@ -117,12 +118,13 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
                   <button
                     type="button"
                     onClick={() => setMenuOpen((v) => !v)}
-                    className="px-2 py-1 rounded hover:bg-tint-info text-ink-secondary"
+                    className="px-2 py-1 rounded hover:bg-tint-info text-ink-secondary inline-flex items-center gap-1"
                     aria-haspopup="menu"
                     aria-expanded={menuOpen}
                     title="Byt variant"
                   >
-                    {active?.label ?? "Variant"} ▾
+                    {active?.label ?? "Variant"}
+                    <Icon name="expand_more" size={14} />
                   </button>
                   {menuOpen && (
                     <>
@@ -167,12 +169,12 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
                                       {v.label}
                                     </span>
                                     <span
-                                      className={`shrink-0 w-4 h-4 rounded-full border flex items-center justify-center text-[10px] ${
+                                      className={`shrink-0 w-4 h-4 rounded-full border flex items-center justify-center ${
                                         selected ? "bg-brand-accent border-brand-accent text-white" : "border-border-strong"
                                       }`}
                                       aria-hidden="true"
                                     >
-                                      {selected ? "✓" : ""}
+                                      {selected && <Icon name="check" size={12} />}
                                     </span>
                                   </div>
                                 </button>
@@ -189,27 +191,28 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
                 type="button"
                 onClick={onMoveUp}
                 disabled={isFirst}
-                className="px-2 py-1 rounded hover:bg-tint-info text-ink-secondary disabled:opacity-30 disabled:cursor-not-allowed"
+                className="p-1 rounded hover:bg-tint-info text-ink-secondary disabled:opacity-30 disabled:cursor-not-allowed"
                 title="Flytta upp"
               >
-                ↑
+                <Icon name="arrow_upward" size={14} />
               </button>
               <button
                 type="button"
                 onClick={onMoveDown}
                 disabled={isLast}
-                className="px-2 py-1 rounded hover:bg-tint-info text-ink-secondary disabled:opacity-30 disabled:cursor-not-allowed"
+                className="p-1 rounded hover:bg-tint-info text-ink-secondary disabled:opacity-30 disabled:cursor-not-allowed"
                 title="Flytta ner"
               >
-                ↓
+                <Icon name="arrow_downward" size={14} />
               </button>
               <button
                 type="button"
                 onClick={() => update(pageId, def.id, { hidden: !state.hidden })}
-                className="px-2 py-1 rounded hover:bg-tint-highlight text-ink-secondary"
+                className="px-2 py-1 rounded hover:bg-tint-highlight text-ink-secondary inline-flex items-center gap-1"
                 title={state.hidden ? "Visa blocket igen" : "Ta bort blocket"}
               >
-                {state.hidden ? "↻ Återställ" : "✕ Ta bort"}
+                <Icon name={state.hidden ? "restart_alt" : "close"} size={14} />
+                {state.hidden ? "Återställ" : "Ta bort"}
               </button>
             </div>
           </div>

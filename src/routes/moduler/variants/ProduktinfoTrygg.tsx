@@ -1,4 +1,5 @@
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import type { Produkt } from "../produkt-data";
 
 /**
@@ -21,7 +22,7 @@ export function ProduktinfoTrygg({ produkt }: { produkt: Produkt }) {
           {/* Image placeholder */}
           <div className="rounded-md bg-tint-info aspect-[4/3] flex items-center justify-center border border-border-subtle">
             <div className="text-center text-ink-muted">
-              <p className="text-4xl mb-2">📷</p>
+              <Icon name="image" size={48} className="mb-2" />
               <p className="text-xs">{p.bildAlt}</p>
             </div>
           </div>
@@ -73,7 +74,7 @@ export function ProduktinfoTrygg({ produkt }: { produkt: Produkt }) {
             <h3 className="text-h5 font-medium mb-3">Ingår</h3>
             <ul className="space-y-1.5 text-sm text-ink-secondary">
               {p.inkluderar.map((i) => (
-                <li key={i} className="flex gap-2"><span className="text-brand-accent">✓</span> {i}</li>
+                <li key={i} className="flex gap-2"><Icon name="check" size={16} className="text-brand-accent mt-0.5" /> {i}</li>
               ))}
             </ul>
           </div>
@@ -89,7 +90,7 @@ export function ProduktinfoTrygg({ produkt }: { produkt: Produkt }) {
             <h3 className="text-h5 font-medium mb-3">Varför {p.namn}?</h3>
             <ul className="space-y-1.5 text-sm text-ink-secondary">
               {p.uspar.map((u) => (
-                <li key={u} className="flex gap-2"><span className="text-brand-accent">★</span> {u}</li>
+                <li key={u} className="flex gap-2"><Icon name="star" size={16} filled className="text-brand-accent mt-0.5" /> {u}</li>
               ))}
             </ul>
           </div>

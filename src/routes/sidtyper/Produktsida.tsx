@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
+import { Icon } from "../../components/Icon";
 import { PRODUKTER } from "../moduler/produkt-data";
 
 /**
@@ -35,7 +36,7 @@ export function Produktsida() {
           <div className="grid md:grid-cols-2 gap-8">
             <div className="rounded-md bg-tint-info aspect-[4/3] flex items-center justify-center border border-border-subtle">
               <div className="text-center text-ink-muted">
-                <p className="text-5xl mb-2">📷</p>
+                <Icon name="image" size={56} className="mb-2" />
                 <p className="text-xs">{hero.bildAlt}</p>
               </div>
             </div>
@@ -76,7 +77,7 @@ export function Produktsida() {
             <div>
               <h2 className="text-h5 font-medium mb-3">Ingår</h2>
               <ul className="space-y-1.5 text-sm text-ink-secondary">
-                {hero.inkluderar.map((i) => <li key={i} className="flex gap-2"><span className="text-brand-accent">✓</span> {i}</li>)}
+                {hero.inkluderar.map((i) => <li key={i} className="flex gap-2"><Icon name="check" size={16} className="text-brand-accent mt-0.5" /> {i}</li>)}
               </ul>
             </div>
             <div>
@@ -88,7 +89,7 @@ export function Produktsida() {
             <div>
               <h2 className="text-h5 font-medium mb-3">Varför {hero.namn}?</h2>
               <ul className="space-y-1.5 text-sm text-ink-secondary">
-                {hero.uspar.map((u) => <li key={u} className="flex gap-2"><span className="text-brand-accent">★</span> {u}</li>)}
+                {hero.uspar.map((u) => <li key={u} className="flex gap-2"><Icon name="star" size={16} className="text-brand-accent mt-0.5" filled /> {u}</li>)}
               </ul>
             </div>
           </div>
@@ -106,7 +107,9 @@ export function Produktsida() {
           <div className="grid sm:grid-cols-3 gap-4">
             {related.map((p) => (
               <Link key={p.id} to="/moduler/produktinfo" className="group rounded-md border border-border-subtle bg-surface overflow-hidden hover:border-brand-accent hover:shadow-sm transition-all">
-                <div className="bg-tint-info aspect-[3/2] flex items-center justify-center text-3xl">📷</div>
+                <div className="bg-tint-info aspect-[3/2] flex items-center justify-center text-ink-muted">
+                  <Icon name="image" size={36} />
+                </div>
                 <div className="p-4">
                   <span className="text-[10px] uppercase tracking-wider text-ink-muted">{p.kategori}</span>
                   <h3 className="font-medium group-hover:text-brand-accent mb-1">{p.namn}</h3>

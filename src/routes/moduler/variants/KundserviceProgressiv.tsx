@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import { KATEGORIER, type KategoriId, type Underkategori } from "../kundservice-data";
 
 /**
@@ -42,7 +43,7 @@ export function KundserviceProgressiv() {
                 }`}
                 aria-pressed={isActive}
               >
-                <span className="text-2xl block mb-2" aria-hidden="true">{k.ikon}</span>
+                <Icon name={k.ikon} size={28} className="text-brand-accent mb-2 block" />
                 <span className="font-medium block text-sm">{k.label}</span>
                 <span className="text-xs text-ink-muted block mt-0.5 leading-snug">{k.beskrivning}</span>
               </button>
@@ -60,7 +61,7 @@ export function KundserviceProgressiv() {
         >
           <div className="rounded-md border border-brand-accent bg-surface overflow-hidden mb-8">
             <header className="px-5 py-3 bg-tint-info flex items-center gap-3">
-              <span className="text-xl" aria-hidden="true">{kategori.ikon}</span>
+              <Icon name={kategori.ikon} size={22} className="text-brand-accent" />
               <div>
                 <h3 className="font-medium">{kategori.label}</h3>
                 <p className="text-xs text-ink-muted">Välj det som bäst beskriver din fråga</p>
@@ -68,10 +69,10 @@ export function KundserviceProgressiv() {
               <button
                 type="button"
                 onClick={() => { setActiveKategori(null); setActiveUnder(null); }}
-                className="ml-auto text-sm text-ink-muted hover:text-ink"
+                className="ml-auto text-ink-muted hover:text-ink p-1"
                 aria-label="Stäng och välj annan kategori"
               >
-                ✕
+                <Icon name="close" size={18} />
               </button>
             </header>
             <ul className="divide-y divide-border-subtle">
@@ -96,15 +97,15 @@ export function KundserviceProgressiv() {
       >
         <div className="flex flex-wrap gap-3 text-sm">
           <a href="#" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border-subtle hover:border-brand-accent hover:bg-tint-info transition-colors">
-            <span aria-hidden="true">💬</span>
+            <Icon name="chat_bubble" size={16} className="text-brand-accent" />
             <span>Chatta · Vardagar 08–17</span>
           </a>
           <a href="#" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border-subtle hover:border-brand-accent hover:bg-tint-info transition-colors">
-            <span aria-hidden="true">📞</span>
+            <Icon name="call" size={16} className="text-brand-accent" />
             <span>Ring · [08-455 44 00]</span>
           </a>
           <a href="#" className="inline-flex items-center gap-2 px-4 py-2.5 rounded-md border border-border-subtle hover:border-brand-accent hover:bg-tint-info transition-colors">
-            <span aria-hidden="true">✉️</span>
+            <Icon name="mail" size={16} className="text-brand-accent" />
             <span>E-post · Svar inom 1 arbetsdag</span>
           </a>
         </div>
@@ -139,7 +140,7 @@ function UnderItem({ item, isOpen, onToggle }: { item: Underkategori; isOpen: bo
         <span className={`text-[10px] uppercase tracking-wider font-medium px-2 py-0.5 rounded ${badgeColor}`}>
           {actionBadge}
         </span>
-        <span className={`text-ink-muted text-sm transition-transform ${isOpen ? "rotate-180" : ""}`}>▼</span>
+        <Icon name="expand_more" size={18} className={`text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`} />
       </button>
       {isOpen && (
         <div className="px-5 pb-4 flex flex-col sm:flex-row items-start gap-4">
@@ -154,7 +155,7 @@ function UnderItem({ item, isOpen, onToggle }: { item: Underkategori; isOpen: bo
             className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand text-sm font-medium px-4 py-2.5 rounded hover:opacity-90 transition-opacity whitespace-nowrap"
           >
             {a.type === "link" || a.type === "info" ? a.label : a.label}
-            <span aria-hidden="true">→</span>
+            <Icon name="arrow_forward" size={16} />
           </a>
         </div>
       )}

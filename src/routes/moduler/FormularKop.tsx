@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
+import { Icon } from "../../components/Icon";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
 
 /* ─── Variant A — Traditional form ──────────────────────────────────── */
@@ -87,9 +88,9 @@ function FormTrygg() {
 function FormProgressiv() {
   const [step, setStep] = useState(0);
   const steps = [
-    { label: "Produkt", icon: "🛒" },
-    { label: "Uppgifter", icon: "👤" },
-    { label: "Bekräfta", icon: "✓" },
+    { label: "Produkt", icon: "shopping_cart" },
+    { label: "Uppgifter", icon: "person" },
+    { label: "Bekräfta", icon: "check" },
   ];
 
   return (
@@ -110,12 +111,12 @@ function FormProgressiv() {
                   i === step ? "text-brand-primary" : i < step ? "text-brand-accent" : "text-ink-muted"
                 }`}
               >
-                <span className={`w-8 h-8 rounded-full grid place-items-center text-sm ${
+                <span className={`w-8 h-8 rounded-full grid place-items-center ${
                   i === step ? "bg-brand-primary text-white" :
                   i < step ? "bg-brand-accent text-white" :
-                  "bg-border-subtle"
+                  "bg-border-subtle text-ink-muted"
                 }`}>
-                  {i < step ? "✓" : s.icon}
+                  <Icon name={i < step ? "check" : s.icon} size={16} />
                 </span>
                 <span className="hidden sm:inline">{s.label}</span>
               </button>
@@ -138,7 +139,9 @@ function FormProgressiv() {
             <div className="space-y-4">
               <div className="rounded-md border border-border-subtle bg-surface p-5">
                 <div className="flex items-start gap-4">
-                  <div className="w-20 h-20 rounded bg-tint-info flex items-center justify-center text-2xl flex-shrink-0">📷</div>
+                  <div className="w-20 h-20 rounded bg-tint-info flex items-center justify-center text-ink-muted flex-shrink-0">
+                    <Icon name="image" size={32} />
+                  </div>
                   <div className="flex-1">
                     <p className="text-eyebrow uppercase text-ink-muted mb-1">Elbil & laddning</p>
                     <h3 className="text-h4 font-medium mb-1">Ladda Smart</h3>

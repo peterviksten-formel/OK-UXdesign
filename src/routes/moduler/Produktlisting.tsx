@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
+import { Icon } from "../../components/Icon";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
 import { PRODUKTER, type Produkt } from "./produkt-data";
 
@@ -79,7 +80,7 @@ function ProductCard({ produkt: p }: { produkt: Produkt }) {
   return (
     <article className="rounded-md border border-border-subtle bg-surface overflow-hidden flex flex-col hover:shadow-sm hover:border-brand-accent transition-all group">
       <div className="bg-tint-info aspect-[3/2] flex items-center justify-center relative">
-        <span className="text-3xl">📷</span>
+        <Icon name="image" size={40} className="text-ink-muted" />
         <span className="absolute top-3 left-3 bg-brand-primary text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
           {p.kategori}
         </span>

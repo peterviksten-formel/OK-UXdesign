@@ -5,6 +5,7 @@ import { Copy } from "../../components/Copy";
 import { PageBrief } from "../../components/PageBrief";
 import { BlockList, type BlockDef } from "../../components/Block";
 import { SketchFrame, Bar, Row, Box, Pill } from "../../components/Sketch";
+import { Icon } from "../../components/Icon";
 
 /**
  * SIDTYP 1 — Pilot for the editable/editorial-guided composition model.
@@ -203,12 +204,12 @@ export function PrivatElhandel() {
                   </div>
                   <ul className="bg-tint-info rounded-md p-6 space-y-4">
                     {[
-                      { ikon: "🏘️", t: "Ditt lokala energibolag" },
-                      { ikon: "💰", t: "Inga dolda avgifter" },
-                      { ikon: "📱", t: "Allt samlat i appen" },
+                      { ikon: "location_city", t: "Ditt lokala energibolag" },
+                      { ikon: "payments", t: "Inga dolda avgifter" },
+                      { ikon: "smartphone", t: "Allt samlat i appen" },
                     ].map((v) => (
                       <li key={v.t} className="flex items-center gap-3 font-medium">
-                        <span className="text-xl" aria-hidden="true">{v.ikon}</span>
+                        <Icon name={v.ikon} size={22} className="text-brand-accent" />
                         {v.t}
                       </li>
                     ))}
@@ -266,18 +267,18 @@ export function PrivatElhandel() {
                 </Copy>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                   {[
-                    { ikon: "✏️", label: "Jag vill teckna elavtal", desc: "Ny kund eller saknar avtal", href: "/moduler/elavtal-jamfor" },
-                    { ikon: "🔄", label: "Jag vill byta elavtal", desc: "Befintlig kund — jämför och byt direkt", href: "#" },
-                    { ikon: "🏠", label: "Jag ska flytta", desc: "Flytta inom, till eller från nätet", href: "#" },
-                    { ikon: "📊", label: "Jag vill förstå min elkostnad", desc: "Prishistorik, påslag och förbrukning", href: "#" },
-                    { ikon: "💬", label: "Jag har en fråga", desc: "Vanliga frågor och kundservice", href: "/moduler/kundservice-triage" },
+                    { ikon: "edit", label: "Jag vill teckna elavtal", desc: "Ny kund eller saknar avtal", href: "/moduler/elavtal-jamfor" },
+                    { ikon: "sync", label: "Jag vill byta elavtal", desc: "Befintlig kund — jämför och byt direkt", href: "#" },
+                    { ikon: "home", label: "Jag ska flytta", desc: "Flytta inom, till eller från nätet", href: "#" },
+                    { ikon: "monitoring", label: "Jag vill förstå min elkostnad", desc: "Prishistorik, påslag och förbrukning", href: "#" },
+                    { ikon: "chat_bubble", label: "Jag har en fråga", desc: "Vanliga frågor och kundservice", href: "/moduler/kundservice-triage" },
                   ].map((k) => (
                     <Link
                       key={k.label}
                       to={k.href}
                       className="group p-5 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm transition-all flex gap-4"
                     >
-                      <span className="text-2xl" aria-hidden="true">{k.ikon}</span>
+                      <Icon name={k.ikon} size={26} className="text-brand-accent" />
                       <div>
                         <span className="font-medium block group-hover:text-brand-accent">{k.label}</span>
                         <span className="text-sm text-ink-secondary">{k.desc}</span>
@@ -315,23 +316,23 @@ export function PrivatElhandel() {
                 <h2 className="text-h2 mb-6">Vad vill du göra?</h2>
                 <ul className="max-w-reading space-y-2">
                   {[
-                    { ikon: "✏️", label: "Jag vill teckna elavtal", desc: "Ny kund eller saknar avtal", href: "/moduler/elavtal-jamfor" },
-                    { ikon: "🔄", label: "Jag vill byta elavtal", desc: "Befintlig kund", href: "#" },
-                    { ikon: "🏠", label: "Jag ska flytta", desc: "Flytta inom, till eller från nätet", href: "#" },
-                    { ikon: "📊", label: "Jag vill förstå min elkostnad", desc: "Prishistorik och förbrukning", href: "#" },
-                    { ikon: "💬", label: "Jag har en fråga", desc: "Vanliga frågor och kundservice", href: "/moduler/kundservice-triage" },
+                    { ikon: "edit", label: "Jag vill teckna elavtal", desc: "Ny kund eller saknar avtal", href: "/moduler/elavtal-jamfor" },
+                    { ikon: "sync", label: "Jag vill byta elavtal", desc: "Befintlig kund", href: "#" },
+                    { ikon: "home", label: "Jag ska flytta", desc: "Flytta inom, till eller från nätet", href: "#" },
+                    { ikon: "monitoring", label: "Jag vill förstå min elkostnad", desc: "Prishistorik och förbrukning", href: "#" },
+                    { ikon: "chat_bubble", label: "Jag har en fråga", desc: "Vanliga frågor och kundservice", href: "/moduler/kundservice-triage" },
                   ].map((k) => (
                     <li key={k.label}>
                       <Link
                         to={k.href}
                         className="group flex items-center gap-4 p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent transition-colors"
                       >
-                        <span className="text-xl" aria-hidden="true">{k.ikon}</span>
+                        <Icon name={k.ikon} size={22} className="text-brand-accent" />
                         <span className="flex-1">
                           <span className="font-medium block group-hover:text-brand-accent">{k.label}</span>
                           <span className="text-sm text-ink-secondary">{k.desc}</span>
                         </span>
-                        <span className="text-ink-muted group-hover:text-brand-accent">→</span>
+                        <Icon name="arrow_forward" size={18} className="text-ink-muted group-hover:text-brand-accent" />
                       </Link>
                     </li>
                   ))}
@@ -373,7 +374,7 @@ export function PrivatElhandel() {
             >
               <section className="py-8">
                 <div className="p-5 rounded-md bg-tint-info border-l-4 border-brand-accent flex gap-4">
-                  <div className="text-2xl leading-none">💡</div>
+                  <Icon name="lightbulb" size={28} className="text-brand-accent" />
                   <div className="flex-1">
                     <Copy
                       label="Callout-rubrik — lokal reassurance"
@@ -420,9 +421,9 @@ export function PrivatElhandel() {
               <section className="py-4">
                 <details className="group rounded-md border-l-4 border-brand-accent bg-tint-info">
                   <summary className="px-5 py-3 cursor-pointer list-none flex items-center gap-3 font-medium">
-                    <span>💡</span>
+                    <Icon name="lightbulb" size={20} className="text-brand-accent" />
                     <span>Skillnaden mellan elnät och elhandel</span>
-                    <span className="ml-auto text-ink-muted group-open:rotate-180 transition-transform">▾</span>
+                    <Icon name="expand_more" size={20} className="ml-auto text-ink-muted group-open:rotate-180 transition-transform" />
                   </summary>
                   <div className="px-5 pb-4 pt-1 text-sm text-ink-secondary leading-relaxed">
                     <strong>Elnät</strong> = ledningarna. Bestämt av var du bor — du kan inte välja nätägare.
@@ -632,12 +633,12 @@ export function PrivatElhandel() {
                 <h2 className="text-h2 mb-6">Varför Öresundskraft?</h2>
                 <div className="grid sm:grid-cols-3 gap-6">
                   {[
-                    { ikon: "🏘️", rubrik: "Ditt lokala energibolag", text: "Communityägt sedan [år]. Vinsten stannar i Helsingborg." },
-                    { ikon: "📱", rubrik: "Allt på ett ställe", text: "App, faktura och tjänster — samlat för att göra det lätt att ha koll." },
-                    { ikon: "💰", rubrik: "Inga dolda avgifter", text: "Reko avtal med [X öre/kWh påslag]. Du vet alltid vad du betalar." },
+                    { ikon: "location_city", rubrik: "Ditt lokala energibolag", text: "Communityägt sedan [år]. Vinsten stannar i Helsingborg." },
+                    { ikon: "smartphone", rubrik: "Allt på ett ställe", text: "App, faktura och tjänster — samlat för att göra det lätt att ha koll." },
+                    { ikon: "payments", rubrik: "Inga dolda avgifter", text: "Reko avtal med [X öre/kWh påslag]. Du vet alltid vad du betalar." },
                   ].map((v) => (
                     <div key={v.rubrik} className="flex gap-3">
-                      <span className="text-2xl" aria-hidden="true">{v.ikon}</span>
+                      <Icon name={v.ikon} size={26} className="text-brand-accent" />
                       <div>
                         <h3 className="font-medium mb-1">{v.rubrik}</h3>
                         <p className="text-sm text-ink-secondary">{v.text}</p>
@@ -677,12 +678,12 @@ export function PrivatElhandel() {
               <section className="py-8 border-t border-border-subtle">
                 <div className="rounded-md bg-tint-info p-5 grid sm:grid-cols-3 gap-4 text-sm">
                   {[
-                    { ikon: "🏘️", t: "Lokalt · Communityägt sedan [år]" },
-                    { ikon: "💰", t: "Transparent · [X öre/kWh påslag]" },
-                    { ikon: "📱", t: "Allt samlat · App + Mina sidor" },
+                    { ikon: "location_city", t: "Lokalt · Communityägt sedan [år]" },
+                    { ikon: "payments", t: "Transparent · [X öre/kWh påslag]" },
+                    { ikon: "smartphone", t: "Allt samlat · App + Mina sidor" },
                   ].map((v) => (
                     <div key={v.t} className="flex items-center gap-2">
-                      <span className="text-lg" aria-hidden="true">{v.ikon}</span>
+                      <Icon name={v.ikon} size={20} className="text-brand-accent" />
                       <span className="font-medium text-brand-primary">{v.t}</span>
                     </div>
                   ))}
@@ -745,7 +746,7 @@ export function PrivatElhandel() {
                         ) : (
                           <span>{f.q}</span>
                         )}
-                        <span className={`text-ink-muted transition-transform ml-3 ${openFaq === f.id ? "rotate-180" : ""}`}>▼</span>
+                        <Icon name="expand_more" size={20} className={`text-ink-muted transition-transform ml-3 ${openFaq === f.id ? "rotate-180" : ""}`} />
                       </summary>
                       {openFaq === f.id && (
                         <div className="px-5 pb-4 text-sm text-ink-secondary leading-relaxed border-t border-border-subtle pt-3">
@@ -797,7 +798,7 @@ export function PrivatElhandel() {
                         {g.items.map((i) => (
                           <li key={i}>
                             <a href="#" className="text-ink-secondary hover:text-brand-accent flex items-start gap-2">
-                              <span>→</span>
+                              <Icon name="arrow_forward" size={16} className="mt-0.5" />
                               <span>{i}</span>
                             </a>
                           </li>
@@ -854,7 +855,9 @@ export function PrivatElhandel() {
                       to={t.href}
                       className="group rounded-md border border-border-subtle bg-surface overflow-hidden hover:border-brand-accent hover:shadow-sm transition-all"
                     >
-                      <div className="bg-tint-info aspect-[16/9] flex items-center justify-center text-3xl">📷</div>
+                      <div className="bg-tint-info aspect-[16/9] flex items-center justify-center text-ink-muted">
+                        <Icon name="image" size={40} />
+                      </div>
                       <div className="p-4">
                         <h3 className="font-medium group-hover:text-brand-accent mb-1">{t.titel}</h3>
                         <p className="text-sm text-ink-secondary">{t.desc}</p>
@@ -1002,7 +1005,9 @@ export function PrivatElhandel() {
                 <h2 className="text-h2 mb-6">Senaste nytt om el</h2>
                 <div className="grid md:grid-cols-3 gap-4 mb-4">
                   <a href="#" className="group md:col-span-2 block rounded-md border border-border-subtle bg-surface overflow-hidden hover:border-brand-accent">
-                    <div className="bg-tint-info aspect-[21/9] flex items-center justify-center text-4xl">📷</div>
+                    <div className="bg-tint-info aspect-[21/9] flex items-center justify-center text-ink-muted">
+                      <Icon name="image" size={56} />
+                    </div>
                     <div className="p-5">
                       <div className="flex items-center gap-2 mb-2 text-xs text-ink-muted">
                         <time dateTime="2026-04-15">2026-04-15</time>
@@ -1083,7 +1088,7 @@ export function PrivatElhandel() {
                     ].map((g) => (
                       <li key={g.label}>
                         <a href="#" className="flex items-baseline gap-2 py-1.5 hover:text-brand-accent group">
-                          <span className="text-ink-muted group-hover:text-brand-accent">→</span>
+                          <Icon name="arrow_forward" size={14} className="text-ink-muted group-hover:text-brand-accent" />
                           <span>
                             <span className="font-medium">{g.label}</span>
                             <span className="text-ink-muted"> — {g.desc}</span>

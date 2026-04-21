@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAnnotations } from "../lib/AnnotationContext";
+import { Icon } from "./Icon";
 
 /**
  * Slide-in panel that lists all annotations on the current page.
@@ -49,7 +50,7 @@ export function AnnotationPanel() {
             className="text-ink-muted hover:text-ink p-1"
             aria-label="Stäng panel"
           >
-            ✕
+            <Icon name="close" size={18} />
           </button>
         </header>
         <ul className="flex-1 overflow-y-auto divide-y divide-border-subtle">

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useEditorialGuide, type CopyCategory } from "../lib/EditorialGuideContext";
+import { Icon } from "./Icon";
 
 const CAT_LABEL: Record<CopyCategory, string> = {
   rubrik: "Rubrik",
@@ -57,7 +58,7 @@ export function EditorialGuidePanel() {
             className="text-ink-muted hover:text-ink p-1"
             aria-label="Stäng panel"
           >
-            ✕
+            <Icon name="close" size={18} />
           </button>
         </header>
 

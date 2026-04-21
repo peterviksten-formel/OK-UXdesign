@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import { KATEGORIER, type KategoriId, type Underkategori } from "../kundservice-data";
 
 /**
@@ -87,7 +88,7 @@ export function KundserviceExperimentell() {
                         onClick={() => pickKategori(k.id)}
                         className="w-full text-left px-3 py-2 rounded hover:bg-surface text-sm flex items-center gap-2"
                       >
-                        <span aria-hidden="true">{k.ikon}</span>
+                        <Icon name={k.ikon} size={16} className="text-brand-accent" />
                         <span className="font-medium">{k.label}</span>
                       </button>
                     ))}
@@ -104,7 +105,7 @@ export function KundserviceExperimentell() {
                         onClick={() => pickKategori(k.id)}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-border-subtle bg-surface text-sm hover:border-brand-accent hover:bg-tint-info transition-colors"
                       >
-                        <span aria-hidden="true">{k.ikon}</span>
+                        <Icon name={k.ikon} size={14} className="text-brand-accent" />
                         {k.label}
                       </button>
                     ))}
@@ -119,8 +120,9 @@ export function KundserviceExperimentell() {
             <>
               {/* User bubble */}
               <div className="flex gap-3 justify-end">
-                <div className="rounded-lg rounded-tr-none bg-brand-primary text-ink-onbrand px-4 py-2 text-sm">
-                  {kategori.ikon} {kategori.label}
+                <div className="rounded-lg rounded-tr-none bg-brand-primary text-ink-onbrand px-4 py-2 text-sm flex items-center gap-2">
+                  <Icon name={kategori.ikon} size={16} />
+                  {kategori.label}
                 </div>
               </div>
 

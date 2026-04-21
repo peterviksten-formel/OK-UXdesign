@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import { PLANS, TERMER, type PlanId } from "../elavtal-data";
 
 /**
@@ -88,8 +89,8 @@ export function VariantExperimentell() {
       >
         <div className="mb-8 p-5 rounded-lg bg-gradient-to-br from-tint-info via-tint-pink to-tint-notice border border-border-subtle">
           <div className="flex items-center gap-2 mb-2">
-            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-primary text-white text-xs font-bold">
-              ✨
+            <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-brand-primary text-white">
+              <Icon name="auto_awesome" size={14} />
             </span>
             <span className="text-eyebrow uppercase font-medium text-brand-primary">
               Snabbsammanfattning

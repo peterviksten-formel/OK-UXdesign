@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import type { Produkt } from "../produkt-data";
 
 /**
@@ -14,9 +15,9 @@ export function ProduktinfoProgressiv({ produkt }: { produkt: Produkt }) {
   const [activeTab, setActiveTab] = useState<"ingar" | "villkor" | "varfor">("ingar");
 
   const tabs = [
-    { id: "ingar" as const, label: "Vad ingår", items: p.inkluderar, icon: "✓", iconColor: "text-brand-accent" },
-    { id: "villkor" as const, label: "Villkor", items: p.villkor, icon: "·", iconColor: "text-ink-muted" },
-    { id: "varfor" as const, label: `Varför ${p.namn}?`, items: p.uspar, icon: "★", iconColor: "text-brand-accent" },
+    { id: "ingar" as const, label: "Vad ingår", items: p.inkluderar, icon: "check", iconFilled: false, iconColor: "text-brand-accent" },
+    { id: "villkor" as const, label: "Villkor", items: p.villkor, icon: "circle", iconFilled: true, iconColor: "text-ink-muted" },
+    { id: "varfor" as const, label: `Varför ${p.namn}?`, items: p.uspar, icon: "star", iconFilled: true, iconColor: "text-brand-accent" },
   ];
 
   const activeItems = tabs.find((t) => t.id === activeTab)!;
@@ -33,7 +34,7 @@ export function ProduktinfoProgressiv({ produkt }: { produkt: Produkt }) {
           {/* Image area */}
           <div className="relative bg-tint-info aspect-[16/7] flex items-center justify-center">
             <div className="text-center text-ink-muted">
-              <p className="text-5xl mb-2">📷</p>
+              <Icon name="image" size={56} className="mb-2" />
               <p className="text-xs">{p.bildAlt}</p>
             </div>
             {/* Price badge */}
@@ -118,7 +119,12 @@ export function ProduktinfoProgressiv({ produkt }: { produkt: Produkt }) {
             <ul className="space-y-2 text-sm text-ink-secondary">
               {activeItems.items.map((item) => (
                 <li key={item} className="flex gap-2">
-                  <span className={activeItems.iconColor}>{activeItems.icon}</span>
+                  <Icon
+                    name={activeItems.icon}
+                    size={activeItems.icon === "circle" ? 6 : 16}
+                    filled={activeItems.iconFilled}
+                    className={`${activeItems.iconColor} mt-0.5`}
+                  />
                   {item}
                 </li>
               ))}

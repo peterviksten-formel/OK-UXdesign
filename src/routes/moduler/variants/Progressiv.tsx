@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import { PLANS, type BoendeTyp } from "../elavtal-data";
 
 /**
@@ -53,7 +54,7 @@ export function VariantProgressiv() {
         rationale="Den enskilt mest värdefulla informationsbiten på sidan. Bor du i Helsingborg/Ängelholm är ÖK redan nätägare — du ska bara välja elhandel. En mening i en ruta, inte i FAQ."
       >
         <div className="mb-8 p-5 rounded-md bg-tint-info border-l-4 border-brand-accent flex gap-4">
-          <div className="text-2xl leading-none">💡</div>
+          <Icon name="lightbulb" size={28} className="text-brand-accent" />
           <div className="flex-1">
             <p className="font-medium mb-1">Bor du i Helsingborg eller Ängelholm?</p>
             <p className="text-sm text-ink-secondary leading-relaxed">

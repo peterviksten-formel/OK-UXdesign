@@ -1,4 +1,5 @@
 import { Annotation } from "../../../components/Annotation";
+import { Icon } from "../../../components/Icon";
 import { KATEGORIER } from "../kundservice-data";
 
 /**
@@ -39,12 +40,12 @@ export function KundserviceTrygg() {
               className="group border border-border-subtle rounded-md bg-surface"
             >
               <summary className="px-5 py-4 cursor-pointer list-none flex items-center gap-3 hover:bg-tint-info focus-visible:ring-2 focus-visible:ring-focus rounded-md">
-                <span className="text-xl" aria-hidden="true">{k.ikon}</span>
+                <Icon name={k.ikon} size={24} className="text-brand-accent" />
                 <div className="flex-1">
                   <span className="font-medium block">{k.label}</span>
                   <span className="text-sm text-ink-muted">{k.beskrivning}</span>
                 </div>
-                <span className="text-ink-muted group-open:rotate-180 transition-transform text-sm">▼</span>
+                <Icon name="expand_more" size={20} className="text-ink-muted group-open:rotate-180 transition-transform" />
               </summary>
               <div className="px-5 pb-4 border-t border-border-subtle">
                 <ul className="divide-y divide-border-subtle">
@@ -54,7 +55,7 @@ export function KundserviceTrygg() {
                         href={u.action.type === "link" ? u.action.href : "#"}
                         className="flex items-start gap-3 group/link hover:text-brand-accent"
                       >
-                        <span className="text-xs mt-1 text-ink-muted">→</span>
+                        <Icon name="arrow_forward" size={14} className="mt-1 text-ink-muted" />
                         <div>
                           <span className="font-medium block group-hover/link:underline">{u.label}</span>
                           <span className="text-sm text-ink-secondary block">{u.action.description}</span>
@@ -62,7 +63,9 @@ export function KundserviceTrygg() {
                             <span className="text-xs text-ink-muted mt-1 block">{u.action.tid}</span>
                           )}
                           {u.action.type === "mina-sidor" && (
-                            <span className="text-xs text-brand-accent mt-1 block">→ Mina sidor</span>
+                            <span className="text-xs text-brand-accent mt-1 flex items-center gap-1">
+                              <Icon name="arrow_forward" size={12} /> Mina sidor
+                            </span>
                           )}
                         </div>
                       </a>
@@ -83,9 +86,9 @@ export function KundserviceTrygg() {
         <aside className="mt-8 p-5 border border-border-strong rounded-md max-w-reading">
           <h3 className="text-h5 font-medium mb-2">Hittade du inte svaret?</h3>
           <div className="text-sm text-ink-secondary space-y-2">
-            <p>📞 Ring oss: <strong>[08-455 44 00]</strong> · Vardagar 08–17</p>
-            <p>💬 <a href="#" className="text-brand-accent underline underline-offset-2">Chatta med oss</a> · Vardagar 08–17 · Svarstid ~2 min</p>
-            <p>✉️ <a href="#" className="text-brand-accent underline underline-offset-2">Skicka e-post</a> · Svar inom 1 arbetsdag</p>
+            <p className="flex items-center gap-2"><Icon name="call" size={16} className="text-brand-accent" /> Ring oss: <strong>[08-455 44 00]</strong> · Vardagar 08–17</p>
+            <p className="flex items-center gap-2"><Icon name="chat_bubble" size={16} className="text-brand-accent" /> <a href="#" className="text-brand-accent underline underline-offset-2">Chatta med oss</a> · Vardagar 08–17 · Svarstid ~2 min</p>
+            <p className="flex items-center gap-2"><Icon name="mail" size={16} className="text-brand-accent" /> <a href="#" className="text-brand-accent underline underline-offset-2">Skicka e-post</a> · Svar inom 1 arbetsdag</p>
           </div>
         </aside>
       </Annotation>

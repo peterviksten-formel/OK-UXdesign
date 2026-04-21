@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
+import { Icon } from "../../components/Icon";
 import { KATEGORIER, type KategoriId } from "../moduler/kundservice-data";
 
 /**
@@ -99,12 +100,12 @@ export function Kundservice() {
           <h2 className="text-h2 mb-6">Kontakta oss</h2>
           <div className="grid sm:grid-cols-3 gap-4">
             {[
-              { ikon: "💬", kanal: "Chatt", tid: "Vardagar 08–17", svar: "Svarstid ~2 min", desc: "Snabbaste vägen för enkla frågor." },
-              { ikon: "📞", kanal: "Telefon", tid: "Vardagar 08–17", svar: "[08-455 44 00]", desc: "För komplexa ärenden och felanmälan." },
-              { ikon: "✉️", kanal: "E-post", tid: "Dygnet runt", svar: "Svar inom 1 arbetsdag", desc: "När det inte är bråttom." },
+              { ikon: "chat_bubble", kanal: "Chatt", tid: "Vardagar 08–17", svar: "Svarstid ~2 min", desc: "Snabbaste vägen för enkla frågor." },
+              { ikon: "call", kanal: "Telefon", tid: "Vardagar 08–17", svar: "[08-455 44 00]", desc: "För komplexa ärenden och felanmälan." },
+              { ikon: "mail", kanal: "E-post", tid: "Dygnet runt", svar: "Svar inom 1 arbetsdag", desc: "När det inte är bråttom." },
             ].map((k) => (
               <a key={k.kanal} href="#" className="p-5 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm transition-all block">
-                <span className="text-2xl block mb-2" aria-hidden="true">{k.ikon}</span>
+                <Icon name={k.ikon} size={28} className="text-brand-accent mb-2" />
                 <h3 className="font-medium mb-1">{k.kanal}</h3>
                 <p className="text-sm text-ink-secondary mb-2">{k.desc}</p>
                 <p className="text-xs text-ink-muted">{k.tid} · {k.svar}</p>

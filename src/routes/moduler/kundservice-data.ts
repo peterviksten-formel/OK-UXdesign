@@ -28,7 +28,7 @@ export type Action =
 export const KATEGORIER: Kategori[] = [
   {
     id: "faktura",
-    ikon: "📄",
+    ikon: "description",
     label: "Faktura & betalning",
     beskrivning: "Frågor om fakturor, betalning, autogiro och e-faktura.",
     underkategorier: [
@@ -56,7 +56,7 @@ export const KATEGORIER: Kategori[] = [
   },
   {
     id: "avtal",
-    ikon: "📝",
+    ikon: "edit_note",
     label: "Avtal & priser",
     beskrivning: "Teckna, byta eller förstå ditt elavtal.",
     underkategorier: [
@@ -84,7 +84,7 @@ export const KATEGORIER: Kategori[] = [
   },
   {
     id: "flytt",
-    ikon: "🏠",
+    ikon: "home",
     label: "Flytta",
     beskrivning: "Flytta in, flytta ut, eller flytta inom nätet.",
     underkategorier: [
@@ -107,7 +107,7 @@ export const KATEGORIER: Kategori[] = [
   },
   {
     id: "avbrott",
-    ikon: "⚡",
+    ikon: "bolt",
     label: "Strömavbrott",
     beskrivning: "Aktuella avbrott, felanmälan och driftstörningar.",
     underkategorier: [
@@ -130,7 +130,7 @@ export const KATEGORIER: Kategori[] = [
   },
   {
     id: "elnat",
-    ikon: "🔌",
+    ikon: "power",
     label: "Elnät & mätare",
     beskrivning: "Mätarställning, nätavgift, anslutning och servis.",
     underkategorier: [
@@ -153,7 +153,7 @@ export const KATEGORIER: Kategori[] = [
   },
   {
     id: "ovrigt",
-    ikon: "💬",
+    ikon: "help",
     label: "Annat",
     beskrivning: "Solceller, laddbox, fjärrvärme, eller en fråga vi inte listade.",
     underkategorier: [
