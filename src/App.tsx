@@ -16,6 +16,7 @@ import { FormularKop } from "./routes/moduler/FormularKop";
 import { PrivatElhandel } from "./routes/sidtyper/PrivatElhandel";
 import { StartsidaUndersidaUX } from "./routes/sidtyper/StartsidaUndersidaUX";
 import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
+import { AvbrottNy } from "./routes/sidtyper/AvbrottNy";
 import { Avbrottsinformation } from "./routes/sidtyper/Avbrottsinformation";
 import { Kundservice } from "./routes/sidtyper/Kundservice";
 import { Produktsida } from "./routes/sidtyper/Produktsida";
@@ -36,6 +37,7 @@ export default function App() {
             <Route path="/sidtyper/privat-elhandel" element={<PrivatElhandel />} />
             <Route path="/sidtyper/startsida-undersida-ux" element={<StartsidaUndersidaUX />} />
             <Route path="/sidtyper/kundservice-ny" element={<KundserviceNy />} />
+            <Route path="/sidtyper/avbrott-ny" element={<AvbrottNy />} />
             <Route path="/sidtyper/avbrottsinformation" element={<Avbrottsinformation />} />
             <Route path="/sidtyper/kundservice" element={<Kundservice />} />
             <Route path="/sidtyper/produktsida" element={<Produktsida />} />
