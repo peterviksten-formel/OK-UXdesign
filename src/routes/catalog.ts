@@ -12,6 +12,7 @@ export type CatalogEntry = {
 
 export const sidtyper: CatalogEntry[] = [
   { slug: "privat-elhandel", title: "Startsida undersida", subtitle: "Det arbetade exemplet — hero, intentkort, jämförelse, FAQ, genvägar", status: "klar" },
+  { slug: "startsida-undersida-ux", title: "Startsida undersida UX", subtitle: "UX-audit-driven variant: elnät före intent, klickbara jämförelsekort, FAQ efter jämförelse", status: "klar" },
   { slug: "avbrottsinformation", title: "Avbrottsinformation", subtitle: "Dynamisk hero + avbrottslista inline + FAQ", status: "klar" },
   { slug: "kundservice", title: "Kundservice", subtitle: "Triage + kontaktkanaler + Mina sidor CTA", status: "klar" },
   { slug: "produktsida", title: "Produktsida", subtitle: "Produkt-hero + detaljer + relaterade produkter", status: "klar" },
