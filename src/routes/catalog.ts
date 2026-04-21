@@ -24,7 +24,7 @@ export const sidtyper: CatalogEntry[] = [
 
 export const moduler: CatalogEntry[] = [
   { slug: "elavtal-jamfor", title: "Jämför elavtal", subtitle: "Trygg tabell / Progressiv kort / Experimentell kalkylator", status: "klar" },
-  { slug: "produktlisting", title: "Produktlisting", subtitle: "Grid / Filter+grid / Karusell-row", status: "klar" },
+  { slug: "produktlisting", title: "Produktlisting", subtitle: "Grid / Filter+grid", status: "klar" },
   { slug: "produktinfo", title: "Produktinfo", subtitle: "Trygg 2-col / Progressiv tabs / Köp-fokuserad sticky sidebar", status: "klar" },
   { slug: "formular-kop", title: "Formulär-köp", subtitle: "Formulär / 3-stegs checkout / Konversationsform", status: "klar" },
   { slug: "avbrottslista", title: "Avbrottslista", subtitle: "Trygg lista / Progressiv tabs+tidslinje / Karta-first", status: "klar" },

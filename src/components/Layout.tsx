@@ -1,4 +1,4 @@
-import { Link, NavLink, Outlet } from "react-router-dom";
+import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
 import { useTheme } from "../lib/ThemeContext";
 import { useAnnotations } from "../lib/AnnotationContext";
 import { useEditorialGuide } from "../lib/EditorialGuideContext";
@@ -21,9 +21,23 @@ export function Layout() {
   const { enabled: copyOn, toggle: toggleCopy, list: copyList } = useEditorialGuide();
   const { enabled: editOn, toggle: toggleEdit } = useEditMode();
   const { viewport, set: setViewport } = useViewport();
+  const location = useLocation();
 
   const vpWidth = VIEWPORT_WIDTH[viewport];
   const framed = vpWidth != null;
+
+  // ?framed=1 signals "render this route inside an iframe — no chrome".
+  // Used when the parent window is simulating a mobile/tablet viewport.
+  const isFramedChild = typeof window !== "undefined" &&
+    new URLSearchParams(window.location.search).get("framed") === "1";
+
+  if (isFramedChild) {
+    return (
+      <main id="main" className="min-h-screen bg-canvas text-ink">
+        <Outlet />
+      </main>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas text-ink">
@@ -151,23 +165,32 @@ export function Layout() {
 
       <EditModeBar />
 
-      {framed ? (
-        <div className="flex-1 py-6 bg-canvas">
+      {framed && vpWidth ? (
+        <div className="flex-1 py-6 bg-canvas flex justify-center overflow-auto">
           <div
-            className="mx-auto bg-surface border border-border-strong rounded-2xl shadow-lg overflow-hidden transition-all duration-300"
-            style={{ maxWidth: vpWidth, width: "100%" }}
+            className="bg-surface border border-border-strong rounded-2xl shadow-lg overflow-hidden transition-all duration-300 flex flex-col"
+            style={{ width: vpWidth, maxWidth: "100%" }}
           >
-            <div className="px-3 py-1.5 border-b border-border-subtle bg-tint-info flex items-center gap-1.5 text-[10px] text-ink-muted">
+            <div className="px-3 py-1.5 border-b border-border-subtle bg-tint-info flex items-center gap-1.5 text-[10px] text-ink-muted shrink-0">
               <Icon name="circle" size={8} filled style={{ color: "#FF5F57" }} />
               <Icon name="circle" size={8} filled style={{ color: "#FFBD2E" }} />
               <Icon name="circle" size={8} filled style={{ color: "#28C840" }} />
               <span className="ml-2 font-medium">
                 {viewport === "tablet" ? "Tablet — 834 px" : "Mobile — 390 px"}
               </span>
+              <span className="ml-auto text-ink-muted italic">
+                riktig viewport-simulation — Tailwind-breakpoints fyrar
+              </span>
             </div>
-            <main id="main">
-              <Outlet />
-            </main>
+            {/* iframe gives the inner app a real viewport width, so sm:/md:/lg:
+                Tailwind-breakpoints see the frame width, not the outer browser. */}
+            <iframe
+              key={`${viewport}-${location.pathname}-${location.search}`}
+              src={`${location.pathname}${location.search ? location.search + "&" : "?"}framed=1`}
+              title="Viewport-förhandsvisning"
+              className="w-full flex-1 border-0 bg-canvas"
+              style={{ height: "calc(100vh - 180px)" }}
+            />
           </div>
         </div>
       ) : (

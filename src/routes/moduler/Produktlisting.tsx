@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
 import { Icon } from "../../components/Icon";
@@ -75,65 +75,6 @@ function ListingFiltered() {
   );
 }
 
-/* ─── Variant C: Karusell (row-scroll) ─────────────────────────────── */
-function ListingKarusell() {
-  const ref = useRef<HTMLDivElement>(null);
-  const scroll = (dir: 1 | -1) => {
-    const node = ref.current;
-    if (!node) return;
-    const cardWidth = node.firstElementChild?.clientWidth ?? 280;
-    node.scrollBy({ left: dir * (cardWidth + 16), behavior: "smooth" });
-  };
-
-  return (
-    <Annotation
-      label="Produkt-karusell (row-scroll)"
-      audience="design"
-      rationale="Horisontell scroll med pil-knappar + native scroll-snap. Använd sparsamt — användaren ser bara 3-4 produkter, resten är dolt bakom swipe/klick. Bäst som 'Fler produkter'-sektion efter ett prominent grid, inte som huvudingång."
-    >
-      <div className="relative">
-        <div className="flex items-center justify-between mb-4">
-          <p className="text-sm text-ink-muted">
-            {PRODUKTER.length} produkter — svep eller använd pilarna.
-          </p>
-          <div className="flex gap-2">
-            <button
-              type="button"
-              onClick={() => scroll(-1)}
-              className="w-10 h-10 rounded-full border border-border-strong text-ink-secondary hover:bg-tint-info hover:border-brand-accent grid place-items-center"
-              aria-label="Föregående produkter"
-            >
-              <Icon name="arrow_back" size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => scroll(1)}
-              className="w-10 h-10 rounded-full border border-border-strong text-ink-secondary hover:bg-tint-info hover:border-brand-accent grid place-items-center"
-              aria-label="Nästa produkter"
-            >
-              <Icon name="arrow_forward" size={18} />
-            </button>
-          </div>
-        </div>
-        <div
-          ref={ref}
-          className="flex gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-thin"
-          style={{ scrollbarWidth: "thin" }}
-        >
-          {PRODUKTER.map((p) => (
-            <div
-              key={p.id}
-              className="flex-none w-[280px] snap-start"
-            >
-              <ProductCard produkt={p} />
-            </div>
-          ))}
-        </div>
-      </div>
-    </Annotation>
-  );
-}
-
 /* ─── Shared card component ─────────────────────────────────────────── */
 function ProductCard({ produkt: p }: { produkt: Produkt }) {
   return (
@@ -186,15 +127,6 @@ const VARIANTS: Variant[] = [
     bestFor: "6+ produkter. Användaren väljer vilken kategori de bryr sig om.",
     render: () => <ListingFiltered />,
   },
-  {
-    id: "experimentell",
-    shortName: "C",
-    label: "Karusell",
-    riskLevel: "hög",
-    oneLiner: "Horisontell scroll-carousel med pilar + native snap.",
-    bestFor: "\"Fler produkter\"-sektion på produktsidor. Aldrig som huvudingång.",
-    render: () => <ListingKarusell />,
-  },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
@@ -203,7 +135,6 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Produktkatalog. Allt synligt — bra för snabb scanning.",
       progressiv: "Smart butik. Filtret minskar brus och gör valet tydligare.",
-      experimentell: "Redaktionellt urval. Känns som en Netflix-rad.",
     },
   },
   {
@@ -211,7 +142,6 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Fungerar bra till ~8 produkter. Sedan blir gridet oöverskådligt.",
       progressiv: "Skalbart. Kategorifilter + räknare gör att 20+ produkter funkar.",
-      experimentell: "Obegränsat — men användaren ser bara 3-4 åt gången.",
     },
   },
   {
@@ -219,7 +149,6 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "En kolumn, lång scroll. Inga överraskningar.",
       progressiv: "Filter-pills scrollar horisontellt. Grid anpassar sig.",
-      experimentell: "Swipe är naturligt på mobil. Bäst av de tre för mobilhand.",
     },
   },
   {
@@ -227,15 +156,6 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Perfekt — inget dolt innehåll.",
       progressiv: "Bra — filter har aria-pressed.",
-      experimentell: "Svår — dolda produkter bakom scroll. Behöver aria-roles, keyboard-stöd.",
-    },
-  },
-  {
-    aspect: "Konvertering (hypotes)",
-    values: {
-      trygg: "Moderat — ingen gömd produkt.",
-      progressiv: "Bäst — användaren filtrerar bort brus.",
-      experimentell: "Lägst — branschdata visar att karuseller konverterar sämre.",
     },
   },
   {
@@ -243,7 +163,6 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Liten katalog (≤8 produkter). Produktsida-sektion 'Fler produkter'.",
       progressiv: "Default för Smarta produkter-sida.",
-      experimentell: "Sparsamt: som 'Relaterat'-sektion EFTER primär listing. Aldrig huvudingång.",
     },
   },
 ];
@@ -272,10 +191,9 @@ export function Produktlisting() {
         <h2 className="text-h3 mb-4">Designnotering</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Karusellen (C) finns nu — men med reservation.</strong> Karuseller har
-            historiskt låg konverteringsgrad eftersom innehåll bortom de första 3-4 korten
-            sällan ses. Vi bygger den ändå för att kunna använda som "Relaterade produkter"-
-            sektion efter huvud-listningen — inte som primär ingång.
+            <strong>Ingen karusell.</strong> Karuseller har historiskt låg konverteringsgrad
+            eftersom innehåll bortom de första 3-4 korten sällan ses. Filter + grid ger samma
+            översikt utan att gömma produkter bakom swipe.
           </p>
           <p>
             <strong>Koppling till Produktinfo:</strong> CTA-knappen på varje kort pekar till
