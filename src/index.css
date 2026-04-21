@@ -153,4 +153,33 @@
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
     pointer-events: none;
   }
+
+  /* Copy-guide overlay — navy pill, underlined text */
+  [data-copy-guide="true"] {
+    position: relative;
+    background: linear-gradient(to top, rgba(0, 32, 91, 0.08) 0%, rgba(0, 32, 91, 0.08) 2px, transparent 2px);
+    border-bottom: 1px dashed var(--color-brand-primary);
+    border-radius: 2px;
+  }
+  [data-copy-guide="true"]::after {
+    content: attr(data-copy-num);
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    z-index: 29;
+    background: var(--color-brand-primary);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    padding: 0 5px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.18);
+    pointer-events: none;
+    line-height: 1;
+  }
 }

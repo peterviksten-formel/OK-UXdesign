@@ -1,11 +1,17 @@
 import { Link, NavLink, Outlet } from "react-router-dom";
 import { useTheme } from "../lib/ThemeContext";
 import { useAnnotations } from "../lib/AnnotationContext";
+import { useEditorialGuide } from "../lib/EditorialGuideContext";
+import { useEditMode } from "../lib/EditModeContext";
 import { AnnotationPanel } from "./AnnotationPanel";
+import { EditorialGuidePanel } from "./EditorialGuidePanel";
+import { EditModeBar } from "./EditModeBar";
 
 export function Layout() {
   const { theme, toggle } = useTheme();
-  const { enabled, toggle: toggleAnno, list } = useAnnotations();
+  const { enabled: annoOn, toggle: toggleAnno, list: annoList } = useAnnotations();
+  const { enabled: copyOn, toggle: toggleCopy, list: copyList } = useEditorialGuide();
+  const { enabled: editOn, toggle: toggleEdit } = useEditMode();
 
   return (
     <div className="min-h-screen flex flex-col bg-canvas text-ink">
@@ -47,16 +53,43 @@ export function Layout() {
             <button
               type="button"
               onClick={toggleAnno}
-              className={`text-xs px-3 py-1.5 rounded border transition-colors ${
-                enabled
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors ${
+                annoOn
                   ? "bg-brand-highlight text-white border-brand-highlight"
                   : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-highlight"
               }`}
-              aria-pressed={enabled}
-              title={enabled ? "Dölj designanteckningar" : "Visa designanteckningar"}
+              aria-pressed={annoOn}
+              title={annoOn ? "Dölj designanteckningar" : "Visa designanteckningar"}
             >
-              {enabled ? "✓ Anteckningar på" : "Anteckningar"}
-              {enabled && list.length > 0 ? ` (${list.length})` : ""}
+              {annoOn ? "✓ Anteckningar" : "Anteckningar"}
+              {annoOn && annoList.length > 0 ? ` (${annoList.length})` : ""}
+            </button>
+            <button
+              type="button"
+              onClick={toggleCopy}
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors ${
+                copyOn
+                  ? "bg-brand-primary text-white border-brand-primary"
+                  : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
+              }`}
+              aria-pressed={copyOn}
+              title={copyOn ? "Dölj copy-guide" : "Visa copy-guide"}
+            >
+              {copyOn ? "✓ Copy-guide" : "Copy-guide"}
+              {copyOn && copyList.length > 0 ? ` (${copyList.length})` : ""}
+            </button>
+            <button
+              type="button"
+              onClick={toggleEdit}
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors ${
+                editOn
+                  ? "bg-brand-accent text-white border-brand-accent"
+                  : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
+              }`}
+              aria-pressed={editOn}
+              title={editOn ? "Avsluta redigering" : "Redigera sidtyp"}
+            >
+              {editOn ? "✓ Redigera" : "Redigera"}
             </button>
             <button
               type="button"
@@ -70,6 +103,8 @@ export function Layout() {
         </div>
       </header>
 
+      <EditModeBar />
+
       <main id="main" className="flex-1">
         <Outlet />
       </main>
@@ -79,6 +114,7 @@ export function Layout() {
       </footer>
 
       <AnnotationPanel />
+      <EditorialGuidePanel />
     </div>
   );
 }

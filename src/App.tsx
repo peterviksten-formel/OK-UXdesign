@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { ThemeProvider } from "./lib/ThemeContext";
 import { AnnotationProvider } from "./lib/AnnotationContext";
+import { EditorialGuideProvider } from "./lib/EditorialGuideContext";
+import { EditModeProvider } from "./lib/EditModeContext";
 import { Layout } from "./components/Layout";
 import { IndexPage } from "./routes/Index";
 import { StubPage } from "./routes/Stub";
@@ -60,7 +62,11 @@ export default function App() {
 function RouteShell() {
   return (
     <AnnotationProvider>
-      <Layout />
+      <EditorialGuideProvider>
+        <EditModeProvider>
+          <Layout />
+        </EditModeProvider>
+      </EditorialGuideProvider>
     </AnnotationProvider>
   );
 }
