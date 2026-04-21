@@ -17,6 +17,11 @@ import { Hero } from "./routes/moduler/Hero";
 import { Faq } from "./routes/moduler/Faq";
 import { Nyheter } from "./routes/moduler/Nyheter";
 import { Kampanj } from "./routes/moduler/Kampanj";
+import { Kundcase } from "./routes/moduler/Kundcase";
+import { Tjanster } from "./routes/moduler/Tjanster";
+import { Driftstatus } from "./routes/moduler/Driftstatus";
+import { MinaSidor } from "./routes/moduler/MinaSidor";
+import { Impact } from "./routes/moduler/Impact";
 import { PrivatElhandel } from "./routes/sidtyper/PrivatElhandel";
 import { StartsidaUndersidaUX } from "./routes/sidtyper/StartsidaUndersidaUX";
 import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
@@ -61,6 +66,11 @@ export default function App() {
             <Route path="/moduler/faq" element={<Faq />} />
             <Route path="/moduler/nyheter" element={<Nyheter />} />
             <Route path="/moduler/kampanj" element={<Kampanj />} />
+            <Route path="/moduler/kundcase" element={<Kundcase />} />
+            <Route path="/moduler/tjanster" element={<Tjanster />} />
+            <Route path="/moduler/driftstatus" element={<Driftstatus />} />
+            <Route path="/moduler/mina-sidor" element={<MinaSidor />} />
+            <Route path="/moduler/impact" element={<Impact />} />
             <Route path="/moduler/:slug" element={<StubPage kind="modul" />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />

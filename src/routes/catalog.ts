@@ -33,4 +33,9 @@ export const moduler: CatalogEntry[] = [
   { slug: "faq", title: "FAQ — vanliga frågor", subtitle: "Accordion / Grupperad per tidslinje / Sök + topplista", status: "klar" },
   { slug: "nyheter", title: "Nyhets- / artikelkort", subtitle: "Grid likvärdig / Utvald + 2 små / Tidslinje", status: "klar" },
   { slug: "kampanj", title: "Kampanj- och story-banner", subtitle: "Hero-banner / Story-block / Strip med tidsmarkör", status: "klar" },
+  { slug: "kundcase", title: "Kundcase / testimonials", subtitle: "Citatkort-grid / Hero-citat / Case-story med siffror", status: "klar" },
+  { slug: "tjanster", title: "Tjänstegrid", subtitle: "Ikon-kort / Bildkort / Kompakt lista", status: "klar" },
+  { slug: "driftstatus", title: "Driftstatus-banner", subtitle: "Global topbar / Inline-sektion / Badge + drawer", status: "klar" },
+  { slug: "mina-sidor", title: "Mina sidor / App-hub", subtitle: "Hero-banner / Split webb+app / Kompakt strip", status: "klar" },
+  { slug: "impact", title: "Hållbarhet och impact", subtitle: "Statistik-grid / Story-narrative / Tidslinje med status", status: "klar" },
 ];
