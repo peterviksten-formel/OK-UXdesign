@@ -13,6 +13,10 @@ import { Avbrottslista } from "./routes/moduler/Avbrottslista";
 import { Produktinfo } from "./routes/moduler/Produktinfo";
 import { Produktlisting } from "./routes/moduler/Produktlisting";
 import { FormularKop } from "./routes/moduler/FormularKop";
+import { Hero } from "./routes/moduler/Hero";
+import { Faq } from "./routes/moduler/Faq";
+import { Nyheter } from "./routes/moduler/Nyheter";
+import { Kampanj } from "./routes/moduler/Kampanj";
 import { PrivatElhandel } from "./routes/sidtyper/PrivatElhandel";
 import { StartsidaUndersidaUX } from "./routes/sidtyper/StartsidaUndersidaUX";
 import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
@@ -53,6 +57,10 @@ export default function App() {
             <Route path="/moduler/produktinfo" element={<Produktinfo />} />
             <Route path="/moduler/produktlisting" element={<Produktlisting />} />
             <Route path="/moduler/formular-kop" element={<FormularKop />} />
+            <Route path="/moduler/hero" element={<Hero />} />
+            <Route path="/moduler/faq" element={<Faq />} />
+            <Route path="/moduler/nyheter" element={<Nyheter />} />
+            <Route path="/moduler/kampanj" element={<Kampanj />} />
             <Route path="/moduler/:slug" element={<StubPage kind="modul" />} />
 
             <Route path="*" element={<Navigate to="/" replace />} />

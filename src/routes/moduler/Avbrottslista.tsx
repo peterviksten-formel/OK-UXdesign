@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
 import { AvbrottTrygg } from "./variants/AvbrottTrygg";
 import { AvbrottProgressiv } from "./variants/AvbrottProgressiv";
+import { AvbrottKarta } from "./variants/AvbrottKarta";
 
 const VARIANTS: Variant[] = [
   {
@@ -22,6 +23,15 @@ const VARIANTS: Variant[] = [
     bestFor: "Användare som vill filtrera och följa ett specifikt avbrott.",
     render: () => <AvbrottProgressiv />,
   },
+  {
+    id: "experimentell",
+    shortName: "C",
+    label: "Karta-first",
+    riskLevel: "hög",
+    oneLiner: "Karta som huvudyta, lista som sekundär. Pulserande pins.",
+    bestFor: "\"Är mitt område påverkat?\"-frågan. Geografisk överblick.",
+    render: () => <AvbrottKarta />,
+  },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
@@ -30,48 +40,63 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "All info synlig direkt — ingen interaktion krävs. Bulletin-modell.",
       progressiv: "Filtrera + drilla ner. Användaren styr vad de ser.",
+      experimentell: "Kartan äger svaret. Lista är backup.",
+    },
+  },
+  {
+    aspect: "\"Är mitt område påverkat?\"",
+    values: {
+      trygg: "Scanna listan efter områdesnamn.",
+      progressiv: "Filtrera + scanna.",
+      experimentell: "Direkt visuellt svar på kartan.",
     },
   },
   {
     aspect: "Akut-hantering",
     values: {
-      trygg: "Pågående avbrott överst med röd punkt och detaljerad info.",
-      progressiv: "Akutbar med pulserande punkt + felanmälningslänk. Pågående tab med räknare.",
+      trygg: "Pågående avbrott överst med röd punkt.",
+      progressiv: "Akutbar med pulserande punkt + felanmälan.",
+      experimentell: "Pulsande röda pins + info-bubbel vid klick.",
     },
   },
   {
     aspect: "Tidslinje / uppdateringar",
     values: {
       trygg: "Inline under varje avbrott — alltid synlig.",
-      progressiv: "Expanderbar: klicka kort → tidslinje glider ut. Sparar yta.",
+      progressiv: "Expanderbar: klicka kort → tidslinje glider ut.",
+      experimentell: "I info-bubbel när pin valts. Kompakt.",
     },
   },
   {
-    aspect: "Mobil-upplevelse",
+    aspect: "Mobil",
     values: {
-      trygg: "Kan bli lång scroll med 6+ avbrott. Inga överraskningar.",
-      progressiv: "Tabs filtrar bort irrelevant info. Kompakta kort.",
+      trygg: "Lång scroll med 6+ avbrott.",
+      progressiv: "Tabs filtrar bort irrelevant info.",
+      experimentell: "Karta tar mycket yta på liten skärm. Fallback till lista?",
     },
   },
   {
     aspect: "WCAG 2.2 AA",
     values: {
-      trygg: "Utmärkt — ren HTML, landmarks, inga dynamiska kontroller.",
-      progressiv: "Bra — tab-rollen + aria-expanded behöver korrekt implementation. Pulserande punkt bör respektera prefers-reduced-motion.",
+      trygg: "Utmärkt — ren HTML.",
+      progressiv: "Bra — tabs + aria-expanded.",
+      experimentell: "Svår — kartpins behöver alt-text, list-view är obligatorisk fallback.",
     },
   },
   {
-    aspect: "Real-time-potential",
+    aspect: "Implementation",
     values: {
-      trygg: "Reload-beroende. Kan lägga på auto-refresh med meta-tag.",
-      progressiv: "Bättre förberedd för websocket/SSE — filtertillståndet behålls vid uppdatering.",
+      trygg: "Lägst — en lista.",
+      progressiv: "Medel — filter + expand-state.",
+      experimentell: "Högst — kartbibliotek (Mapbox/Leaflet), kartdata, geocoding.",
     },
   },
   {
-    aspect: "Underhåll",
+    aspect: "Rekommendation",
     values: {
-      trygg: "Enklast. Flat lista i CMS.",
-      progressiv: "Medel. Tab-logik + akutbar-villkor behöver drift-övervakning.",
+      trygg: "Fallback-vy. Print. Screen-readers.",
+      progressiv: "Default för avbrottssida.",
+      experimentell: "Toppläge på dedikerad avbrottskarta-sida. Inte som enda vy.",
     },
   },
 ];
@@ -100,18 +125,19 @@ export function Avbrottslista() {
         <h2 className="text-h3 mb-4">Designnotering</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Varför bara två varianter?</strong> Avbrottsinformation är en status-vy,
-            inte en kreativ yta. "Experimentell" skulle behöva en kartintegration (Mapbox/Google
-            Maps) eller push-notiser — båda är infrastrukturprojekt utanför UX-prototypens scope.
+            <strong>Karta-varianten (C) är en prototyp.</strong> Riktig implementation kräver
+            kartbibliotek (Mapbox/Leaflet/MapLibre), geocoding av avbrott, och fallback-vy för
+            screen readers. Jag har skissat interaktionsmönstret med fake-pins på en grid-bakgrund
+            så vi kan diskutera UX-aspekten utan att bygga kartintegrationen.
           </p>
           <p>
-            <strong>Rekommendation:</strong> <em>B (Progressiv)</em>. Akutbaren ger omedelbar
-            relevans. Filtertabs sparar scroll-tid. Expanderbar tidslinje gör det möjligt att
-            följa ett enskilt avbrott utan att lämna sidan.
+            <strong>Rekommendation:</strong> <em>B (Progressiv)</em> som default. <em>C (Karta)</em>
+            som dedikerad avbrottskarta-sida vid sidan om. <em>A (Trygg)</em> behåller vi som
+            tillgänglig fallback (print + screen-reader).
           </p>
           <p>
-            <strong>Framtida möjlighet:</strong> Kartvy som lager ovanpå B-varianten, plus
-            SMS-notiser med "Jag vill bli meddelad". Utanför fas 1.
+            <strong>Framtida:</strong> Real-time-uppdateringar via WebSocket, SMS-avisering,
+            avbrottsersättning kopplad till avslutat-posterna.
           </p>
         </div>
       </section>

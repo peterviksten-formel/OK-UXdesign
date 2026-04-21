@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
 import { Icon } from "../../components/Icon";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
+import { FormularKonversation } from "./variants/FormularKonversation";
 
 /* ─── Variant A — Traditional form ──────────────────────────────────── */
 function FormTrygg() {
@@ -307,6 +308,15 @@ const VARIANTS: Variant[] = [
     bestFor: "E-commerce-känsla. Minskar visuellt brus per steg.",
     render: () => <FormProgressiv />,
   },
+  {
+    id: "experimentell",
+    shortName: "C",
+    label: "Konversation",
+    riskLevel: "hög",
+    oneLiner: "En fråga per skärm, Typeform-stil. Känns inte som formulär.",
+    bestFor: "Ovana användare, komplexa formulär med få men specifika frågor.",
+    render: () => <FormularKonversation />,
+  },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
@@ -315,6 +325,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Myndighetsformulär. Förutsägbart, lite tungt.",
       progressiv: "Webbshop-checkout. Lätt, stegvis, modernt.",
+      experimentell: "Chatt-assistent. Känns inte som ett formulär alls.",
     },
   },
   {
@@ -322,6 +333,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Alla (~8 fält + checkbox). Kan kännas mycket.",
       progressiv: "3–4 per steg. Visuellt lättare, samma data totalt.",
+      experimentell: "En fråga åt gången. Ingen överblick.",
     },
   },
   {
@@ -329,34 +341,47 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Högre — alla fält synliga skapar 'formulär-ångest'.",
       progressiv: "Lägre — steget 'Produkt' kräver noll input men skapar commitment.",
+      experimentell: "Lägst för ovana användare. Hög för power-users som vill scanna.",
+    },
+  },
+  {
+    aspect: "Upplevd tid",
+    values: {
+      trygg: "Snabbt — se allt, fyll i, klar.",
+      progressiv: "Medium — tre 'sidor' men tydlig progress.",
+      experimentell: "Känns snabb (en fråga i taget) men är långsammast totalt.",
     },
   },
   {
     aspect: "Validering",
     values: {
-      trygg: "Valideras vid submit. Fel högst upp. Tydligt men kan missa context.",
-      progressiv: "Valideras per steg. Användaren fixar fel innan de går vidare.",
+      trygg: "Valideras vid submit. Fel högst upp.",
+      progressiv: "Valideras per steg. Användaren fixar fel innan nästa steg.",
+      experimentell: "Per fråga. Fel visas direkt — omöjligt att gå vidare med trasig data.",
     },
   },
   {
     aspect: "Ångra/ändra",
     values: {
-      trygg: "Inga steg att gå tillbaka till — redigera direkt i formuläret.",
-      progressiv: "Steg 3 har 'Ändra'-länkar per sektion → tar dig tillbaka till rätt steg.",
-    },
-  },
-  {
-    aspect: "Verb-konsistens",
-    values: {
-      trygg: "En knapp: 'Skicka beställning'. Tydligt.",
-      progressiv: "Tre knappar: 'Fortsätt' → 'Granska' → 'Skicka beställning'. Samma verb-familj hela vägen.",
+      trygg: "Redigera direkt i formuläret.",
+      progressiv: "Steg 3 har 'Ändra'-länkar per sektion → rätt steg.",
+      experimentell: "'Gå tillbaka'-knapp per fråga. Inget granska-steg.",
     },
   },
   {
     aspect: "WCAG",
     values: {
-      trygg: "Utmärkt — standard HTML-formulär, synliga labels, inga dynamiska kontroller.",
-      progressiv: "Bra — steg-skiften behöver aria-live eller fokus-hantering (implementerat via step-rendering).",
+      trygg: "Utmärkt — standard HTML, synliga labels.",
+      progressiv: "Bra — steg-skiften behöver fokus-hantering.",
+      experimentell: "Känsligt — autofocus per steg, men screen-readers behöver aria-live.",
+    },
+  },
+  {
+    aspect: "Rekommendation",
+    values: {
+      trygg: "Enkla ärenden som felanmälan, byte av betalsätt.",
+      progressiv: "Default för köp/avtalsflöden.",
+      experimentell: "Onboarding, kampanjer där 'känns nytt' är ett plus.",
     },
   },
 ];

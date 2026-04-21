@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
 import { ProduktinfoTrygg } from "./variants/ProduktinfoTrygg";
 import { ProduktinfoProgressiv } from "./variants/ProduktinfoProgressiv";
+import { ProduktinfoKop } from "./variants/ProduktinfoKop";
 import { PRODUKTER, type ProduktId } from "./produkt-data";
 
 function makeVariants(produktId: ProduktId): Variant[] {
@@ -26,6 +27,15 @@ function makeVariants(produktId: ProduktId): Variant[] {
       bestFor: "Konvertering. Visuell produkt med tydlig CTA.",
       render: () => <ProduktinfoProgressiv produkt={p} />,
     },
+    {
+      id: "experimentell",
+      shortName: "C",
+      label: "Köp-fokuserad",
+      riskLevel: "medel",
+      oneLiner: "Sticky köp-sidebar. Detaljer scrollar, pris + CTA följer med.",
+      bestFor: "Produkter där beslutsvägen är lång (läsa mycket innan köp).",
+      render: () => <ProduktinfoKop produkt={p} />,
+    },
   ];
 }
 
@@ -35,6 +45,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Informationsblad. Sakligt, förtroendeingivande, lite tråkigt.",
       progressiv: "Webbshop. Visuellt, actionorienterat, modernt.",
+      experimentell: "Amazon / IKEA. Köp-beslut alltid synligt medan du läser.",
     },
   },
   {
@@ -42,13 +53,15 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Prisfält i en gul ruta — synligt men inte dominerande.",
       progressiv: "Prisbadge ovanpå bildytan — e-commerce-mönster, omöjligt att missa.",
+      experimentell: "Sticky sidebar — priset följer scroll. Alltid i kant av synfält.",
     },
   },
   {
     aspect: "Detalj-exponering",
     values: {
-      trygg: "Tre kolumner (ingår/villkor/varför) synliga direkt. Allt läsbart i en scroll.",
-      progressiv: "Tabs — användaren väljer vilken kategori de vill se. Mer kompakt.",
+      trygg: "Tre kolumner (ingår/villkor/varför) synliga direkt.",
+      progressiv: "Tabs — användaren väljer vilken kategori de vill se.",
+      experimentell: "Detaljer + lång text + relaterat scrollar fritt. Inget dolt.",
     },
   },
   {
@@ -56,20 +69,31 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Finns inte — bara primär CTA.",
       progressiv: "Finns. Fångar osäkra besökare som inte är redo att köpa.",
+      experimentell: "Finns. I sidebaren tillsammans med primär CTA.",
     },
   },
   {
     aspect: "Mobil",
     values: {
       trygg: "Bild staplas ovanför info — lång scroll men inga överraskningar.",
-      progressiv: "Hero-bild med prisöverlägg → compact info → tabs. Mer 'app-känsla'.",
+      progressiv: "Hero-bild med prisöverlägg → compact info → tabs.",
+      experimentell: "Sidebar blir en sticky fot-bar på mobil. Kräver omsorgsfull design.",
     },
   },
   {
     aspect: "WCAG",
     values: {
       trygg: "Utmärkt — ren HTML, inga dynamiska kontroller.",
-      progressiv: "Bra — tabs behöver korrekt role='tab' + tangentbordsnavigation (implementerat).",
+      progressiv: "Bra — tabs behöver korrekt role='tab' + tangentbordsnavigation.",
+      experimentell: "Bra — sticky-positionen behöver inte täcka innehåll vid tab-fokus.",
+    },
+  },
+  {
+    aspect: "Rekommendation",
+    values: {
+      trygg: "Produkter där beslutet är enkelt och kort läsning räcker.",
+      progressiv: "Default för smarta produkter-sida.",
+      experimentell: "Laddbox, solceller — där användaren vill läsa mycket innan köp.",
     },
   },
 ];

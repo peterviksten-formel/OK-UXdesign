@@ -23,10 +23,14 @@ export const sidtyper: CatalogEntry[] = [
 ];
 
 export const moduler: CatalogEntry[] = [
-  { slug: "elavtal-jamfor", title: "Jämför elavtal", subtitle: "Tre varianter (Trygg / Progressiv / Experimentell) med argumentation", status: "klar" },
-  { slug: "produktlisting", title: "Produktlisting", subtitle: "Grid vs filtrerat grid — 6 placeholder-produkter", status: "klar" },
-  { slug: "produktinfo", title: "Produktinfo", subtitle: "E-commerce-stil — prisbadge, hero, tabs. 6 produkter att välja", status: "klar" },
-  { slug: "formular-kop", title: "Formulär-köp", subtitle: "Formulär vs 3-stegs checkout — 'mindre formulär, mer köp'", status: "klar" },
-  { slug: "avbrottslista", title: "Avbrottslista", subtitle: "Två varianter (Trygg / Progressiv) — status + tidslinje", status: "klar" },
-  { slug: "kundservice-triage", title: "Kundservice-triage", subtitle: "Tre varianter — accordion / kort / konversation", status: "klar" },
+  { slug: "elavtal-jamfor", title: "Jämför elavtal", subtitle: "Trygg tabell / Progressiv kort / Experimentell kalkylator", status: "klar" },
+  { slug: "produktlisting", title: "Produktlisting", subtitle: "Grid / Filter+grid / Karusell-row", status: "klar" },
+  { slug: "produktinfo", title: "Produktinfo", subtitle: "Trygg 2-col / Progressiv tabs / Köp-fokuserad sticky sidebar", status: "klar" },
+  { slug: "formular-kop", title: "Formulär-köp", subtitle: "Formulär / 3-stegs checkout / Konversationsform", status: "klar" },
+  { slug: "avbrottslista", title: "Avbrottslista", subtitle: "Trygg lista / Progressiv tabs+tidslinje / Karta-first", status: "klar" },
+  { slug: "kundservice-triage", title: "Kundservice-triage", subtitle: "Accordion / Kort-triage / Konversation", status: "klar" },
+  { slug: "hero", title: "Hero", subtitle: "Action-first / Brand-first / Status-first", status: "klar" },
+  { slug: "faq", title: "FAQ — vanliga frågor", subtitle: "Accordion / Grupperad per tidslinje / Sök + topplista", status: "klar" },
+  { slug: "nyheter", title: "Nyhets- / artikelkort", subtitle: "Grid likvärdig / Utvald + 2 små / Tidslinje", status: "klar" },
+  { slug: "kampanj", title: "Kampanj- och story-banner", subtitle: "Hero-banner / Story-block / Strip med tidsmarkör", status: "klar" },
 ];
