@@ -303,9 +303,16 @@ export function AvbrottNy() {
                   </Copy>
                 )}
                 {!resultat && (
-                  <p className="text-lede text-ink-secondary mb-5 max-w-reading">
-                    Skriv in din adress eller använd din position — vi visar status för el, fjärrvärme, gas och fiber på en gång.
-                  </p>
+                  <Copy
+                    label="Hero-lede — förklarar scope"
+                    category="reassurance"
+                    text="Skriv in din adress eller använd din position — vi visar status för el, fjärrvärme, gas och fiber på en gång."
+                    rationale="Sätter förväntan i två dimensioner: hur man kommer igång (input eller geoposition) och vad man får tillbaka (alla fyra infrastruktur-typer i ett svar, inte 'el' separat). Klargör att sidan hanterar mer än strömavbrott innan användaren börjar gissa."
+                  >
+                    <p className="text-lede text-ink-secondary mb-5 max-w-reading">
+                      Skriv in din adress eller använd din position — vi visar status för el, fjärrvärme, gas och fiber på en gång.
+                    </p>
+                  </Copy>
                 )}
 
                 {/* Adress-input — alltid synlig, blir smalare när resultat finns */}
@@ -523,15 +530,22 @@ export function AvbrottNy() {
                     <div className="grid sm:grid-cols-3 gap-3 max-w-reading">
                       {/* PRIMÄR: Prenumerera på SMS */}
                       {smsStatus === "idle" ? (
-                        <button
-                          type="button"
-                          onClick={() => setSmsStatus("prenumererad")}
-                          className="p-4 rounded-md bg-brand-primary text-ink-onbrand text-left hover:opacity-90 flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+                        <Copy
+                          label="Primär CTA vid avbrott — SMS"
+                          category="cta"
+                          text="Få SMS när det är löst"
+                          rationale="Verbformulering med utfall: 'Få SMS när det är löst' — användaren får en sak, vid en konkret tidpunkt. 'Prenumerera på SMS' skulle vara en transaktion, inte ett utfall. Pair: 'Gratis · Avregistrera när som helst' adresserar de två vanligaste tvekansfrågorna (kostnad, kontroll) innan de uppstår."
                         >
-                          <Icon name="sms" size={22} />
-                          <span className="font-medium">Få SMS när det är löst</span>
-                          <span className="text-xs opacity-90">Gratis · Avregistrera när som helst</span>
-                        </button>
+                          <button
+                            type="button"
+                            onClick={() => setSmsStatus("prenumererad")}
+                            className="p-4 rounded-md bg-brand-primary text-ink-onbrand text-left hover:opacity-90 flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+                          >
+                            <Icon name="sms" size={22} />
+                            <span className="font-medium">Få SMS när det är löst</span>
+                            <span className="text-xs opacity-90">Gratis · Avregistrera när som helst</span>
+                          </button>
+                        </Copy>
                       ) : (
                         <div className="p-4 rounded-md bg-tint-info border border-brand-accent text-left flex flex-col gap-1.5">
                           <Icon name="check_circle" size={22} className="text-brand-accent" filled />
@@ -553,16 +567,23 @@ export function AvbrottNy() {
                         </span>
                       </a>
 
-                      <a
-                        href="tel:0424903200"
-                        className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                      <Copy
+                        label="Tertiär CTA — styr bort från telefon"
+                        category="cta"
+                        text="Ring endast vid akut behov"
+                        rationale="Ovanlig formulering för en CTA: 'Ring endast' är faktiskt en instruktion att inte ringa utan skäl. Medvetet val för att minska onödiga samtal — användaren ser att telefonen finns men uppmanas att överväga SMS/tips först. 'Akut behov' definierar undantaget utan att vara avskräckande."
                       >
-                        <Icon name="call" size={22} className="text-brand-accent" />
-                        <span className="font-medium">Ring endast vid akut behov</span>
-                        <span className="text-xs text-ink-secondary">
-                          042-490 32 00 · dygnet runt
-                        </span>
-                      </a>
+                        <a
+                          href="tel:0424903200"
+                          className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                        >
+                          <Icon name="call" size={22} className="text-brand-accent" />
+                          <span className="font-medium">Ring endast vid akut behov</span>
+                          <span className="text-xs text-ink-secondary">
+                            042-490 32 00 · dygnet runt
+                          </span>
+                        </a>
+                      </Copy>
                     </div>
                   ) : (
                     <div className="grid sm:grid-cols-2 gap-3 max-w-reading">
@@ -675,7 +696,14 @@ export function AvbrottNy() {
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-lg bg-brand-primary text-white p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
                   <div>
-                    <h2 className="text-h2 text-white mb-2">Fortfarande fel?</h2>
+                    <Copy
+                      label="Felanmälan — sista utväg"
+                      category="rubrik"
+                      text="Fortfarande fel?"
+                      rationale="Kort fråga istället för påstående. 'Fortfarande' antyder att användaren redan försökt något (felsökning ovan) — sätter samtalet rätt innan de ringer. 'Gör en felanmälan' skulle vara förvaltningssvenska; frågan är personlig."
+                    >
+                      <h2 className="text-h2 text-white mb-2">Fortfarande fel?</h2>
+                    </Copy>
                     <p className="opacity-90 mb-4 max-w-reading">
                       Har felsökningen inte löst det — ring oss. Vi svarar dygnet runt
                       när det gäller avbrott och akuta nätfel.

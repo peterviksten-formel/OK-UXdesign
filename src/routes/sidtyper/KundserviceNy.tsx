@@ -176,13 +176,20 @@ export function KundserviceNy() {
           <div className="rounded-md border-2 border-border-subtle bg-surface p-5 sm:p-6 max-w-reading">
             {flowStep === 1 && (
               <div>
-                <h3
-                  ref={stepHeadingRef}
-                  tabIndex={-1}
-                  className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                <Copy
+                  label="Kontaktflöde steg 1 — rubrik"
+                  category="rubrik"
+                  text="Vad gäller det?"
+                  rationale="Samma fråga som snabbknappar-sektionen ovan — medvetet återanvänd så användaren ser att det är samma kategori-val i ett annat sammanhang. Konsekvent vokabulär över stegen sänker kognitiv belastning."
                 >
-                  Vad gäller det?
-                </h3>
+                  <h3
+                    ref={stepHeadingRef}
+                    tabIndex={-1}
+                    className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                  >
+                    Vad gäller det?
+                  </h3>
+                </Copy>
                 <p className="text-sm text-ink-secondary mb-4">
                   Välj kategori så hamnar ditt ärende hos rätt person direkt.
                 </p>
@@ -220,13 +227,20 @@ export function KundserviceNy() {
               <form
                 onSubmit={(e) => { e.preventDefault(); if (kanFortsatta) setFlowStep(3); }}
               >
-                <h3
-                  ref={stepHeadingRef}
-                  tabIndex={-1}
-                  className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                <Copy
+                  label="Kontaktflöde steg 2 — rubrik"
+                  category="rubrik"
+                  text="Lägg till detaljer"
+                  rationale="Imperativform + objekt. 'Dina uppgifter' skulle fokusera på användaren, 'Lägg till detaljer' fokuserar på handlingen. Parar med sub-text 'Tre korta fält — inget mer' som sätter förväntan på längden."
                 >
-                  Lägg till detaljer
-                </h3>
+                  <h3
+                    ref={stepHeadingRef}
+                    tabIndex={-1}
+                    className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                  >
+                    Lägg till detaljer
+                  </h3>
+                </Copy>
                 <p className="text-sm text-ink-secondary mb-4">
                   Ärende: <strong className="text-ink">{flowIntent}</strong>.
                   Tre korta fält — inget mer.
@@ -306,13 +320,20 @@ export function KundserviceNy() {
                     filled
                   />
                   <div>
-                    <h3
-                      ref={stepHeadingRef}
-                      tabIndex={-1}
-                      className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                    <Copy
+                      label="Kontaktflöde steg 3 — bekräftelse"
+                      category="rubrik"
+                      text="Vi har tagit emot ditt ärende"
+                      rationale="Påstående i perfekt — 'har tagit emot' är fait accompli, användaren kan släppa oron. 'Vi' (institutionell röst) tar ansvar. 'Ditt ärende' (inte 'din förfrågan' eller 'ditt meddelande') matchar termen som används i statusbanner och ärendenummer-formatet."
                     >
-                      Vi har tagit emot ditt ärende
-                    </h3>
+                      <h3
+                        ref={stepHeadingRef}
+                        tabIndex={-1}
+                        className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                      >
+                        Vi har tagit emot ditt ärende
+                      </h3>
+                    </Copy>
                     <p className="text-sm text-ink-secondary">
                       En bekräftelse är skickad till <strong className="text-ink">{flowEmail || "din e-post"}</strong>.
                     </p>
@@ -398,16 +419,23 @@ export function KundserviceNy() {
               rationale="Briefen: 'Just nu är väntetiden X min'. Numeriska tider slår vaga ord ('kort kötid') — användaren kan välja kanal direkt utan att gissa. Visibility of system status (Nielsen H1) blir operativ, inte dekorativ."
             >
               <section className="pt-4">
-                <div className="rounded-md bg-tint-info border-l-4 border-brand-accent px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
-                  <span className="inline-flex items-center gap-2">
-                    <Icon name="check_circle" size={20} className="text-brand-accent" />
-                    <strong>Allt fungerar just nu.</strong>
-                  </span>
-                  <span className="text-ink-secondary">
-                    Kötid: chatt <strong className="text-ink">{VANTETIDER.normal.chatt}</strong> ·
-                    telefon <strong className="text-ink">{VANTETIDER.normal.telefon}</strong>
-                  </span>
-                </div>
+                <Copy
+                  label="Status normaldrift — systemstatus"
+                  category="metadata"
+                  text="Allt fungerar just nu. Kötid: chatt X min · telefon Y min"
+                  rationale="Två delar: påstående (Allt fungerar) + siffror (konkret kötid). 'Allt fungerar' är ärligt utan att vara självberömmande — inte 'Vi är redo för dig' som skulle vara reklam. Numeriska kötider respekterar användarens val: 'under 1 min i chatt' är ett löfte man mäts mot."
+                >
+                  <div className="rounded-md bg-tint-info border-l-4 border-brand-accent px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                    <span className="inline-flex items-center gap-2">
+                      <Icon name="check_circle" size={20} className="text-brand-accent" />
+                      <strong>Allt fungerar just nu.</strong>
+                    </span>
+                    <span className="text-ink-secondary">
+                      Kötid: chatt <strong className="text-ink">{VANTETIDER.normal.chatt}</strong> ·
+                      telefon <strong className="text-ink">{VANTETIDER.normal.telefon}</strong>
+                    </span>
+                  </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -610,9 +638,16 @@ export function KundserviceNy() {
                     >
                       <h2 className="text-h2 mb-2 text-white">De flesta ärenden löser du snabbast själv</h2>
                     </Copy>
-                    <p className="text-sm opacity-90 mb-4">
-                      Ingen kötid. Fungerar när som helst. Tar 1 minut istället för 10.
-                    </p>
+                    <Copy
+                      label="Mina sidor — tre konkreta fördelar"
+                      category="reassurance"
+                      text="Ingen kötid. Fungerar när som helst. Tar 1 minut istället för 10."
+                      rationale="Tre korta meningar, inga adjektiv. Varje sats är en jämförelse med alternativet (kontakt): ingen kö vs kö, dygnet runt vs öppettider, 1 min vs 10 min. Parallell struktur gör jämförelsen lättare att scanna."
+                    >
+                      <p className="text-sm opacity-90 mb-4">
+                        Ingen kötid. Fungerar när som helst. Tar 1 minut istället för 10.
+                      </p>
+                    </Copy>
                     <a
                       href="#"
                       className="inline-flex items-center gap-2 bg-white text-brand-primary font-medium px-5 py-3 rounded hover:opacity-90 transition-opacity"

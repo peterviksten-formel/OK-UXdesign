@@ -98,6 +98,34 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(PRESETS_KEY, JSON.stringify(presets));
   }, [presets]);
 
+  /**
+   * Sync state across tabs/iframes. När man t.ex. stänger av
+   * redigeringsläget i parent-appen ska mobil-/tablet-iframen som
+   * simulerar viewport reagera direkt — annars ligger edit-overlays
+   * kvar i iframen även efter toggle off.
+   */
+  useEffect(() => {
+    function handleStorage(e: StorageEvent) {
+      if (e.key === ENABLED_KEY) {
+        setEnabled(e.newValue === "on");
+      } else if (e.key === STATE_KEY) {
+        try {
+          setStore(e.newValue ? (JSON.parse(e.newValue) as AllStore) : {});
+        } catch {
+          /* ignore parse errors */
+        }
+      } else if (e.key === PRESETS_KEY) {
+        try {
+          setPresets(e.newValue ? (JSON.parse(e.newValue) as PresetsStore) : {});
+        } catch {
+          /* ignore parse errors */
+        }
+      }
+    }
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   const get = useCallback(
     (pageId: string, blockId: string): BlockState => {
       return store[pageId]?.[blockId] ?? DEFAULT;

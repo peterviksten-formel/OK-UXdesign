@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
+import { Copy } from "../../components/Copy";
 import { PageBrief } from "../../components/PageBrief";
 import { BlockList, type BlockDef } from "../../components/Block";
 import { Icon } from "../../components/Icon";
@@ -82,13 +83,27 @@ export function StartsidaUndersidaUX() {
                 <div className="p-5 rounded-md bg-tint-info border-l-4 border-brand-accent flex gap-4">
                   <Icon name="lightbulb" size={28} className="text-brand-accent" />
                   <div className="flex-1">
-                    <p className="font-medium mb-1">Bor du i Helsingborg eller Ängelholm?</p>
-                    <p className="text-sm text-ink-secondary leading-relaxed">
-                      Då är vi redan ditt elnätsbolag — du väljer bara elhandelsavtal här.{" "}
-                      <a href="#" className="text-brand-accent underline underline-offset-2 hover:no-underline">
-                        Vad är skillnaden?
-                      </a>
-                    </p>
+                    <Copy
+                      label="Lokal reassurance — rubrik"
+                      category="reassurance"
+                      text="Bor du i Helsingborg eller Ängelholm?"
+                      rationale="Geografisk fråga istället för påstående. 'Du' skapar omedelbar relevans — läsaren avgör själv om rutan gäller dem. Platsnamn konkret (inte 'i vårt område') så igenkänningen är binär."
+                    >
+                      <p className="font-medium mb-1">Bor du i Helsingborg eller Ängelholm?</p>
+                    </Copy>
+                    <Copy
+                      label="Lokal reassurance — brödtext"
+                      category="reassurance"
+                      text="Då är vi redan ditt elnätsbolag — du väljer bara elhandelsavtal här."
+                      rationale="En mening, en poäng: du har redan oss som elnätsbolag, så valet här gäller bara elhandel. 'Bara' signalerar att det är enklare än man tror. Djupare förklaring (Elnät=... / Elhandel=...) är medvetet bortklippt — 'Vad är skillnaden?'-länken tar hand om nyfikenhet utan att stoppa flödet."
+                    >
+                      <p className="text-sm text-ink-secondary leading-relaxed">
+                        Då är vi redan ditt elnätsbolag — du väljer bara elhandelsavtal här.{" "}
+                        <a href="#" className="text-brand-accent underline underline-offset-2 hover:no-underline">
+                          Vad är skillnaden?
+                        </a>
+                      </p>
+                    </Copy>
                   </div>
                 </div>
               </section>
@@ -117,7 +132,14 @@ export function StartsidaUndersidaUX() {
             rationale="Intentioner, inte produkter — skiljer sig från Tjanster-modulen. Delar mönster med Kundservice-sidtypens 'Vad gäller det?'-block via IntentCardGrid-komponenten. Välj layout (horisontell / vertikal / chips) beroende på täthet."
           >
             <section className="py-10 border-t border-border-subtle">
-              <h2 className="text-h2 mb-6">Eller välj efter vad du vill göra</h2>
+              <Copy
+                label="Sektionsrubrik — intent-ingång"
+                category="rubrik"
+                text="Eller välj efter vad du vill göra"
+                rationale="'Eller' signalerar att detta är ett alternativ till hero:ns huvud-CTA (inte ett andra steg). 'Vad du vill göra' matchar ärende-tänkandet från Kundservice-sidtypen — användaren känner igen mönstret."
+              >
+                <h2 className="text-h2 mb-6">Eller välj efter vad du vill göra</h2>
+              </Copy>
               <IntentCardGrid items={items} variant={v} columns={5} />
             </section>
           </Annotation>
@@ -215,18 +237,25 @@ export function StartsidaUndersidaUX() {
               rationale="Placerad efter FAQ (inte före) eftersom värde-argument påverkar tecknings-beslut mindre än svar på loss aversion. Banner-format istället för tre spalter — tar mindre yta när det inte är huvudbeslut."
             >
               <section className="py-8 border-t border-border-subtle">
-                <div className="rounded-md bg-tint-info p-5 grid sm:grid-cols-3 gap-4 text-sm">
-                  {[
-                    { ikon: "location_city", t: "Lokalt · Kommunägt sedan 1892" },
-                    { ikon: "payments", t: "Transparent · 4,5 öre/kWh påslag" },
-                    { ikon: "smartphone", t: "Allt samlat · App + Mina sidor" },
-                  ].map((v) => (
-                    <div key={v.t} className="flex items-center gap-2">
-                      <Icon name={v.ikon} size={20} className="text-brand-accent" />
-                      <span className="font-medium text-brand-primary">{v.t}</span>
-                    </div>
-                  ))}
-                </div>
+                <Copy
+                  label="Värdepåstående — tre korta fakta"
+                  category="reassurance"
+                  text="Lokalt · Kommunägt sedan 1892 / Transparent · 4,5 öre/kWh påslag / Allt samlat · App + Mina sidor"
+                  rationale="Tre fakta, inga adjektiv. 'Lokalt' kopplas omedelbart till 'Kommunägt sedan 1892' — påståendet bevisar sig självt utan att säga 'vi bryr oss om regionen'. Påslaget som siffra istället för 'transparent prissättning' — siffran IS bevis på transparens."
+                >
+                  <div className="rounded-md bg-tint-info p-5 grid sm:grid-cols-3 gap-4 text-sm">
+                    {[
+                      { ikon: "location_city", t: "Lokalt · Kommunägt sedan 1892" },
+                      { ikon: "payments", t: "Transparent · 4,5 öre/kWh påslag" },
+                      { ikon: "smartphone", t: "Allt samlat · App + Mina sidor" },
+                    ].map((v) => (
+                      <div key={v.t} className="flex items-center gap-2">
+                        <Icon name={v.ikon} size={20} className="text-brand-accent" />
+                        <span className="font-medium text-brand-primary">{v.t}</span>
+                      </div>
+                    ))}
+                  </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -251,7 +280,14 @@ export function StartsidaUndersidaUX() {
               <section className="py-10 border-t border-border-subtle">
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
-                    <h3 className="text-h5 font-medium mb-3">Utforska mer</h3>
+                    <Copy
+                      label="Kolumnrubrik — relaterade teman"
+                      category="rubrik"
+                      text="Utforska mer"
+                      rationale="'Utforska' signalerar icke-transaktionellt innehåll — skiljer det från 'Teckna'-spåret. Kort rubrik (2 ord) eftersom innehållet är en kort lista, inte en sektion som förtjänar tyngd."
+                    >
+                      <h3 className="text-h5 font-medium mb-3">Utforska mer</h3>
+                    </Copy>
                     <ul className="space-y-2 text-sm">
                       {[
                         { titel: "Det energismarta hemmet", href: "#" },
@@ -269,7 +305,14 @@ export function StartsidaUndersidaUX() {
                   </div>
 
                   <div>
-                    <h3 className="text-h5 font-medium mb-3">Bra att veta</h3>
+                    <Copy
+                      label="Kolumnrubrik — praktiska begrepp"
+                      category="rubrik"
+                      text="Bra att veta"
+                      rationale="Neutral rubrik för FAQ-light: länkar till begrepp som 'Anvisat avtal' och 'Elens ursprung'. Undviker 'Ordlista' (akademiskt) och 'Vanliga frågor' (som redan är en separat sektion)."
+                    >
+                      <h3 className="text-h5 font-medium mb-3">Bra att veta</h3>
+                    </Copy>
                     <ul className="space-y-2 text-sm">
                       {[
                         "Prishistorik",

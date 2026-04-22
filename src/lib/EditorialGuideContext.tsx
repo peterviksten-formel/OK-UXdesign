@@ -67,6 +67,18 @@ export function EditorialGuideProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, enabled ? "on" : "off");
   }, [enabled]);
 
+  // Sync enabled state across tabs/iframes — håller mobil-/tablet-
+  // simulator i iframen i synk med parent-appens UX-guide-toggle.
+  useEffect(() => {
+    function handleStorage(e: StorageEvent) {
+      if (e.key === STORAGE_KEY) {
+        setEnabled(e.newValue === "on");
+      }
+    }
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   const register = useCallback((c: CopyData) => {
     setRawList((prev) => {
       const existing = prev.findIndex((x) => x.id === c.id);

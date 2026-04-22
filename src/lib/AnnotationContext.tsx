@@ -44,6 +44,18 @@ export function AnnotationProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, enabled ? "on" : "off");
   }, [enabled]);
 
+  // Sync enabled state across tabs/iframes — håller mobil-/tablet-
+  // simulator i iframen i synk med parent-appens UX-guide-toggle.
+  useEffect(() => {
+    function handleStorage(e: StorageEvent) {
+      if (e.key === STORAGE_KEY) {
+        setEnabled(e.newValue === "on");
+      }
+    }
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
+  }, []);
+
   const register = useCallback((a: AnnotationData) => {
     setRawList((prev) => {
       // Update if id already known (rationale/label may have changed); otherwise append.
