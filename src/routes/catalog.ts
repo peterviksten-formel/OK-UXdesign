@@ -11,15 +11,9 @@ export type CatalogEntry = {
 };
 
 export const sidtyper: CatalogEntry[] = [
-  { slug: "privat-elhandel", title: "Startsida undersida", subtitle: "Det arbetade exemplet — hero, intentkort, jämförelse, FAQ, genvägar", status: "klar" },
-  { slug: "startsida-undersida-ux", title: "Startsida undersida UX", subtitle: "UX-audit-driven variant: elnät före intent, klickbara jämförelsekort, FAQ efter jämförelse", status: "klar" },
-  { slug: "kundservice-ny", title: "Kundservice (ny)", subtitle: "KC + kontakt på samma sida — statusbanner, snabbknappar, triage, 4 kontaktvägar med förväntan", status: "klar" },
+  { slug: "startsida-undersida-ux", title: "Startsida undersida UX", subtitle: "UX-audit-driven: elnät före intent, klickbara jämförelsekort, FAQ efter jämförelse", status: "klar" },
+  { slug: "kundservice-ny", title: "Kundservice (ny)", subtitle: "KC + kontakt på samma sida — statusbanner, snabbknappar, triage, 4 kontaktvägar", status: "klar" },
   { slug: "avbrott-ny", title: "Avbrottsinformation (ny)", subtitle: "Dynamisk status-hero, adresskontroll, tidslinje per avbrott, interaktiv felsökningsguide", status: "klar" },
-  { slug: "avbrottsinformation", title: "Avbrottsinformation", subtitle: "Dynamisk hero + avbrottslista inline + FAQ", status: "klar" },
-  { slug: "kundservice", title: "Kundservice", subtitle: "Triage + kontaktkanaler + Mina sidor CTA", status: "klar" },
-  { slug: "produktsida", title: "Produktsida", subtitle: "Produkt-hero + detaljer + relaterade produkter", status: "klar" },
-  { slug: "nyhetsrum", title: "Nyhetsrum", subtitle: "Kategorifilter + nyhetskort med typ-badges", status: "klar" },
-  { slug: "artikel", title: "Artikel / blogg / nyhet / pressmeddelande", subtitle: "4 innehållstyper, en mall — ton-guide för redaktör", status: "klar" },
 ];
 
 export const moduler: CatalogEntry[] = [

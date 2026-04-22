@@ -22,15 +22,9 @@ import { Tjanster } from "./routes/moduler/Tjanster";
 import { Driftstatus } from "./routes/moduler/Driftstatus";
 import { MinaSidor } from "./routes/moduler/MinaSidor";
 import { Impact } from "./routes/moduler/Impact";
-import { PrivatElhandel } from "./routes/sidtyper/PrivatElhandel";
 import { StartsidaUndersidaUX } from "./routes/sidtyper/StartsidaUndersidaUX";
 import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
 import { AvbrottNy } from "./routes/sidtyper/AvbrottNy";
-import { Avbrottsinformation } from "./routes/sidtyper/Avbrottsinformation";
-import { Kundservice } from "./routes/sidtyper/Kundservice";
-import { Produktsida } from "./routes/sidtyper/Produktsida";
-import { Nyhetsrum } from "./routes/sidtyper/Nyhetsrum";
-import { Artikel } from "./routes/sidtyper/Artikel";
 
 export default function App() {
   return (
@@ -43,15 +37,9 @@ export default function App() {
 
             {/* Sidtyper */}
             <Route path="/sidtyper" element={<Navigate to="/" replace />} />
-            <Route path="/sidtyper/privat-elhandel" element={<PrivatElhandel />} />
             <Route path="/sidtyper/startsida-undersida-ux" element={<StartsidaUndersidaUX />} />
             <Route path="/sidtyper/kundservice-ny" element={<KundserviceNy />} />
             <Route path="/sidtyper/avbrott-ny" element={<AvbrottNy />} />
-            <Route path="/sidtyper/avbrottsinformation" element={<Avbrottsinformation />} />
-            <Route path="/sidtyper/kundservice" element={<Kundservice />} />
-            <Route path="/sidtyper/produktsida" element={<Produktsida />} />
-            <Route path="/sidtyper/nyhetsrum" element={<Nyhetsrum />} />
-            <Route path="/sidtyper/artikel" element={<Artikel />} />
             <Route path="/sidtyper/:slug" element={<StubPage kind="sidtyp" />} />
 
             {/* Moduler */}
