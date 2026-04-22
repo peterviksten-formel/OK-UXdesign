@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
-import { Icon } from "../../../components/Icon";
 import { BOENDE_KWH, PLANS, type BoendeTyp, type PlanId } from "../elavtal-data";
 
 /**
