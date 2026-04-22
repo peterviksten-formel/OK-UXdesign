@@ -19,9 +19,15 @@ export function Layout() {
   const { theme, toggle } = useTheme();
   const { enabled: annoOn, toggle: toggleAnno, list: annoList } = useAnnotations();
   const { enabled: copyOn, toggle: toggleCopy, list: copyList } = useEditorialGuide();
-  const { enabled: editOn, toggle: toggleEdit } = useEditMode();
+  const { enabled: editOn, toggle: toggleEdit, resetAll } = useEditMode();
   const { viewport, set: setViewport } = useViewport();
   const location = useLocation();
+
+  function handleResetAll() {
+    if (confirm("Återställer alla sidtyper till rekommenderad variant. Sparade presets behålls. Fortsätt?")) {
+      resetAll();
+    }
+  }
 
   const vpWidth = VIEWPORT_WIDTH[viewport];
   const framed = vpWidth != null;
@@ -199,8 +205,18 @@ export function Layout() {
         </main>
       )}
 
-      <footer className="border-t border-border-subtle py-6 text-center text-xs text-ink-muted">
-        Prototyp · ej offentlig produkt · placeholder-innehåll
+      <footer className="border-t border-border-subtle py-6 text-center text-xs text-ink-muted flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4">
+        <span>Prototyp · ej offentlig produkt · placeholder-innehåll</span>
+        <span aria-hidden="true" className="opacity-50">·</span>
+        <button
+          type="button"
+          onClick={handleResetAll}
+          className="inline-flex items-center gap-1 hover:text-brand-accent underline underline-offset-2"
+          title="Nollställer block-ordning, dolda block och variantval för alla sidtyper"
+        >
+          <Icon name="restart_alt" size={12} />
+          Återställ alla sidtyper
+        </button>
       </footer>
 
       <AnnotationPanel />
