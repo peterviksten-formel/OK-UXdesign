@@ -1,90 +1,108 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
 import { Copy } from "../../components/Copy";
 import { PageBrief } from "../../components/PageBrief";
 import { BlockList, type BlockDef } from "../../components/Block";
 import { Icon } from "../../components/Icon";
+import { WizardProgress, type WizardVariant } from "../../components/WizardProgress";
 import { AVBROTT, STATUS_META, TYP_LABEL } from "../moduler/avbrott-data";
 
 /**
- * SIDTYP 9 — Avbrottsinformation (ny)
+ * SIDTYP 9 — Avbrottsinformation
  *
- * UX-driven omstrukturering av dagens avbrottssida.
+ * Skifte från informationssida → beslutsstöd i realtid. Hela flödet styrs
+ * av två frågor: "Är jag påverkad?" och "När är det löst?".
  *
- * Huvuddrag:
- *  1. Statusfrågan besvaras i hero: "Är det avbrott just nu?" — inte en lång
- *     intro om vad avbrott är. Användaren vet redan vad avbrott är, de vill
- *     veta om det PÅGÅR.
- *  2. Adresskontroll överst: "Är jag påverkad?" med postnummer-sök. Det är
- *     den första frågan en användare i mörkret har — inte "berätta om alla
- *     avbrott i hela Helsingborg".
- *  3. Interaktiv felsökningsguide INNAN kontaktvägar. De flesta "avbrott"
- *     är säkringar/jordfelsbrytare. Ta bort fel från KC-kön genom att låta
- *     användaren diagnosticera själv.
- *  4. Tidslinje per pågående avbrott — när uppdaterad, vad har hänt.
- *     Motverkar "ni gör inget!"-frustration genom synlighet.
- *  5. Avklarade avbrott synliga senaste 7 dagar — transparens + underlag
- *     för ersättningsfrågor.
+ * Fem principer från UX-briefen:
+ *   1. Adress först — sidan startar i adressfrågan, inte i en hero-text.
+ *   2. Ett tydligt svar — statuskort med påverkan per infrastruktur
+ *      (el, värme, gas, fiber), prognos och förenklad orsak.
+ *   3. Tydliga nästa steg — kontextuella CTAs som följer av status:
+ *      pågående → följ SMS + läs tips · inget → felsök själv först.
+ *   4. Kartan som sekundär — under "fördjupning", inte huvudflöde.
+ *   5. Enad datakälla — karta, lista och SMS visar samma status.
  */
 
-type Diagnos = {
-  id: string;
-  fraga: string;
-  ja: string | "rapportera";
-  nej: string | "rapportera";
+/* ─── Data ──────────────────────────────────────────────────────── */
+
+type Infrastruktur = "el" | "varme" | "gas" | "fiber";
+
+type PaverkanEntry = {
+  typ: Infrastruktur;
+  ikon: string;
+  label: string;
+  drabbad: boolean;
+  detalj?: string;
 };
 
+type DemoResult = {
+  kind: "pagaende" | "planerat" | "inget";
+  adress: string;
+  slutBeraknat?: string;
+  minuterKvar?: number;
+  senasteUppdatering?: string;
+  orsakEnkel?: string;
+  paverkan: PaverkanEntry[];
+};
+
+const PAVERKAN_OK: PaverkanEntry[] = [
+  { typ: "el", ikon: "bolt", label: "El", drabbad: false },
+  { typ: "varme", ikon: "thermostat", label: "Fjärrvärme", drabbad: false },
+  { typ: "gas", ikon: "local_fire_department", label: "Gas", drabbad: false },
+  { typ: "fiber", ikon: "wifi", label: "Fiber", drabbad: false },
+];
+
+const MOCK_TRAFF: DemoResult = {
+  kind: "pagaende",
+  adress: "Storgatan 12, 252 25 Helsingborg",
+  slutBeraknat: "12:00",
+  minuterKvar: 95,
+  senasteUppdatering: "08:45 — Reparationsteam på plats, kabelfelet lokaliserat",
+  orsakEnkel: "Ett kabelfel vid transformatorstation Söder T4 påverkar området. Reparation pågår just nu.",
+  paverkan: [
+    { typ: "el", ikon: "bolt", label: "El", drabbad: true, detalj: "Ca 340 kunder utan ström sedan 08:22" },
+    { typ: "varme", ikon: "thermostat", label: "Fjärrvärme", drabbad: false },
+    { typ: "gas", ikon: "local_fire_department", label: "Gas", drabbad: false },
+    { typ: "fiber", ikon: "wifi", label: "Fiber", drabbad: false },
+  ],
+};
+
+const MOCK_INGET: DemoResult = {
+  kind: "inget",
+  adress: "Kungsgatan 8, 111 43 Stockholm",
+  paverkan: PAVERKAN_OK,
+};
+
+/* ─── Felsökning-wizard (oförändrad sedan v1) ─────────────────────── */
+
+type Diagnos = { id: string; fraga: string; ja: string; nej: string };
+
 const DIAGNOS_STEG: Diagnos[] = [
-  {
-    id: "grannar",
-    fraga: "Har dina grannar också strömavbrott?",
-    ja: "natverk",
-    nej: "propp",
-  },
-  {
-    id: "natverk",
-    fraga: "Då är det ett nätavbrott. Står avbrottet listat ovan?",
-    ja: "listad",
-    nej: "rapportera",
-  },
-  {
-    id: "propp",
-    fraga: "Har du kontrollerat säkringarna och jordfelsbrytaren?",
-    ja: "proppar-ok",
-    nej: "propp-check",
-  },
-  {
-    id: "propp-check",
-    fraga: "Leta upp elcentralen och slå tillbaka utlösta säkringar. Fungerar det nu?",
-    ja: "fungerar",
-    nej: "rapportera",
-  },
-  {
-    id: "proppar-ok",
-    fraga: "Har du betalat senaste elräkningen?",
-    ja: "rapportera",
-    nej: "obetald",
-  },
+  { id: "grannar", fraga: "Har dina grannar också strömavbrott?", ja: "natverk", nej: "propp" },
+  { id: "natverk", fraga: "Då är det ett nätavbrott. Står avbrottet i listan ovan?", ja: "listad", nej: "rapportera" },
+  { id: "propp", fraga: "Har du kontrollerat säkringarna och jordfelsbrytaren?", ja: "proppar-ok", nej: "propp-check" },
+  { id: "propp-check", fraga: "Leta upp elcentralen och slå tillbaka utlösta säkringar. Fungerar det nu?", ja: "fungerar", nej: "rapportera" },
+  { id: "proppar-ok", fraga: "Har du betalat senaste elräkningen?", ja: "rapportera", nej: "obetald" },
 ];
 
 const DIAGNOS_SLUT: Record<string, { rubrik: string; text: string; cta?: { label: string; href: string; primary?: boolean } }> = {
   listad: {
     rubrik: "Då vet vi om det.",
-    text: "Vi jobbar på att få tillbaka strömmen. Se tidslinjen för uppdateringar. Du behöver inte göra något mer.",
+    text: "Vi arbetar med att få tillbaka strömmen. Se tidslinjen för uppdateringar. Du behöver inte göra något mer.",
   },
   fungerar: {
     rubrik: "Bra — då var det en utlöst säkring.",
-    text: "Om det händer ofta kan det vara värt att kontakta en elektriker för en genomgång.",
+    text: "Händer det ofta är det värt att låta en elektriker gå igenom din elcentral.",
   },
   obetald: {
     rubrik: "Kontakta kundservice.",
-    text: "Om en räkning är obetald kan leveransen ha stängts av. Logga in på Mina sidor eller ring kundservice.",
+    text: "Vid obetald räkning kan leveransen ha stängts av. Logga in på Mina sidor eller ring kundservice.",
     cta: { label: "Till Mina sidor", href: "#" },
   },
   rapportera: {
-    rubrik: "Gör felanmälan.",
-    text: "Ring felanmälan nedan. Dygnet runt, 042-490 32 00. Ha gärna din adress och fastighetsbeteckning till hands.",
+    rubrik: "Gör en felanmälan.",
+    text: "Ring 042-490 32 00, dygnet runt. Ha din adress och fastighetsbeteckning redo.",
     cta: { label: "Ring 042-490 32 00", href: "tel:0424903200", primary: true },
   },
 };
@@ -93,20 +111,52 @@ const pagaende = AVBROTT.filter((a) => a.status === "pagaende");
 const planerat = AVBROTT.filter((a) => a.status === "planerat");
 const avslutat = AVBROTT.filter((a) => a.status === "avslutat");
 
+/* ─── Komponent ─────────────────────────────────────────────────── */
+
 export function AvbrottNy() {
-  const [postnr, setPostnr] = useState("");
-  const [sokResultat, setSokResultat] = useState<"tomt" | "trafad" | "inget">("tomt");
-  const [openAvbrott, setOpenAvbrott] = useState<string | null>(pagaende[0]?.id ?? null);
+  const [query, setQuery] = useState("");
+  const [resultat, setResultat] = useState<DemoResult | null>(null);
+  const [smsStatus, setSmsStatus] = useState<"idle" | "prenumererad">("idle");
+
   const [diagnosSteg, setDiagnosSteg] = useState<string>("grannar");
   const [diagnosHistorik, setDiagnosHistorik] = useState<string[]>([]);
 
-  function soek() {
-    // Fake matchning — postnr som börjar på 252/254 = Helsingborg-område
-    if (postnr.startsWith("252") || postnr.startsWith("254")) {
-      setSokResultat("trafad");
-    } else if (postnr.length >= 5) {
-      setSokResultat("inget");
+  const [openAvbrott, setOpenAvbrott] = useState<string | null>(pagaende[0]?.id ?? null);
+  const [fordjupningTab, setFordjupningTab] = useState<"karta" | "pagaende" | "planerade" | "avklarade">("karta");
+
+  // Flytta fokus till statuskortet när användaren har fått ett svar
+  // — skärmläsare hör resultatet, tangentbordsanvändare landar i nästa region.
+  const statusCardRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (resultat) statusCardRef.current?.focus();
+  }, [resultat]);
+
+  const senastUppdaterad = useMemo(() => {
+    const d = new Date();
+    return d.toLocaleTimeString("sv-SE", { hour: "2-digit", minute: "2-digit" });
+  }, [resultat]);
+
+  function sok(val?: string) {
+    const q = (val ?? query).trim().toLowerCase();
+    if (!q) return;
+    if (q.startsWith("252") || q.startsWith("254") || q.includes("helsingborg") || q.includes("ängelholm")) {
+      setResultat(MOCK_TRAFF);
+    } else {
+      setResultat(MOCK_INGET);
     }
+    setSmsStatus("idle");
+  }
+
+  function anvandPosition() {
+    setQuery("252 25 Helsingborg");
+    setResultat(MOCK_TRAFF);
+    setSmsStatus("idle");
+  }
+
+  function nollstallSok() {
+    setQuery("");
+    setResultat(null);
+    setSmsStatus("idle");
   }
 
   function diagnosSvara(svar: "ja" | "nej") {
@@ -126,536 +176,469 @@ export function AvbrottNy() {
     setDiagnosHistorik([]);
   }
 
-  const harPagaende = pagaende.length > 0;
+  const harAvbrott = resultat?.kind === "pagaende" || resultat?.kind === "planerat";
+  const antalDrabbade = resultat?.paverkan.filter((p) => p.drabbad).length ?? 0;
+
+  /**
+   * Felsökningsguidens body — delad mellan tre block-varianter som bara
+   * byter progress-header (stepper/bar/chips). Samma WizardProgress-grammatik
+   * som kontaktflödet i Kundservice-sidtypen, så guides känns enhetliga.
+   */
+  function renderFelsokningWizard(progressVariant: WizardVariant) {
+    const slut = diagnosSteg.startsWith("slut:") ? DIAGNOS_SLUT[diagnosSteg.replace("slut:", "")] : null;
+    const aktiv = DIAGNOS_STEG.find((s) => s.id === diagnosSteg);
+    const wizardCurrent = slut ? 2 : 1;
+
+    return (
+      <Annotation
+        label="Felsökning — wizard, minskar felanmälningar"
+        audience="user"
+        rationale="De flesta 'strömavbrott' är utlösta säkringar eller jordfelsbrytare. Att fråga grannar först → kolla säkringar → ring som sista utväg löser majoriteten utan att belasta KC. Briefens princip 6.1: felsökning FÖRE kontakt, explicit. Progress-header är delad med kontaktflödet så guides känns enhetliga."
+      >
+        <section id="felsokning" className="py-10 border-t border-border-subtle">
+          <WizardProgress
+            variant={progressVariant}
+            title="Testa det här innan du ringer"
+            subtitle="De flesta strömproblem beror på utlösta säkringar eller jordfelsbrytare. Guiden tar en minut och sparar ofta ett samtal."
+            steps={[
+              { key: "fragor", label: "Frågor", hint: aktiv && !slut ? `Fråga ${diagnosHistorik.length + 1}` : undefined },
+              { key: "resultat", label: "Resultat" },
+            ]}
+            current={wizardCurrent}
+          />
+
+          <div className="rounded-md border-2 border-brand-accent bg-surface p-5 sm:p-6 max-w-reading">
+            {diagnosHistorik.length > 0 && (
+              <ol className="mb-4 space-y-1 text-xs text-ink-muted">
+                {diagnosHistorik.map((h, i) => (
+                  <li key={i} className="flex items-start gap-2">
+                    <Icon name="check" size={12} className="text-brand-accent mt-0.5" />
+                    <span>{h}</span>
+                  </li>
+                ))}
+              </ol>
+            )}
+
+            {aktiv && !slut && (
+              <>
+                <p className="font-medium text-h5 mb-4">{aktiv.fraga}</p>
+                <div className="flex gap-3">
+                  <button
+                    type="button"
+                    onClick={() => diagnosSvara("ja")}
+                    className="flex-1 bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90"
+                  >
+                    Ja
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => diagnosSvara("nej")}
+                    className="flex-1 border border-border-strong text-brand-primary font-medium py-3 rounded hover:bg-tint-info"
+                  >
+                    Nej
+                  </button>
+                </div>
+              </>
+            )}
+
+            {slut && (
+              <div role="status" aria-live="polite">
+                <h3 className="font-medium text-h5 mb-2">{slut.rubrik}</h3>
+                <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{slut.text}</p>
+                <div className="flex flex-wrap gap-3">
+                  {slut.cta && (
+                    <a
+                      href={slut.cta.href}
+                      className={`inline-flex items-center gap-2 font-medium px-5 py-2.5 rounded transition-opacity ${
+                        slut.cta.primary
+                          ? "bg-brand-primary text-ink-onbrand hover:opacity-90"
+                          : "border border-border-strong text-brand-primary hover:bg-tint-info"
+                      }`}
+                    >
+                      {slut.cta.primary && <Icon name="call" size={16} />}
+                      {slut.cta.label}
+                    </a>
+                  )}
+                  <button
+                    type="button"
+                    onClick={diagnosReset}
+                    className="inline-flex items-center gap-1.5 text-sm text-ink-secondary hover:text-brand-accent px-3 py-2.5"
+                  >
+                    <Icon name="restart_alt" size={16} />
+                    Börja om
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      </Annotation>
+    );
+  }
 
   const blocks: BlockDef[] = [
-    /* ─── 1. STATUS-HERO ────────────────────────────────────────── */
+    /* ─── 1. START — Adress först → statuskort ──────────────────── */
     {
-      id: "status",
-      label: "Status-hero",
+      id: "start",
+      label: "Adress först → statuskort",
       variants: [
         {
-          key: "dynamisk",
-          label: "Dynamisk — röd/grön baserat på status",
+          key: "unified",
+          label: "Sök adress + statuskort i en yta",
           render: () => (
             <Annotation
-              label="Status-hero: svar på första frågan"
+              label="Adress först"
               audience="user"
-              rationale="Användaren kommer hit med EN fråga: 'Är det avbrott?' Svaret ska ta <1 sekund att läsa. Dynamisk färg och rubrik gör det binärt. Ingen intro om 'vad är ett avbrott' — det vet alla som landar här."
+              rationale="Briefens princip 1: sidan startar i adressfrågan. 'Är jag påverkad?' är frågan — adressfältet är sättet att få svar. Ingen generell hero-text före, ingen lista först. En klick från sökträff till fullt statuskort."
             >
-              <section
-                className={`rounded-lg my-6 p-6 sm:p-10 ${
-                  harPagaende
-                    ? "bg-tint-highlight border border-brand-highlight"
-                    : "bg-tint-info border border-brand-accent/40"
-                }`}
-                aria-live="polite"
-              >
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${
-                      harPagaende ? "bg-brand-highlight" : "bg-brand-accent"
-                    }`}
+              <section className="pt-6 pb-8">
+                {!resultat && (
+                  <Copy
+                    label="H1 — användarens fråga"
+                    category="rubrik"
+                    text="Är ditt hem påverkat av ett avbrott?"
+                    rationale="Direkt fråga i användarens språk. 'Avbrottsinformation' säger vad sidan är; 'Är ditt hem påverkat?' säger vad den svarar på."
                   >
-                    <Icon
-                      name={harPagaende ? "bolt" : "check"}
-                      size={28}
-                      className="text-white"
-                      filled={harPagaende}
+                    <h1 className="text-h1 leading-tight mb-2">Är ditt hem påverkat av ett avbrott?</h1>
+                  </Copy>
+                )}
+                {!resultat && (
+                  <p className="text-lede text-ink-secondary mb-5 max-w-reading">
+                    Skriv in din adress eller använd din position — vi visar status för el, fjärrvärme, gas och fiber på en gång.
+                  </p>
+                )}
+
+                {/* Adress-input — alltid synlig, blir smalare när resultat finns */}
+                <form
+                  role="search"
+                  onSubmit={(e) => { e.preventDefault(); sok(); }}
+                  className={`flex flex-wrap gap-2 ${resultat ? "max-w-reading mb-4" : "max-w-reading mb-3"}`}
+                >
+                  <label htmlFor="avbrott-adress" className="sr-only">Din adress eller ditt postnummer</label>
+                  <div className="flex-1 min-w-[220px] relative">
+                    <Icon name="search" size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted pointer-events-none" />
+                    <input
+                      id="avbrott-adress"
+                      type="text"
+                      inputMode="text"
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Ex. Storgatan 12 eller 252 25"
+                      className="w-full border border-border-strong rounded-md pl-10 pr-3 py-3 text-base bg-canvas focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent"
                     />
                   </div>
-                  <div className="flex-1">
-                    <Copy
-                      label="H1 — binärt statussvar"
-                      category="rubrik"
-                      text={harPagaende ? `${pagaende.length} pågående avbrott just nu` : "Allt fungerar just nu"}
-                      rationale="Direkt svar, inte beskrivning. Siffran först om det finns avbrott — den är det läsaren letar efter."
-                    >
-                      <h1 className="text-h1 leading-tight mb-2">
-                        {harPagaende
-                          ? `${pagaende.length} pågående avbrott just nu`
-                          : "Allt fungerar just nu"}
-                      </h1>
-                    </Copy>
-                    <p className="text-lede text-ink-secondary mb-6 max-w-reading">
-                      {harPagaende
-                        ? `${pagaende.reduce((n, a) => n + a.berordaKunder, 0).toLocaleString("sv-SE")} kunder berörs. Vi jobbar på att få igång strömmen så snabbt som möjligt.`
-                        : "Inga kända avbrott i vårt elnät eller fjärrvärmenät. Se kommande planerade arbeten nedan."}
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      <a
-                        href="tel:0424903200"
-                        className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-3 rounded hover:opacity-90 transition-opacity"
-                      >
-                        <Icon name="call" size={18} />
-                        Felanmälan 042-490 32 00
-                      </a>
-                      <a
-                        href="#"
-                        className="inline-flex items-center gap-2 border border-border-strong text-ink-secondary font-medium px-5 py-3 rounded hover:bg-surface transition-colors"
-                      >
-                        <Icon name="sms" size={18} />
-                        Prenumerera på SMS-avisering
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </Annotation>
-          ),
-        },
-        {
-          key: "stor-storning",
-          label: "Stor störning — framhävt varningsläge",
-          render: () => (
-            <Annotation
-              label="Stor störning-hero: aktiverar vid kris"
-              audience="design"
-              rationale="Används vid stora störningar (>1000 kunder, flera timmar). Hela sidan signalerar akutläge, inkl mörkare bakgrund och fetare typografi. Normal-läget är för vardagsdrift, detta är för kris."
-            >
-              <section className="rounded-lg my-6 p-6 sm:p-10 bg-brand-highlight text-white">
-                <div className="flex items-start gap-4">
-                  <Icon name="warning" size={40} className="shrink-0" filled />
-                  <div>
-                    <p className="uppercase text-xs font-bold tracking-wider opacity-90 mb-1">
-                      Stor driftstörning
-                    </p>
-                    <h1 className="text-display leading-tight mb-3">Omfattande strömavbrott</h1>
-                    <p className="text-lede opacity-95 mb-5 max-w-reading">
-                      Ovanligt stor störning som påverkar flera områden. Vi uppdaterar här och
-                      via SMS till prenumeranter. Undvik att ringa kundservice om ärendet inte är
-                      akut — kötiderna är långa.
-                    </p>
-                    <div className="flex flex-wrap gap-3">
-                      <a
-                        href="#sms"
-                        className="inline-flex items-center gap-2 bg-white text-brand-primary font-medium px-5 py-3 rounded hover:opacity-90"
-                      >
-                        <Icon name="sms" size={18} />
-                        Få SMS när det är klart
-                      </a>
-                      <a
-                        href="tel:0424903200"
-                        className="inline-flex items-center gap-2 border-2 border-white text-white font-medium px-5 py-3 rounded hover:bg-white/10"
-                      >
-                        <Icon name="call" size={18} />
-                        Akut felanmälan
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 2. ADRESSKONTROLL — "är jag påverkad?" ────────────────── */
-    {
-      id: "adresskontroll",
-      label: "Adresskontroll — postnummer-sök",
-      variants: [
-        {
-          key: "postnr",
-          label: "Postnummer-sök med direktsvar",
-          render: () => (
-            <Annotation
-              label="Adresskontroll: 'är jag påverkad?'"
-              audience="user"
-              rationale="Den viktigaste frågan som användaren i mörkret har är INTE 'vilka avbrott finns i hela Helsingborg?' utan 'är det avbrott just där jag bor?'. Postnummer-sök ger det svaret på en klickning. Cut mercilessly: många andra avbrottssidor saknar detta helt."
-            >
-              <section className="py-8 border-t border-border-subtle">
-                <Copy
-                  label="Sektionsrubrik — adresskontroll"
-                  category="rubrik"
-                  text="Är du påverkad?"
-                  rationale="Du-form, direkt fråga. 'Kolla status för din adress' är vagt; 'Är du påverkad?' är binärt och kräver handling."
-                >
-                  <h2 className="text-h3 font-medium mb-2">Är du påverkad?</h2>
-                </Copy>
-                <p className="text-ink-secondary mb-4 max-w-reading">
-                  Skriv in ditt postnummer så ser du direkt om ditt område har ett pågående eller
-                  planerat avbrott.
-                </p>
-                <form
-                  onSubmit={(e) => { e.preventDefault(); soek(); }}
-                  className="flex flex-wrap gap-2 max-w-reading"
-                  role="search"
-                >
-                  <label htmlFor="postnr" className="sr-only">Postnummer</label>
-                  <input
-                    id="postnr"
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9 ]*"
-                    maxLength={6}
-                    value={postnr}
-                    onChange={(e) => { setPostnr(e.target.value); setSokResultat("tomt"); }}
-                    placeholder="Ex. 252 25"
-                    className="flex-1 min-w-[160px] border border-border-strong rounded-md px-4 py-3 bg-surface text-base focus:border-brand-accent focus:outline-none"
-                  />
                   <button
                     type="submit"
-                    disabled={postnr.length < 5}
-                    className="bg-brand-primary text-ink-onbrand font-medium px-5 py-3 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                    disabled={query.trim().length < 3}
+                    className="bg-brand-primary text-ink-onbrand font-medium px-5 py-3 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed inline-flex items-center gap-2"
                   >
-                    Kontrollera
+                    Se status
+                    <Icon name="arrow_forward" size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    onClick={anvandPosition}
+                    className="border border-border-strong text-brand-primary font-medium px-4 py-3 rounded hover:bg-tint-info inline-flex items-center gap-2"
+                    title="Använd din geoposition"
+                  >
+                    <Icon name="my_location" size={16} />
+                    <span className="hidden sm:inline">Använd min position</span>
+                    <span className="sm:hidden">Position</span>
                   </button>
                 </form>
-                {sokResultat !== "tomt" && (
+
+                {!resultat && (
+                  <p className="text-xs text-ink-muted">
+                    Tips: prova <button type="button" onClick={() => sok("252 25")} className="text-brand-accent underline underline-offset-2 hover:no-underline">252 25</button> för att se ett avbrott i demon, annars "inget avbrott".
+                  </p>
+                )}
+
+                {/* STATUSKORT — briefens princip 2 */}
+                {resultat && (
                   <div
-                    role="status"
+                    ref={statusCardRef}
+                    tabIndex={-1}
+                    role="region"
                     aria-live="polite"
-                    className={`mt-4 p-4 rounded-md border-l-4 ${
-                      sokResultat === "trafad"
-                        ? "bg-tint-highlight border-brand-highlight"
-                        : "bg-tint-info border-brand-accent"
+                    aria-label="Status för din adress"
+                    className={`mt-4 rounded-lg border-2 overflow-hidden focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent ${
+                      harAvbrott
+                        ? "border-brand-highlight bg-tint-highlight"
+                        : "border-brand-accent bg-tint-info"
                     }`}
                   >
-                    {sokResultat === "trafad" ? (
-                      <div className="flex items-start gap-3">
-                        <Icon name="bolt" size={24} className="text-brand-highlight" filled />
-                        <div>
-                          <p className="font-medium">Ja, ditt område har ett pågående avbrott.</p>
-                          <p className="text-sm text-ink-secondary mt-1">
-                            {pagaende[0]?.rubrik} · Beräknad klar {pagaende[0]?.slutBeraknat}.
-                          </p>
-                          <a
-                            href="#avbrott"
-                            className="inline-flex items-center gap-1 text-sm text-brand-primary font-medium mt-2 hover:underline"
-                          >
-                            Se detaljer och tidslinje
-                            <Icon name="arrow_forward" size={14} />
-                          </a>
-                        </div>
+                    {/* Header-rad: status-badge + adress + ändra */}
+                    <header className="px-5 py-4 flex flex-wrap items-center gap-3 border-b border-border-subtle bg-surface/50">
+                      <span
+                        className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded ${
+                          resultat.kind === "pagaende"
+                            ? "bg-brand-highlight text-white"
+                            : resultat.kind === "planerat"
+                            ? "bg-tint-notice text-brand-primary"
+                            : "bg-brand-accent text-white"
+                        }`}
+                      >
+                        {resultat.kind === "pagaende" && <span className="w-2 h-2 rounded-full bg-white animate-pulse" />}
+                        {resultat.kind === "pagaende" ? "Pågående avbrott" : resultat.kind === "planerat" ? "Planerat arbete" : "Inget avbrott"}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-xs text-ink-muted">Adress</p>
+                        <p className="font-medium truncate">{resultat.adress}</p>
                       </div>
-                    ) : (
-                      <div className="flex items-start gap-3">
-                        <Icon name="check_circle" size={24} className="text-brand-accent" />
-                        <div>
-                          <p className="font-medium">Inga kända avbrott i ditt område.</p>
-                          <p className="text-sm text-ink-secondary mt-1">
-                            Har du ändå strömbortfall? Gå genom felsökningen nedan innan du ringer
-                            felanmälan.
-                          </p>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-                <p className="text-xs text-ink-muted mt-3">
-                  Demo: prova 252 25 för träff, annars för ej träffat område.
-                </p>
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
+                      <button
+                        type="button"
+                        onClick={nollstallSok}
+                        className="text-sm text-brand-primary hover:underline inline-flex items-center gap-1"
+                      >
+                        <Icon name="edit" size={14} />
+                        Ändra
+                      </button>
+                    </header>
 
-    /* ─── 3. PÅGÅENDE AVBROTT — med tidslinje ──────────────────── */
-    {
-      id: "pagaende",
-      label: "Pågående avbrott",
-      variants: [
-        {
-          key: "med-tidslinje",
-          label: "Expanderbara kort med uppdateringstidslinje",
-          render: () => (
-            <Annotation
-              label="Pågående: tidslinje per avbrott"
-              audience="user"
-              rationale="Workshop-observation: 'ni gör inget'-frustration kommer från otydlighet kring framsteg. Tidslinjen visar varje steg (felanmält kl 08:22 → team på plats 08:45 → reparation 09:30). Gör arbetet synligt."
-            >
-              <section id="avbrott" className="py-10 border-t border-border-subtle">
-                <h2 className="text-h2 mb-2">Pågående avbrott</h2>
-                <p className="text-ink-secondary mb-6">
-                  {pagaende.length} {pagaende.length === 1 ? "avbrott" : "avbrott"} just nu.
-                </p>
-                {pagaende.length === 0 ? (
-                  <p className="text-ink-muted italic">Inga pågående avbrott.</p>
-                ) : (
-                  <div className="space-y-3">
-                    {pagaende.map((a) => {
-                      const isOpen = openAvbrott === a.id;
-                      const meta = STATUS_META[a.status];
-                      return (
-                        <article
-                          key={a.id}
-                          className={`rounded-md border-2 bg-surface overflow-hidden ${
-                            isOpen ? "border-brand-highlight" : "border-border-subtle hover:border-brand-highlight/60"
-                          } transition-colors`}
-                        >
-                          <button
-                            type="button"
-                            onClick={() => setOpenAvbrott(isOpen ? null : a.id)}
-                            className="w-full text-left px-5 py-4 flex items-center gap-3"
-                            aria-expanded={isOpen}
+                    {/* Statussvar — stor rubrik */}
+                    <div className="px-5 py-5">
+                      <Copy
+                        label="Statusrubrik — binärt svar"
+                        category="rubrik"
+                        text={
+                          harAvbrott
+                            ? `${antalDrabbade} av 4 infrastrukturer påverkas just nu`
+                            : "Allt fungerar normalt"
+                        }
+                        rationale="Konkret svar, inte beskrivning. Siffran först när det finns problem — det är det läsaren letar efter."
+                      >
+                        <h2 className="text-h3 leading-tight mb-1">
+                          {harAvbrott
+                            ? `${antalDrabbade} av 4 infrastrukturer påverkas just nu`
+                            : "Allt fungerar normalt"}
+                        </h2>
+                      </Copy>
+                      {harAvbrott && resultat.slutBeraknat && (
+                        <p className="text-ink-secondary">
+                          Beräknad klar: <strong className="text-ink">{resultat.slutBeraknat}</strong>
+                          {resultat.minuterKvar != null && (
+                            <span className="text-ink-muted"> (om ca {resultat.minuterKvar} min)</span>
+                          )}
+                        </p>
+                      )}
+                      {!harAvbrott && (
+                        <p className="text-ink-secondary">
+                          Inga kända avbrott på din adress för el, fjärrvärme, gas eller fiber.
+                        </p>
+                      )}
+                    </div>
+
+                    {/* Påverkan per infrastruktur — briefens ikoner */}
+                    <div className="px-5 pb-5">
+                      <p className="text-[11px] uppercase tracking-wider font-medium text-ink-muted mb-2">
+                        Påverkan just nu
+                      </p>
+                      <ul className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                        {resultat.paverkan.map((p) => (
+                          <li
+                            key={p.typ}
+                            className={`flex items-start gap-2 p-3 rounded-md border ${
+                              p.drabbad
+                                ? "border-brand-highlight bg-brand-highlight/10"
+                                : "border-border-subtle bg-surface/70"
+                            }`}
                           >
-                            <span className={`w-2.5 h-2.5 rounded-full ${meta.dotColor} animate-pulse`} />
-                            <div className="flex-1 min-w-0">
-                              <h3 className="font-medium">{a.rubrik}</h3>
-                              <p className="text-sm text-ink-secondary">
-                                {a.omrade} · {a.berordaKunder} kunder berörs
+                            <Icon
+                              name={p.ikon}
+                              size={20}
+                              className={p.drabbad ? "text-brand-highlight" : "text-brand-accent"}
+                              filled={p.drabbad}
+                            />
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium">{p.label}</p>
+                              <p className={`text-xs ${p.drabbad ? "text-brand-highlight font-medium" : "text-ink-muted"}`}>
+                                {p.drabbad ? "Ej i drift" : "OK"}
                               </p>
                             </div>
-                            <span className="hidden sm:block text-right text-sm">
-                              <span className="block text-ink-muted text-xs">Beräknad klar</span>
-                              <span className="font-medium">{a.slutBeraknat?.split(" ")[1] ?? "–"}</span>
-                            </span>
-                            <Icon
-                              name="expand_more"
-                              size={20}
-                              className={`text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`}
-                            />
-                          </button>
-                          {isOpen && (
-                            <div className="px-5 pb-5 border-t border-border-subtle pt-4">
-                              <dl className="grid sm:grid-cols-3 gap-4 mb-5 text-sm">
-                                <div>
-                                  <dt className="text-xs text-ink-muted uppercase tracking-wider">Typ</dt>
-                                  <dd className="font-medium">{TYP_LABEL[a.typ]}</dd>
-                                </div>
-                                <div>
-                                  <dt className="text-xs text-ink-muted uppercase tracking-wider">Startade</dt>
-                                  <dd className="font-medium">{a.start}</dd>
-                                </div>
-                                <div>
-                                  <dt className="text-xs text-ink-muted uppercase tracking-wider">Beräknat slut</dt>
-                                  <dd className="font-medium">{a.slutBeraknat ?? "Meddelas senare"}</dd>
-                                </div>
-                              </dl>
-                              <p className="text-sm text-ink-secondary mb-5">{a.beskrivning}</p>
-                              {a.uppdateringar && a.uppdateringar.length > 0 && (
-                                <div>
-                                  <h4 className="text-xs uppercase tracking-wider font-medium text-ink-muted mb-2">
-                                    Uppdateringar
-                                  </h4>
-                                  <ol className="space-y-3">
-                                    {a.uppdateringar.map((u, i) => (
-                                      <li key={i} className="flex gap-3">
-                                        <div className="flex flex-col items-center">
-                                          <span
-                                            className={`w-2 h-2 rounded-full mt-1.5 ${
-                                              i === 0 ? "bg-brand-highlight" : "bg-border-strong"
-                                            }`}
-                                          />
-                                          {i < (a.uppdateringar?.length ?? 0) - 1 && (
-                                            <span className="w-px flex-1 bg-border-subtle my-1" />
-                                          )}
-                                        </div>
-                                        <div className="pb-2">
-                                          <span className="text-xs text-ink-muted font-medium">{u.tid}</span>
-                                          <p className="text-sm">{u.text}</p>
-                                        </div>
-                                      </li>
-                                    ))}
-                                  </ol>
-                                </div>
-                              )}
-                            </div>
-                          )}
-                        </article>
-                      );
-                    })}
-                  </div>
-                )}
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 4. PLANERADE AVBROTT ──────────────────────────────────── */
-    {
-      id: "planerade",
-      label: "Planerade avbrott",
-      variants: [
-        {
-          key: "lista",
-          label: "Lista — kommande veckan",
-          render: () => (
-            <Annotation
-              label="Planerade avbrott"
-              audience="user"
-              rationale="Framåtblickande. Kompakta rader — datum, område, orsak. SMS-prenumeration direkt i blocket så användaren kan välja att få notis när det gäller dem."
-            >
-              <section className="py-10 border-t border-border-subtle">
-                <div className="flex items-start justify-between flex-wrap gap-3 mb-4">
-                  <div>
-                    <h2 className="text-h2">Planerade avbrott</h2>
-                    <p className="text-ink-secondary text-sm">Kommande underhåll och förstärkningsarbeten</p>
-                  </div>
-                  <a
-                    href="#sms"
-                    className="text-sm text-brand-accent hover:underline inline-flex items-center gap-1"
-                  >
-                    <Icon name="sms" size={14} />
-                    Få SMS när det gäller mig
-                  </a>
-                </div>
-                {planerat.length === 0 ? (
-                  <p className="text-ink-muted italic">Inga planerade avbrott denna veckan.</p>
-                ) : (
-                  <ul className="divide-y divide-border-subtle rounded-md border border-border-subtle bg-surface">
-                    {planerat.map((a) => (
-                      <li key={a.id} className="p-4 flex flex-wrap items-start gap-4">
-                        <div className="shrink-0 w-[72px] text-center">
-                          <p className="text-xs uppercase text-ink-muted font-medium">
-                            {new Date(a.start.replace(" ", "T")).toLocaleDateString("sv-SE", {
-                              day: "numeric",
-                              month: "short",
-                            })}
-                          </p>
-                          <p className="text-sm text-ink-secondary">{a.start.split(" ")[1]?.slice(0, 5)}</p>
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <h3 className="font-medium">{a.rubrik}</h3>
-                          <p className="text-sm text-ink-secondary">{a.omrade} · {a.berordaKunder} kunder</p>
-                          <p className="text-sm text-ink-secondary mt-1">{a.beskrivning}</p>
-                        </div>
-                        <span className="text-xs uppercase tracking-wider font-medium px-2 py-1 rounded bg-tint-notice text-brand-primary">
-                          {TYP_LABEL[a.typ]}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 5. FELSÖKNINGSGUIDE — self-help INNAN felanmälan ──────── */
-    {
-      id: "felsokning",
-      label: "Felsökningsguide",
-      variants: [
-        {
-          key: "wizard",
-          label: "Interaktiv wizard — steg för steg",
-          render: () => {
-            const slut = diagnosSteg.startsWith("slut:") ? DIAGNOS_SLUT[diagnosSteg.replace("slut:", "")] : null;
-            const aktiv = DIAGNOS_STEG.find((s) => s.id === diagnosSteg);
-            return (
-              <Annotation
-                label="Felsökning: wizard som minskar felanmälningar"
-                audience="user"
-                rationale="De flesta 'strömavbrott' är utlösta säkringar eller jordfelsbrytare. En wizard som frågar 'har grannarna också det?' → 'har du kollat säkringarna?' löser majoriteten utan att belasta KC. Workshop: 'Knappar för vad du kan göra själv'."
-              >
-                <section className="py-10 border-t border-border-subtle">
-                  <Copy
-                    label="Sektionsrubrik — felsökning"
-                    category="rubrik"
-                    text="Kolla själv först"
-                    rationale="Direkt uppmaning, inte beskrivning. 'Felsökningsguide' är en kategori; 'Kolla själv först' är en handling och gör syftet tydligt."
-                  >
-                    <h2 className="text-h3 font-medium mb-2">Kolla själv först</h2>
-                  </Copy>
-                  <p className="text-ink-secondary mb-6 max-w-reading">
-                    De flesta strömproblem beror på utlösta säkringar eller jordfelsbrytare. Den
-                    här guiden tar en minut och kan spara dig en onödig felanmälan.
-                  </p>
-                  <div className="rounded-md border-2 border-brand-accent bg-surface p-5 sm:p-6 max-w-reading">
-                    {diagnosHistorik.length > 0 && (
-                      <ol className="mb-4 space-y-1 text-xs text-ink-muted">
-                        {diagnosHistorik.map((h, i) => (
-                          <li key={i} className="flex items-start gap-2">
-                            <Icon name="check" size={12} className="text-brand-accent mt-0.5" />
-                            <span>{h}</span>
                           </li>
                         ))}
-                      </ol>
-                    )}
+                      </ul>
+                    </div>
 
-                    {aktiv && !slut && (
-                      <>
-                        <p className="text-xs uppercase tracking-wider font-medium text-brand-accent mb-2">
-                          Fråga {diagnosHistorik.length + 1}
-                        </p>
-                        <p className="font-medium text-h5 mb-4">{aktiv.fraga}</p>
-                        <div className="flex gap-3">
-                          <button
-                            type="button"
-                            onClick={() => diagnosSvara("ja")}
-                            className="flex-1 bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90"
-                          >
-                            Ja
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => diagnosSvara("nej")}
-                            className="flex-1 border border-border-strong text-brand-primary font-medium py-3 rounded hover:bg-tint-info"
-                          >
-                            Nej
-                          </button>
-                        </div>
-                      </>
-                    )}
-
-                    {slut && (
-                      <div>
-                        <p className="text-xs uppercase tracking-wider font-medium text-brand-accent mb-2">
-                          Resultat
-                        </p>
-                        <h3 className="font-medium text-h5 mb-2">{slut.rubrik}</h3>
-                        <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{slut.text}</p>
-                        <div className="flex flex-wrap gap-3">
-                          {slut.cta && (
-                            <a
-                              href={slut.cta.href}
-                              className={`inline-flex items-center gap-2 font-medium px-5 py-2.5 rounded transition-opacity ${
-                                slut.cta.primary
-                                  ? "bg-brand-primary text-ink-onbrand hover:opacity-90"
-                                  : "border border-border-strong text-brand-primary hover:bg-tint-info"
-                              }`}
-                            >
-                              {slut.cta.primary && <Icon name="call" size={16} />}
-                              {slut.cta.label}
-                            </a>
-                          )}
-                          <button
-                            type="button"
-                            onClick={diagnosReset}
-                            className="inline-flex items-center gap-1.5 text-sm text-ink-secondary hover:text-brand-accent px-3 py-2.5"
-                          >
-                            <Icon name="restart_alt" size={16} />
-                            Börja om
-                          </button>
-                        </div>
+                    {/* Orsak + senaste uppdatering */}
+                    {harAvbrott && (resultat.orsakEnkel || resultat.senasteUppdatering) && (
+                      <div className="px-5 pb-5 border-t border-border-subtle pt-4 space-y-3">
+                        {resultat.orsakEnkel && (
+                          <div>
+                            <p className="text-[11px] uppercase tracking-wider font-medium text-ink-muted mb-1">
+                              Orsak
+                            </p>
+                            <p className="text-sm text-ink-secondary leading-relaxed">{resultat.orsakEnkel}</p>
+                          </div>
+                        )}
+                        {resultat.senasteUppdatering && (
+                          <div>
+                            <p className="text-[11px] uppercase tracking-wider font-medium text-ink-muted mb-1">
+                              Senaste uppdatering
+                            </p>
+                            <p className="text-sm text-ink-secondary">{resultat.senasteUppdatering}</p>
+                          </div>
+                        )}
                       </div>
                     )}
+
+                    <footer className="px-5 py-2.5 bg-surface/40 border-t border-border-subtle text-xs text-ink-muted">
+                      Status uppdateras i realtid · senast {senastUppdaterad}
+                    </footer>
                   </div>
+                )}
+              </section>
+            </Annotation>
+          ),
+        },
+      ],
+    },
+
+    /* ─── 2. NÄSTA STEG — kontextuell CTA-rad ─────────────────── */
+    {
+      id: "nasta-steg",
+      label: "Nästa steg (kontextuellt)",
+      variants: [
+        {
+          key: "kontextuell",
+          label: "Beror på sök-status",
+          render: () => {
+            // Innan sökresultat — rendera ingenting. Hero:ns lede säger redan
+            // vad som händer efter att man fyllt i adressen; ett tomt-state
+            // här skulle bara upprepa det.
+            if (!resultat) return null;
+
+            return (
+              <Annotation
+                label="Nästa steg — styrda av status"
+                audience="user"
+                rationale="Briefens princip 3: nästa steg beror på status. Vid avbrott → SMS + tips. Inget avbrott → felsök själv först, därefter ring. Primär-CTA är alltid den insats som ger mest värde för det tillståndet."
+              >
+                <section className="py-6 border-t border-border-subtle">
+                  <h2 className="text-h4 font-medium mb-3">
+                    {harAvbrott ? "Vad gör jag nu?" : "Har du ändå problem hemma?"}
+                  </h2>
+
+                  {harAvbrott ? (
+                    <div className="grid sm:grid-cols-3 gap-3 max-w-reading">
+                      {/* PRIMÄR: Prenumerera på SMS */}
+                      {smsStatus === "idle" ? (
+                        <button
+                          type="button"
+                          onClick={() => setSmsStatus("prenumererad")}
+                          className="p-4 rounded-md bg-brand-primary text-ink-onbrand text-left hover:opacity-90 flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+                        >
+                          <Icon name="sms" size={22} />
+                          <span className="font-medium">Få SMS när det är löst</span>
+                          <span className="text-xs opacity-90">Gratis · Avregistrera när som helst</span>
+                        </button>
+                      ) : (
+                        <div className="p-4 rounded-md bg-tint-info border border-brand-accent text-left flex flex-col gap-1.5">
+                          <Icon name="check_circle" size={22} className="text-brand-accent" filled />
+                          <span className="font-medium">Du får SMS när det är löst</span>
+                          <span className="text-xs text-ink-secondary">
+                            Vi skickar till numret kopplat till adressen.
+                          </span>
+                        </div>
+                      )}
+
+                      <a
+                        href="#felsokning"
+                        className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                      >
+                        <Icon name="tips_and_updates" size={22} className="text-brand-accent" />
+                        <span className="font-medium">Tips just nu</span>
+                        <span className="text-xs text-ink-secondary">
+                          Vad du kan göra medan vi reparerar.
+                        </span>
+                      </a>
+
+                      <a
+                        href="tel:0424903200"
+                        className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                      >
+                        <Icon name="call" size={22} className="text-brand-accent" />
+                        <span className="font-medium">Ring endast vid akut behov</span>
+                        <span className="text-xs text-ink-secondary">
+                          042-490 32 00 · dygnet runt
+                        </span>
+                      </a>
+                    </div>
+                  ) : (
+                    <div className="grid sm:grid-cols-2 gap-3 max-w-reading">
+                      {/* Ingen avbrott — felsök först, ring sen */}
+                      <a
+                        href="#felsokning"
+                        className="p-4 rounded-md bg-brand-primary text-ink-onbrand text-left hover:opacity-90 flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+                      >
+                        <Icon name="settings_suggest" size={22} />
+                        <span className="font-medium">Felsök hemma först</span>
+                        <span className="text-xs opacity-90">
+                          De flesta strömbortfall beror på utlösta säkringar.
+                        </span>
+                      </a>
+
+                      <a
+                        href="tel:0424903200"
+                        className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                      >
+                        <Icon name="call" size={22} className="text-brand-accent" />
+                        <span className="font-medium">Ring om felsökningen inte hjälper</span>
+                        <span className="text-xs text-ink-secondary">
+                          042-490 32 00 · dygnet runt
+                        </span>
+                      </a>
+                    </div>
+                  )}
                 </section>
               </Annotation>
             );
           },
+        },
+      ],
+    },
+
+    /* ─── 3. FELSÖKNING — innan du ringer ───────────────────────── */
+    {
+      id: "felsokning",
+      label: "Felsökning — innan du ringer",
+      variants: [
+        {
+          key: "stepper",
+          label: "Wizard · stepper (default)",
+          render: () => renderFelsokningWizard("stepper"),
+        },
+        {
+          key: "bar",
+          label: "Wizard · progress-bar (kompakt)",
+          render: () => renderFelsokningWizard("bar"),
+        },
+        {
+          key: "chips",
+          label: "Wizard · pill-chips",
+          render: () => renderFelsokningWizard("chips"),
         },
         {
           key: "statisk",
           label: "Statisk lista — 5 steg",
           render: () => (
             <Annotation
-              label="Felsökning (statisk): checklista istället för wizard"
+              label="Felsökning — statisk checklista"
               audience="design"
-              rationale="Alternativ för användare som föredrar att scanna allt på en gång istället för att klicka sig genom. Samma innehåll, annan interaktion. Tillgänglighet: fungerar helt utan JavaScript."
+              rationale="Alternativ för skärmläsaranvändare och de som föredrar att se allt på en gång. Fungerar utan JS."
             >
-              <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-2">Kolla själv först</h2>
+              <section id="felsokning" className="py-10 border-t border-border-subtle">
+                <h2 className="text-h3 font-medium mb-2">Testa det här innan du ringer</h2>
                 <p className="text-ink-secondary mb-6 max-w-reading">
-                  Gå igenom listan innan du gör felanmälan. De flesta strömproblem löser du på en minut.
+                  Gå igenom listan i tur och ordning. De flesta strömproblem löser du på en minut.
                 </p>
                 <ol className="space-y-4 max-w-reading">
                   {[
-                    { t: "Har grannarna också avbrott?", d: "Om ja: det är ett nätavbrott, kolla listan ovan eller ring felanmälan." },
+                    { t: "Har grannarna också avbrott?", d: "Om ja: det är ett nätavbrott — se statusen ovan eller ring felanmälan." },
                     { t: "Kolla jordfelsbrytaren", d: "Den sitter i elcentralen. Slå om den om den är nedslagen." },
-                    { t: "Kolla utlösta säkringar", d: "Slå tillbaka utlösta säkringar i elcentralen. Sker det ofta, kontakta elektriker." },
+                    { t: "Kolla utlösta säkringar", d: "Slå tillbaka utlösta säkringar. Händer det ofta — kontakta en elektriker." },
                     { t: "Kolla om räkningen är betald", d: "Obetalda räkningar kan leda till avstängning. Logga in på Mina sidor." },
-                    { t: "Gör felanmälan", d: "Om inget ovan hjälpt: 042-490 32 00, dygnet runt. Ha adress och fastighetsbeteckning redo." },
+                    { t: "Gör en felanmälan", d: "Hjälper inget av ovan: 042-490 32 00, dygnet runt." },
                   ].map((s, i) => (
                     <li key={s.t} className="flex gap-4">
                       <span className="shrink-0 w-8 h-8 rounded-full bg-brand-primary text-white grid place-items-center font-bold text-sm">
@@ -675,27 +658,27 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 6. FELANMÄLAN-BANNER ──────────────────────────────────── */
+    /* ─── 4. FELANMÄLAN — telefon som sista utväg ────────────── */
     {
       id: "felanmalan",
-      label: "Felanmälan — kontaktvägar",
+      label: "Felanmälan",
       variants: [
         {
           key: "telefon-primar",
-          label: "Telefon primär (akuta ärenden)",
+          label: "Telefon primär — dygnet runt",
           render: () => (
             <Annotation
-              label="Felanmälan: telefon som primär"
+              label="Felanmälan — explicit sista steg"
               audience="user"
-              rationale="Vid elnätsfel är telefon snabbast — teknikern behöver ofta fråga vidare. Chatt och formulär är sekundära, för icke-akuta. Dygnet-runt-tillgänglighet på telefonen är en trovärdighetssignal."
+              rationale="Placerad efter felsökning så användaren har testat själv först. Dygnet-runt-tillgänglighet signalerar trovärdighet. Checklistan reducerar samtalstiden — handläggaren behöver inte gräva fram uppgifterna."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-lg bg-brand-primary text-white p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
                   <div>
-                    <h2 className="text-h2 text-white mb-2">Fortfarande ström borta?</h2>
+                    <h2 className="text-h2 text-white mb-2">Fortfarande fel?</h2>
                     <p className="opacity-90 mb-4 max-w-reading">
-                      Om felsökningen inte hjälpte — ring oss. Vi svarar dygnet runt när det
-                      gäller avbrott och akuta elnätsfel.
+                      Har felsökningen inte löst det — ring oss. Vi svarar dygnet runt
+                      när det gäller avbrott och akuta nätfel.
                     </p>
                     <a
                       href="tel:0424903200"
@@ -704,7 +687,7 @@ export function AvbrottNy() {
                       <Icon name="call" size={22} />
                       042-490 32 00
                     </a>
-                    <p className="text-xs opacity-80 mt-2">Dygnet runt · Alla dagar</p>
+                    <p className="text-xs opacity-80 mt-2">Dygnet runt · alla dagar</p>
                   </div>
                   <div className="bg-white/10 rounded-md p-5">
                     <p className="text-xs uppercase tracking-wider font-medium mb-3 opacity-80">
@@ -714,7 +697,7 @@ export function AvbrottNy() {
                       {[
                         "Din adress (gata + postnummer)",
                         "Fastighetsbeteckning om du har",
-                        "Om det är el, fjärrvärme eller fiber",
+                        "Vad som inte fungerar (el, värme, gas, fiber)",
                         "Om grannarna också är drabbade",
                       ].map((s) => (
                         <li key={s} className="flex items-center gap-2">
@@ -732,49 +715,198 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 7. AVKLARADE AVBROTT ──────────────────────────────────── */
+    /* ─── 5. FÖRDJUPNING — karta + pågående + planerade + avklarade */
     {
-      id: "avklarade",
-      label: "Avklarade avbrott — senaste 7 dagar",
+      id: "fordjupning",
+      label: "Fördjupning — karta, pågående, historik",
       variants: [
         {
-          key: "kollapsbar",
-          label: "Kollapsbar lista",
+          key: "tabs",
+          label: "Tab-struktur — karta default",
           render: () => (
             <Annotation
-              label="Avklarade: transparens + ersättningsunderlag"
-              audience="redaktör"
-              rationale="Inte huvudfokus men viktig för: (a) transparens — historik synlig, (b) ersättningsfrågor — användaren kan själv se tidsstämplar. Kollapsbar så den inte dominerar layouten."
+              label="Fördjupning — sekundärt innehåll bakom tabs"
+              audience="design"
+              rationale="Briefens princip 6.3: kartan är sekundär, för överblick — inte för beslut. Samlar karta + hela nätets pågående + planerade + avklarade bakom tabs så de inte konkurrerar med användarens adress-svar ovan."
             >
               <section className="py-10 border-t border-border-subtle">
-                <details className="group">
-                  <summary className="cursor-pointer list-none flex items-center gap-3 font-medium">
-                    <Icon
-                      name="expand_more"
-                      size={20}
-                      className="text-ink-muted group-open:rotate-180 transition-transform"
-                    />
-                    <h2 className="text-h4">
-                      Avklarade avbrott senaste 7 dagar ({avslutat.length})
-                    </h2>
-                  </summary>
-                  <ul className="mt-4 divide-y divide-border-subtle rounded-md border border-border-subtle bg-surface">
-                    {avslutat.map((a) => (
-                      <li key={a.id} className="p-4 flex flex-wrap items-center gap-3 text-sm">
-                        <span className="w-2 h-2 rounded-full bg-green-500" />
-                        <div className="flex-1 min-w-0">
-                          <p className="font-medium">{a.rubrik}</p>
-                          <p className="text-ink-muted text-xs">
-                            {a.omrade} · {a.berordaKunder} kunder · {a.start} → {a.slutFaktiskt}
-                          </p>
-                        </div>
-                        <span className="text-xs uppercase tracking-wider font-medium px-2 py-0.5 rounded bg-tint-info text-brand-primary">
-                          {TYP_LABEL[a.typ]}
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </details>
+                <h2 className="text-h3 font-medium mb-2">Översikt och historik</h2>
+                <p className="text-ink-secondary mb-5 max-w-reading">
+                  Karta över hela nätet samt avbrott utanför din adress — för dig som vill se helheten.
+                </p>
+
+                <div
+                  role="tablist"
+                  aria-label="Fördjupning"
+                  className="flex gap-1 border-b border-border-subtle mb-5 overflow-x-auto"
+                >
+                  {[
+                    { id: "karta" as const, label: "Karta", count: pagaende.length },
+                    { id: "pagaende" as const, label: "Pågående", count: pagaende.length },
+                    { id: "planerade" as const, label: "Planerade", count: planerat.length },
+                    { id: "avklarade" as const, label: "Avklarade", count: avslutat.length },
+                  ].map((t) => {
+                    const active = fordjupningTab === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        type="button"
+                        role="tab"
+                        aria-selected={active}
+                        id={`fordjupning-tab-${t.id}`}
+                        aria-controls={`fordjupning-panel-${t.id}`}
+                        onClick={() => setFordjupningTab(t.id)}
+                        className={`px-4 py-2.5 text-sm font-medium border-b-2 -mb-px whitespace-nowrap focus:outline-none focus-visible:bg-tint-info ${
+                          active
+                            ? "border-brand-accent text-brand-primary"
+                            : "border-transparent text-ink-secondary hover:text-ink hover:bg-tint-info/50"
+                        }`}
+                      >
+                        {t.label}
+                        <span className="ml-1 text-xs opacity-70">({t.count})</span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {fordjupningTab === "karta" && (
+                  <div role="tabpanel" id="fordjupning-panel-karta" aria-labelledby="fordjupning-tab-karta">
+                    <MapPlaceholder avbrott={pagaende} />
+                    <p className="text-xs text-ink-muted mt-3 max-w-reading">
+                      Kartan är en överblick. För beslut om din adress — använd statuskortet ovan.
+                      Datan kommer från samma driftsystem (DMS/Trimble) som listan och SMS-tjänsten.
+                    </p>
+                  </div>
+                )}
+
+                {fordjupningTab === "pagaende" && (
+                  <div role="tabpanel" id="fordjupning-panel-pagaende" aria-labelledby="fordjupning-tab-pagaende">
+                    {pagaende.length === 0 ? (
+                      <p className="text-ink-muted italic">Inga pågående avbrott just nu.</p>
+                    ) : (
+                      <ul className="space-y-3">
+                        {pagaende.map((a) => {
+                          const isOpen = openAvbrott === a.id;
+                          const meta = STATUS_META[a.status];
+                          return (
+                            <li key={a.id}>
+                              <article
+                                className={`rounded-md border-2 bg-surface overflow-hidden transition-colors ${
+                                  isOpen ? "border-brand-highlight" : "border-border-subtle hover:border-brand-highlight/60"
+                                }`}
+                              >
+                                <button
+                                  type="button"
+                                  onClick={() => setOpenAvbrott(isOpen ? null : a.id)}
+                                  className="w-full text-left px-5 py-4 flex items-center gap-3"
+                                  aria-expanded={isOpen}
+                                >
+                                  <span className={`w-2.5 h-2.5 rounded-full ${meta.dotColor} animate-pulse`} />
+                                  <div className="flex-1 min-w-0">
+                                    <h3 className="font-medium">{a.rubrik}</h3>
+                                    <p className="text-sm text-ink-secondary">
+                                      {a.omrade} · {a.berordaKunder} kunder · {TYP_LABEL[a.typ]}
+                                    </p>
+                                  </div>
+                                  <span className="hidden sm:block text-right text-sm">
+                                    <span className="block text-ink-muted text-xs">Beräknad klar</span>
+                                    <span className="font-medium">{a.slutBeraknat?.split(" ")[1] ?? "–"}</span>
+                                  </span>
+                                  <Icon
+                                    name="expand_more"
+                                    size={20}
+                                    className={`text-ink-muted transition-transform ${isOpen ? "rotate-180" : ""}`}
+                                  />
+                                </button>
+                                {isOpen && (
+                                  <div className="px-5 pb-5 border-t border-border-subtle pt-4">
+                                    <p className="text-sm text-ink-secondary mb-4">{a.beskrivning}</p>
+                                    {a.uppdateringar && a.uppdateringar.length > 0 && (
+                                      <div>
+                                        <h4 className="text-xs uppercase tracking-wider font-medium text-ink-muted mb-2">
+                                          Uppdateringar
+                                        </h4>
+                                        <ol className="space-y-2">
+                                          {a.uppdateringar.map((u, i) => (
+                                            <li key={i} className="flex gap-3">
+                                              <span
+                                                className={`shrink-0 w-2 h-2 rounded-full mt-1.5 ${
+                                                  i === 0 ? "bg-brand-highlight" : "bg-border-strong"
+                                                }`}
+                                              />
+                                              <div className="pb-1">
+                                                <span className="text-xs text-ink-muted font-medium">{u.tid}</span>
+                                                <p className="text-sm">{u.text}</p>
+                                              </div>
+                                            </li>
+                                          ))}
+                                        </ol>
+                                      </div>
+                                    )}
+                                  </div>
+                                )}
+                              </article>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    )}
+                  </div>
+                )}
+
+                {fordjupningTab === "planerade" && (
+                  <div role="tabpanel" id="fordjupning-panel-planerade" aria-labelledby="fordjupning-tab-planerade">
+                    {planerat.length === 0 ? (
+                      <p className="text-ink-muted italic">Inga planerade avbrott denna vecka.</p>
+                    ) : (
+                      <ul className="divide-y divide-border-subtle rounded-md border border-border-subtle bg-surface">
+                        {planerat.map((a) => (
+                          <li key={a.id} className="p-4 flex flex-wrap items-start gap-4">
+                            <div className="shrink-0 w-[72px] text-center">
+                              <p className="text-xs uppercase text-ink-muted font-medium">
+                                {new Date(a.start.replace(" ", "T")).toLocaleDateString("sv-SE", { day: "numeric", month: "short" })}
+                              </p>
+                              <p className="text-sm text-ink-secondary">{a.start.split(" ")[1]?.slice(0, 5)}</p>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <h3 className="font-medium">{a.rubrik}</h3>
+                              <p className="text-sm text-ink-secondary">{a.omrade} · {a.berordaKunder} kunder</p>
+                              <p className="text-sm text-ink-secondary mt-1">{a.beskrivning}</p>
+                            </div>
+                            <span className="text-xs uppercase tracking-wider font-medium px-2 py-1 rounded bg-tint-notice text-brand-primary">
+                              {TYP_LABEL[a.typ]}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
+
+                {fordjupningTab === "avklarade" && (
+                  <div role="tabpanel" id="fordjupning-panel-avklarade" aria-labelledby="fordjupning-tab-avklarade">
+                    {avslutat.length === 0 ? (
+                      <p className="text-ink-muted italic">Inga avklarade avbrott senaste 7 dagar.</p>
+                    ) : (
+                      <ul className="divide-y divide-border-subtle rounded-md border border-border-subtle bg-surface">
+                        {avslutat.map((a) => (
+                          <li key={a.id} className="p-4 flex flex-wrap items-center gap-3 text-sm">
+                            <span className="w-2 h-2 rounded-full bg-green-500" />
+                            <div className="flex-1 min-w-0">
+                              <p className="font-medium">{a.rubrik}</p>
+                              <p className="text-ink-muted text-xs">
+                                {a.omrade} · {a.berordaKunder} kunder · {a.start} → {a.slutFaktiskt}
+                              </p>
+                            </div>
+                            <span className="text-xs uppercase tracking-wider font-medium px-2 py-0.5 rounded bg-tint-info text-brand-primary">
+                              {TYP_LABEL[a.typ]}
+                            </span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                )}
               </section>
             </Annotation>
           ),
@@ -782,57 +914,43 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 8. BRA ATT VETA — ersättning, SMS, grävarbeten ──────── */
+    /* ─── 6. STÖD — ersättning, FAQ, andra kanaler ────────────── */
     {
-      id: "bra-att-veta",
-      label: "Bra att veta — ersättning, SMS, grävarbeten",
+      id: "stod",
+      label: "Stöd — ersättning, FAQ, SMS",
       variants: [
         {
-          key: "tre-kort",
-          label: "Tre kompakta kort",
+          key: "kompakt",
+          label: "Fyra kompakta länkar",
           render: () => (
             <Annotation
-              label="Bra att veta-block"
+              label="Stöd — komprimerad sekundärt"
               audience="redaktör"
-              rationale="Behåller den struktur ÖK-sidan har idag men strippar bort marknadsspråk. Ersättning, SMS-avisering och 'Här gräver vi' som tre likvärdiga ingångar."
+              rationale="Briefens innehållsstrategi: juridiska förklaringar, ersättning, djup FAQ ska vara tillgängligt men inte konkurrera med huvudflödet. Fyra korta kort med länk vidare till respektive detaljsida."
             >
               <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-6">Bra att veta</h2>
-                <div className="grid sm:grid-cols-3 gap-4">
-                  {[
-                    {
-                      ikon: "paid",
-                      rubrik: "Ersättning vid långt avbrott",
-                      text: "Avbrott över 12 timmar ger rätt till ersättning enligt ellagen. Vi kontaktar berörda automatiskt.",
-                      cta: "Läs om ersättning",
-                    },
-                    {
-                      ikon: "sms",
-                      rubrik: "Prenumerera på SMS",
-                      text: "Få besked vid start, uppdatering och slut på avbrott i ditt område.",
-                      cta: "Registrera nummer",
-                    },
-                    {
-                      ikon: "construction",
-                      rubrik: "Här gräver vi just nu",
-                      text: "Karta över pågående och kommande grävarbeten i Helsingborg och Ängelholm.",
-                      cta: "Se karta",
-                    },
-                  ].map((k) => (
-                    <a
-                      key={k.rubrik}
-                      href="#"
-                      className="group p-5 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm transition-all flex flex-col"
-                    >
-                      <Icon name={k.ikon} size={24} className="text-brand-accent mb-3" />
-                      <h3 className="font-medium mb-2 group-hover:text-brand-accent">{k.rubrik}</h3>
-                      <p className="text-sm text-ink-secondary mb-4 flex-1">{k.text}</p>
-                      <span className="text-sm text-brand-accent inline-flex items-center gap-1">
-                        {k.cta}
-                        <Icon name="arrow_forward" size={14} />
-                      </span>
-                    </a>
-                  ))}
+                <h2 className="text-h4 font-medium mb-4">Bra att veta</h2>
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+                  <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
+                    <Icon name="paid" size={20} className="text-brand-accent" />
+                    <span className="font-medium group-hover:text-brand-accent">Ersättning</span>
+                    <span className="text-xs text-ink-secondary">Rätt till ersättning vid avbrott &gt; 12 timmar.</span>
+                  </a>
+                  <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
+                    <Icon name="sms" size={20} className="text-brand-accent" />
+                    <span className="font-medium group-hover:text-brand-accent">SMS-prenumeration</span>
+                    <span className="text-xs text-ink-secondary">Registrera ditt nummer utan att söka just nu.</span>
+                  </a>
+                  <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
+                    <Icon name="quiz" size={20} className="text-brand-accent" />
+                    <span className="font-medium group-hover:text-brand-accent">Vanliga frågor</span>
+                    <span className="text-xs text-ink-secondary">Anvisat avtal, elnät vs elhandel, vem ansvarar.</span>
+                  </a>
+                  <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
+                    <Icon name="construction" size={20} className="text-brand-accent" />
+                    <span className="font-medium group-hover:text-brand-accent">Här gräver vi</span>
+                    <span className="text-xs text-ink-secondary">Pågående och kommande grävarbeten.</span>
+                  </a>
                 </div>
               </section>
             </Annotation>
@@ -845,11 +963,11 @@ export function AvbrottNy() {
   return (
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
-        kategori="Avbrottsinformation (Sidtyp 9 — ny)"
-        syfte="Svara på 'är det avbrott i mitt område?' på under 5 sekunder, minska felanmälningar via self-service-diagnos, och göra arbetsframsteg synligt via tidslinjer."
-        malgrupp="Kund med akut strömbortfall eller nyss fått SMS om planerat arbete. Ofta stressad, mobil, distraherad — fem sekunder av uppmärksamhet."
-        primarHandling="Skriv in postnummer och se status ELLER gå genom felsökningen och lös själv ELLER ring felanmälan."
-        ton="Saklig, direkt, transparent om tidsplan och osäkerhet. Inga marknadsfraser. Pågående avbrott får röd accent, lugnt grönt när det inte är något."
+        kategori="Avbrottsinformation (Sidtyp 9 — beslutsstöd i realtid)"
+        syfte="Svara på 'Är jag påverkad?' och 'När är det löst?' på under 5 sekunder. Adress först, ett samlat statuskort med påverkan per infrastruktur, kontextuella nästa steg och felsökning före kontakt. Karta och historik som sekundärt innehåll."
+        malgrupp="Kund med akut problem — ofta mobil, stressad, fem sekunder av uppmärksamhet. Även förvaltare och redaktionell personal som följer läget."
+        primarHandling="Skriv in adress (eller använd position) → se statuskort → gör rätt nästa steg: prenumerera på SMS / felsök själv / ring."
+        ton="Saklig, direkt, transparent om prognos och osäkerhet. Inga marknadsfraser. Avbrott får röd signal, normaltillstånd får lugnt grönt."
       />
 
       <div className="flex items-center justify-between pt-6">
@@ -874,6 +992,75 @@ export function AvbrottNy() {
       </nav>
 
       <BlockList pageId="avbrott-ny" blocks={blocks} />
+    </div>
+  );
+}
+
+/* ─── Helpers ───────────────────────────────────────────────────── */
+
+/**
+ * Schematisk karta (prototyp) — inte en riktig kartmotor. Visar nätets
+ * geografi med markörer för pågående avbrott. I produktion ersätts denna
+ * med Trimble-kartan — gränssnittet är detsamma: klickbara markörer
+ * leder till samma statuskort som adresssöket ger.
+ *
+ * Positioner är manuellt satta för prototypen (Helsingborg/omland). I
+ * produktion kommer DMS att leverera koordinater som kartmotorn renderar.
+ */
+function MapPlaceholder({ avbrott }: { avbrott: typeof pagaende }) {
+  const markerPositions: { top: string; left: string }[] = [
+    { top: "56%", left: "11%" },  // Söder / centrala Helsingborg
+    { top: "32%", left: "16%" },  // Stattena / Dalhem
+  ];
+
+  return (
+    <div className="rounded-md border border-border-subtle bg-tint-info overflow-hidden">
+      <div
+        className="relative w-full"
+        style={{ aspectRatio: "3 / 2" }}
+        role="img"
+        aria-label={`Karta över Helsingborg-området med ${avbrott.length} pågående avbrott markerade`}
+      >
+        <img
+          src="/map-placeholder.png"
+          alt=""
+          className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+        />
+        {avbrott.map((a, i) => {
+          const pos = markerPositions[i] ?? {
+            top: `${30 + (i * 12) % 50}%`,
+            left: `${20 + (i * 14) % 60}%`,
+          };
+          return (
+            <div
+              key={a.id}
+              className="absolute -translate-x-1/2 -translate-y-1/2"
+              style={{ top: pos.top, left: pos.left }}
+              title={`${a.rubrik} — ${a.omrade}`}
+            >
+              <span
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-brand-highlight/25 animate-pulse"
+                aria-hidden="true"
+              />
+              <span
+                className="relative block w-4 h-4 rounded-full bg-brand-highlight ring-[3px] ring-white shadow-md"
+                aria-hidden="true"
+              />
+            </div>
+          );
+        })}
+      </div>
+      <div className="px-4 py-2.5 bg-surface/70 border-t border-border-subtle flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+        <span className="inline-flex items-center gap-1.5">
+          <span className="w-2.5 h-2.5 rounded-full bg-brand-highlight" />
+          Pågående avbrott ({avbrott.length})
+        </span>
+        <span className="inline-flex items-center gap-1.5 text-ink-muted">
+          <Icon name="info" size={14} />
+          Prototyp — kartmotorn (Trimble) renderar riktiga koordinater i produktion.
+        </span>
+      </div>
     </div>
   );
 }

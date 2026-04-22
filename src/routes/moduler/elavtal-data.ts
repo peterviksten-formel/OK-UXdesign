@@ -1,6 +1,8 @@
 /**
  * Shared placeholder data used by all three Jämför-elavtal variants.
- * Real numbers will replace [bracketed] placeholders before launch.
+ * Siffrorna är uppskattningar för SE4 (Helsingborg/Ängelholm) baserat på
+ * snittspotpris + typiska påslag — ska bytas mot verkliga siffror innan
+ * lansering. Lägenhet = 2 000 kWh/år, villa = 20 000 kWh/år.
  */
 
 export type PlanId = "sakrat" | "kvartspris" | "manadspris";
@@ -15,6 +17,12 @@ export type Plan = {
   bindning: string;
   pasalg: string;
   uppskattning: { lagenhet: string; villa: string };
+  /**
+   * Effektiv kr/kWh inkl. elhandel + påslag. Används av Progressiv-variantens
+   * kalkylator för att räkna om pris live när användaren ändrar förbrukning.
+   * Uppskattad totalkostnad = krPerKwh × kWh / 12.
+   */
+  krPerKwh: number;
   fordelar: string[];
   funderingar: string[];
 };
@@ -28,8 +36,9 @@ export const PLANS: Plan[] = [
     bastFor: "Bäst för dig som vill ha förutsägbarhet och slippa hålla koll.",
     prismekanism: "Fast pris hela avtalsperioden",
     bindning: "12 eller 36 månader",
-    pasalg: "[Påslag X öre/kWh]",
-    uppskattning: { lagenhet: "[~XXX kr/mån]", villa: "[~X XXX kr/mån]" },
+    pasalg: "6,5 öre/kWh",
+    uppskattning: { lagenhet: "~285 kr/mån", villa: "~2 850 kr/mån" },
+    krPerKwh: 1.71,
     fordelar: ["Samma månadskostnad", "Skydd mot prisökningar", "Inga överraskningar"],
     funderingar: ["Du tjänar inte på att priset sjunker", "Bindningstid"],
   },
@@ -41,8 +50,9 @@ export const PLANS: Plan[] = [
     bastFor: "Bäst för dig som vill ha viss stabilitet utan lång bindning.",
     prismekanism: "Nytt pris var tredje månad",
     bindning: "Ingen bindningstid",
-    pasalg: "[Påslag X öre/kWh]",
-    uppskattning: { lagenhet: "[~XXX kr/mån]", villa: "[~X XXX kr/mån]" },
+    pasalg: "5,0 öre/kWh",
+    uppskattning: { lagenhet: "~245 kr/mån", villa: "~2 450 kr/mån" },
+    krPerKwh: 1.47,
     fordelar: ["Mindre svängningar än rörligt", "Ingen bindningstid", "Du följer marknaden"],
     funderingar: ["Priset kan stiga vid omräkning"],
   },
@@ -54,8 +64,9 @@ export const PLANS: Plan[] = [
     bastFor: "Bäst för dig som är flexibel och vill kunna styra elanvändningen.",
     prismekanism: "Spotpris per timme, debiterat månadsvis",
     bindning: "Ingen bindningstid",
-    pasalg: "[Påslag X öre/kWh]",
-    uppskattning: { lagenhet: "[~XXX kr/mån]", villa: "[~X XXX kr/mån]" },
+    pasalg: "4,5 öre/kWh",
+    uppskattning: { lagenhet: "~215 kr/mån", villa: "~2 150 kr/mån" },
+    krPerKwh: 1.29,
     fordelar: ["Lägst kostnad i snitt över tid", "Du belönas för smart förbrukning", "Ingen bindningstid"],
     funderingar: ["Vintermånader kan kosta mer", "Kräver lite koll"],
   },

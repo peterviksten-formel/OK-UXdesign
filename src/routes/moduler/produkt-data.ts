@@ -27,7 +27,7 @@ export const PRODUKTER: Produkt[] = [
     kategori: "Elbil & laddning",
     tagline: "Smart laddning för elbil — hemma eller på jobbet.",
     beskrivning: "Installation av laddbox, smart styrning via app, och en eltariff optimerad för nattladdning. Vi tar hand om allt från besiktning till installation.",
-    pris: { typ: "fran", belopp: "[X XXX]", enhet: "kr inkl. installation" },
+    pris: { typ: "fran", belopp: "14 900", enhet: "kr inkl. installation" },
     inkluderar: [
       "Laddbox (Easee eller Zaptec)",
       "Installation av certifierad elektriker",
@@ -42,7 +42,7 @@ export const PRODUKTER: Produkt[] = [
     uspar: [
       "Ladda billigare på natten med smart styrning",
       "Rotavdrag — dra av 30% av arbetskostnaden",
-      "Installation klar inom [X] veckor",
+      "Installation klar inom 2 veckor",
     ],
     passarFor: "Dig som har elbil och vill ladda hemma till lägsta möjliga kostnad.",
     bildAlt: "Laddbox monterad på garagevägg med ansluten elbil",
@@ -68,7 +68,7 @@ export const PRODUKTER: Produkt[] = [
       "Bygglov kan krävas i kulturmiljö",
     ],
     uspar: [
-      "Sänk dina elkostnader med upp till [X]%",
+      "Sänk dina elkostnader med upp till 40%",
       "Sälj överskottselen till nätet",
       "Grönt skatteavdrag: 20% av totalkostnaden",
     ],
@@ -94,7 +94,7 @@ export const PRODUKTER: Produkt[] = [
       "Bergvärme kräver borrning (separat tillstånd)",
     ],
     uspar: [
-      "Spara upp till [X]% på uppvärmningskostnaden",
+      "Spara upp till 75% på uppvärmningskostnaden",
       "Grönt skatteavdrag",
       "Kombinerbart med solceller",
     ],
@@ -108,7 +108,7 @@ export const PRODUKTER: Produkt[] = [
     kategori: "Elbil & laddning",
     tagline: "Enkel laddbox utan smart styrning — lägre pris.",
     beskrivning: "Grundläggande laddbox för dig som inte behöver app-styrning eller smart nattladdning. Laddboxen installeras på vägg nära parkeringen.",
-    pris: { typ: "fran", belopp: "[X XXX]", enhet: "kr inkl. installation" },
+    pris: { typ: "fran", belopp: "8 900", enhet: "kr inkl. installation" },
     inkluderar: [
       "Laddbox (standardmodell)",
       "Installation av certifierad elektriker",
@@ -156,7 +156,7 @@ export const PRODUKTER: Produkt[] = [
     kategori: "Tillägg",
     tagline: "Investera i lokala miljöprojekt med varje kWh.",
     beskrivning: "Ett frivilligt tillägg till ditt elavtal. För varje kWh du använder går en del till lokala hållbarhetsprojekt i nordvästra Skåne.",
-    pris: { typ: "fast", belopp: "[X]", enhet: "öre/kWh" },
+    pris: { typ: "fast", belopp: "3", enhet: "öre/kWh" },
     inkluderar: [
       "Automatiskt tillägg på din elfaktura",
       "Pengarna går till lokala miljöprojekt",

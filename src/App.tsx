@@ -3,6 +3,7 @@ import { ThemeProvider } from "./lib/ThemeContext";
 import { AnnotationProvider } from "./lib/AnnotationContext";
 import { EditorialGuideProvider } from "./lib/EditorialGuideContext";
 import { EditModeProvider } from "./lib/EditModeContext";
+import { InspectorProvider } from "./lib/InspectorContext";
 import { ViewportProvider } from "./lib/ViewportContext";
 import { Layout } from "./components/Layout";
 import { IndexPage } from "./routes/Index";
@@ -79,7 +80,9 @@ function RouteShell() {
     <AnnotationProvider>
       <EditorialGuideProvider>
         <EditModeProvider>
-          <Layout />
+          <InspectorProvider>
+            <Layout />
+          </InspectorProvider>
         </EditModeProvider>
       </EditorialGuideProvider>
     </AnnotationProvider>

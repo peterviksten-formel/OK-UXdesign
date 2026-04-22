@@ -13,11 +13,11 @@ const FAQS = [
 /**
  * VARIANT A — Accordion
  *
- * Klassisk FAQ. Native <details>/<summary> — fungerar utan JS, bra
- * tillgänglighet, zero-dependency.
+ * Button-baserad accordion (inte <details>) så vi kan animera höjden
+ * smidigt mellan öppen och stängd. ARIA via aria-expanded + aria-controls.
  *
- * Pro: Tekniskt robust, snabb att bygga, fungerar utan CSS/JS.
- * Kontra: Ingen hierarki mellan frågor. Svårt att skala förbi 7-8.
+ * Pro: Känns smidigare än native <details>, full kontroll över motion.
+ * Kontra: Kräver JS (acceptabelt för modern SPA).
  */
 export function FaqAccordion() {
   const [open, setOpen] = useState<string | null>("anvisat");
@@ -25,36 +25,51 @@ export function FaqAccordion() {
     <Annotation
       label="FAQ Accordion"
       audience="user"
-      rationale="Ordning efter vanlighet — 'anvisat avtal' först eftersom det är topp-1 supportfråga. Native HTML-element (details/summary) med overlay för tillstånd. Inget JS krävs för grundfunktion."
+      rationale="Ordning efter vanlighet — 'anvisat avtal' först eftersom det är topp-1 supportfråga. Öppen/stängd animeras via grid-template-rows (0fr↔1fr) så höjden går smidigt utan pop. Respekterar prefers-reduced-motion via Tailwinds motion-safe/reduce."
     >
       <section className="max-w-reading">
         <h2 className="text-h3 font-medium mb-4">Vanliga frågor</h2>
-        <div className="space-y-2">
-          {FAQS.map((f) => (
-            <details
-              key={f.id}
-              open={open === f.id}
-              className="group border border-border-subtle rounded-md bg-surface"
-            >
-              <summary
-                onClick={(e) => { e.preventDefault(); setOpen(open === f.id ? null : f.id); }}
-                className="px-5 py-4 cursor-pointer list-none flex items-center justify-between hover:bg-tint-info rounded-md font-medium text-sm"
+        <ul className="space-y-2">
+          {FAQS.map((f) => {
+            const isOpen = open === f.id;
+            return (
+              <li
+                key={f.id}
+                className="border border-border-subtle rounded-md bg-surface overflow-hidden"
               >
-                {f.q}
-                <Icon
-                  name="expand_more"
-                  size={20}
-                  className={`text-ink-muted transition-transform ${open === f.id ? "rotate-180" : ""}`}
-                />
-              </summary>
-              {open === f.id && (
-                <div className="px-5 pb-4 text-sm text-ink-secondary leading-relaxed border-t border-border-subtle pt-3">
-                  {f.a}
+                <button
+                  type="button"
+                  onClick={() => setOpen(isOpen ? null : f.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={`faq-panel-${f.id}`}
+                  id={`faq-trigger-${f.id}`}
+                  className="w-full text-left px-5 py-4 flex items-center justify-between gap-3 hover:bg-tint-info font-medium text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:-outline-offset-2"
+                >
+                  <span>{f.q}</span>
+                  <Icon
+                    name="expand_more"
+                    size={20}
+                    className={`text-ink-muted shrink-0 transition-transform duration-200 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+                <div
+                  id={`faq-panel-${f.id}`}
+                  role="region"
+                  aria-labelledby={`faq-trigger-${f.id}`}
+                  className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${
+                    isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                  }`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="px-5 pb-4 pt-3 border-t border-border-subtle text-sm text-ink-secondary leading-relaxed">
+                      {f.a}
+                    </div>
+                  </div>
                 </div>
-              )}
-            </details>
-          ))}
-        </div>
+              </li>
+            );
+          })}
+        </ul>
       </section>
     </Annotation>
   );

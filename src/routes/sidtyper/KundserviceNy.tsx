@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
 import { Copy } from "../../components/Copy";
 import { PageBrief } from "../../components/PageBrief";
 import { BlockList, type BlockDef } from "../../components/Block";
 import { Icon } from "../../components/Icon";
-import { KATEGORIER, type KategoriId } from "../moduler/kundservice-data";
+import { WizardProgress, type WizardVariant } from "../../components/WizardProgress";
+import { IntentCardGrid, type IntentCardItem, type IntentCardVariant } from "../../components/IntentCardGrid";
 
 /**
  * SIDTYP 8 — Kundservice (ny, UX-skill-driven)
@@ -25,34 +26,361 @@ import { KATEGORIER, type KategoriId } from "../moduler/kundservice-data";
  *    Länsförsäkringar (öppettider per kanal).
  */
 
+/**
+ * Fem ärende-kategorier enligt UX-brief: användaren tänker i ärenden, inte
+ * funktioner. "Annat" är medveten escape hatch — signalerar att vi inte
+ * gömmer saker bakom "övrigt".
+ */
 const TOP_INTENTS = [
-  { ikon: "home", label: "Jag ska flytta", href: "#" },
-  { ikon: "description", label: "Fråga om fakturan", href: "#" },
-  { ikon: "edit", label: "Teckna elavtal", href: "/moduler/elavtal-jamfor" },
-  { ikon: "sync", label: "Byta elavtal", href: "#" },
-  { ikon: "bolt", label: "Avbrott just nu", href: "/moduler/avbrottslista" },
-  { ikon: "speed", label: "Rapportera mätarställning", href: "#" },
+  { ikon: "home", label: "Flytta", desc: "Anmäl flytt, byta adress", href: "#flytta" },
+  { ikon: "description", label: "Faktura", desc: "Betala, förstå, ändra betalsätt", href: "#faktura" },
+  { ikon: "bolt", label: "Problem eller fel", desc: "Avbrott, felanmälan, störning", href: "/moduler/avbrottslista" },
+  { ikon: "edit_note", label: "Avtal", desc: "Teckna, byta, säga upp", href: "/moduler/elavtal-jamfor" },
+  { ikon: "more_horiz", label: "Annat", desc: "Hittar du inte ditt ärende?", href: "#annat" },
 ];
 
+/**
+ * Just nu-frågor med exempel-svar. Svaret öppnas inline som accordion —
+ * samma mönster som FAQ-modulen (FaqAccordion) så modul och sidtyp matchar.
+ */
 const POPULARA_FRAGOR_JUST_NU = [
-  { q: "Hur säger jag upp mitt elavtal?", href: "#" },
-  { q: "Vilket elavtal passar mig bäst?", href: "#" },
-  { q: "Varför är min faktura högre än vanligt?", href: "#" },
-  { q: "Hur rapporterar jag mätarställning?", href: "#" },
-  { q: "Vad är skillnaden mellan elnät och elhandel?", href: "#" },
+  {
+    id: "saga-upp",
+    q: "Hur säger jag upp mitt elavtal?",
+    a: "Logga in på Mina sidor och välj \"Säg upp avtal\" — det tar ca 1 minut. Vid bindningstid visar vi slutdatum och eventuella avgifter innan du bekräftar.",
+  },
+  {
+    id: "vilket-avtal",
+    q: "Vilket elavtal passar mig bäst?",
+    a: "Tre avtal att välja mellan: Månadspris (flexibel), Kvartspris (viss stabilitet) och Säkrat pris (fast hela året). Använd jämförelsen för att se uppskattad månadskostnad per boendetyp.",
+  },
+  {
+    id: "hog-faktura",
+    q: "Varför är min faktura högre än vanligt?",
+    a: "De vanligaste orsakerna är kall månad med hög förbrukning, spotprisvariation eller att en årsavstämning gjorts. På Mina sidor ser du förbrukning per månad och kan jämföra med föregående år.",
+  },
+  {
+    id: "matarstallning",
+    q: "Hur rapporterar jag mätarställning?",
+    a: "De flesta kunder har automatisk fjärravläsning och behöver inte rapportera själva. Har du däremot ett gammalt schablonavtal: logga in på Mina sidor → \"Rapportera mätarställning\".",
+  },
+  {
+    id: "elnat-elhandel",
+    q: "Vad är skillnaden mellan elnät och elhandel?",
+    a: "Elnät är de fysiska ledningarna — du kan inte välja nätägare, det bestäms av var du bor. Elhandel är vem som säljer själva elen till dig — där väljer du fritt. I Helsingborg och Ängelholm är Öresundskraft elnätsbolag.",
+  },
 ];
 
+/**
+ * Mina sidor-listan fokuserar på "rena" self-service-saker. Avtal syns inte
+ * här eftersom Avtal numera är en top-intent som har sitt eget flöde.
+ */
 const MINA_SIDOR_SHORTCUTS = [
-  "Se fakturor",
+  "Se och betala fakturor",
   "Rapportera mätarställning",
   "Ändra betalsätt",
-  "Byta elavtal",
-  "Ändra adress",
+  "Hämta avtalsvillkor",
+  "Ändra adress och kontaktuppgifter",
 ];
 
+/** Väntetider för status-bannern — numerisk per kanal, inte "kort/långt". */
+const VANTETIDER = {
+  normal: { chatt: "< 1 min", telefon: "2 min" },
+  langre: { chatt: "3 min", telefon: "8 min" },
+} as const;
+
 export function KundserviceNy() {
-  const [activeKat, setActiveKat] = useState<KategoriId | null>(null);
-  const kategori = activeKat ? KATEGORIER.find((k) => k.id === activeKat) : null;
+  // Accordion-state för "Just nu frågar många om" — topp-frågan öppen default.
+  const [openJustNu, setOpenJustNu] = useState<string | null>("saga-upp");
+
+  /**
+   * Kontaktflöde — 3-stegs mini-form enligt brief D.
+   *   1. Välj ärende (chip)  2. Namn + e-post + meddelande  3. Bekräftelse
+   * Demo-state — i produktion skickas svaret till backend och steg 3 visas
+   * efter serversvaret.
+   */
+  const [flowStep, setFlowStep] = useState<1 | 2 | 3>(1);
+  const [flowIntent, setFlowIntent] = useState<string | null>(null);
+  const [flowName, setFlowName] = useState("");
+  const [flowEmail, setFlowEmail] = useState("");
+  const [flowMessage, setFlowMessage] = useState("");
+
+  const svarstidPer: Record<string, string> = {
+    "Flytta": "2 arbetsdagar",
+    "Faktura": "1 arbetsdag",
+    "Problem eller fel": "Samma dag",
+    "Avtal": "1 arbetsdag",
+    "Annat": "1–2 arbetsdagar",
+  };
+
+  function reinitFlow() {
+    setFlowStep(1);
+    setFlowIntent(null);
+    setFlowName("");
+    setFlowEmail("");
+    setFlowMessage("");
+  }
+
+  // Stabilt per submission-tillfälle — nytt id varje gång flödet går in i steg 3.
+  const ticketId = useMemo(
+    () => "KC-2026-" + (Math.floor(Math.random() * 90000) + 10000),
+    [flowStep],
+  );
+
+  /**
+   * Focus management för multi-step form (a11y). När steget ändras flyttas
+   * fokus till det aktiva stegets rubrik så skärmläsare hör var de är och
+   * tangentbords-användare hamnar i rätt region utan att behöva tabba om.
+   * Kör inte på initial mount för att inte stjäla fokus vid sidladdning.
+   */
+  const stepHeadingRef = useRef<HTMLHeadingElement | null>(null);
+  const isInitialRender = useRef(true);
+  useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
+    stepHeadingRef.current?.focus();
+  }, [flowStep]);
+
+  /**
+   * Kontaktflödets body — tre block-varianter delar samma innehåll men byter
+   * progress-header (stepper / bar / chips) via WizardProgress-komponenten.
+   * Samma grammatik används i felsökningsguiden så guides känns enhetliga.
+   */
+  function renderKontaktFlow(progressVariant: WizardVariant) {
+    const svarstid = flowIntent ? svarstidPer[flowIntent] : "1 arbetsdag";
+    const kanFortsatta = flowStep === 2
+      ? flowName.trim() !== "" && flowEmail.trim() !== "" && flowMessage.trim() !== ""
+      : flowIntent !== null;
+
+    return (
+      <Annotation
+        label="Kontaktflöde — förenklat formulär"
+        audience="user"
+        rationale="Briefens krav D: 3 steg istället för långt formulär. Progressive disclosure (en fråga i taget) sänker kognitiv belastning. Steg 3 stänger loopen: bekräftelse, svarstid, vad händer nu, ärende-id. Progress-headern (WizardProgress) är delad med felsökningsguiden."
+      >
+        <section id="kontaktflode" className="py-10 border-t border-border-subtle">
+          <WizardProgress
+            variant={progressVariant}
+            title="Skicka ett ärende — tar under en minut"
+            subtitle="Tre korta steg. Du får ett ärendenummer och ser exakt när vi svarar."
+            steps={[
+              { key: "arende", label: "Ärende" },
+              { key: "detaljer", label: "Detaljer" },
+              { key: "klart", label: "Klart" },
+            ]}
+            current={flowStep}
+          />
+
+          <div className="rounded-md border-2 border-border-subtle bg-surface p-5 sm:p-6 max-w-reading">
+            {flowStep === 1 && (
+              <div>
+                <h3
+                  ref={stepHeadingRef}
+                  tabIndex={-1}
+                  className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                >
+                  Vad gäller det?
+                </h3>
+                <p className="text-sm text-ink-secondary mb-4">
+                  Välj kategori så hamnar ditt ärende hos rätt person direkt.
+                </p>
+                <div className="flex flex-wrap gap-2 mb-5">
+                  {TOP_INTENTS.map((it) => (
+                    <button
+                      key={it.label}
+                      type="button"
+                      onClick={() => setFlowIntent(it.label)}
+                      className={`inline-flex items-center gap-2 px-4 py-2.5 rounded-full border text-sm transition-colors ${
+                        flowIntent === it.label
+                          ? "border-brand-accent bg-tint-info font-medium text-brand-primary"
+                          : "border-border-subtle bg-surface hover:border-brand-accent hover:bg-tint-info/60"
+                      }`}
+                      aria-pressed={flowIntent === it.label}
+                    >
+                      <Icon name={it.ikon} size={16} className="text-brand-accent" />
+                      {it.label}
+                    </button>
+                  ))}
+                </div>
+                <button
+                  type="button"
+                  disabled={!kanFortsatta}
+                  onClick={() => setFlowStep(2)}
+                  className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                >
+                  Fortsätt
+                  <Icon name="arrow_forward" size={16} />
+                </button>
+              </div>
+            )}
+
+            {flowStep === 2 && (
+              <form
+                onSubmit={(e) => { e.preventDefault(); if (kanFortsatta) setFlowStep(3); }}
+              >
+                <h3
+                  ref={stepHeadingRef}
+                  tabIndex={-1}
+                  className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                >
+                  Lägg till detaljer
+                </h3>
+                <p className="text-sm text-ink-secondary mb-4">
+                  Ärende: <strong className="text-ink">{flowIntent}</strong>.
+                  Tre korta fält — inget mer.
+                </p>
+                <div className="space-y-3 mb-5">
+                  <div>
+                    <label htmlFor="flow-name" className="text-sm font-medium block mb-1">
+                      Namn
+                    </label>
+                    <input
+                      id="flow-name"
+                      type="text"
+                      value={flowName}
+                      onChange={(e) => setFlowName(e.target.value)}
+                      required
+                      className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="flow-email" className="text-sm font-medium block mb-1">
+                      E-post
+                    </label>
+                    <input
+                      id="flow-email"
+                      type="email"
+                      value={flowEmail}
+                      onChange={(e) => setFlowEmail(e.target.value)}
+                      required
+                      className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="flow-message" className="text-sm font-medium block mb-1">
+                      Beskriv kort
+                    </label>
+                    <textarea
+                      id="flow-message"
+                      rows={3}
+                      value={flowMessage}
+                      onChange={(e) => setFlowMessage(e.target.value)}
+                      required
+                      className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none resize-y"
+                    />
+                    <p className="text-xs text-ink-muted mt-1">
+                      Vi frågar om mer bara om det behövs.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setFlowStep(1)}
+                    className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-tint-info"
+                  >
+                    <Icon name="arrow_back" size={16} />
+                    Tillbaka
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={!kanFortsatta}
+                    className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Skicka
+                    <Icon name="send" size={16} />
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {flowStep === 3 && (
+              <div role="status" aria-live="polite">
+                <div className="flex items-start gap-3 mb-4">
+                  <Icon
+                    name="check_circle"
+                    size={28}
+                    className="text-brand-accent shrink-0"
+                    filled
+                  />
+                  <div>
+                    <h3
+                      ref={stepHeadingRef}
+                      tabIndex={-1}
+                      className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                    >
+                      Vi har tagit emot ditt ärende
+                    </h3>
+                    <p className="text-sm text-ink-secondary">
+                      En bekräftelse är skickad till <strong className="text-ink">{flowEmail || "din e-post"}</strong>.
+                    </p>
+                  </div>
+                </div>
+                <dl className="text-sm grid sm:grid-cols-2 gap-3 mb-5 p-4 rounded-md bg-tint-info">
+                  <div>
+                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Ärendenummer</dt>
+                    <dd className="font-medium font-mono">{ticketId}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Kategori</dt>
+                    <dd className="font-medium">{flowIntent}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Svar senast</dt>
+                    <dd className="font-medium">Inom {svarstid}</dd>
+                  </div>
+                  <div>
+                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Hanteras av</dt>
+                    <dd className="font-medium">Kundservice, Helsingborg</dd>
+                  </div>
+                </dl>
+                <div className="mb-5">
+                  <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-2">
+                    Så här händer det
+                  </p>
+                  <ol className="space-y-2">
+                    {[
+                      "Vi bekräftar att ärendet är registrerat (redan klart)",
+                      `En handläggare läser ärendet inom ${svarstid}`,
+                      "Du får svar via e-post — eller vi ringer om något är oklart",
+                    ].map((t, i) => (
+                      <li key={i} className="flex gap-3 text-sm">
+                        <span className="shrink-0 w-5 h-5 rounded-full bg-brand-primary text-white grid place-items-center text-[11px] font-bold">
+                          {i + 1}
+                        </span>
+                        <span className={i === 0 ? "text-ink-secondary line-through" : ""}>
+                          {t}
+                        </span>
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href="#"
+                    className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-tint-info text-sm"
+                  >
+                    <Icon name="person" size={16} />
+                    Följ ärendet på Mina sidor
+                  </a>
+                  <button
+                    type="button"
+                    onClick={reinitFlow}
+                    className="inline-flex items-center gap-1.5 text-ink-secondary hover:text-brand-accent text-sm px-3 py-2.5"
+                  >
+                    <Icon name="restart_alt" size={16} />
+                    Starta om
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
+      </Annotation>
+    );
+  }
 
   const blocks: BlockDef[] = [
     /* ─── 1. STATUSBANNER — live belastning ─────────────────────── */
@@ -62,18 +390,22 @@ export function KundserviceNy() {
       variants: [
         {
           key: "normal",
-          label: "Normal kötid",
+          label: "Normal kötid — numerisk",
           render: () => (
             <Annotation
-              label="Statusbanner: normal drift"
+              label="Statusbanner: normal drift, numerisk väntetid"
               audience="user"
-              rationale="Visibility of system status (Nielsen H1). Workshop-önskan: 'Nå snabb avbrottsinfo direkt från KC-sida'. Även när allt är normalt ska statusen kommuniceras — det bygger förtroende att det finns en kanal för informationen."
+              rationale="Briefen: 'Just nu är väntetiden X min'. Numeriska tider slår vaga ord ('kort kötid') — användaren kan välja kanal direkt utan att gissa. Visibility of system status (Nielsen H1) blir operativ, inte dekorativ."
             >
               <section className="pt-4">
-                <div className="rounded-md bg-tint-info border-l-4 border-brand-accent px-4 py-3 flex items-center gap-3 text-sm">
-                  <Icon name="check_circle" size={20} className="text-brand-accent" />
-                  <span>
-                    <strong>Allt normalt just nu.</strong> Kort kötid i chatt och telefon. Inga kända avbrott.
+                <div className="rounded-md bg-tint-info border-l-4 border-brand-accent px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                  <span className="inline-flex items-center gap-2">
+                    <Icon name="check_circle" size={20} className="text-brand-accent" />
+                    <strong>Allt fungerar just nu.</strong>
+                  </span>
+                  <span className="text-ink-secondary">
+                    Kötid: chatt <strong className="text-ink">{VANTETIDER.normal.chatt}</strong> ·
+                    telefon <strong className="text-ink">{VANTETIDER.normal.telefon}</strong>
                   </span>
                 </div>
               </section>
@@ -82,20 +414,24 @@ export function KundserviceNy() {
         },
         {
           key: "langre",
-          label: "Längre kötider",
+          label: "Längre kötider — styr till self-service",
           render: () => (
             <Annotation
               label="Statusbanner: längre kötider"
               audience="user"
-              rationale="Vattenfall-inspirerat: lugn ton, pekar på Mina sidor som snabbare alternativ. Inte en ursäkt — ett erbjudande om snabbare väg."
+              rationale="Briefens trafikstyrning: visa faktisk kötid + föreslå snabbare väg. Inte en ursäkt — ett konkret erbjudande. Vattenfall-stil men med siffror istället för adjektiv."
             >
               <section className="pt-4">
-                <div className="rounded-md bg-tint-notice border-l-4 border-brand-highlight px-4 py-3 flex items-center gap-3 text-sm">
-                  <Icon name="schedule" size={20} className="text-brand-highlight" />
-                  <span className="flex-1">
-                    <strong>Längre kötider just nu.</strong> Många ärenden går att lösa själv via{" "}
-                    <a href="#" className="text-brand-primary font-medium underline underline-offset-2">Mina sidor</a>{" "}
-                    — det tar 1 minut istället för att vänta i kö.
+                <div className="rounded-md bg-tint-notice border-l-4 border-brand-highlight px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
+                  <span className="inline-flex items-center gap-2">
+                    <Icon name="schedule" size={20} className="text-brand-highlight" />
+                    <strong>Längre kötider just nu.</strong>
+                  </span>
+                  <span className="text-ink-secondary">
+                    Chatt <strong className="text-ink">{VANTETIDER.langre.chatt}</strong> ·
+                    telefon <strong className="text-ink">{VANTETIDER.langre.telefon}</strong>.
+                    Snabbare väg:{" "}
+                    <a href="#mina-sidor" className="text-brand-primary font-medium underline underline-offset-2">Mina sidor</a>.
                   </span>
                 </div>
               </section>
@@ -216,135 +552,37 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 3. SNABBKNAPPAR — vanliga ärenden ─────────────────────── */
+    /* ─── 3. SNABBKNAPPAR — delad komponent, 3 layout-varianter ─── */
     {
       id: "snabb",
       label: "Snabbknappar — topp ärenden",
-      variants: [
-        {
-          key: "pills",
-          label: "Pill-knappar (ICA-stil)",
-          render: () => (
-            <Annotation
-              label="Snabbknappar: topp ärenden"
-              audience="user"
-              rationale="Workshop-önskan: 'snabbknappar för flytt, fel, faktura'. Placerad ABOVE the fold, FÖRE triage-modulen. En klick tar användaren dit — inte två. ICA Banken-stil men i kort-format för att få plats med ikon + label."
-            >
-              <section className="py-8 border-t border-border-subtle">
-                <Copy
-                  label="Sektionsrubrik — snabbknappar"
-                  category="rubrik"
-                  text="Vanligaste ärendena"
-                  rationale="Konkret och ärligt. 'Snabba ingångar' eller 'Kom igång' är vagt. 'Vanligaste ärendena' signalerar: 'det här är troligen varför du är här'."
-                >
-                  <h2 className="text-h4 font-medium mb-4">Vanligaste ärendena</h2>
-                </Copy>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
-                  {TOP_INTENTS.map((it) => (
-                    <Link
-                      key={it.label}
-                      to={it.href}
-                      className="group flex flex-col items-start gap-2 p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm transition-all"
-                    >
-                      <Icon name={it.ikon} size={24} className="text-brand-accent" />
-                      <span className="text-sm font-medium leading-snug group-hover:text-brand-accent">
-                        {it.label}
-                      </span>
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            </Annotation>
-          ),
-        },
-        {
-          key: "chips",
-          label: "Chips — kompakt",
-          render: () => (
-            <Annotation
-              label="Snabbknappar (chips): kompaktare"
-              audience="design"
-              rationale="Alternativ om ytan är begränsad. Ikonerna försvinner, bara text. Fungerar som taggmoln — lättare att skumma men mindre visuellt dominant."
-            >
-              <section className="py-6 border-t border-border-subtle">
-                <h2 className="text-h5 font-medium mb-3">Vanligaste ärendena</h2>
-                <div className="flex flex-wrap gap-2">
-                  {TOP_INTENTS.map((it) => (
-                    <Link
-                      key={it.label}
-                      to={it.href}
-                      className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border-subtle bg-surface text-sm hover:border-brand-accent hover:text-brand-accent hover:bg-tint-info transition-colors"
-                    >
-                      <Icon name={it.ikon} size={16} className="text-brand-accent" />
-                      {it.label}
-                    </Link>
-                  ))}
-                </div>
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 4. TRIAGE-MODUL — självhjälp ──────────────────────────── */
-    {
-      id: "triage",
-      label: "Triage — djupare kategorier",
-      variants: [
-        {
-          key: "progressiv",
-          label: "Kategori-grid → underkategorier inline",
-          render: () => (
-            <Annotation
-              label="Interaktiv triage — för den som inte hittade i snabbknappar"
-              audience="design"
-              rationale="Återbruk av Kundservice-triage-modulens Progressiv-variant. Placerad EFTER snabbknappar, för den som inte hittat sin fråga där. Använder befintlig data — 6 kategorier × underkategorier."
-            >
-              <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-2">Eller välj efter kategori</h2>
-                <p className="text-ink-secondary mb-6">Bläddra bland ämnen för att hitta svar på din fråga.</p>
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-6">
-                  {KATEGORIER.map((k) => (
-                    <button
-                      key={k.id}
-                      type="button"
-                      onClick={() => setActiveKat(activeKat === k.id ? null : k.id)}
-                      className={`p-4 rounded-md border-2 text-left transition-all ${
-                        activeKat === k.id
-                          ? "border-brand-accent bg-tint-info"
-                          : "border-border-subtle bg-surface hover:border-brand-accent"
-                      }`}
-                      aria-pressed={activeKat === k.id}
-                    >
-                      <Icon name={k.ikon} size={24} className="text-brand-accent mb-2 block" />
-                      <span className="font-medium block text-sm">{k.label}</span>
-                    </button>
-                  ))}
-                </div>
-                {kategori && (
-                  <div className="rounded-md border border-brand-accent bg-surface p-5">
-                    <h3 className="font-medium mb-3">{kategori.label}</h3>
-                    <ul className="space-y-2">
-                      {kategori.underkategorier.map((u) => (
-                        <li key={u.id}>
-                          <a
-                            href={u.action.type === "link" ? u.action.href : "#"}
-                            className="group flex items-center gap-2 text-sm hover:text-brand-accent py-1.5"
-                          >
-                            <Icon name="arrow_forward" size={14} className="text-ink-muted group-hover:text-brand-accent" />
-                            <span className="font-medium">{u.label}</span>
-                          </a>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
+      variants: (() => {
+        const items: IntentCardItem[] = TOP_INTENTS;
+        const renderWith = (v: IntentCardVariant) => (
+          <Annotation
+            label="Snabbknappar — 5 ärende-kategorier"
+            audience="user"
+            rationale="Briefens kärninsikt: kunden tänker i ärenden, inte funktioner. Fem kort enligt briefens taxonomi — Flytta, Faktura, Problem/fel, Avtal, Annat. Samma IntentCardGrid-komponent som StartsidaUndersidaUX så mönstret är delat — sidtypen väljer bara layout."
+          >
+            <section className="py-8 border-t border-border-subtle">
+              <Copy
+                label="Sektionsrubrik — snabbknappar"
+                category="rubrik"
+                text="Vad gäller det?"
+                rationale="Direkt användarfråga, inte kategori-etikett. 'Vanligaste ärendena' är redaktörens språk; 'Vad gäller det?' är användarens."
+              >
+                <h2 className="text-h4 font-medium mb-4">Vad gäller det?</h2>
+              </Copy>
+              <IntentCardGrid items={items} variant={v} columns={5} />
+            </section>
+          </Annotation>
+        );
+        return [
+          { key: "vertical", label: "Vertikal — ikon över text (default)", render: () => renderWith("vertical") },
+          { key: "horizontal", label: "Horisontell — ikon vänster om text", render: () => renderWith("horizontal") },
+          { key: "chips", label: "Chips — kompakt pill-rad", render: () => renderWith("chips") },
+        ];
+      })(),
     },
 
     /* ─── 5. MINA SIDOR-CALLOUT — självhjälp-push ──────────────── */
@@ -464,7 +702,7 @@ export function KundserviceNy() {
                     icon="smart_toy"
                     kanal="Chatt"
                     lead="Snabbast för enkla frågor"
-                    svar="Svarstid under 1 min"
+                    svar="Under 1 min"
                     oppettider="Dygnet runt · AI-assistent (Ebbot)"
                     cta="Starta chatt"
                     ctaHref="#"
@@ -474,26 +712,26 @@ export function KundserviceNy() {
                     icon="call"
                     kanal="Telefon"
                     lead="För komplexa ärenden"
-                    svar="042-490 32 00"
+                    svar="Kötid 2 min"
                     oppettider="Mån–tor 08–16 · Fre 10–15"
-                    cta="Ring"
+                    cta="Ring 042-490 32 00"
                     ctaHref="tel:0424903200"
                   />
                   <ContactCard
                     icon="mail"
                     kanal="E-post"
                     lead="När det inte är bråttom"
-                    svar="Svar inom 1 arbetsdag"
+                    svar="Inom 1 arbetsdag"
                     oppettider="Dygnet runt"
                     cta="Skicka meddelande"
-                    ctaHref="#"
+                    ctaHref="#kontaktflode"
                   />
                   <ContactCard
                     icon="event_available"
                     kanal="Boka samtal"
-                    lead="Komplexa frågor, tid du väljer"
-                    svar="Vi ringer när du vill"
-                    oppettider="Välj tid de kommande 14 dagarna"
+                    lead="När det passar dig"
+                    svar="Du väljer tiden"
+                    oppettider="Välj tid inom 14 dagar"
                     cta="Boka tid"
                     ctaHref="#"
                   />
@@ -530,9 +768,9 @@ export function KundserviceNy() {
                   Välj kanal efter hur snabbt du behöver svar.
                 </p>
                 <div className="grid sm:grid-cols-3 gap-4">
-                  <ContactCard icon="smart_toy" kanal="Chatt" lead="Snabbast för enkla frågor" svar="Svarstid under 1 min" oppettider="Dygnet runt · AI-assistent" cta="Starta chatt" ctaHref="#" primary />
-                  <ContactCard icon="call" kanal="Telefon" lead="För komplexa ärenden" svar="042-490 32 00" oppettider="Mån–tor 08–16 · Fre 10–15" cta="Ring" ctaHref="tel:0424903200" />
-                  <ContactCard icon="mail" kanal="E-post" lead="När det inte är bråttom" svar="Svar inom 1 arbetsdag" oppettider="Dygnet runt" cta="Skicka meddelande" ctaHref="#" />
+                  <ContactCard icon="smart_toy" kanal="Chatt" lead="Snabbast för enkla frågor" svar="Under 1 min" oppettider="Dygnet runt · AI-assistent" cta="Starta chatt" ctaHref="#" primary />
+                  <ContactCard icon="call" kanal="Telefon" lead="För komplexa ärenden" svar="Kötid 2 min" oppettider="Mån–tor 08–16 · Fre 10–15" cta="Ring 042-490 32 00" ctaHref="tel:0424903200" />
+                  <ContactCard icon="mail" kanal="E-post" lead="När det inte är bråttom" svar="Inom 1 arbetsdag" oppettider="Dygnet runt" cta="Skicka meddelande" ctaHref="#kontaktflode" />
                 </div>
               </section>
             </Annotation>
@@ -541,35 +779,86 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 7. POPULÄRA FRÅGOR "JUST NU" ──────────────────────────── */
+    /* ─── 7. KONTAKTFLÖDE — 3-stegs demo enligt brief D ─────────── */
+    {
+      id: "kontaktflode",
+      label: "Kontaktflöde — 3-stegs mini-form",
+      variants: [
+        {
+          key: "stepper",
+          label: "Stepper — cirklar med etiketter (default)",
+          render: () => renderKontaktFlow("stepper"),
+        },
+        {
+          key: "bar",
+          label: "Progress-bar — kompakt (bäst på mobil)",
+          render: () => renderKontaktFlow("bar"),
+        },
+        {
+          key: "chips",
+          label: "Pill-chips — samma vikt per steg",
+          render: () => renderKontaktFlow("chips"),
+        },
+      ],
+    },
+
+    /* ─── 8. POPULÄRA FRÅGOR "JUST NU" ──────────────────────────── */
     {
       id: "just-nu",
       label: "Populära frågor just nu",
       variants: [
         {
-          key: "lista",
-          label: "Lista — 5 topp-frågor",
+          key: "accordion",
+          label: "Accordion med exempel-svar",
           render: () => (
             <Annotation
-              label="Just nu-frågor"
+              label="Just nu-frågor — accordion"
               audience="redaktör"
-              rationale="Folksam-inspiration: 'Just nu frågar många om det här'. Redaktionellt kurerad lista som uppdateras veckovis baserat på supportdata. Signalerar att sidan är levande och hjälper användare som inte vet vad de letar efter."
+              rationale="Folksam-inspiration: 'Just nu frågar många om'. Redaktionellt kurerad lista, uppdateras veckovis från supportdata. Samma accordion-mönster som FAQ-modulen (FaqAccordion) — svaret öppnas inline och animeras smidigt via grid-template-rows så modul och sidtyp matchar visuellt."
             >
               <section className="py-10 border-t border-border-subtle">
                 <h2 className="text-h3 font-medium mb-2">Just nu frågar många om</h2>
                 <p className="text-sm text-ink-muted mb-4">Baserat på senaste veckans ärenden</p>
-                <ul className="divide-y divide-border-subtle max-w-reading">
-                  {POPULARA_FRAGOR_JUST_NU.map((f) => (
-                    <li key={f.q}>
-                      <a
-                        href={f.href}
-                        className="group flex items-center justify-between py-3 hover:text-brand-accent"
+                <ul className="space-y-2 max-w-reading">
+                  {POPULARA_FRAGOR_JUST_NU.map((f) => {
+                    const isOpen = openJustNu === f.id;
+                    return (
+                      <li
+                        key={f.id}
+                        className="border border-border-subtle rounded-md bg-surface overflow-hidden"
                       >
-                        <span className="font-medium">{f.q}</span>
-                        <Icon name="arrow_forward" size={16} className="text-ink-muted group-hover:text-brand-accent flex-shrink-0" />
-                      </a>
-                    </li>
-                  ))}
+                        <button
+                          type="button"
+                          onClick={() => setOpenJustNu(isOpen ? null : f.id)}
+                          aria-expanded={isOpen}
+                          aria-controls={`just-nu-panel-${f.id}`}
+                          id={`just-nu-trigger-${f.id}`}
+                          className="w-full text-left px-5 py-4 flex items-center justify-between gap-3 hover:bg-tint-info font-medium text-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:-outline-offset-2"
+                        >
+                          <span>{f.q}</span>
+                          <Icon
+                            name="expand_more"
+                            size={20}
+                            className={`text-ink-muted shrink-0 transition-transform duration-200 motion-reduce:transition-none ${isOpen ? "rotate-180" : ""}`}
+                          />
+                        </button>
+                        <div
+                          id={`just-nu-panel-${f.id}`}
+                          role="region"
+                          aria-labelledby={`just-nu-trigger-${f.id}`}
+                          className={`grid transition-[grid-template-rows] duration-200 ease-out motion-reduce:transition-none ${
+                            isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+                          }`}
+                        >
+                          <div className="overflow-hidden">
+                            <div className="px-5 pb-4 pt-3 border-t border-border-subtle text-sm text-ink-secondary leading-relaxed">
+                              {f.a}
+                            </div>
+                          </div>
+                        </div>
+                      </li>
+                    );
+                  })}
                 </ul>
               </section>
             </Annotation>
@@ -578,7 +867,7 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 8. FOOTER — driftstörning + öppettider återupprepas ───── */
+    /* ─── 9. FOOTER — driftstörning + öppettider återupprepas ───── */
     {
       id: "fot",
       label: "Fot — driftstörning + öppettider",
@@ -637,7 +926,7 @@ export function KundserviceNy() {
         kategori="Kundservice (Sidtyp 8 — ersätter KC + Kontakta-oss)"
         syfte="Snabbast möjliga väg till lösning — antingen self-service eller rätt kontaktväg med rätt förväntan. Minska belastning på KC genom att göra självhjälp tydligare än kontakt."
         malgrupp="Privatkund med ett konkret ärende. Ofta stressad, ibland osäker på om ärendet är akut. Toppen av tratten = distraherad användare från sökträff."
-        primarHandling="Hitta svar direkt (sök, snabbknapp, triage) ELLER nå rätt kontaktkanal med känd svarstid."
+        primarHandling="Hitta svar direkt (sök eller snabbknapp) ELLER nå rätt kontaktkanal med känd svarstid."
         ton="Direkt, konkret, respektfull mot användarens tid. Inga marknadsföringsfraser. Säger ärligt vilken kanal som är snabbast för vilket ärende."
       />
 

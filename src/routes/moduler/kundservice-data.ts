@@ -50,7 +50,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "faktura-betalat",
         label: "Jag har redan betalat men fått påminnelse",
-        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Betalningar kan ta 1–3 bankdagar. Chatten hjälper dig kontrollera status.", tid: "[Svarstid: ~2 min]" },
+        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Betalningar kan ta 1–3 bankdagar. Chatten hjälper dig kontrollera status.", tid: "Svarstid: ~2 min" },
       },
     ],
   },
@@ -124,7 +124,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "avbrott-felanmal",
         label: "Jag vill göra en felanmälan",
-        action: { type: "kontakt", kanal: "telefon", label: "Ring felanmälan", description: "Akuta fel anmäls via telefon dygnet runt.", tid: "[08-455 44 00]" },
+        action: { type: "kontakt", kanal: "telefon", label: "Ring felanmälan", description: "Akuta fel anmäls via telefon dygnet runt.", tid: "042-490 32 00" },
       },
     ],
   },
@@ -170,7 +170,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "ovrigt-kontakt",
         label: "Jag hittar inte det jag letar efter",
-        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Vår chatt är öppen vardagar 08–17. Vi hjälper dig hitta rätt.", tid: "[Svarstid: ~2 min]" },
+        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Vår chatt är öppen vardagar 08–17. Vi hjälper dig hitta rätt.", tid: "Svarstid: ~2 min" },
       },
     ],
   },

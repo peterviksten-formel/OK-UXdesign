@@ -1,12 +1,11 @@
-import { Link, NavLink, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { useTheme } from "../lib/ThemeContext";
 import { useAnnotations } from "../lib/AnnotationContext";
 import { useEditorialGuide } from "../lib/EditorialGuideContext";
 import { useEditMode } from "../lib/EditModeContext";
 import { useViewport, VIEWPORT_WIDTH, type Viewport } from "../lib/ViewportContext";
-import { AnnotationPanel } from "./AnnotationPanel";
-import { EditorialGuidePanel } from "./EditorialGuidePanel";
-import { EditModeBar } from "./EditModeBar";
+import { useInspector } from "../lib/InspectorContext";
+import { InspectorPanel } from "./InspectorPanel";
 import { Icon } from "./Icon";
 
 const VP_OPTIONS: { key: Viewport; label: string; icon: string }[] = [
@@ -21,7 +20,31 @@ export function Layout() {
   const { enabled: copyOn, toggle: toggleCopy, list: copyList } = useEditorialGuide();
   const { enabled: editOn, toggle: toggleEdit, resetAll } = useEditMode();
   const { viewport, set: setViewport } = useViewport();
+  const { openOn, panelOpen } = useInspector();
   const location = useLocation();
+
+  /**
+   * En samlad UX-guide-knapp i headern slår av/på alla tre lägen samtidigt
+   * (design-anteckningar, copy-guide, redigeringsläge). Panelen visar sedan
+   * innehållet bakom tre flikar. När alla tre är av försvinner panelen.
+   */
+  const uxGuideOn = annoOn || copyOn || editOn;
+  const totalMarkers = annoList.length + copyList.length;
+
+  function handleToggleUxGuide() {
+    if (uxGuideOn) {
+      // Slå av allt
+      if (annoOn) toggleAnno();
+      if (copyOn) toggleCopy();
+      if (editOn) toggleEdit();
+    } else {
+      // Slå på alla tre + landa på Design-fliken
+      openOn("ux");
+      if (!annoOn) toggleAnno();
+      if (!copyOn) toggleCopy();
+      if (!editOn) toggleEdit();
+    }
+  }
 
   function handleResetAll() {
     if (confirm("Återställer alla sidtyper till rekommenderad variant. Sparade presets behålls. Fortsätt?")) {
@@ -45,8 +68,17 @@ export function Layout() {
     );
   }
 
+  // När UX-guide-panelen är öppen ska sidans innehåll krympa sidledes
+  // så panelen inte överlappar. Panelen själv är fixed-positioned och
+  // påverkas inte av margin på wrappern.
+  const panelVisible = uxGuideOn && panelOpen;
+
   return (
-    <div className="min-h-screen flex flex-col bg-canvas text-ink">
+    <div
+      className={`min-h-screen flex flex-col bg-canvas text-ink transition-[margin] duration-300 ease-out motion-reduce:transition-none ${
+        panelVisible ? "sm:mr-[380px]" : ""
+      }`}
+    >
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-2 focus:bg-brand-highlight focus:text-white focus:rounded"
@@ -64,67 +96,31 @@ export function Layout() {
             <span className="sm:hidden">ÖK · UX</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1 text-sm ml-4">
-            <NavLink
-              to="/sidtyper"
-              className={({ isActive }) =>
-                `px-3 py-1.5 rounded hover:bg-tint-info ${isActive ? "text-brand-primary font-medium" : "text-ink-secondary"}`
-              }
+            <Link
+              to="/"
+              className={`px-3 py-1.5 rounded hover:bg-tint-info inline-flex items-center gap-1.5 ${
+                location.pathname === "/" ? "text-brand-primary font-medium" : "text-ink-secondary"
+              }`}
             >
-              Sidtyper
-            </NavLink>
-            <NavLink
-              to="/moduler"
-              className={({ isActive }) =>
-                `px-3 py-1.5 rounded hover:bg-tint-info ${isActive ? "text-brand-primary font-medium" : "text-ink-secondary"}`
-              }
-            >
-              Moduler
-            </NavLink>
+              <Icon name="grid_view" size={16} />
+              Översikt
+            </Link>
           </nav>
           <div className="ml-auto flex items-center gap-2">
             <button
               type="button"
-              onClick={toggleAnno}
-              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1 ${
-                annoOn
-                  ? "bg-brand-highlight text-white border-brand-highlight"
-                  : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-highlight"
-              }`}
-              aria-pressed={annoOn}
-              title={annoOn ? "Dölj designanteckningar" : "Visa designanteckningar"}
-            >
-              {annoOn && <Icon name="check" size={14} />}
-              Anteckningar
-              {annoOn && annoList.length > 0 ? ` (${annoList.length})` : ""}
-            </button>
-            <button
-              type="button"
-              onClick={toggleCopy}
-              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1 ${
-                copyOn
+              onClick={handleToggleUxGuide}
+              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1.5 ${
+                uxGuideOn
                   ? "bg-brand-primary text-white border-brand-primary"
                   : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
               }`}
-              aria-pressed={copyOn}
-              title={copyOn ? "Dölj copy-guide" : "Visa copy-guide"}
+              aria-pressed={uxGuideOn}
+              title={uxGuideOn ? "Stäng UX-guide" : "Öppna UX-guide (design, copy, redigera)"}
             >
-              {copyOn && <Icon name="check" size={14} />}
-              Copy-guide
-              {copyOn && copyList.length > 0 ? ` (${copyList.length})` : ""}
-            </button>
-            <button
-              type="button"
-              onClick={toggleEdit}
-              className={`text-xs px-2.5 py-1.5 rounded border transition-colors inline-flex items-center gap-1 ${
-                editOn
-                  ? "bg-brand-accent text-white border-brand-accent"
-                  : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
-              }`}
-              aria-pressed={editOn}
-              title={editOn ? "Avsluta redigering" : "Redigera sidtyp"}
-            >
-              {editOn && <Icon name="check" size={14} />}
-              Redigera
+              {uxGuideOn ? <Icon name="check" size={14} /> : <Icon name="tips_and_updates" size={14} />}
+              UX-guide
+              {uxGuideOn && totalMarkers > 0 ? ` (${totalMarkers})` : ""}
             </button>
 
             <div
@@ -168,8 +164,6 @@ export function Layout() {
           </div>
         </div>
       </header>
-
-      <EditModeBar />
 
       {framed && vpWidth ? (
         <div className="flex-1 py-6 bg-canvas flex justify-center overflow-auto">
@@ -219,8 +213,7 @@ export function Layout() {
         </button>
       </footer>
 
-      <AnnotationPanel />
-      <EditorialGuidePanel />
+      <InspectorPanel />
     </div>
   );
 }

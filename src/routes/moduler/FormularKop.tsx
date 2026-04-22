@@ -19,7 +19,7 @@ function FormTrygg() {
           <div className="rounded-md bg-tint-info p-4 mb-6">
             <p className="text-sm font-medium mb-1">Din beställning</p>
             <p className="text-h4 font-medium">Ladda Smart</p>
-            <p className="text-sm text-ink-muted">Från [X XXX] kr inkl. installation</p>
+            <p className="text-sm text-ink-muted">Från 14 900 kr inkl. installation</p>
           </div>
 
           <fieldset>
@@ -150,7 +150,7 @@ function FormProgressiv() {
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="text-xs text-ink-muted">Från</p>
-                    <p className="text-h4 font-medium">[X XXX] kr</p>
+                    <p className="text-h4 font-medium">14 900 kr</p>
                   </div>
                 </div>
               </div>
@@ -249,7 +249,7 @@ function FormProgressiv() {
                   <h3 className="font-medium">Produkt</h3>
                   <button type="button" onClick={() => setStep(0)} className="text-sm text-brand-accent hover:underline">Ändra</button>
                 </div>
-                <p className="text-sm text-ink-secondary">Ladda Smart · Från [X XXX] kr</p>
+                <p className="text-sm text-ink-secondary">Ladda Smart · Från 14 900 kr</p>
               </div>
 
               <div className="rounded-md border border-border-subtle bg-surface p-5">
@@ -258,10 +258,10 @@ function FormProgressiv() {
                   <button type="button" onClick={() => setStep(1)} className="text-sm text-brand-accent hover:underline">Ändra</button>
                 </div>
                 <div className="text-sm text-ink-secondary space-y-1">
-                  <p>[Förnamn Efternamn]</p>
-                  <p>[ÅÅÅÅMMDD-XXXX]</p>
-                  <p>[Adress, postnummer ort]</p>
-                  <p>[epost@exempel.se] · [070-XXX XX XX]</p>
+                  <p>Anna Andersson</p>
+                  <p>19850412-1234</p>
+                  <p>Storgatan 12, 252 25 Helsingborg</p>
+                  <p>anna.andersson@example.se · 070-123 45 67</p>
                 </div>
               </div>
 
