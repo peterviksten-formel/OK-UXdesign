@@ -16,6 +16,11 @@ export const sidtyper: CatalogEntry[] = [
   { slug: "avbrott-ny", title: "Start - Avbrott", subtitle: "Adress först → statuskort med påverkan per infrastruktur, kontextuella CTAs, karta under fördjupning", status: "klar" },
   { slug: "produktsida-direktkop", title: "Produktsida - direktköp", subtitle: "Säljande produktsida med 3-stegs beställningsformulär (Ladda Smart). Hero + USP + Produktinfo + Process + Case + Beställning + FAQ", status: "klar" },
   { slug: "produktsida-leadsgen", title: "Produktsida - leadsgenerering", subtitle: "Konsultativ produktsida för stora investeringar (Solceller). Hero + USP + Process + Spar-kalkylator + Case + Specs + Säljkontakt + FAQ + Lead-form", status: "klar" },
+  { slug: "startsida-nyhetsrum", title: "Startsida - Nyhetsrum", subtitle: "Press + Nyheter + Artiklar i samma flöde. Filter på typ, kategori och sök. Presskontakter + prenumerera. (Skiss — förfinas i nästa steg)", status: "wip" },
+  { slug: "pressmeddelande", title: "Pressmeddelande", subtitle: "Formell publicistisk layout med dateline, sticky press-kontakt, bildbank och boilerplate. Skiss för journalist-målgrupp.", status: "wip" },
+  { slug: "nyhet", title: "Nyhet", subtitle: "Kortfattad informationsnyhet med TL;DR, 'Vad innebär det för dig?' och FAQ. Skiss för kund-målgrupp.", status: "wip" },
+  { slug: "artikel", title: "Artikel", subtitle: "Vardagsformat: hero, lead-stycke, två-tre brödtext-sektioner med en pull-quote, källor, kort bio, prenumerera, related. Skiss — ersätter blogg-konceptet.", status: "wip" },
+  { slug: "artikel-galleri", title: "Artikel - format-galleri", subtitle: "Showcase av editorial-format: TOC med djuplänkar, sammanfattning, faktarutor, fancy numrerade listor, tips & trick, statistik-highlights, författarbio. För längre fördjupningsartiklar.", status: "wip" },
 ];
 
 export const moduler: CatalogEntry[] = [

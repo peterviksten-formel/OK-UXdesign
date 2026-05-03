@@ -28,6 +28,11 @@ import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
 import { AvbrottNy } from "./routes/sidtyper/AvbrottNy";
 import { ProduktsidaDirektkop } from "./routes/sidtyper/ProduktsidaDirektkop";
 import { ProduktsidaLeadsgen } from "./routes/sidtyper/ProduktsidaLeadsgen";
+import { StartsidaNyhetsrum } from "./routes/sidtyper/StartsidaNyhetsrum";
+import { Pressmeddelande } from "./routes/sidtyper/Pressmeddelande";
+import { Nyhet } from "./routes/sidtyper/Nyhet";
+import { Artikel } from "./routes/sidtyper/Artikel";
+import { ArtikelGalleri } from "./routes/sidtyper/ArtikelGalleri";
 
 export default function App() {
   return (
@@ -45,6 +50,11 @@ export default function App() {
             <Route path="/sidtyper/avbrott-ny" element={<AvbrottNy />} />
             <Route path="/sidtyper/produktsida-direktkop" element={<ProduktsidaDirektkop />} />
             <Route path="/sidtyper/produktsida-leadsgen" element={<ProduktsidaLeadsgen />} />
+            <Route path="/sidtyper/startsida-nyhetsrum" element={<StartsidaNyhetsrum />} />
+            <Route path="/sidtyper/pressmeddelande" element={<Pressmeddelande />} />
+            <Route path="/sidtyper/nyhet" element={<Nyhet />} />
+            <Route path="/sidtyper/artikel" element={<Artikel />} />
+            <Route path="/sidtyper/artikel-galleri" element={<ArtikelGalleri />} />
             <Route path="/sidtyper/:slug" element={<StubPage kind="sidtyp" />} />
 
             {/* Moduler */}
