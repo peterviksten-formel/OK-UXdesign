@@ -14,6 +14,8 @@ export const sidtyper: CatalogEntry[] = [
   { slug: "startsida-undersida-ux", title: "Start - Elavtal", subtitle: "UX-audit-driven: elnät före intent, klickbara jämförelsekort, FAQ efter jämförelse", status: "klar" },
   { slug: "kundservice-ny", title: "Start - Kundservice", subtitle: "KC + kontakt på samma sida — statusbanner, snabbknappar, 4 kontaktvägar, kontaktflöde", status: "klar" },
   { slug: "avbrott-ny", title: "Start - Avbrott", subtitle: "Adress först → statuskort med påverkan per infrastruktur, kontextuella CTAs, karta under fördjupning", status: "klar" },
+  { slug: "produktsida-direktkop", title: "Produktsida - direktköp", subtitle: "Säljande produktsida med 3-stegs beställningsformulär (Ladda Smart). Hero + USP + Produktinfo + Process + Case + Beställning + FAQ", status: "klar" },
+  { slug: "produktsida-leadsgen", title: "Produktsida - leadsgenerering", subtitle: "Konsultativ produktsida för stora investeringar (Solceller). Hero + USP + Process + Spar-kalkylator + Case + Specs + Säljkontakt + FAQ + Lead-form", status: "klar" },
 ];
 
 export const moduler: CatalogEntry[] = [

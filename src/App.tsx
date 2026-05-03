@@ -26,6 +26,8 @@ import { Impact } from "./routes/moduler/Impact";
 import { StartsidaUndersidaUX } from "./routes/sidtyper/StartsidaUndersidaUX";
 import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
 import { AvbrottNy } from "./routes/sidtyper/AvbrottNy";
+import { ProduktsidaDirektkop } from "./routes/sidtyper/ProduktsidaDirektkop";
+import { ProduktsidaLeadsgen } from "./routes/sidtyper/ProduktsidaLeadsgen";
 
 export default function App() {
   return (
@@ -41,6 +43,8 @@ export default function App() {
             <Route path="/sidtyper/startsida-undersida-ux" element={<StartsidaUndersidaUX />} />
             <Route path="/sidtyper/kundservice-ny" element={<KundserviceNy />} />
             <Route path="/sidtyper/avbrott-ny" element={<AvbrottNy />} />
+            <Route path="/sidtyper/produktsida-direktkop" element={<ProduktsidaDirektkop />} />
+            <Route path="/sidtyper/produktsida-leadsgen" element={<ProduktsidaLeadsgen />} />
             <Route path="/sidtyper/:slug" element={<StubPage kind="sidtyp" />} />
 
             {/* Moduler */}
