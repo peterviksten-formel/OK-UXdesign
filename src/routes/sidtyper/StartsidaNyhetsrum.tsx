@@ -103,11 +103,11 @@ export function StartsidaNyhetsrum() {
                   <h1 className="text-display leading-tight mb-3">Senaste från Öresundskraft</h1>
                 </Copy>
                 <p className="text-lede text-ink-secondary max-w-reading mb-8 leading-relaxed">
-                  Pressmeddelanden, nyheter och artiklar. Bläddra per ämne nedan, eller{" "}
+                  Pressmeddelanden, nyheter och artiklar — sorterat per typ. Eller{" "}
                   <a href="#prenumerera" className="text-brand-accent underline underline-offset-2 hover:no-underline">
                     prenumerera
                   </a>{" "}
-                  för uppdateringar.
+                  och få det i mejlen.
                 </p>
 
                 {utvald && <FeaturedCard post={utvald} />}
@@ -134,7 +134,7 @@ export function StartsidaNyhetsrum() {
             >
               <PostRow
                 titel="Pressmeddelanden"
-                undertitel="För journalister och allmänheten — citerbar källa."
+                undertitel="Officiella besked från Öresundskraft."
                 posts={press}
                 visaAllaHref="#filter-alla"
               />
@@ -186,7 +186,7 @@ export function StartsidaNyhetsrum() {
             >
               <PostRow
                 titel="Artiklar"
-                undertitel="Berättelser, kundcase och utbildning — för dig som vill förstå djupare."
+                undertitel="Fördjupning, kundcase och förklaringar."
                 posts={artiklar}
                 visaAllaHref="#filter-alla"
               />
@@ -242,7 +242,7 @@ export function StartsidaNyhetsrum() {
               <section id="filter-alla" className="py-10 border-t border-border-subtle">
                 <h2 className="text-h3 font-medium mb-2">Bläddra alla</h2>
                 <p className="text-ink-secondary mb-6 max-w-reading">
-                  Filter, sök eller gå igenom hela arkivet av pressmeddelanden, nyheter och artiklar.
+                  Filter, sök eller bläddra i hela arkivet av pressmeddelanden, nyheter och artiklar.
                 </p>
 
                 {/* Filter-rad */}
@@ -319,7 +319,7 @@ export function StartsidaNyhetsrum() {
 
                 {filtrerad.length === 0 ? (
                   <p className="text-ink-muted py-8 text-center">
-                    Inga poster matchade. Prova andra filter eller{" "}
+                    Inga träffar med de filtren. Prova andra filter eller{" "}
                     <button onClick={() => { setTypFilter("alla"); setKatFilter("alla"); setSok(""); }} className="text-brand-accent underline">
                       rensa filtret
                     </button>.
@@ -396,9 +396,9 @@ export function StartsidaNyhetsrum() {
             <section id="prenumerera" className="py-10 border-t border-border-subtle">
               <div className="rounded-lg bg-tint-info p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
                 <div>
-                  <h2 className="text-h3 mb-2">Få Öresundskraft i mejlen</h2>
+                  <h2 className="text-h3 mb-2">Prenumerera på nyheter</h2>
                   <p className="text-ink-secondary mb-4">
-                    Välj vad du vill följa — pressmeddelanden, nyheter, eller specifika ämnen som CCS och hållbarhet. Avregistrera när som helst.
+                    Välj vad du vill följa — pressmeddelanden, nyheter eller specifika ämnen som CCS och hållbarhet. Avregistrera när som helst.
                   </p>
                 </div>
                 <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-3 max-w-md w-full">
@@ -476,7 +476,7 @@ function FeaturedCard({ post }: { post: NyhetsrumPost }) {
         <div className="p-6 sm:p-8 flex flex-col">
           <div className="flex items-center gap-2 mb-3 text-xs">
             <span className="px-2 py-1 rounded bg-brand-accent text-white font-bold uppercase tracking-wider">
-              Pinned
+              Utvald
             </span>
             <span className={`px-2 py-1 rounded uppercase tracking-wider font-medium ${TYP_COLOR[post.typ]}`}>
               {TYP_LABEL[post.typ]}
@@ -490,7 +490,7 @@ function FeaturedCard({ post }: { post: NyhetsrumPost }) {
           </h2>
           <p className="text-ink-secondary leading-relaxed mb-4 flex-1">{post.ingress}</p>
           <span className="inline-flex items-center gap-1.5 text-sm text-brand-accent font-medium">
-            Läs hela {post.typ === "press" ? "pressmeddelandet" : post.typ === "nyhet" ? "nyheten" : "artikeln"}
+            Läs {post.typ === "press" ? "pressmeddelandet" : post.typ === "nyhet" ? "nyheten" : "artikeln"}
             <Icon name="arrow_forward" size={16} />
           </span>
         </div>

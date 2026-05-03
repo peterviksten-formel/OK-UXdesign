@@ -105,8 +105,8 @@ export function Pressmeddelande() {
                   </p>
                   <p>
                     Beslutet följer ett samråd med kundrepresentanter, näringsliv och
-                    fastighetsägare i regionen och är en del av bolagets långsiktiga arbete
-                    för att hålla nere uppvärmningskostnaderna trots ökade investeringar i
+                    fastighetsägare i regionen. Det är en del av bolagets långsiktiga arbete
+                    för att hålla nere uppvärmningskostnaderna — trots ökade investeringar i
                     nätet och anslutning till koldioxidinfångning på Filbornaverket.
                   </p>
                 </div>
@@ -172,7 +172,7 @@ export function Pressmeddelande() {
                   <h2 className="text-h3 font-medium mb-4">Pressbilder och bilagor</h2>
                 </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
-                  Fritt att använda i samband med rapportering om Öresundskraft. Ange foto-credit där det anges.
+                  Använd fritt vid rapportering om Öresundskraft. Ange foto-credit där den finns.
                 </p>
 
                 {/* Bildgrid */}

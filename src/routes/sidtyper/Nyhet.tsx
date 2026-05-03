@@ -122,9 +122,9 @@ export function Nyhet() {
               <p>
                 Från och med 1 juli 2026 justeras elnätsavgifterna för
                 Öresundskrafts privatkunder i Helsingborg och Ängelholm.
-                Höjningen är en konsekvens av den utbyggnad och det
-                modernisering vi gör för att möta ökad efterfrågan från
-                elbilsladdning, värmepumpar och anslutning av nya bostäder.
+                Höjningen finansierar den utbyggnad och modernisering av nätet
+                som krävs för att möta ökad efterfrågan från elbilsladdning,
+                värmepumpar och anslutning av nya bostäder.
               </p>
               <p>
                 För en typisk villa med årsförbrukning omkring 20&nbsp;000 kWh
@@ -183,13 +183,13 @@ export function Nyhet() {
                       ikon: "ev_station",
                       situation: "Har du elbilsladdning hemma?",
                       konsekvens:
-                        "Höjningen påverkar effekttariffen marginellt. Smart laddning på natten ger fortsatt lägst kostnad.",
+                        "Höjningen påverkar effekttariffen lite. Smart laddning på natten är fortfarande billigast.",
                     },
                     {
                       ikon: "solar_power",
                       situation: "Har du solceller?",
                       konsekvens:
-                        "Avgiften för uttagen el höjs men ersättningen för såld el ändras inte. Egen produktion blir relativt mer värdefull.",
+                        "Avgiften för uttagen el höjs, men ersättningen för såld el ändras inte. Egen produktion blir därmed ännu mer värdefull.",
                     },
                   ].map((k) => (
                     <div
@@ -249,14 +249,14 @@ export function Nyhet() {
                 <div className="flex-1">
                   <p className="font-medium">Frågor om elnätsavgiften?</p>
                   <p className="text-sm text-ink-secondary">
-                    Svar på din specifika faktura får du snabbast via vår kundservice.
+                    Frågor om din egen faktura besvarar vi snabbast direkt.
                   </p>
                 </div>
                 <Link
                   to="/sidtyper/kundservice-ny"
                   className="inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-4 py-2.5 rounded hover:opacity-90 text-sm shrink-0"
                 >
-                  Till kundservice
+                  Kontakta kundservice
                   <Icon name="arrow_forward" size={16} />
                 </Link>
               </div>
