@@ -247,18 +247,32 @@ export function Nyhet() {
               <div className="rounded-md bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-reading">
                 <Icon name="support_agent" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
-                  <p className="font-medium">Frågor om elnätsavgiften?</p>
+                  <Copy
+                    label="KC-banner — rubrik"
+                    category="rubrik"
+                    text="Frågor om elnätsavgiften?"
+                    rationale="Frågeformsrubrik som speglar exakt vad användaren tänker just nu — efter att ha läst nyheten ('jag har en fråga om min specifika räkning'). Aldrig 'Kontakta oss' (generiskt) eller 'Vi hjälper dig' (om sändaren)."
+                  >
+                    <p className="font-medium">Frågor om elnätsavgiften?</p>
+                  </Copy>
                   <p className="text-sm text-ink-secondary">
                     Frågor om din egen faktura besvarar vi snabbast direkt.
                   </p>
                 </div>
-                <Link
-                  to="/sidtyper/kundservice-ny"
-                  className="inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-4 py-2.5 rounded hover:opacity-90 text-sm shrink-0"
+                <Copy
+                  label="KC-banner — CTA"
+                  category="cta"
+                  text="Kontakta kundservice"
+                  rationale="Verb + objekt. Förra versionen var 'Till kundservice' (riktning, inte handling). 'Kontakta' är action-first — användaren vet vad knappen GÖR, inte bara var den TAR dem."
                 >
-                  Kontakta kundservice
-                  <Icon name="arrow_forward" size={16} />
-                </Link>
+                  <Link
+                    to="/sidtyper/kundservice-ny"
+                    className="inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-4 py-2.5 rounded hover:opacity-90 text-sm shrink-0"
+                  >
+                    Kontakta kundservice
+                    <Icon name="arrow_forward" size={16} />
+                  </Link>
+                </Copy>
               </div>
             </section>
           ),
@@ -276,7 +290,14 @@ export function Nyhet() {
           label: "Liknande ämne — 2 kort",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
-              <h2 className="text-h4 font-medium mb-4">Mer om {KATEGORI_LABEL[POST.kategori]}</h2>
+              <Copy
+                label="Related — rubrik"
+                category="rubrik"
+                text={`Mer om ${KATEGORI_LABEL[POST.kategori]}`}
+                rationale="Dynamisk rubrik som speglar nyhetens kategori — 'Mer om Energi'. Förra mönstret 'Liknande nyheter' eller 'Du kanske också vill läsa' är generiskt. Kategorinamnet är konkret och säger exakt vad relationen är."
+              >
+                <h2 className="text-h4 font-medium mb-4">Mer om {KATEGORI_LABEL[POST.kategori]}</h2>
+              </Copy>
               <div className="grid sm:grid-cols-2 gap-4 max-w-reading">
                 {[
                   { rubrik: "Du kan nu hämta dina mätvärden direkt i appen", datum: "2026-04-02" },

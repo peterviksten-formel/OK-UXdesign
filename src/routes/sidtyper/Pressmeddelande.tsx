@@ -244,9 +244,16 @@ export function Pressmeddelande() {
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-md bg-tint-info p-6 max-w-reading">
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
-                    Om Öresundskraft
-                  </p>
+                  <Copy
+                    label="Boilerplate — eyebrow"
+                    category="metadata"
+                    text="Om Öresundskraft"
+                    rationale="Genrekonvention för pressrelease-boilerplate — alla pressreleaser har samma 'Om [företaget]'-rubrik så journalister känner igen formatet och kan klippa in det i artiklar utan redigering."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
+                      Om Öresundskraft
+                    </p>
+                  </Copy>
                   <p className="text-sm leading-relaxed text-ink-secondary">
                     Öresundskraft är ett kommunalägt energibolag med säte i Helsingborg.
                     Bolaget levererar el, fjärrvärme, fjärrkyla, gas och stadsnät till cirka
@@ -278,9 +285,16 @@ export function Pressmeddelande() {
             <section className="py-8 border-t border-border-subtle">
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
-                    Dela pressmeddelandet
-                  </p>
+                  <Copy
+                    label="Dela — rubrik + CTA-mönster"
+                    category="cta"
+                    text="Dela pressmeddelandet · Mejla länken · Dela på LinkedIn"
+                    rationale="Alla CTA:er följer verb + objekt-pattern. 'Mejla' (verb utan objekt) → 'Mejla länken'. 'LinkedIn' (plattformnamn utan handling) → 'Dela på LinkedIn'. Genomgående handlingsbeskrivning inte nominalfras."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
+                      Dela pressmeddelandet
+                    </p>
+                  </Copy>
                   <div className="flex flex-wrap gap-2">
                     {[
                       { ikon: "share", label: "Kopiera länk" },
@@ -299,9 +313,16 @@ export function Pressmeddelande() {
                   </div>
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
-                    Tidigare pressmeddelanden
-                  </p>
+                  <Copy
+                    label="Tidigare press — länk-pattern"
+                    category="metadata"
+                    text="Rubrik — datum"
+                    rationale="Länk-text följer 'rubrik — datum'-pattern, aldrig 'klicka här' eller 'läs mer'. UX-writing-regel: länk-text ska beskriva destinationen utan kontext. Skärmläsare som listar länkar får full beskrivning."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
+                      Tidigare pressmeddelanden
+                    </p>
+                  </Copy>
                   <ul className="space-y-1.5 text-sm">
                     <li><a href="#" className="text-brand-accent hover:underline">Industriklivet beviljar 228 mkr till CCS — 28 mars 2026</a></li>
                     <li><a href="#" className="text-brand-accent hover:underline">Ny avsiktsförklaring för fossilfri fjärrvärme — 12 feb 2026</a></li>
@@ -356,9 +377,16 @@ export function Pressmeddelande() {
               aria-label="Presskontakt"
               className="rounded-md border-2 border-brand-accent bg-surface shadow-md p-5"
             >
-              <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
-                Presskontakt
-              </p>
+              <Copy
+                label="Sticky-kontakt — eyebrow"
+                category="metadata"
+                text="Presskontakt"
+                rationale="Enstavig funktionsetikett. Inte 'Kontakta oss' (för bred — vem är 'oss'?), inte 'Press' ensamt (oklart vad det är). 'Presskontakt' = vem journalisten ska kontakta."
+              >
+                <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
+                  Presskontakt
+                </p>
+              </Copy>
               <div className="flex items-start gap-3 mb-4">
                 <span className="shrink-0 w-12 h-12 rounded-full bg-brand-primary text-white grid place-items-center font-medium">
                   {POST.presskontakt!.initialer}

@@ -270,18 +270,32 @@ export function Artikel() {
             <section className="py-8 max-w-reading border-t border-border-subtle mt-10">
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
-                    Källor
-                  </p>
+                  <Copy
+                    label="Källor — eyebrow"
+                    category="metadata"
+                    text="Källor"
+                    rationale="Enstavig genrekonvention. Inte 'Referenser' (formellt) eller 'Mer information' (otydligt). 'Källor' = externa belägg för det som påstås i artikeln."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
+                      Källor
+                    </p>
+                  </Copy>
                   <ul className="text-sm space-y-1.5 text-ink-secondary">
                     <li>Energimarknadsinspektionen: rapport om effekttariffer 2025</li>
                     <li>Öresundskrafts förbrukningsstatistik 2024–2026</li>
                   </ul>
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
-                    Taggar
-                  </p>
+                  <Copy
+                    label="Taggar — eyebrow"
+                    category="metadata"
+                    text="Taggar"
+                    rationale="Enstavig label, gör tagg-listan självförklarande. 'Ämnen' eller 'Kategorier' är synonymer som skapar ordsplit i UI:t — välj en och stick. Här: 'Taggar' — matchar mönstret från Nyhetsrum-listan."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
+                      Taggar
+                    </p>
+                  </Copy>
                   <div className="flex flex-wrap gap-1.5">
                     {["Effekttariff", "Elnät", "Förbrukning", "Smart styrning"].map((t) => (
                       <Link
@@ -348,18 +362,32 @@ export function Artikel() {
               <div className="rounded-lg bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
-                  <p className="font-medium">Få fler artiklar i mejlen</p>
+                  <Copy
+                    label="Subscribe — outcome-rubrik"
+                    category="rubrik"
+                    text="Få fler artiklar i mejlen"
+                    rationale="Outcome-fokuserad rubrik istället för engagement-fluff. Förra versionen var 'Tycker du om det här?' (känslo-opener) — bytt till handlingsutfall: vad användaren får om de prenumererar."
+                  >
+                    <p className="font-medium">Få fler artiklar i mejlen</p>
+                  </Copy>
                   <p className="text-sm text-ink-secondary">
                     Vi skickar inte oftare än en gång i månaden — avregistrera när du vill.
                   </p>
                 </div>
-                <a
-                  href="/sidtyper/startsida-nyhetsrum#prenumerera"
-                  className="inline-flex items-center gap-1.5 border border-border-strong bg-canvas font-medium px-4 py-2.5 rounded text-sm hover:bg-tint-info hover:border-brand-accent shrink-0"
+                <Copy
+                  label="Subscribe — CTA"
+                  category="cta"
+                  text="Prenumerera"
+                  rationale="Enstavig action-verb när kontexten redan är glasklar. Rubriken säger vad utfallet blir; knappen behöver bara säga handlingen. Kortare CTA = lägre kognitiv kostnad."
                 >
-                  Prenumerera
-                  <Icon name="arrow_forward" size={14} />
-                </a>
+                  <a
+                    href="/sidtyper/startsida-nyhetsrum#prenumerera"
+                    className="inline-flex items-center gap-1.5 border border-border-strong bg-canvas font-medium px-4 py-2.5 rounded text-sm hover:bg-tint-info hover:border-brand-accent shrink-0"
+                  >
+                    Prenumerera
+                    <Icon name="arrow_forward" size={14} />
+                  </a>
+                </Copy>
               </div>
             </section>
           ),
@@ -377,7 +405,14 @@ export function Artikel() {
           label: "Tre kort med samma kategori-färg",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
-              <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
+              <Copy
+                label="Related — rubrik"
+                category="rubrik"
+                text="Fortsätt läsa"
+                rationale="Action-fras istället för 'Liknande artiklar' eller 'Mer från oss'. 'Fortsätt läsa' speglar exakt vad användaren håller på med och inviterar dem att fortsätta — implicit promise om mer av samma kvalitet."
+              >
+                <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
+              </Copy>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   { rubrik: "Hur kan solceller ge större nytta i hushållen framöver?", kategori: "Utbildning", lastid: "6 min", to: "/sidtyper/artikel-galleri" },

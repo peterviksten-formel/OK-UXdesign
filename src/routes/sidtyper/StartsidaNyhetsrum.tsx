@@ -137,6 +137,7 @@ export function StartsidaNyhetsrum() {
                 undertitel="Officiella besked från Öresundskraft."
                 posts={press}
                 visaAllaHref="#filter-alla"
+                copyRationale="Front-loadat substantiv (Pressmeddelanden), kort innehållsbeskrivning som underrubrik. Förra versionen sa 'För journalister och allmänheten — citerbar källa' (jargong + målgruppsdefinition i samma fras)."
               />
             </Annotation>
           ),
@@ -163,6 +164,7 @@ export function StartsidaNyhetsrum() {
                 undertitel="Förändringar som påverkar dig som kund."
                 posts={nyheter}
                 visaAllaHref="#filter-alla"
+                copyRationale="Underrubriken är outcome-fokuserad — 'påverkar dig som kund' säger varför läsaren bör bry sig. Inte 'Senaste nyheterna från oss' (om sändaren) utan om mottagaren."
               />
             </Annotation>
           ),
@@ -189,6 +191,7 @@ export function StartsidaNyhetsrum() {
                 undertitel="Fördjupning, kundcase och förklaringar."
                 posts={artiklar}
                 visaAllaHref="#filter-alla"
+                copyRationale="Tre konkreta substantiv (fördjupning/kundcase/förklaringar) räcker — förra versionen var 'Berättelser, kundcase och utbildning — för dig som vill förstå djupare' (11 ord, scan-fail). Conciseness-princip."
               />
             </Annotation>
           ),
@@ -217,6 +220,7 @@ export function StartsidaNyhetsrum() {
                   undertitel="Koldioxidinfångning på Filbornaverket — pressmeddelanden, nyheter och bakgrund."
                   posts={ccs}
                   visaAllaHref="#filter-alla"
+                  copyRationale="'På djupet:'-prefix är genrekonvention för redaktionellt kuraterad samling (jämför Spotifys 'Editorial picks' eller Apples 'Today In'). Underrubriken förtydligar kontexten — vad CCS är i konkret form (Filbornaverket)."
                 />
               </Annotation>
             );
@@ -240,7 +244,14 @@ export function StartsidaNyhetsrum() {
               rationale="Raderna ovan är redaktionellt kuraterade. Filtret här är för dem som har ett specifikt sökmål — datum, ämne, fritext. Demoterat under raderna eftersom det inte är primärt mål för de flesta besökare."
             >
               <section id="filter-alla" className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-2">Bläddra alla</h2>
+                <Copy
+                  label="Bläddra alla — rubrik"
+                  category="rubrik"
+                  text="Bläddra alla"
+                  rationale="Verb + objekt-rubrik. 'Bläddra' speglar handlingen användaren ska göra (klicka filter, scrolla grid). 'Arkiv' eller 'Hela materialet' skulle vara abstraktare och systemnära."
+                >
+                  <h2 className="text-h3 font-medium mb-2">Bläddra alla</h2>
+                </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
                   Filter, sök eller bläddra i hela arkivet av pressmeddelanden, nyheter och artiklar.
                 </p>
@@ -290,14 +301,21 @@ export function StartsidaNyhetsrum() {
                     </label>
                     <div className="relative">
                       <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
-                      <input
-                        id="sok-filter"
-                        type="search"
-                        value={sok}
-                        onChange={(e) => setSok(e.target.value)}
-                        placeholder="T.ex. fjärrvärme, CCS, elnätsavgift"
-                        className="w-full h-9 rounded-md border border-border-subtle bg-surface pl-9 pr-3 text-sm focus:outline-none focus:border-brand-accent"
-                      />
+                      <Copy
+                        label="Sök — placeholder"
+                        category="metadata"
+                        text="T.ex. fjärrvärme, CCS, elnätsavgift"
+                        rationale="Placeholder visar EXEMPEL på söktermer (UX-writing-pattern). Förra versionen var 'Sök i rubrik och ingress' — instruktion, inte exempel. Tre konkreta exempel sänker användarens 'vad kan jag söka på?'-friktion."
+                      >
+                        <input
+                          id="sok-filter"
+                          type="search"
+                          value={sok}
+                          onChange={(e) => setSok(e.target.value)}
+                          placeholder="T.ex. fjärrvärme, CCS, elnätsavgift"
+                          className="w-full h-9 rounded-md border border-border-subtle bg-surface pl-9 pr-3 text-sm focus:outline-none focus:border-brand-accent"
+                        />
+                      </Copy>
                     </div>
                   </div>
 
@@ -318,12 +336,19 @@ export function StartsidaNyhetsrum() {
                 </p>
 
                 {filtrerad.length === 0 ? (
-                  <p className="text-ink-muted py-8 text-center">
-                    Inga träffar med de filtren. Prova andra filter eller{" "}
-                    <button onClick={() => { setTypFilter("alla"); setKatFilter("alla"); setSok(""); }} className="text-brand-accent underline">
-                      rensa filtret
-                    </button>.
-                  </p>
+                  <Copy
+                    label="Tomtillstånd — inga träffar"
+                    category="reassurance"
+                    text="Inga träffar med de filtren. Prova andra filter eller rensa filtret."
+                    rationale="Empty-state-pattern: status + förklaring + CTA. 'Inga träffar' (status) + implicit förklaring (filtren är för restriktiva) + två konkreta vägar framåt (prova andra / rensa). Aldrig dead-end. Förra versionen sa 'Inga poster matchade' (system-y)."
+                  >
+                    <p className="text-ink-muted py-8 text-center">
+                      Inga träffar med de filtren. Prova andra filter eller{" "}
+                      <button onClick={() => { setTypFilter("alla"); setKatFilter("alla"); setSok(""); }} className="text-brand-accent underline">
+                        rensa filtret
+                      </button>.
+                    </p>
+                  </Copy>
                 ) : (
                   <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     {filtrerad.map((p) => <PostKort key={p.id} post={p} />)}
@@ -346,7 +371,14 @@ export function StartsidaNyhetsrum() {
           label: "Presskontakter prominent",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
-              <h2 className="text-h3 font-medium mb-2">För journalister</h2>
+              <Copy
+                label="Press-kontakt — rubrik"
+                category="rubrik"
+                text="För journalister"
+                rationale="Målgruppsadresserande rubrik — 'För journalister' säger direkt vem detta är för. Alternativ som 'Presskontakt' eller 'Kontakta press' fungerar också men 'För X' signalerar tydligare 'detta block är inte för dig som vanlig läsare'."
+              >
+                <h2 className="text-h3 font-medium mb-2">För journalister</h2>
+              </Copy>
               <p className="text-ink-secondary mb-6 max-w-reading">
                 Kontakta vår presstjänst för intervjuer, kommentarer eller högupplöst bildmaterial.
                 Vi svarar inom 1 arbetsdag.
@@ -396,7 +428,14 @@ export function StartsidaNyhetsrum() {
             <section id="prenumerera" className="py-10 border-t border-border-subtle">
               <div className="rounded-lg bg-tint-info p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
                 <div>
-                  <h2 className="text-h3 mb-2">Prenumerera på nyheter</h2>
+                  <Copy
+                    label="Prenumerera — rubrik"
+                    category="rubrik"
+                    text="Prenumerera på nyheter"
+                    rationale="Verb + objekt. Förra versionen var 'Få Öresundskraft i mejlen' — fluff (vad är 'Öresundskraft i mejlen'?). 'Prenumerera på nyheter' säger handlingen och vad som prenumereras på."
+                  >
+                    <h2 className="text-h3 mb-2">Prenumerera på nyheter</h2>
+                  </Copy>
                   <p className="text-ink-secondary mb-4">
                     Välj vad du vill följa — pressmeddelanden, nyheter eller specifika ämnen som CCS och hållbarhet. Avregistrera när som helst.
                   </p>
@@ -407,10 +446,17 @@ export function StartsidaNyhetsrum() {
                     placeholder="din.epost@example.se"
                     className="h-11 px-3 rounded-md border border-border-strong bg-canvas focus:outline-none focus:border-brand-accent"
                   />
-                  <button type="submit" className="h-11 inline-flex items-center justify-center gap-2 bg-brand-primary text-ink-onbrand font-medium rounded hover:opacity-90">
-                    Välj ämnen och prenumerera
-                    <Icon name="arrow_forward" size={16} />
-                  </button>
+                  <Copy
+                    label="Prenumerera — CTA"
+                    category="cta"
+                    text="Välj ämnen och prenumerera"
+                    rationale="Verb + objekt + outcome-signal. 'Välj ämnen' förkonsumtion-signalerar att nästa steg är ett val (inte 'klicka här och du är prenumerant nu'), 'prenumerera' bekräftar handlingen. Sätter rätt förväntan."
+                  >
+                    <button type="submit" className="h-11 inline-flex items-center justify-center gap-2 bg-brand-primary text-ink-onbrand font-medium rounded hover:opacity-90">
+                      Välj ämnen och prenumerera
+                      <Icon name="arrow_forward" size={16} />
+                    </button>
+                  </Copy>
                   <p className="text-xs text-ink-muted">
                     Du kan välja ämnen på nästa steg · Vi delar inte din e-post med tredje part
                   </p>
@@ -509,22 +555,41 @@ function PostRow({
   undertitel,
   posts,
   visaAllaHref,
+  copyRationale,
 }: {
   titel: string;
   undertitel?: string;
   posts: NyhetsrumPost[];
   visaAllaHref: string;
+  /** Optional UX-writing-rationale shown in editorial-guide-panel for this row. */
+  copyRationale?: string;
 }) {
   if (posts.length === 0) return null;
+
+  const headingNode = (
+    <div className="min-w-0">
+      <h2 className="text-h4 font-medium">{titel}</h2>
+      {undertitel && (
+        <p className="text-sm text-ink-secondary mt-0.5">{undertitel}</p>
+      )}
+    </div>
+  );
+
   return (
     <section className="py-6 border-t border-border-subtle">
       <div className="flex items-end justify-between gap-4 mb-4">
-        <div className="min-w-0">
-          <h2 className="text-h4 font-medium">{titel}</h2>
-          {undertitel && (
-            <p className="text-sm text-ink-secondary mt-0.5">{undertitel}</p>
-          )}
-        </div>
+        {copyRationale ? (
+          <Copy
+            label={`Rad-rubrik — ${titel}`}
+            category="rubrik"
+            text={undertitel ? `${titel} — ${undertitel}` : titel}
+            rationale={copyRationale}
+          >
+            {headingNode}
+          </Copy>
+        ) : (
+          headingNode
+        )}
         <a
           href={visaAllaHref}
           aria-label={`Visa alla ${titel.toLowerCase()}`}

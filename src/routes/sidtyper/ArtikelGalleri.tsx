@@ -123,9 +123,16 @@ export function ArtikelGalleri() {
             >
               <section className="max-w-reading">
                 <div className="rounded-md bg-tint-info border-l-4 border-brand-accent p-5 sm:p-6">
-                  <p className="text-[11px] uppercase tracking-wider text-brand-primary font-bold mb-3">
-                    Sammanfattning
-                  </p>
+                  <Copy
+                    label="Sammanfattning — eyebrow"
+                    category="metadata"
+                    text="Sammanfattning"
+                    rationale="Editorial register passar artikel-genren — 'Sammanfattning' speglar redaktionellt språkbruk. Jämför med Nyhet som använder 'Det viktigaste' (vardagssvenska för kund). Konsekvens: olika typsidor, olika register."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-brand-primary font-bold mb-3">
+                      Sammanfattning
+                    </p>
+                  </Copy>
                   <ul className="space-y-2">
                     {[
                       "Solceller utan batteri täcker ca 40 % av en typvillas årsförbrukning. Med batteri dubblas siffran.",
@@ -163,9 +170,16 @@ export function ArtikelGalleri() {
             >
               <section className="max-w-reading mt-6">
                 <div className="rounded-md border border-border-subtle bg-surface p-5">
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
-                    I denna artikel
-                  </p>
+                  <Copy
+                    label="TOC — eyebrow"
+                    category="metadata"
+                    text="I denna artikel"
+                    rationale="Editorial-konvention för innehållsförteckning i longform. 'Innehåll' (för formellt) eller 'Det här tar vi upp' (för vardagligt) skulle bryta artikelns redaktionella register. Pilen vid varje länk gör djuplänk-affordancen entydig."
+                  >
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
+                      I denna artikel
+                    </p>
+                  </Copy>
                   <ol className="space-y-1">
                     {SECTIONS.map((s, i) => (
                       <li key={s.id}>
@@ -506,9 +520,16 @@ export function ArtikelGalleri() {
               <section className="py-8 max-w-reading border-t border-border-subtle mt-10">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
-                      Källor
-                    </p>
+                    <Copy
+                      label="Källor — eyebrow"
+                      category="metadata"
+                      text="Källor"
+                      rationale="Genrekonvention. Externa belägg för det som påstås — skiljer sig från press-boilerplate (faktaruta om avsändaren). Konsekvens: samma 'Källor'-eyebrow i både Artikel och ArtikelGalleri."
+                    >
+                      <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
+                        Källor
+                      </p>
+                    </Copy>
                     <ul className="text-sm space-y-1.5 text-ink-secondary">
                       <li>Energimyndighetens årsrapport 2025</li>
                       <li>Öresundskrafts installationsstatistik 2023–2026</li>
@@ -516,9 +537,16 @@ export function ArtikelGalleri() {
                     </ul>
                   </div>
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
-                      Taggar
-                    </p>
+                    <Copy
+                      label="Taggar — eyebrow"
+                      category="metadata"
+                      text="Taggar"
+                      rationale="Konsekvent med Artikel.tsx — samma label, samma plats. Två sidtyper, en vokabulär."
+                    >
+                      <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
+                        Taggar
+                      </p>
+                    </Copy>
                     <div className="flex flex-wrap gap-1.5">
                       {["Solceller", "Batterilagring", "Smart styrning", "Egenproduktion", "Hemmaautomation"].map((t) => (
                         <Link
@@ -559,7 +587,14 @@ export function ArtikelGalleri() {
                     {POST.forfattare?.initialer}
                   </span>
                   <div className="flex-1">
-                    <p className="font-medium mb-0.5">Om {POST.forfattare?.namn}</p>
+                    <Copy
+                      label="Bio — rubrik"
+                      category="rubrik"
+                      text={`Om ${POST.forfattare?.namn}`}
+                      rationale="'Om [namn]' är genrekonvention för bio i editorial-format. Personlig — namn istället för titel — bygger förtroende. 'Författaren' eller 'Skribent' skulle vara distanserande och formellt."
+                    >
+                      <p className="font-medium mb-0.5">Om {POST.forfattare?.namn}</p>
+                    </Copy>
                     <p className="text-sm text-ink-muted mb-3">{POST.forfattare?.roll} på Öresundskraft</p>
                     <p className="text-sm text-ink-secondary leading-relaxed mb-4">
                       Erik har arbetat med energirådgivning till privatkunder i tio år och är
@@ -598,18 +633,32 @@ export function ArtikelGalleri() {
               <div className="rounded-lg bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
-                  <p className="font-medium">Få fler artiklar i mejlen</p>
+                  <Copy
+                    label="Subscribe — outcome-rubrik"
+                    category="rubrik"
+                    text="Få fler artiklar i mejlen"
+                    rationale="Konsekvent med Artikel.tsx — samma utfallsorienterade rubrik på båda sidtyperna. Subscribe-blocket är funktionellt, inte editorial — därför förmår användaren det utfall de får (artiklar i mejlen) snarare än känslo-opener."
+                  >
+                    <p className="font-medium">Få fler artiklar i mejlen</p>
+                  </Copy>
                   <p className="text-sm text-ink-secondary">
                     Vi skickar inte oftare än en gång i månaden — avregistrera när du vill.
                   </p>
                 </div>
-                <a
-                  href="/sidtyper/startsida-nyhetsrum#prenumerera"
-                  className="inline-flex items-center gap-1.5 border border-border-strong bg-canvas font-medium px-4 py-2.5 rounded text-sm hover:bg-tint-info hover:border-brand-accent shrink-0"
+                <Copy
+                  label="Subscribe — CTA"
+                  category="cta"
+                  text="Prenumerera"
+                  rationale="Enstavig action-verb. Rubriken bär outcome; knappen bär bara handlingen. Konsekvent med Artikel.tsx."
                 >
-                  Prenumerera
-                  <Icon name="arrow_forward" size={14} />
-                </a>
+                  <a
+                    href="/sidtyper/startsida-nyhetsrum#prenumerera"
+                    className="inline-flex items-center gap-1.5 border border-border-strong bg-canvas font-medium px-4 py-2.5 rounded text-sm hover:bg-tint-info hover:border-brand-accent shrink-0"
+                  >
+                    Prenumerera
+                    <Icon name="arrow_forward" size={14} />
+                  </a>
+                </Copy>
               </div>
             </section>
           ),
@@ -627,7 +676,14 @@ export function ArtikelGalleri() {
           label: "Tre kort med samma kategori-färg",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
-              <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
+              <Copy
+                label="Related — rubrik"
+                category="rubrik"
+                text="Fortsätt läsa"
+                rationale="Konsekvent med Artikel.tsx. Action-fras inviterar till nästa läsning istället för 'Liknande' (passiv)."
+              >
+                <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
+              </Copy>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
                   { rubrik: "Energikartläggningen visade Clemondos besparingspotential", kategori: "Kundcase", lastid: "5 min" },
