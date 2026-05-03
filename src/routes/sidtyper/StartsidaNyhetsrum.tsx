@@ -295,7 +295,7 @@ export function StartsidaNyhetsrum() {
                         type="search"
                         value={sok}
                         onChange={(e) => setSok(e.target.value)}
-                        placeholder="Sök i rubrik och ingress"
+                        placeholder="T.ex. fjärrvärme, CCS, elnätsavgift"
                         className="w-full h-9 rounded-md border border-border-subtle bg-surface pl-9 pr-3 text-sm focus:outline-none focus:border-brand-accent"
                       />
                     </div>
@@ -527,6 +527,7 @@ function PostRow({
         </div>
         <a
           href={visaAllaHref}
+          aria-label={`Visa alla ${titel.toLowerCase()}`}
           className="text-sm text-brand-accent hover:underline inline-flex items-center gap-1 shrink-0"
         >
           Visa alla

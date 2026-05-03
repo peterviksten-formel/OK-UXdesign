@@ -598,9 +598,9 @@ export function ArtikelGalleri() {
               <div className="rounded-lg bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                 <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
-                  <p className="font-medium">Tycker du om det här?</p>
+                  <p className="font-medium">Få fler artiklar i mejlen</p>
                   <p className="text-sm text-ink-secondary">
-                    Få nya artiklar i mejlen — vi skickar inte oftare än en gång i månaden.
+                    Vi skickar inte oftare än en gång i månaden — avregistrera när du vill.
                   </p>
                 </div>
                 <a

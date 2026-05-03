@@ -284,8 +284,8 @@ export function Pressmeddelande() {
                   <div className="flex flex-wrap gap-2">
                     {[
                       { ikon: "share", label: "Kopiera länk" },
-                      { ikon: "mail", label: "Mejla" },
-                      { ikon: "logo_dev", label: "LinkedIn" },
+                      { ikon: "mail", label: "Mejla länken" },
+                      { ikon: "logo_dev", label: "Dela på LinkedIn" },
                     ].map((d) => (
                       <button
                         key={d.label}
