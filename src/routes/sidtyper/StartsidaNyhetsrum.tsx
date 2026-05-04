@@ -118,34 +118,7 @@ export function StartsidaNyhetsrum() {
       ],
     },
 
-    /* ─── 2. RAD — Pressmeddelanden ──────────────────────────── */
-    {
-      id: "row-press",
-      label: "Rad — Pressmeddelanden",
-      variants: [
-        {
-          key: "default",
-          label: "Horisontell scroll-rad med scroll-snap",
-          render: () => (
-            <Annotation
-              label="Kategori-rad — Pressmeddelanden"
-              audience="design"
-              rationale="YouTube-mönstret: en rad per typ, horisontell scroll för att visa fler poster utan att äta vertikal yta. Scroll-snap gör att korten 'klickar' på plats. På mobil ger det en kort ovanpå mediainnehållet; på desktop blir det 3-4 synliga åt gången."
-            >
-              <PostRow
-                titel="Pressmeddelanden"
-                undertitel="Officiella besked från Öresundskraft."
-                posts={press}
-                visaAllaHref="#filter-alla"
-                copyRationale="Front-loadat substantiv (Pressmeddelanden), kort innehållsbeskrivning som underrubrik. Förra versionen sa 'För journalister och allmänheten — citerbar källa' (jargong + målgruppsdefinition i samma fras)."
-              />
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 3. RAD — Nyheter ──────────────────────────────────── */
+    /* ─── 2. RAD — Nyheter ──────────────────────────────────── */
     {
       id: "row-nyheter",
       label: "Rad — Nyheter",
@@ -155,9 +128,9 @@ export function StartsidaNyhetsrum() {
           label: "Horisontell scroll-rad",
           render: () => (
             <Annotation
-              label="Kategori-rad — Nyheter"
+              label="Kategori-rad — Nyheter (primary audience)"
               audience="design"
-              rationale="Nyheter får egen rad eftersom de har kortare livslängd än artiklar och annan ton än press. Användaren kan skanna rubrik+datum + ingress utan att lämna översikten."
+              rationale="Nyheter ligger först eftersom kunder är primary audience (~125 000) — pixlarna närmast featured-kortet ska tjäna majoriteten. Förändringar (priser, regler, drift) är det som flest besökare aktivt vill se."
             >
               <PostRow
                 titel="Nyheter"
@@ -172,7 +145,7 @@ export function StartsidaNyhetsrum() {
       ],
     },
 
-    /* ─── 4. RAD — Artiklar ─────────────────────────────────── */
+    /* ─── 3. RAD — Artiklar ─────────────────────────────────── */
     {
       id: "row-artiklar",
       label: "Rad — Artiklar",
@@ -184,7 +157,7 @@ export function StartsidaNyhetsrum() {
             <Annotation
               label="Kategori-rad — Artiklar"
               audience="design"
-              rationale="Artiklar är längre format, ofta utan tidskritisk komponent. Egen rad signalerar 'browsa när du har tid' — man väljer att läsa, inte tvingas."
+              rationale="Artiklar är längre format, ofta utan tidskritisk komponent. Egen rad signalerar 'browsa när du har tid' — man väljer att läsa, inte tvingas. Mellan-position eftersom de tjänar både kunder (förklaringar) och journalister (bakgrund)."
             >
               <PostRow
                 titel="Artiklar"
@@ -192,6 +165,33 @@ export function StartsidaNyhetsrum() {
                 posts={artiklar}
                 visaAllaHref="#filter-alla"
                 copyRationale="Tre konkreta substantiv (fördjupning/kundcase/förklaringar) räcker — förra versionen var 'Berättelser, kundcase och utbildning — för dig som vill förstå djupare' (11 ord, scan-fail). Conciseness-princip."
+              />
+            </Annotation>
+          ),
+        },
+      ],
+    },
+
+    /* ─── 4. RAD — Pressmeddelanden ──────────────────────────── */
+    {
+      id: "row-press",
+      label: "Rad — Pressmeddelanden",
+      variants: [
+        {
+          key: "default",
+          label: "Horisontell scroll-rad med scroll-snap",
+          render: () => (
+            <Annotation
+              label="Kategori-rad — Pressmeddelanden (sekundär audience)"
+              audience="design"
+              rationale="Pressmeddelanden ligger sist eftersom journalister (~50–100 aktiva) hittar hit via direktlänk, prenumerationer eller sök — de behöver inte top-of-fold. Featured-kortet är fortfarande tillgängligt om en pressrelease är dagens viktigaste, oavsett rad-ordning."
+            >
+              <PostRow
+                titel="Pressmeddelanden"
+                undertitel="Officiella besked från Öresundskraft."
+                posts={press}
+                visaAllaHref="#filter-alla"
+                copyRationale="Front-loadat substantiv (Pressmeddelanden), kort innehållsbeskrivning som underrubrik. Förra versionen sa 'För journalister och allmänheten — citerbar källa' (jargong + målgruppsdefinition i samma fras)."
               />
             </Annotation>
           ),
@@ -474,7 +474,7 @@ export function StartsidaNyhetsrum() {
       <PageBrief
         kategori="Startsida Nyhetsrum (YouTube-inspirerad)"
         syfte="Redaktionellt kuraterad ingång till Öresundskrafts publicistiska innehåll. YouTube-mönster: featured överst (det redaktören främst vill pusha), kategori-rader med horisontell scroll per typ, tematiska rader för fokusområden, filter+grid för power-browsing längre ner."
-        malgrupp="Tre målgrupper i samma flöde: journalister (press), kunder/allmänhet (nyheter), och alla tre (artiklar). Raderna gör typvalet visuellt — du behöver inte aktivt filtrera."
+        malgrupp="Primary: kunder och allmänhet (Nyheter överst, Artiklar mitten). Sekundär: journalister (Pressmeddelanden sist — de hittar via direktlänk/prenumeration). Featured-kortet är redaktörens aktiva pick oavsett rad-ordning."
         primarHandling="Skanna featured + tre typ-rader → klicka in på en post. För specifika sökmål: filter + sök längre ner."
         ton="Saklig och tillgänglig. Raderna är browsing-vänliga (som en strömmingstjänst) snarare än arkiv-tunga."
       />
