@@ -170,21 +170,11 @@ export function ProduktsidaLeadsgen() {
                       skriftlig offert, du bestämmer.
                     </p>
                   </Copy>
+                  {/* Primär CTA + reassurance-text borttagna — sticky-panelen
+                     till höger äger 'Boka rådgivning'-handlingen. Hero håller
+                     bara värdepropositionen + sekundär 'Räkna själv'-utgång
+                     för osäkra som vill testa innan de bokar. */}
                   <div className="flex flex-wrap gap-3">
-                    <Copy
-                      label="Primär CTA — kostnadsfri rådgivning"
-                      category="cta"
-                      text="Boka kostnadsfri rådgivning"
-                      rationale="'Boka' är konsultativ, inte transaktionell. 'Kostnadsfri' tar bort den primära oron innan klick. 'Rådgivning' (inte 'samtal' eller 'kontakt') signalerar expert-värde — du får något, inte ger något."
-                    >
-                      <a
-                        href="#lead-form"
-                        className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-7 py-3.5 rounded hover:opacity-90 transition-opacity text-base"
-                      >
-                        Boka kostnadsfri rådgivning
-                        <Icon name="arrow_forward" size={18} />
-                      </a>
-                    </Copy>
                     <a
                       href="#kalkylator"
                       className="inline-flex items-center gap-2 border border-border-strong text-brand-primary font-medium px-6 py-3.5 rounded hover:bg-tint-info text-base"
@@ -193,9 +183,6 @@ export function ProduktsidaLeadsgen() {
                       Räkna själv först
                     </a>
                   </div>
-                  <p className="text-xs text-ink-muted mt-3">
-                    Vi ringer upp inom 2 arbetsdagar · Ingen säljpress · Du bestämmer själv när och om
-                  </p>
                 </div>
 
                 <div className="bg-tint-info aspect-[4/3] rounded-md flex items-center justify-center">
