@@ -97,10 +97,10 @@ export function StartsidaNyhetsrum() {
                 <Copy
                   label="H1 — nyhetsrums-rubrik"
                   category="rubrik"
-                  text="Senaste från Öresundskraft"
-                  rationale="Direkt och innehållsorienterad. Inte 'press och nyheter' (struktur) utan 'senaste' (vad du får)."
+                  text="Det här händer på Öresundskraft"
+                  rationale="Narrativ presens-rubrik. 'Händer' (presens) gör Nyhetsrummet levande — det pågår, inte bara sker. 'På Öresundskraft' placerar läsaren inne hos avsändaren snarare än som extern mottagare. Eyebrowet 'Nyhetsrum' bär sektionsidentiteten, så H1 behöver inte upprepa funktionen utan kan vara mer mänsklig. Förra versionen 'Senaste från Öresundskraft' var databas-aktig (sorterat efter datum) och passade dåligt eftersom innehållet är redaktionellt kuraterat."
                 >
-                  <h1 className="text-display leading-tight mb-3">Senaste från Öresundskraft</h1>
+                  <h1 className="text-display leading-tight mb-3">Det här händer på Öresundskraft</h1>
                 </Copy>
                 <p className="text-lede text-ink-secondary max-w-reading mb-8 leading-relaxed">
                   Pressmeddelanden, nyheter och artiklar — sorterat per typ. Eller{" "}
