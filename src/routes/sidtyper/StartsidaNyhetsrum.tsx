@@ -546,9 +546,15 @@ function FeaturedCard({ post }: { post: NyhetsrumPost }) {
 }
 
 /**
- * Horisontell scroll-rad — som YouTube channel rows.
- * Visar 3-4 kort åt gången på desktop, scrolla för fler.
- * scroll-snap gör att korten klickar på plats vid scroll.
+ * Per-stream-rad — två layouter beroende på viewport:
+ *
+ * Desktop (lg+): horisontell scroll-snap-rail (3-4 kort synliga, scrolla för fler).
+ * Mobil/tablet (<lg): YouTube-style — första posten som stort featured-kort,
+ * resten som kompakta list-rows med thumbnail vänster + text höger.
+ *
+ * Mobilflödet är vertikalt eftersom horisontella scrollers ger dåligt
+ * affordance på små skärmar (1.x kort synligt) och bryter mot YouTubes
+ * etablerade mönster för channel-streams.
  */
 function PostRow({
   titel,
@@ -565,6 +571,8 @@ function PostRow({
   copyRationale?: string;
 }) {
   if (posts.length === 0) return null;
+
+  const [forsta, ...resten] = posts;
 
   const headingNode = (
     <div className="min-w-0">
@@ -600,8 +608,23 @@ function PostRow({
         </a>
       </div>
 
+      {/* Mobil/tablet: vertikal layout — featured först + list-rows */}
+      <div className="lg:hidden">
+        <PostKortFeatured post={forsta} />
+        {resten.length > 0 && (
+          <ul className="mt-3 divide-y divide-border-subtle border-t border-b border-border-subtle">
+            {resten.map((p) => (
+              <li key={p.id}>
+                <PostKortListRow post={p} />
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* Desktop: horisontell scroll-snap-rail */}
       <div
-        className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 snap-x snap-mandatory pb-2"
+        className="hidden lg:block overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 snap-x snap-mandatory pb-2"
         role="region"
         aria-label={`${titel} — bläddra horisontellt`}
       >
@@ -614,6 +637,86 @@ function PostRow({
         </div>
       </div>
     </section>
+  );
+}
+
+/**
+ * Mobil featured-kort — första posten i varje stream.
+ * Stor 16:9-bild + titel/ingress/meta nedanför. YouTube-mobile-pattern.
+ */
+function PostKortFeatured({ post }: { post: NyhetsrumPost }) {
+  const detaljSlug = post.typ === "press" ? "pressmeddelande" : post.typ === "nyhet" ? "nyhet" : "artikel";
+  return (
+    <Link
+      to={`/sidtyper/${detaljSlug}`}
+      className="group block rounded-md overflow-hidden bg-surface border border-border-subtle hover:border-brand-accent transition-all"
+    >
+      <div className="bg-tint-info aspect-[16/9] flex items-center justify-center">
+        <Icon name="image" size={48} className="text-ink-muted" />
+      </div>
+      <div className="p-4">
+        <div className="flex items-center gap-2 mb-2 text-[10px]">
+          <span className={`px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ${TYP_COLOR[post.typ]}`}>
+            {TYP_LABEL[post.typ]}
+          </span>
+          <span className="text-ink-muted">{KATEGORI_LABEL[post.kategori]}</span>
+        </div>
+        <h3 className="font-medium text-base leading-snug mb-1.5 group-hover:text-brand-accent">
+          {post.rubrik}
+        </h3>
+        <p className="text-sm text-ink-secondary leading-snug line-clamp-2 mb-2">{post.ingress}</p>
+        <div className="flex items-center gap-2 text-xs text-ink-muted">
+          <time dateTime={post.datum}>{formaterDatum(post.datum)}</time>
+          {post.lastid && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{post.lastid}</span>
+            </>
+          )}
+        </div>
+      </div>
+    </Link>
+  );
+}
+
+/**
+ * Mobil list-row — thumbnail vänster, text höger.
+ * Kompakt YouTube-style för 2:a, 3:e posten i varje stream.
+ */
+function PostKortListRow({ post }: { post: NyhetsrumPost }) {
+  const detaljSlug = post.typ === "press" ? "pressmeddelande" : post.typ === "nyhet" ? "nyhet" : "artikel";
+  return (
+    <Link
+      to={`/sidtyper/${detaljSlug}`}
+      className="group flex gap-3 py-3 hover:bg-tint-info -mx-2 px-2 rounded transition-colors"
+    >
+      <div className="shrink-0 w-32 sm:w-36 aspect-[16/10] rounded-md bg-tint-info border border-border-subtle flex items-center justify-center">
+        <Icon name="image" size={20} className="text-ink-muted" />
+      </div>
+      <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
+        <div className="min-w-0">
+          <div className="flex items-center gap-1.5 mb-1 text-[10px]">
+            <span className={`px-1.5 py-0.5 rounded font-bold uppercase tracking-wider ${TYP_COLOR[post.typ]}`}>
+              {TYP_LABEL[post.typ]}
+            </span>
+          </div>
+          <h3 className="font-medium text-sm leading-snug line-clamp-2 group-hover:text-brand-accent">
+            {post.rubrik}
+          </h3>
+        </div>
+        <div className="mt-1.5 flex items-center gap-1.5 text-[11px] text-ink-muted">
+          <span>{KATEGORI_LABEL[post.kategori]}</span>
+          <span aria-hidden="true">·</span>
+          <time dateTime={post.datum}>{formaterDatum(post.datum)}</time>
+          {post.lastid && (
+            <>
+              <span aria-hidden="true">·</span>
+              <span>{post.lastid}</span>
+            </>
+          )}
+        </div>
+      </div>
+    </Link>
   );
 }
 
