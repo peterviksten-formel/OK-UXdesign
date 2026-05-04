@@ -27,7 +27,9 @@ import { StartsidaUndersidaUX } from "./routes/sidtyper/StartsidaUndersidaUX";
 import { KundserviceNy } from "./routes/sidtyper/KundserviceNy";
 import { AvbrottNy } from "./routes/sidtyper/AvbrottNy";
 import { ProduktsidaDirektkop } from "./routes/sidtyper/ProduktsidaDirektkop";
+import { ProduktsidaDirektkop2 } from "./routes/sidtyper/ProduktsidaDirektkop2";
 import { ProduktsidaLeadsgen } from "./routes/sidtyper/ProduktsidaLeadsgen";
+import { ProduktsidaLeadsgen2 } from "./routes/sidtyper/ProduktsidaLeadsgen2";
 import { StartsidaNyhetsrum } from "./routes/sidtyper/StartsidaNyhetsrum";
 import { Pressmeddelande } from "./routes/sidtyper/Pressmeddelande";
 import { Nyhet } from "./routes/sidtyper/Nyhet";
@@ -50,7 +52,9 @@ export default function App() {
             <Route path="/sidtyper/kundservice-ny" element={<KundserviceNy />} />
             <Route path="/sidtyper/avbrott-ny" element={<AvbrottNy />} />
             <Route path="/sidtyper/produktsida-direktkop" element={<ProduktsidaDirektkop />} />
+            <Route path="/sidtyper/produktsida-direktkop2" element={<ProduktsidaDirektkop2 />} />
             <Route path="/sidtyper/produktsida-leadsgen" element={<ProduktsidaLeadsgen />} />
+            <Route path="/sidtyper/produktsida-leadsgen2" element={<ProduktsidaLeadsgen2 />} />
             <Route path="/sidtyper/startsida-nyhetsrum" element={<StartsidaNyhetsrum />} />
             <Route path="/sidtyper/pressmeddelande" element={<Pressmeddelande />} />
             <Route path="/sidtyper/nyhet" element={<Nyhet />} />

@@ -129,15 +129,20 @@ export function StickyPurchaseSidebar(props: StickyPurchasePanelProps) {
   );
 }
 
-/* ─── Mobil ,  fixed bottom-bar ─────────────────────────────────── */
+/* ─── Fixed bottom-bar (mobil default, desktop opt-in) ──────────── */
 
-export function StickyPurchaseBottomBar(props: StickyPurchasePanelProps) {
+export function StickyPurchaseBottomBar(
+  props: StickyPurchasePanelProps & {
+    /** Default false — barrar bara på <lg. När true visas även på desktop. */
+    desktopVisible?: boolean;
+  },
+) {
   const hidden = useFormHidden(props.hideWhenSelector);
-  const { eyebrow, title, subtitle, ctaLabel, ctaHref } = props;
+  const { eyebrow, title, subtitle, ctaLabel, ctaHref, desktopVisible = false } = props;
 
   return (
     <div
-      className={`lg:hidden fixed bottom-0 left-0 right-0 z-30 border-t border-border-subtle bg-elevated/95 backdrop-blur shadow-[0_-4px_12px_rgba(0,0,0,0.08)] transition-transform duration-200 ease-out motion-reduce:transition-none ${
+      className={`${desktopVisible ? "" : "lg:hidden "}fixed bottom-0 left-0 right-0 z-30 border-t border-border-subtle bg-elevated/95 backdrop-blur shadow-[0_-4px_12px_rgba(0,0,0,0.08)] transition-transform duration-200 ease-out motion-reduce:transition-none ${
         hidden ? "translate-y-full" : "translate-y-0"
       }`}
       aria-hidden={hidden}
