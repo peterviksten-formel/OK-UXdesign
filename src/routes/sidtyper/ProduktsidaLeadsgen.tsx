@@ -145,7 +145,7 @@ export function ProduktsidaLeadsgen() {
               audience="user"
               rationale="Leadsgen-tröskel är hög (boka rådgivning = avsätta tid). Hero säljer drömmen i konkreta siffror (40 % lägre elkostnad, X kr/år) snarare än en transaktion. Två CTA-tier: primär 'Boka kostnadsfri rådgivning', sekundär 'Räkna själv' som låter osäkra utforska utan att prata med säljare."
             >
-              <section className="py-8 sm:py-12 grid md:grid-cols-2 gap-8 items-center">
+              <section className="py-8 sm:py-12 grid md:grid-cols-2 gap-8 items-start">
                 <div>
                   <p className="text-eyebrow uppercase text-ink-muted mb-3">Egen elproduktion</p>
                   <Copy
@@ -908,7 +908,7 @@ export function ProduktsidaLeadsgen() {
               <div className="min-w-0">
                 <BlockList pageId="produktsida-leadsgen" blocks={beforeForm} />
               </div>
-              <div className="hidden lg:block pt-2">
+              <div className="hidden lg:block pt-8 sm:pt-12">
                 <StickyPurchaseSidebar
                   eyebrow="Kostnadsfri rådgivning"
                   title="Boka tid med Anna"

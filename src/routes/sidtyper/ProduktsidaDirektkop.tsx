@@ -437,7 +437,7 @@ export function ProduktsidaDirektkop() {
               audience="user"
               rationale="Inget bilduppslag som dröjer, inget marknadsspråk i H1. Direkt: produktnamn (vad det är) + en USP-mening (vad det löser) + pris (transparent) + en CTA. Bilden är produktillustration, inte livstilsbild — användare som klickade hit har redan bestämt sig för att kolla produkten."
             >
-              <section className="py-8 sm:py-12 grid md:grid-cols-2 gap-8 items-center">
+              <section className="py-8 sm:py-12 grid md:grid-cols-2 gap-8 items-start">
                 <div>
                   <p className="text-eyebrow uppercase text-ink-muted mb-3">Elbil & laddning</p>
                   <Copy
@@ -801,7 +801,7 @@ export function ProduktsidaDirektkop() {
               <div className="min-w-0">
                 <BlockList pageId="produktsida-direktkop" blocks={beforeForm} />
               </div>
-              <div className="hidden lg:block pt-2">
+              <div className="hidden lg:block pt-8 sm:pt-12">
                 <StickyPurchaseSidebar
                   eyebrow="Din beställning"
                   title="14 900 kr"
