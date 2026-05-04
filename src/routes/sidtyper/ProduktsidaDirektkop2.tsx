@@ -477,8 +477,8 @@ export function ProduktsidaDirektkop2() {
                   >
                     <ul className="space-y-2">
                       {[
-                        { ikon: "savings", text: "Pris från 14 900 kr — inkl. installation och rotavdrag", anchor: "#produktinfo" },
-                        { ikon: "schedule", text: "Klart inom 2 veckor — från beställning till driftsatt", anchor: "#process" },
+                        { ikon: "savings", text: "Pris från 14 900 kr, inkl. installation och rotavdrag", anchor: "#produktinfo" },
+                        { ikon: "schedule", text: "Klart inom 2 veckor från beställning till driftsatt", anchor: "#process" },
                         { ikon: "shield", text: "5 års garanti + 14 dagars ångerrätt", anchor: "#faq" },
                       ].map((b) => (
                         <li key={b.text}>
