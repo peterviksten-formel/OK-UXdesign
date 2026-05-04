@@ -462,13 +462,47 @@ export function ProduktsidaDirektkop2() {
                     text="Smart laddning för elbil, hemma. Ladda billigare på natten, allt installerat på två veckor."
                     rationale="Tre fakta i en mening: vad det är (smart laddning), vad det sparar (billigare nattladdning), vad du får (installation klar inom 2 veckor). Inga adjektiv, bara konkreta löften."
                   >
-                    <p className="text-lede text-ink-secondary mb-6 leading-relaxed">
+                    <p className="text-lede text-ink-secondary mb-5 leading-relaxed">
                       Smart laddning för elbil, hemma. Ladda billigare på natten, allt installerat på två veckor.
                     </p>
                   </Copy>
-                  {/* Pris, primär CTA och reassurance ligger i sticky-panelen
-                     höger (eller fixed bottom-bar på mobil). Hero håller bara
-                     värdepropositionen, inte ett duplicerat köp. */}
+
+                  {/* Bullet-list som ingångar till sidans djupare sektioner.
+                     Fyller två funktioner: (1) snabb skannbar reassurance,
+                     (2) klickbara djuplänkar till relevant sektion längre ner. */}
+                  <Annotation
+                    label="Hero-bullets, ingångar till sidan"
+                    audience="user"
+                    rationale="Hero v2 saknar primär CTA (sticky-bar äger den). Bullet-listan ger användaren MULTIPLA ingångar: skannbar info + djuplänkar till specifika sektioner. Användare som vill veta mer om priset kan hoppa direkt till produktinfo, andra till process eller FAQ. Krug-principen: respektera muddle-through-läsaren genom att erbjuda flera vägar in."
+                  >
+                    <ul className="space-y-2">
+                      {[
+                        { ikon: "savings", text: "Pris från 14 900 kr — inkl. installation och rotavdrag", anchor: "#produktinfo" },
+                        { ikon: "schedule", text: "Klart inom 2 veckor — från beställning till driftsatt", anchor: "#process" },
+                        { ikon: "shield", text: "5 års garanti + 14 dagars ångerrätt", anchor: "#faq" },
+                      ].map((b) => (
+                        <li key={b.text}>
+                          <a
+                            href={b.anchor}
+                            className="group flex items-center gap-3 py-2 -mx-2 px-2 rounded hover:bg-tint-info focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent transition-colors"
+                          >
+                            <Icon name={b.ikon} size={20} className="text-brand-accent shrink-0" />
+                            <span className="flex-1 text-base text-ink-secondary group-hover:text-ink">
+                              {b.text}
+                            </span>
+                            <Icon
+                              name="arrow_forward"
+                              size={14}
+                              className="text-ink-muted shrink-0 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:text-brand-accent motion-reduce:transition-none"
+                            />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+
+                    {/* Pris, primär CTA och reassurance ligger i sticky-bar i botten.
+                       Hero håller värdepropositionen + ingångar via bullets. */}
+                  </Annotation>
                 </div>
 
                 <div className="bg-tint-info aspect-[4/3] rounded-md flex items-center justify-center">
@@ -835,8 +869,8 @@ export function ProduktsidaDirektkop2() {
           viewport (samma logik som original-mobilvarianten). */}
       <BlockList pageId="produktsida-direktkop2" blocks={blocks} />
 
-      {/* Padding nedanför så sticky-bar inte täcker sista innehållet */}
-      <div className="h-24" aria-hidden="true" />
+      {/* Padding nedanför så större sticky-bar (size=lg) inte täcker sista innehållet */}
+      <div className="h-32" aria-hidden="true" />
 
       <StickyPurchaseBottomBar
         eyebrow="Ladda Smart"
@@ -846,6 +880,7 @@ export function ProduktsidaDirektkop2() {
         ctaHref="#bestall"
         hideWhenSelector="#bestall"
         desktopVisible
+        size="lg"
       />
     </div>
   );

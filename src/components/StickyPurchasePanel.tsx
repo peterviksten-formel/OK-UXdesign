@@ -135,10 +135,22 @@ export function StickyPurchaseBottomBar(
   props: StickyPurchasePanelProps & {
     /** Default false — barrar bara på <lg. När true visas även på desktop. */
     desktopVisible?: boolean;
+    /** Default 'sm'. 'lg' ger ~60 % större yta (mer padding + större typ). */
+    size?: "sm" | "lg";
   },
 ) {
   const hidden = useFormHidden(props.hideWhenSelector);
-  const { eyebrow, title, subtitle, ctaLabel, ctaHref, desktopVisible = false } = props;
+  const {
+    eyebrow,
+    title,
+    subtitle,
+    ctaLabel,
+    ctaHref,
+    desktopVisible = false,
+    size = "sm",
+  } = props;
+
+  const isLg = size === "lg";
 
   return (
     <div
@@ -147,22 +159,36 @@ export function StickyPurchaseBottomBar(
       }`}
       aria-hidden={hidden}
     >
-      <div className="max-w-content mx-auto px-4 py-3 flex items-center gap-3">
+      <div
+        className={`max-w-content mx-auto px-4 sm:px-6 ${isLg ? "py-5" : "py-3"} flex items-center gap-3`}
+      >
         <div className="min-w-0 flex-1">
-          <p className="text-[10px] uppercase tracking-wider text-ink-muted font-medium leading-none">
+          <p
+            className={`uppercase tracking-wider text-ink-muted font-medium leading-none ${isLg ? "text-xs" : "text-[10px]"}`}
+          >
             {eyebrow}
           </p>
-          <p className="font-medium text-sm leading-tight mt-0.5 truncate">{title}</p>
+          <p
+            className={`font-medium leading-tight mt-1 truncate ${isLg ? "text-lg" : "text-sm"}`}
+          >
+            {title}
+          </p>
           {subtitle && (
-            <p className="text-xs text-ink-muted leading-tight truncate">{subtitle}</p>
+            <p
+              className={`text-ink-muted leading-tight truncate ${isLg ? "text-sm mt-0.5" : "text-xs"}`}
+            >
+              {subtitle}
+            </p>
           )}
         </div>
         <a
           href={ctaHref}
-          className="shrink-0 inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-4 py-2.5 rounded text-sm hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+          className={`shrink-0 inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium rounded hover:opacity-90 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 ${
+            isLg ? "px-6 py-3.5 text-base" : "px-4 py-2.5 text-sm"
+          }`}
         >
           {ctaLabel}
-          <Icon name="arrow_forward" size={14} />
+          <Icon name="arrow_forward" size={isLg ? 18 : 14} />
         </a>
       </div>
     </div>
