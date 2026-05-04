@@ -10,7 +10,14 @@ import type { Produkt } from "../produkt-data";
  * tab-style sections (Vad ingår / Villkor / Varför välja).
  * "Passar för" as a highlighted callout. Sticky bottom CTA on mobile.
  */
-export function ProduktinfoProgressiv({ produkt }: { produkt: Produkt }) {
+export function ProduktinfoProgressiv({
+  produkt,
+  inline = false,
+}: {
+  produkt: Produkt;
+  /** När true: dölj kategori-pill + namn + tagline (ligger redan i sidans hero). */
+  inline?: boolean;
+}) {
   const p = produkt;
   const [activeTab, setActiveTab] = useState<"ingar" | "villkor" | "varfor">("ingar");
 
@@ -48,16 +55,23 @@ export function ProduktinfoProgressiv({ produkt }: { produkt: Produkt }) {
                 </>
               )}
             </div>
-            {/* Category pill */}
-            <div className="absolute top-4 left-4">
-              <span className="bg-brand-primary text-white text-xs font-medium px-3 py-1 rounded-full">{p.kategori}</span>
-            </div>
+            {/* Category pill — döljs inline (kategorin står redan i sidans hero) */}
+            {!inline && (
+              <div className="absolute top-4 left-4">
+                <span className="bg-brand-primary text-white text-xs font-medium px-3 py-1 rounded-full">{p.kategori}</span>
+              </div>
+            )}
           </div>
 
           {/* Info area */}
           <div className="p-5 sm:p-6">
-            <h2 className="text-h2 mb-1">{p.namn}</h2>
-            <p className="text-ink-secondary mb-4">{p.tagline}</p>
+            {/* Namn + tagline döljs inline (står redan i sidans hero) */}
+            {!inline && (
+              <>
+                <h2 className="text-h2 mb-1">{p.namn}</h2>
+                <p className="text-ink-secondary mb-4">{p.tagline}</p>
+              </>
+            )}
 
             {/* "Passar för" callout */}
             <div className="rounded-md bg-tint-info px-4 py-3 mb-5 text-sm">

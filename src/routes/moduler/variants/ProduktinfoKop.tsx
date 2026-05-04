@@ -11,7 +11,14 @@ import type { Produkt } from "../produkt-data";
  * Pro: Hög konvertering. CTA alltid synlig.
  * Kontra: Kräver fast design-system. Svårare på mobil (vertikal scroll-låsning).
  */
-export function ProduktinfoKop({ produkt }: { produkt: Produkt }) {
+export function ProduktinfoKop({
+  produkt,
+  inline = false,
+}: {
+  produkt: Produkt;
+  /** När true: dölj kategori + namn + tagline (ligger redan i sidans hero). */
+  inline?: boolean;
+}) {
   const p = produkt;
   return (
     <div>
@@ -28,10 +35,15 @@ export function ProduktinfoKop({ produkt }: { produkt: Produkt }) {
               <Icon name="image" size={64} />
             </div>
 
-            {/* Title */}
-            <p className="text-eyebrow uppercase text-ink-muted mb-1">{p.kategori}</p>
-            <h2 className="text-h1 mb-2">{p.namn}</h2>
-            <p className="text-lede text-ink-secondary mb-6">{p.tagline}</p>
+            {/* Title — döljs när modulen ligger inline på en produktsida
+                (kategori + namn + tagline står redan i sidans hero). */}
+            {!inline && (
+              <>
+                <p className="text-eyebrow uppercase text-ink-muted mb-1">{p.kategori}</p>
+                <h2 className="text-h1 mb-2">{p.namn}</h2>
+                <p className="text-lede text-ink-secondary mb-6">{p.tagline}</p>
+              </>
+            )}
 
             {/* Description */}
             <div className="prose prose-sm max-w-none mb-8">

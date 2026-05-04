@@ -571,7 +571,7 @@ export function ProduktsidaLeadsgen() {
           label: "Progressiv — tabs med pris/CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
-              <ProduktinfoProgressiv produkt={PRODUKT} />
+              <ProduktinfoProgressiv produkt={PRODUKT} inline />
             </section>
           ),
         },
@@ -580,7 +580,7 @@ export function ProduktsidaLeadsgen() {
           label: "Trygg — 2-kolumns med pris/CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
-              <ProduktinfoTrygg produkt={PRODUKT} />
+              <ProduktinfoTrygg produkt={PRODUKT} inline />
             </section>
           ),
         },

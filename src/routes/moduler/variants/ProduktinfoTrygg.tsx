@@ -9,7 +9,14 @@ import type { Produkt } from "../produkt-data";
  * Plain spec table + bullet list of inclusions. CTA at bottom of info.
  * No tabs, no progressive disclosure. All information visible at once.
  */
-export function ProduktinfoTrygg({ produkt }: { produkt: Produkt }) {
+export function ProduktinfoTrygg({
+  produkt,
+  inline = false,
+}: {
+  produkt: Produkt;
+  /** När true: dölj kategori + namn + tagline (ligger redan i sidans hero). */
+  inline?: boolean;
+}) {
   const p = produkt;
   return (
     <div>
@@ -29,9 +36,15 @@ export function ProduktinfoTrygg({ produkt }: { produkt: Produkt }) {
 
           {/* Product info */}
           <div>
-            <p className="text-eyebrow uppercase text-ink-muted mb-1">{p.kategori}</p>
-            <h2 className="text-h2 mb-2">{p.namn}</h2>
-            <p className="text-lede text-ink-secondary mb-4">{p.tagline}</p>
+            {/* Header döljs när modulen ligger inline på en produktsida
+                (kategori + namn + tagline står redan i sidans hero). */}
+            {!inline && (
+              <>
+                <p className="text-eyebrow uppercase text-ink-muted mb-1">{p.kategori}</p>
+                <h2 className="text-h2 mb-2">{p.namn}</h2>
+                <p className="text-lede text-ink-secondary mb-4">{p.tagline}</p>
+              </>
+            )}
 
             {/* Price */}
             <div className="rounded-md bg-tint-notice p-4 mb-4">
