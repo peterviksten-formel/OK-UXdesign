@@ -455,7 +455,65 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 8. AVSNITT 4 — slutord + handling ──────────────── */
+    /* ─── 8. KUNDBERÄTTELSE — social proof inline ──────────── */
+    {
+      id: "kundberattelse",
+      label: "Kundberättelse — proof of concept",
+      variants: [
+        {
+          key: "default",
+          label: "Foto + pull-quote + kontext",
+          render: () => (
+            <Annotation
+              label="Kundberättelse — social proof i editorial-format"
+              audience="user"
+              rationale="Mellan smart-styrning-avsnittet (teori) och 'vad du kan göra själv' (handling) — bryter med konkret bevis att rådet fungerar. Editorial-stil (foto + citat + kontext) snarare än generisk testimonial-card. Stärker artikelns trovärdighet på samma sätt som en case-studie gör i en längre essä."
+            >
+              <section className="max-w-reading my-10">
+                <div className="rounded-md border-l-4 border-brand-accent bg-tint-info p-6 sm:p-7">
+                  <p className="text-[11px] uppercase tracking-wider text-brand-primary font-bold mb-4">
+                    Kundberättelse
+                  </p>
+
+                  <div className="flex flex-col sm:flex-row gap-5">
+                    <div className="shrink-0 sm:w-32">
+                      <div className="aspect-square rounded-md bg-tint-highlight border border-border-subtle flex items-center justify-center">
+                        <Icon name="image" size={32} className="text-ink-muted" />
+                      </div>
+                      <p className="text-sm font-medium mt-2">Anna & Per</p>
+                      <p className="text-xs text-ink-muted">Höganäs — installerade 2024</p>
+                    </div>
+
+                    <div className="flex-1 min-w-0">
+                      <Copy
+                        label="Kundberättelse — pull-quote"
+                        category="ton"
+                        text="Vi sänkte elkostnaden med 38 % första året — och vi gjorde inget alls med vanorna."
+                        rationale="Konkret siffra (38 %) + 'vi gjorde inget alls med vanorna' = motbevis mot 'detta kräver att jag ändrar livsstil'. Ger läsaren tillåtelse att tro att förändringen är hanterbar."
+                      >
+                        <p className="text-h4 font-medium leading-snug text-ink mb-3">
+                          "Vi sänkte elkostnaden med 38 % första året — och vi gjorde inget alls med vanorna."
+                        </p>
+                      </Copy>
+
+                      <p className="text-sm text-ink-secondary leading-relaxed mb-2">
+                        Anna och Per installerade panel + batteri våren 2024. De aktiverade smart styrning av
+                        varmvatten direkt. Bilen laddas på dagen när hemmet är tomt och produktionen är som högst.
+                      </p>
+                      <p className="text-sm text-ink-secondary leading-relaxed">
+                        "Det enda vi behövde göra var att ringa elektrikern. Resten skötte sig självt."
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </Annotation>
+          ),
+        },
+      ],
+    },
+
+    /* ─── 9. AVSNITT 4 — slutord + handling ──────────────── */
     {
       id: "avsnitt-4",
       label: "Avsnitt 4 — Vad du kan göra själv",

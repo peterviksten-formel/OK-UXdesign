@@ -20,7 +20,8 @@ export const sidtyper: CatalogEntry[] = [
   { slug: "pressmeddelande", title: "Pressmeddelande", subtitle: "Formell publicistisk layout med dateline, sticky press-kontakt, bildbank och boilerplate. Skiss för journalist-målgrupp.", status: "wip" },
   { slug: "nyhet", title: "Nyhet", subtitle: "Kortfattad informationsnyhet med TL;DR, 'Vad innebär det för dig?' och FAQ. Skiss för kund-målgrupp.", status: "wip" },
   { slug: "artikel", title: "Artikel", subtitle: "Vardagsformat: hero, lead-stycke, två-tre brödtext-sektioner med en pull-quote, källor, kort bio, prenumerera, related. Skiss — ersätter blogg-konceptet.", status: "wip" },
-  { slug: "artikel-galleri", title: "Artikel - format-galleri", subtitle: "Showcase av editorial-format: TOC med djuplänkar, sammanfattning, faktarutor, fancy numrerade listor, tips & trick, statistik-highlights, författarbio. För längre fördjupningsartiklar.", status: "wip" },
+  { slug: "artikel-galleri", title: "Artikel - format-galleri", subtitle: "Showcase av editorial-format: TOC, sammanfattning, faktarutor, fancy numrerade listor, tips & trick, statistik-highlights, kundberättelse, författarbio. Element infällda i brödtexten.", status: "wip" },
+  { slug: "artikel-marginalia", title: "Artikel - marginalia-format", subtitle: "Variant av Galleri där statistik, faktaruta, tips & trick och kundberättelse ligger i höger marginal istället för infällda. Hypotes: bättre läsflöde i längre texter — testa parallellt med inline-versionen.", status: "wip" },
 ];
 
 export const moduler: CatalogEntry[] = [

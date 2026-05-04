@@ -33,6 +33,7 @@ import { Pressmeddelande } from "./routes/sidtyper/Pressmeddelande";
 import { Nyhet } from "./routes/sidtyper/Nyhet";
 import { Artikel } from "./routes/sidtyper/Artikel";
 import { ArtikelGalleri } from "./routes/sidtyper/ArtikelGalleri";
+import { ArtikelMarginalia } from "./routes/sidtyper/ArtikelMarginalia";
 
 export default function App() {
   return (
@@ -55,6 +56,7 @@ export default function App() {
             <Route path="/sidtyper/nyhet" element={<Nyhet />} />
             <Route path="/sidtyper/artikel" element={<Artikel />} />
             <Route path="/sidtyper/artikel-galleri" element={<ArtikelGalleri />} />
+            <Route path="/sidtyper/artikel-marginalia" element={<ArtikelMarginalia />} />
             <Route path="/sidtyper/:slug" element={<StubPage kind="sidtyp" />} />
 
             {/* Moduler */}
