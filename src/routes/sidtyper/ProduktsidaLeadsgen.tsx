@@ -9,6 +9,7 @@ import {
   StickyPurchaseSidebar,
   StickyPurchaseBottomBar,
 } from "../../components/StickyPurchasePanel";
+import { RelateradeProdukter } from "../../components/RelateradeProdukter";
 import { ProduktinfoProgressiv } from "../moduler/variants/ProduktinfoProgressiv";
 import { ProduktinfoTrygg } from "../moduler/variants/ProduktinfoTrygg";
 import { PRODUKTER } from "../moduler/produkt-data";
@@ -694,7 +695,43 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 9. LEAD-FORMULÄR — kort, låg-commitment ─────────────── */
+    /* ─── 9. RELATERADE PRODUKTER ──────────────────────────────── */
+    {
+      id: "relaterade",
+      label: "Relaterade produkter",
+      variants: [
+        {
+          key: "default",
+          label: "Synergi-curering — 3 ikon-kort",
+          render: () => (
+            <RelateradeProdukter
+              produkter={[
+                {
+                  ikon: "ev_station",
+                  titel: "Ladda Smart",
+                  text: "Ladda elbilen med din egen el — smart styrning hittar timmar med högst egen-produktion.",
+                  href: "/sidtyper/produktsida-direktkop",
+                },
+                {
+                  ikon: "support_agent",
+                  titel: "Energirådgivning",
+                  text: "Kostnadsfri genomgång av huset innan du investerar — vi hittar lågt hängande optimering.",
+                  href: "#",
+                },
+                {
+                  ikon: "heat_pump",
+                  titel: "Värmepump",
+                  text: "Värm huset med din egen el — sänk uppvärmningskostnaden ytterligare.",
+                  href: "#",
+                },
+              ]}
+            />
+          ),
+        },
+      ],
+    },
+
+    /* ─── 10. LEAD-FORMULÄR — kort, låg-commitment ─────────────── */
     {
       id: "lead-form",
       label: "Lead-formulär",

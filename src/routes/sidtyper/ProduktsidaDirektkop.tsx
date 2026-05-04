@@ -10,6 +10,7 @@ import {
   StickyPurchaseSidebar,
   StickyPurchaseBottomBar,
 } from "../../components/StickyPurchasePanel";
+import { RelateradeProdukter } from "../../components/RelateradeProdukter";
 import { ProduktinfoKop } from "../moduler/variants/ProduktinfoKop";
 import { ProduktinfoProgressiv } from "../moduler/variants/ProduktinfoProgressiv";
 import { ProduktinfoTrygg } from "../moduler/variants/ProduktinfoTrygg";
@@ -746,6 +747,42 @@ export function ProduktsidaDirektkop() {
             <section className="py-10 border-t border-border-subtle [&_section]:max-w-none">
               <FaqSokTopplista />
             </section>
+          ),
+        },
+      ],
+    },
+
+    /* ─── 8. RELATERADE PRODUKTER ──────────────────────────────── */
+    {
+      id: "relaterade",
+      label: "Relaterade produkter",
+      variants: [
+        {
+          key: "default",
+          label: "Synergi-curering — 3 ikon-kort",
+          render: () => (
+            <RelateradeProdukter
+              produkter={[
+                {
+                  ikon: "solar_power",
+                  titel: "Solceller",
+                  text: "Producera elen du laddar bilen med — ladda gratis när solen står på.",
+                  href: "/sidtyper/produktsida-leadsgen",
+                },
+                {
+                  ikon: "support_agent",
+                  titel: "Energirådgivning",
+                  text: "Kostnadsfri genomgång av ditt hushålls elanvändning — vi hittar var du kan spara mest.",
+                  href: "#",
+                },
+                {
+                  ikon: "heat_pump",
+                  titel: "Värmepump",
+                  text: "Kombinera smart laddning med smart uppvärmning — värm huset när elen är som billigast.",
+                  href: "#",
+                },
+              ]}
+            />
           ),
         },
       ],
