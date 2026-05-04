@@ -19,7 +19,7 @@ const VARIANTS: Variant[] = [
     shortName: "B",
     label: "Grupperad",
     riskLevel: "låg",
-    oneLiner: "Tre kolumner efter mental tidslinje — innan / under / efter.",
+    oneLiner: "Tre kolumner efter mental tidslinje, innan / under / efter.",
     bestFor: "Mellanstor FAQ (8–15 frågor). Sidor där frågor faller naturligt i faser.",
     render: () => <FaqGrupperad />,
   },
@@ -54,24 +54,24 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Tillgänglighet",
     values: {
-      accordion: "Perfekt — semantic HTML hanterar allt.",
-      grupperad: "Bra — heading-hierarkin är tydlig.",
+      accordion: "Perfekt, semantic HTML hanterar allt.",
+      grupperad: "Bra, heading-hierarkin är tydlig.",
       sok: "Kräver aria-live för resultat + tangentbords-shortcut.",
     },
   },
   {
     aspect: "Underhåll",
     values: {
-      accordion: "Lågt — lägg till/ta bort fråga i listan.",
-      grupperad: "Medel — tänka om vilken fas frågan hör till.",
-      sok: "Medel — topp-5 behöver kuratering varje/varannan vecka.",
+      accordion: "Lågt, lägg till/ta bort fråga i listan.",
+      grupperad: "Medel, tänka om vilken fas frågan hör till.",
+      sok: "Medel, topp-5 behöver kuratering varje/varannan vecka.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
       accordion: "Default-mönster för FAQ på inre sidor.",
-      grupperad: "Elhandel-sidan, produktsidan — där tidslinjen är naturlig.",
+      grupperad: "Elhandel-sidan, produktsidan, där tidslinjen är naturlig.",
       sok: "Endast på dedikerad Kundservice/hjälpcenter-sida.",
     },
   },
@@ -86,7 +86,7 @@ export function Faq() {
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · FAQ</p>
         <h1 className="text-h1 mb-3">Vanliga frågor</h1>
         <p className="text-lede text-ink-secondary">
-          Tre strategier för FAQ — valet beror på hur många frågor ni har och var
+          Tre strategier för FAQ, valet beror på hur många frågor ni har och var
           modulen sitter. Accordion är default för block-nivå, sök för dedikerad
           hjälpsida.
         </p>

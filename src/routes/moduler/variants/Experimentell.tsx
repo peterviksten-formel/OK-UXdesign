@@ -4,7 +4,7 @@ import { Icon } from "../../../components/Icon";
 import { PLANS, TERMER, type PlanId } from "../elavtal-data";
 
 /**
- * VARIANT C — Experimentell
+ * VARIANT C, Experimentell
  *
  * Strategy: lead with personalisation. Live calculator that updates a
  * recommended plan as the user moves sliders. Tooltips defuse jargon
@@ -47,14 +47,14 @@ function Tooltip({ term, children }: { term: Term; children: React.ReactNode }) 
 
 /**
  * Pretend "calculation": maps sliders → an estimated monthly cost per plan.
- * Numbers are fake placeholders — the point is to show the *interaction*.
+ * Numbers are fake placeholders, the point is to show the *interaction*.
  */
 function calc(kwhPerYear: number, riskAversion: number) {
   const monthlyKwh = kwhPerYear / 12;
   // Fake spot price ~120 öre/kWh, fixed price = spot + 20 (premium)
   const sakratOre = 145;
   const kvartsprisOre = 130;
-  // Spot follows risk aversion inversely — higher risk tolerance → lower assumed price
+  // Spot follows risk aversion inversely, higher risk tolerance → lower assumed price
   const manadsprisOre = 115 + riskAversion * 0.3;
 
   return {
@@ -100,9 +100,9 @@ export function VariantExperimentell() {
             Vi har tre elavtal: <Tooltip term="bindningstid"><strong>Säkrat pris</strong></Tooltip> ger förutsägbarhet,{" "}
             <strong>Kvartspris</strong> är ett mellanting, och{" "}
             <Tooltip term="spotpris"><strong>Månadspris</strong></Tooltip>{" "}
-            följer marknaden — i snitt billigast över tid. Ditt elprisområde är{" "}
+            följer marknaden, i snitt billigast över tid. Ditt elprisområde är{" "}
             <Tooltip term="elprisområde"><strong>SE4</strong></Tooltip>, där elen oftast är
-            dyrast i landet — det gör <Tooltip term="påslag">påslaget</Tooltip> viktigt att jämföra.
+            dyrast i landet, det gör <Tooltip term="påslag">påslaget</Tooltip> viktigt att jämföra.
           </p>
         </div>
       </Annotation>
@@ -116,7 +116,7 @@ export function VariantExperimentell() {
         <div className="mb-8 rounded-md border border-border-subtle bg-surface p-5 sm:p-6">
           <h3 className="text-h4 mb-1">Räkna ut vad som passar dig</h3>
           <p className="text-sm text-ink-muted mb-6">
-            Justera reglagen — vi rekommenderar avtal direkt och visar pris för alla tre.
+            Justera reglagen, vi rekommenderar avtal direkt och visar pris för alla tre.
           </p>
 
           <div className="grid sm:grid-cols-2 gap-6 mb-6">
@@ -259,7 +259,7 @@ export function VariantExperimentell() {
       <Annotation
         label="Klistrad sammanfattning"
         audience="user"
-        rationale="På mobil följer denna rad med när man scrollar — så att 'Teckna' alltid är ett klick bort. På desktop visas den som en sticky footer i modulen."
+        rationale="På mobil följer denna rad med när man scrollar, så att 'Teckna' alltid är ett klick bort. På desktop visas den som en sticky footer i modulen."
       >
         <div className="rounded-md border border-brand-accent bg-elevated p-4 flex flex-wrap items-center gap-3 sticky bottom-4 shadow-lg">
           <div className="flex-1 min-w-0">

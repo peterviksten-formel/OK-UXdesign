@@ -38,9 +38,9 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Visuell impact",
     values: {
-      hero: "Hög — dominerar sidan.",
-      story: "Medel — inbjuder till läsning.",
-      strip: "Låg yta, medel uppmärksamhet — beror på färg.",
+      hero: "Hög, dominerar sidan.",
+      story: "Medel, inbjuder till läsning.",
+      strip: "Låg yta, medel uppmärksamhet, beror på färg.",
     },
   },
   {
@@ -54,7 +54,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Risk för dark pattern",
     values: {
-      hero: "Låg — tydlig CTA, ingen dold urgency.",
+      hero: "Låg, tydlig CTA, ingen dold urgency.",
       story: "Inget. Det är redaktionellt innehåll.",
       strip: "Hög om 'Senast X' inte är sant. Riktlinje: använd bara med äkta deadline.",
     },
@@ -63,8 +63,8 @@ const ARGUMENTATION: ArgumentRow[] = [
     aspect: "Bildbehov",
     values: {
       hero: "Gradient räcker. Bild höjer ribban.",
-      story: "Ja — konkretiserar berättelsen.",
-      strip: "Nej — ikon räcker.",
+      story: "Ja, konkretiserar berättelsen.",
+      strip: "Nej, ikon räcker.",
     },
   },
   {

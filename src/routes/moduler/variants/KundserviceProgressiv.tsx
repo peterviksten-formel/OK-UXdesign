@@ -4,7 +4,7 @@ import { Icon } from "../../../components/Icon";
 import { KATEGORIER, type KategoriId, type Underkategori } from "../kundservice-data";
 
 /**
- * VARIANT B — Progressiv
+ * VARIANT B, Progressiv
  *
  * Strategy: two-step triage. Step 1: pick your category (icon cards).
  * Step 2: pick your specific question (reveal answers inline).
@@ -57,7 +57,7 @@ export function KundserviceProgressiv() {
         <Annotation
           label="Underkategori-lista"
           audience="design"
-          rationale="Steg 2 visas inline under korten — ingen ny sida. Varje underkategori expanderar till ett svar med CTA. Svaret löser frågan eller pekar mot en destination."
+          rationale="Steg 2 visas inline under korten, ingen ny sida. Varje underkategori expanderar till ett svar med CTA. Svaret löser frågan eller pekar mot en destination."
         >
           <div className="rounded-md border border-brand-accent bg-surface overflow-hidden mb-8">
             <header className="px-5 py-3 bg-tint-info flex items-center gap-3">

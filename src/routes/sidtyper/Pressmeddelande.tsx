@@ -7,7 +7,7 @@ import { Icon } from "../../components/Icon";
 import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP — Pressmeddelande (skiss)
+ * SIDTYP, Pressmeddelande (skiss)
  *
  * Formell publicistisk layout. Skiljer sig från Nyhet/Artikel via:
  *  - Dateline + "FÖR OMEDELBAR PUBLICERING" i header
@@ -16,7 +16,7 @@ import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
  *  - PDF-bilagor (rapporter, kvartalssiffror)
  *  - Boilerplate-fakta-ruta nederst (om Öresundskraft)
  *
- * Skiss-läge — visar pressrelease-konventioner, finputsas senare.
+ * Skiss-läge, visar pressrelease-konventioner, finputsas senare.
  */
 
 const POST = getPostBySlug("fjarrvarmepris-2026")!;
@@ -28,19 +28,19 @@ function formaterDatumLong(iso: string): string {
 
 export function Pressmeddelande() {
   const blocks: BlockDef[] = [
-    /* ─── 1. HEADER — typ-badge + dateline ──────────────────── */
+    /* ─── 1. HEADER, typ-badge + dateline ──────────────────── */
     {
       id: "header",
-      label: "Header — typ + dateline",
+      label: "Header, typ + dateline",
       variants: [
         {
           key: "default",
           label: "Pressmeddelande-badge + ort + datum",
           render: () => (
             <Annotation
-              label="Press-header — formell, citerbar"
+              label="Press-header, formell, citerbar"
               audience="user"
-              rationale="Pressrelease-konventioner: typ-badge, dateline (ort + datum), 'FÖR OMEDELBAR PUBLICERING'-stämpel. Journalister känner igen formatet — det signalerar att texten är fri att citera och att källan är officiell."
+              rationale="Pressrelease-konventioner: typ-badge, dateline (ort + datum), 'FÖR OMEDELBAR PUBLICERING'-stämpel. Journalister känner igen formatet, det signalerar att texten är fri att citera och att källan är officiell."
             >
               <header className="py-8 sm:py-10">
                 <div className="flex flex-wrap items-center gap-2 mb-4 text-xs">
@@ -57,10 +57,10 @@ export function Pressmeddelande() {
                 </div>
 
                 <Copy
-                  label="Press H1 — informativ, inte säljande"
+                  label="Press H1, informativ, inte säljande"
                   category="rubrik"
                   text={POST.rubrik}
-                  rationale="Pressrubriker ska vara informationsdense: vem, vad, var, när — inte 'spännande nyhet om ...'. Journalister bedömer källan på rubriken."
+                  rationale="Pressrubriker ska vara informationsdense: vem, vad, var, när, inte 'spännande nyhet om ...'. Journalister bedömer källan på rubriken."
                 >
                   <h1 className="text-h1 leading-tight mb-4">{POST.rubrik}</h1>
                 </Copy>
@@ -71,7 +71,7 @@ export function Pressmeddelande() {
 
                 <p className="text-sm text-ink-muted">
                   <strong className="text-ink-secondary">Helsingborg, {formaterDatumLong(POST.datum)}</strong>
-                  {" — "}
+                  {", "}
                   Öresundskraft AB
                 </p>
               </header>
@@ -91,9 +91,9 @@ export function Pressmeddelande() {
           label: "Två-tre stycken + citat-block",
           render: () => (
             <Annotation
-              label="Brödtext + citat — citerbar källtext"
+              label="Brödtext + citat, citerbar källtext"
               audience="redaktör"
-              rationale="Pressreleaser har stycken som är 80–120 ord och ofta ett tydligt citat från ledning som journalister kan plocka direkt. Citatet är visuellt avskilt — det ska gå att kopiera utan att ta med löpande text."
+              rationale="Pressreleaser har stycken som är 80–120 ord och ofta ett tydligt citat från ledning som journalister kan plocka direkt. Citatet är visuellt avskilt, det ska gå att kopiera utan att ta med löpande text."
             >
               <section className="py-6 border-t border-border-subtle">
                 <div className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
@@ -106,25 +106,25 @@ export function Pressmeddelande() {
                   <p>
                     Beslutet följer ett samråd med kundrepresentanter, näringsliv och
                     fastighetsägare i regionen. Det är en del av bolagets långsiktiga arbete
-                    för att hålla nere uppvärmningskostnaderna — trots ökade investeringar i
+                    för att hålla nere uppvärmningskostnaderna, trots ökade investeringar i
                     nätet och anslutning till koldioxidinfångning på Filbornaverket.
                   </p>
                 </div>
 
                 <Copy
-                  label="Citat — VD-kommentar"
+                  label="Citat, VD-kommentar"
                   category="ton"
-                  text="Vi vet att förutsägbara kostnader är viktigare än någonsin. Det här åtagandet ger våra kunder ekonomisk trygghet i tre år framåt — utan att vi behöver kompromissa med klimatomställningen."
+                  text="Vi vet att förutsägbara kostnader är viktigare än någonsin. Det här åtagandet ger våra kunder ekonomisk trygghet i tre år framåt, utan att vi behöver kompromissa med klimatomställningen."
                   rationale="Citat-blocken är medvetet visuellt avskilda så journalister kan plocka dem ren-textuellt. Långt nog att stå för sig självt, kort nog att fungera som löp i en artikel."
                 >
                   <blockquote className="my-8 max-w-reading border-l-4 border-brand-accent pl-6 py-2">
                     <p className="text-h4 font-medium leading-snug mb-3">
                       "Vi vet att förutsägbara kostnader är viktigare än någonsin. Det här
-                      åtagandet ger våra kunder ekonomisk trygghet i tre år framåt — utan att
+                      åtagandet ger våra kunder ekonomisk trygghet i tre år framåt, utan att
                       vi behöver kompromissa med klimatomställningen."
                     </p>
                     <footer className="text-sm text-ink-muted">
-                      — Lars Berg, VD Öresundskraft
+                      Lars Berg, VD Öresundskraft
                     </footer>
                   </blockquote>
                 </Copy>
@@ -158,7 +158,7 @@ export function Pressmeddelande() {
           label: "Bilder med nedladdning + PDF-bilagor",
           render: () => (
             <Annotation
-              label="Bildbank — högupplöst nedladdning"
+              label="Bildbank, högupplöst nedladdning"
               audience="user"
               rationale="Briefen: 'Journalister behöver pressbilder i hög upplösning samt kompletterande dokument.' Tydlig nedladdnings-CTA per bild + lista över PDF-bilagor med storlek. Inget gömt bakom registrering."
             >
@@ -167,7 +167,7 @@ export function Pressmeddelande() {
                   label="Bildbank-rubrik"
                   category="rubrik"
                   text="Pressbilder och bilagor"
-                  rationale="Direkt funktionsetikett. Inga 'Material för media' — säg vad det är."
+                  rationale="Direkt funktionsetikett. Inga 'Material för media', säg vad det är."
                 >
                   <h2 className="text-h3 font-medium mb-4">Pressbilder och bilagor</h2>
                 </Copy>
@@ -228,27 +228,27 @@ export function Pressmeddelande() {
       ],
     },
 
-    /* ─── 4. BOILERPLATE — om Öresundskraft ─────────────────── */
+    /* ─── 4. BOILERPLATE, om Öresundskraft ─────────────────── */
     {
       id: "boilerplate",
-      label: "Boilerplate — företagsfakta",
+      label: "Boilerplate, företagsfakta",
       variants: [
         {
           key: "default",
           label: "Faktaruta i pressrelease-format",
           render: () => (
             <Annotation
-              label="Boilerplate — pressrelease-konvention"
+              label="Boilerplate, pressrelease-konvention"
               audience="redaktör"
               rationale="Pressreleaser avslutas traditionellt med en kort faktaruta om bolaget. Journalister känner igen den och kan klippa in den direkt i artiklar. Innehåller siffror som ger kontext (kunder, anställda, geografi)."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-md bg-tint-info p-6 max-w-reading">
                   <Copy
-                    label="Boilerplate — eyebrow"
+                    label="Boilerplate, eyebrow"
                     category="metadata"
                     text="Om Öresundskraft"
-                    rationale="Genrekonvention för pressrelease-boilerplate — alla pressreleaser har samma 'Om [företaget]'-rubrik så journalister känner igen formatet och kan klippa in det i artiklar utan redigering."
+                    rationale="Genrekonvention för pressrelease-boilerplate, alla pressreleaser har samma 'Om [företaget]'-rubrik så journalister känner igen formatet och kan klippa in det i artiklar utan redigering."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
                       Om Öresundskraft
@@ -286,7 +286,7 @@ export function Pressmeddelande() {
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <Copy
-                    label="Dela — rubrik + CTA-mönster"
+                    label="Dela, rubrik + CTA-mönster"
                     category="cta"
                     text="Dela pressmeddelandet · Mejla länken · Dela på LinkedIn"
                     rationale="Alla CTA:er följer verb + objekt-pattern. 'Mejla' (verb utan objekt) → 'Mejla länken'. 'LinkedIn' (plattformnamn utan handling) → 'Dela på LinkedIn'. Genomgående handlingsbeskrivning inte nominalfras."
@@ -314,19 +314,19 @@ export function Pressmeddelande() {
                 </div>
                 <div>
                   <Copy
-                    label="Tidigare press — länk-pattern"
+                    label="Tidigare press, länk-pattern"
                     category="metadata"
-                    text="Rubrik — datum"
-                    rationale="Länk-text följer 'rubrik — datum'-pattern, aldrig 'klicka här' eller 'läs mer'. UX-writing-regel: länk-text ska beskriva destinationen utan kontext. Skärmläsare som listar länkar får full beskrivning."
+                    text="Rubrik, datum"
+                    rationale="Länk-text följer 'rubrik, datum'-pattern, aldrig 'klicka här' eller 'läs mer'. UX-writing-regel: länk-text ska beskriva destinationen utan kontext. Skärmläsare som listar länkar får full beskrivning."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
                       Tidigare pressmeddelanden
                     </p>
                   </Copy>
                   <ul className="space-y-1.5 text-sm">
-                    <li><a href="#" className="text-brand-accent hover:underline">Industriklivet beviljar 228 mkr till CCS — 28 mars 2026</a></li>
-                    <li><a href="#" className="text-brand-accent hover:underline">Ny avsiktsförklaring för fossilfri fjärrvärme — 12 feb 2026</a></li>
-                    <li><a href="#" className="text-brand-accent hover:underline">Bokslutskommuniké 2025 — 30 jan 2026</a></li>
+                    <li><a href="#" className="text-brand-accent hover:underline">Industriklivet beviljar 228 mkr till CCS, 28 mars 2026</a></li>
+                    <li><a href="#" className="text-brand-accent hover:underline">Ny avsiktsförklaring för fossilfri fjärrvärme, 12 feb 2026</a></li>
+                    <li><a href="#" className="text-brand-accent hover:underline">Bokslutskommuniké 2025, 30 jan 2026</a></li>
                   </ul>
                 </div>
               </div>
@@ -378,10 +378,10 @@ export function Pressmeddelande() {
               className="rounded-md border-2 border-brand-accent bg-surface shadow-md p-5"
             >
               <Copy
-                label="Sticky-kontakt — eyebrow"
+                label="Sticky-kontakt, eyebrow"
                 category="metadata"
                 text="Presskontakt"
-                rationale="Enstavig funktionsetikett. Inte 'Kontakta oss' (för bred — vem är 'oss'?), inte 'Press' ensamt (oklart vad det är). 'Presskontakt' = vem journalisten ska kontakta."
+                rationale="Enstavig funktionsetikett. Inte 'Kontakta oss' (för bred, vem är 'oss'?), inte 'Press' ensamt (oklart vad det är). 'Presskontakt' = vem journalisten ska kontakta."
               >
                 <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
                   Presskontakt

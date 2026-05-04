@@ -7,10 +7,10 @@ import { Icon } from "./Icon";
  * Modul: Relaterade produkter / tjänster
  *
  * Synergi-curering, inte alternativ. Ligger sist på produktsidor (efter
- * FAQ) som "vägar vidare" — inte för att konkurrera med primary CTA.
+ * FAQ) som "vägar vidare", inte för att konkurrera med primary CTA.
  *
  * Designval:
- *  - Små ikon-kort (ingen produktbild, inget pris) — signalerar "länk
+ *  - Små ikon-kort (ingen produktbild, inget pris), signalerar "länk
  *    vidare", inte "ny produktsida".
  *  - 3 kort i grid på desktop, stack på mobil.
  *  - Synergi-tone i copy: "produkten du tittar på + det här =
@@ -27,7 +27,7 @@ export type RelateradProdukt = {
 };
 
 type Props = {
-  /** Sektionsrubrik. Default "Komplettera med" — synergi-frame. */
+  /** Sektionsrubrik. Default "Komplettera med", synergi-frame. */
   rubrik?: string;
   produkter: RelateradProdukt[];
 };
@@ -43,16 +43,16 @@ export function RelateradeProdukter({
 
   return (
     <Annotation
-      label="Relaterade produkter — synergi-curering"
+      label="Relaterade produkter, synergi-curering"
       audience="design"
-      rationale="Ligger efter FAQ (på direktköp efter formuläret, på leadsgen före lead-formet) som 'vägar vidare', inte för att konkurrera med primary CTA. Små ikon-kort utan pris och utan köp-CTA — signalerar 'klicka för att utforska', inte 'ny butikssida'. Curering är synergi (kompletterande), inte alternativ — frågar inte 'kanske vill du backa?' utan 'tillsammans med detta blir det bättre'."
+      rationale="Ligger efter FAQ (på direktköp efter formuläret, på leadsgen före lead-formet) som 'vägar vidare', inte för att konkurrera med primary CTA. Små ikon-kort utan pris och utan köp-CTA, signalerar 'klicka för att utforska', inte 'ny butikssida'. Curering är synergi (kompletterande), inte alternativ, frågar inte 'kanske vill du backa?' utan 'tillsammans med detta blir det bättre'."
     >
       <section className="py-10 border-t border-border-subtle">
         <Copy
-          label="Relaterade — rubrik"
+          label="Relaterade, rubrik"
           category="rubrik"
           text={rubrik}
-          rationale="'Komplettera med' är synergi-frame — den säger 'du har en grund, lägg till'. Undviker e-com-floskeln 'Andra köpte också' (som passar dåligt för utility-bolag) och alternativ-tone 'Vill du jämföra?' (som triggar tvivel inför primary CTA)."
+          rationale="'Komplettera med' är synergi-frame, den säger 'du har en grund, lägg till'. Undviker e-com-floskeln 'Andra köpte också' (som passar dåligt för utility-bolag) och alternativ-tone 'Vill du jämföra?' (som triggar tvivel inför primary CTA)."
         >
           <h2 className="text-h3 font-medium mb-2">{rubrik}</h2>
         </Copy>

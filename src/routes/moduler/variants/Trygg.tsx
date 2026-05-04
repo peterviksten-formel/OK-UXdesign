@@ -3,11 +3,11 @@ import { Annotation } from "../../../components/Annotation";
 import { PLANS, type BoendeTyp } from "../elavtal-data";
 
 /**
- * VARIANT A — Trygg
+ * VARIANT A, Trygg
  *
  * Strategy: behave like an institution. Strip all color accents from the
  * comparison (reserve color for state/status). No badges, no nudges, no
- * "Vanligaste valet" — every plan presented as equally legitimate so the
+ * "Vanligaste valet", every plan presented as equally legitimate so the
  * user feels in control. A real semantic <table> for screen readers.
  * Footnotes and avtalsvillkor visible inline. Verbose where the brief
  * matters. Reading-room feel.
@@ -27,7 +27,7 @@ export function VariantTrygg() {
           <p className="text-lede leading-relaxed text-ink-secondary">
             Hos oss kan du välja mellan tre elhandelsavtal. På denna sida hittar du villkor,
             prismekanism och en uppskattad månadskostnad för varje avtal. När du har valt
-            tecknar du själv via Mina sidor — eller hör av dig om du vill ha hjälp.
+            tecknar du själv via Mina sidor, eller hör av dig om du vill ha hjälp.
           </p>
         </div>
       </Annotation>
@@ -78,14 +78,14 @@ export function VariantTrygg() {
           <h3 className="text-h5 mb-2 font-medium">Skillnaden mellan elnät och elhandel</h3>
           <p className="text-sm text-ink-secondary leading-relaxed mb-2">
             <strong>Elnät</strong> är de fysiska ledningarna som transporterar el till ditt
-            hem. Du kan inte välja nätägare — det är bestämt av var du bor.
+            hem. Du kan inte välja nätägare, det är bestämt av var du bor.
           </p>
           <p className="text-sm text-ink-secondary leading-relaxed mb-2">
             <strong>Elhandel</strong> är vem som säljer själva elen till dig. Här kan du
             välja fritt mellan olika leverantörer.
           </p>
           <p className="text-sm text-ink-secondary leading-relaxed">
-            Bor du i Helsingborg eller Ängelholm är Öresundskraft redan ditt nätbolag — du
+            Bor du i Helsingborg eller Ängelholm är Öresundskraft redan ditt nätbolag, du
             ska bara välja elhandel.
           </p>
         </aside>

@@ -1,7 +1,7 @@
 /**
  * Shared placeholder data used by all three Jämför-elavtal variants.
  * Siffrorna är uppskattningar för SE4 (Helsingborg/Ängelholm) baserat på
- * snittspotpris + typiska påslag — ska bytas mot verkliga siffror innan
+ * snittspotpris + typiska påslag, ska bytas mot verkliga siffror innan
  * lansering. Lägenhet = 2 000 kWh/år, villa = 20 000 kWh/år.
  */
 
@@ -83,7 +83,7 @@ export const BOENDE_KWH: Record<BoendeTyp, number> = {
 export const TERMER: Record<string, { kort: string; lang: string }> = {
   påslag: {
     kort: "Vad vi tar betalt utöver elpriset.",
-    lang: "Påslag är öresundskrafts marginal per kWh — det syns alltid i avtalet och förändras inte under avtalsperioden.",
+    lang: "Påslag är öresundskrafts marginal per kWh, det syns alltid i avtalet och förändras inte under avtalsperioden.",
   },
   spotpris: {
     kort: "Marknadens pris timme för timme.",
@@ -91,7 +91,7 @@ export const TERMER: Record<string, { kort: string; lang: string }> = {
   },
   elprisområde: {
     kort: "Sverige är delat i fyra zoner.",
-    lang: "Helsingborg och Ängelholm ligger i SE4 — vårt sydligaste prisområde där elen oftast är dyrast i landet.",
+    lang: "Helsingborg och Ängelholm ligger i SE4, vårt sydligaste prisområde där elen oftast är dyrast i landet.",
   },
   bindningstid: {
     kort: "Hur länge avtalet gäller minst.",

@@ -2,15 +2,15 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 const NYHETER = [
-  { datum: "2026-04-15", tag: "Marknad", rubrik: "Elpriset sjunker inför sommaren — vad betyder det för dig?", sammanfattning: "Spotpriset har varit lågt hela mars och prognosen pekar mot en mild sommar." },
-  { datum: "2026-04-08", tag: "Tjänster", rubrik: "Nu kan du följa din förbrukning i realtid via appen", sammanfattning: "Ny funktion i Mitt Öresundskraft — se förbrukning per timme, jämför med månader bakåt." },
+  { datum: "2026-04-15", tag: "Marknad", rubrik: "Elpriset sjunker inför sommaren, vad betyder det för dig?", sammanfattning: "Spotpriset har varit lågt hela mars och prognosen pekar mot en mild sommar." },
+  { datum: "2026-04-08", tag: "Tjänster", rubrik: "Nu kan du följa din förbrukning i realtid via appen", sammanfattning: "Ny funktion i Mitt Öresundskraft, se förbrukning per timme, jämför med månader bakåt." },
   { datum: "2026-03-28", tag: "Hållbarhet", rubrik: "Framtidspengen finansierade 3 nya laddstationer i Helsingborg", sammanfattning: "Vinsten från våra avtal ger avkastning tillbaka till staden." },
   { datum: "2026-03-20", tag: "Marknad", rubrik: "Vad förändras med effekttariffen 2027?", sammanfattning: "Regeringen har beslutat att privatkunder inte ska ha effekttariff. Vi reder ut vad det betyder." },
-  { datum: "2026-03-12", tag: "Drift", rubrik: "Planerat underhåll i Rydebäck — vad sker när?", sammanfattning: "Kabelarbete natten 22 april. Berörda kunder meddelas via SMS." },
+  { datum: "2026-03-12", tag: "Drift", rubrik: "Planerat underhåll i Rydebäck, vad sker när?", sammanfattning: "Kabelarbete natten 22 april. Berörda kunder meddelas via SMS." },
 ];
 
 /**
- * VARIANT C — Tidslinje
+ * VARIANT C, Tidslinje
  *
  * Kronologisk lista utan bilder. Varje post har datum som visuell markör,
  * rubrik som länk, kort sammanfattning.

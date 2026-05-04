@@ -2,20 +2,20 @@ import { Link } from "react-router-dom";
 import { Icon } from "./Icon";
 
 /**
- * IntentCardGrid — delad komponent för "välj efter vad du vill göra"-listor.
+ * IntentCardGrid ,  delad komponent för "välj efter vad du vill göra"-listor.
  *
  * En datamodell, tre visuella varianter. Används på både StartsidaUndersidaUX
  * ("Eller välj efter vad du vill göra") och KundserviceNy ("Vad gäller det?")
- * så mönstret blir enhetligt — sidtypen väljer bara vilken stil som passar
+ * så mönstret blir enhetligt ,  sidtypen väljer bara vilken stil som passar
  * situationen.
  *
  * Välj variant:
- *   horizontal — ikon vänster om text, tätare packning. Bäst när användaren
+ *   horizontal ,  ikon vänster om text, tätare packning. Bäst när användaren
  *                scrollar förbi och ska scanna flera alternativ.
- *   vertical   — ikon över text, luft mellan element. Bäst när valet är
+ *   vertical   ,  ikon över text, luft mellan element. Bäst när valet är
  *                huvudhandlingen på sidan och varje alternativ ska kännas
  *                discret.
- *   chips      — pill-knappar, kompaktast. Bäst när alternativen är korta
+ *   chips      ,  pill-knappar, kompaktast. Bäst när alternativen är korta
  *                och entydiga, eller när ytan är begränsad.
  */
 
@@ -31,7 +31,7 @@ export type IntentCardVariant = "horizontal" | "vertical" | "chips";
 type Props = {
   items: IntentCardItem[];
   variant?: IntentCardVariant;
-  /** Styr antalet kolumner på lg — default anpassar sig efter antal kort */
+  /** Styr antalet kolumner på lg ,  default anpassar sig efter antal kort */
   columns?: 2 | 3 | 4 | 5 | 6;
 };
 

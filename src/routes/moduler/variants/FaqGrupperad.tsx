@@ -2,10 +2,10 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Grupperad (per tidslinje)
+ * VARIANT B, Grupperad (per tidslinje)
  *
  * Grupperar frågor efter användarens mentala tidslinje: innan / under /
- * efter. Matchar hur människor tänker om sitt ärende — inte efter
+ * efter. Matchar hur människor tänker om sitt ärende, inte efter
  * företagets kategorier.
  *
  * Pro: Matchar mental modell. Skalar bättre än ren accordion.

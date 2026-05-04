@@ -3,7 +3,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT C — Konversations-form (Typeform-stil)
+ * VARIANT C, Konversations-form (Typeform-stil)
  *
  * En fråga per "skärm". Stor input, stor knapp. Känns som en chatt/wizard.
  * Minskar upplevd ansträngning och avhopp, men tar längre tid för power-users.
@@ -70,7 +70,7 @@ export function FormularKonversation() {
     <Annotation
       label="Konversations-form (Typeform-stil)"
       audience="design"
-      rationale="En fråga per skärm. Stor input. Progress-indikator överst. Hjälp-text efter behov. Kräver validering per steg — felmeddelanden inline direkt under input. 'Tillbaka' alltid tillgängligt så användaren kan ändra svar."
+      rationale="En fråga per skärm. Stor input. Progress-indikator överst. Hjälp-text efter behov. Kräver validering per steg, felmeddelanden inline direkt under input. 'Tillbaka' alltid tillgängligt så användaren kan ändra svar."
     >
       <div className="max-w-reading">
         {/* Progress */}

@@ -2,13 +2,13 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Stor hero-citat
+ * VARIANT B, Stor hero-citat
  *
  * Ett stort citat dominerar. Visuellt djärvt. Fungerar för en utvald
  * story eller på en kampanjsida där ett påstående ska sitta kvar.
  *
- * Pro: Hög impact. Känns intentionell — inte "mer av samma".
- * Kontra: Ett citat är känsligt — måste vara starkt. Risk för staged-känsla.
+ * Pro: Hög impact. Känns intentionell, inte "mer av samma".
+ * Kontra: Ett citat är känsligt, måste vara starkt. Risk för staged-känsla.
  */
 export function KundcaseHero() {
   return (
@@ -22,7 +22,7 @@ export function KundcaseHero() {
           <Icon name="format_quote" size={40} className="text-brand-accent mx-auto mb-4" />
           <blockquote className="text-h2 text-brand-primary leading-tight mb-6 italic">
             "Vi fick ner elkostnaden med 30% första året efter solcellerna. Öresundskraft
-            skötte hela installationen — vi behövde inte tänka."
+            skötte hela installationen, vi behövde inte tänka."
           </blockquote>
           <figcaption className="text-sm">
             <p className="font-medium text-brand-primary">Anders L., villaägare i Helsingborg</p>

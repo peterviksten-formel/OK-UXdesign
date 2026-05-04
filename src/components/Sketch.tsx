@@ -2,7 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 
 /**
  * Tiny wireframe primitives used in the variant picker.
- * Kept dumb on purpose — each preview is a handful of divs on a
+ * Kept dumb on purpose ,  each preview is a handful of divs on a
  * 96×64 canvas. No actual content, just shape.
  */
 

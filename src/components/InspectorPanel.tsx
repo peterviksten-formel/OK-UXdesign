@@ -7,9 +7,9 @@ import { Icon } from "./Icon";
 
 /**
  * Inspector-panel (höger kolumn) som samlar tre vyer bakom tabs:
- *   1. UX-guide    — designanteckningar per sida
- *   2. Copy-guide  — copy-rationaler + sidtyp-brief
- *   3. Redigera    — preset + reset + status för aktiv sida
+ *   1. UX-guide    ,  designanteckningar per sida
+ *   2. Copy-guide  ,  copy-rationaler + sidtyp-brief
+ *   3. Redigera    ,  preset + reset + status för aktiv sida
  *
  * Panelen visas när minst ett av de tre lägena är aktivt (flaggorna
  * kontrolleras fortfarande via respektive toggle i headern).
@@ -22,7 +22,7 @@ export function InspectorPanel() {
 
   const anyEnabled = uxOn || copyOn || editMode.enabled;
 
-  // Om aktiv tab hör till ett avstängt läge — hoppa till första aktiva.
+  // Om aktiv tab hör till ett avstängt läge ,  hoppa till första aktiva.
   useEffect(() => {
     if (!anyEnabled) return;
     const tabEnabled: Record<InspectorTab, boolean> = {
@@ -101,7 +101,7 @@ export function InspectorPanel() {
                     ? "border-transparent text-ink-secondary hover:text-ink hover:bg-tint-info/50"
                     : "border-transparent text-ink-muted/50 cursor-not-allowed"
                 }`}
-                title={t.enabled ? t.label : `${t.label} (avaktiverad — slå på i headern)`}
+                title={t.enabled ? t.label : `${t.label} (avaktiverad ,  slå på i headern)`}
               >
                 {t.label}
                 {t.enabled && t.count > 0 && (

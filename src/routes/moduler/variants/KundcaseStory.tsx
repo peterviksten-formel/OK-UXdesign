@@ -2,19 +2,19 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT C — Case-story
+ * VARIANT C, Case-story
  *
  * Längre format. Bild + narrativ + konkreta siffror. Byggs som en
  * redaktionell artikel men med mätbara resultat. Används för B2B-case
  * eller tyngre privatkund-stories.
  *
  * Pro: Trovärdig, går djupare än ett citat. Bra för SEO.
- * Kontra: Produktionstungt — kräver intervju, foto, copy.
+ * Kontra: Produktionstungt, kräver intervju, foto, copy.
  */
 export function KundcaseStory() {
   return (
     <Annotation
-      label="Kundcase — story med siffror"
+      label="Kundcase, story med siffror"
       audience="redaktör"
       rationale="Bild vänster, text höger. Tre-kolumn-metrik i botten ger konkreta resultat. Längre copy: 100-200 ord. Fungerar som både case study och content-marketing. Kräver fotograferad kund och godkännande."
     >

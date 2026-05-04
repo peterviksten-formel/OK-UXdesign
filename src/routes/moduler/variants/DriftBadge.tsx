@@ -3,7 +3,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT C — Badge + drawer
+ * VARIANT C, Badge + drawer
  *
  * Liten status-badge i header. Klick öppnar en drawer med detaljer.
  * Minimalt påträngande, men kräver att användaren upptäcker badgen.
@@ -15,7 +15,7 @@ export function DriftBadge() {
   const [open, setOpen] = useState(false);
   return (
     <Annotation
-      label="Driftstatus — badge + drawer"
+      label="Driftstatus, badge + drawer"
       audience="design"
       rationale="Badge i header eller utility-rad. Klick → drawer eller popover med fullständig info. Bra för sidor där status är sekundär. Badge-färg signalerar status även om användaren inte klickar."
     >
@@ -57,13 +57,13 @@ export function DriftBadge() {
               <li className="flex items-start gap-2">
                 <span className="w-2 h-2 rounded-full mt-1.5 bg-brand-highlight animate-pulse" />
                 <span>
-                  <strong>Centrala Helsingborg</strong> — 340 kunder, beräknad klar 12:00
+                  <strong>Centrala Helsingborg</strong>, 340 kunder, beräknad klar 12:00
                 </span>
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-2 h-2 rounded-full mt-1.5 bg-brand-highlight animate-pulse" />
                 <span>
-                  <strong>Stattena/Drottninghög</strong> — fjärrvärme, beräknad klar 14:00
+                  <strong>Stattena/Drottninghög</strong>, fjärrvärme, beräknad klar 14:00
                 </span>
               </li>
             </ul>

@@ -12,7 +12,7 @@ type IconProps = {
 
 /**
  * Material Symbols Rounded. Names: https://fonts.google.com/icons
- * Default decorative — pass aria-label to make semantic.
+ * Default decorative ,  pass aria-label to make semantic.
  */
 export function Icon({
   name,

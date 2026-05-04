@@ -11,13 +11,13 @@ const VARIANTS: Variant[] = [
     label: "Hero-banner",
     riskLevel: "låg",
     oneLiner: "Stor navy-banner med vad-du-kan-göra-lista och primär CTA.",
-    bestFor: "Kundservice-sidan, elavtal-sidan — där self-service ska lyftas.",
+    bestFor: "Kundservice-sidan, elavtal-sidan, där self-service ska lyftas.",
     render: () => <MinaSidorHero />,
   },
   {
     id: "split",
     shortName: "B",
-    label: "Split — webb + app",
+    label: "Split, webb + app",
     riskLevel: "låg",
     oneLiner: "Två likvärdiga kort: Mina sidor och mobilappen.",
     bestFor: "När både webb och app är viktiga kanaler att lyfta.",
@@ -38,31 +38,31 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Yta",
     values: {
-      hero: "Stor — dominerar sin sektion.",
-      split: "Medel — två kort bredvid varandra.",
-      strip: "Liten — en horisontell rad.",
+      hero: "Stor, dominerar sin sektion.",
+      split: "Medel, två kort bredvid varandra.",
+      strip: "Liten, en horisontell rad.",
     },
   },
   {
     aspect: "Konverteringsfokus",
     values: {
-      hero: "Hög — en tydlig CTA, inget konkurrerande.",
-      split: "Medel — delar mellan webb och app.",
-      strip: "Låg — kompletterande, inte primär.",
+      hero: "Hög, en tydlig CTA, inget konkurrerande.",
+      split: "Medel, delar mellan webb och app.",
+      strip: "Låg, kompletterande, inte primär.",
     },
   },
   {
     aspect: "Visar värdet",
     values: {
       hero: "Lista på 5 saker man kan göra.",
-      split: "Lista per kort — 3 per kanal.",
-      strip: "Två korta meningar — 'ingen kötid, dygnet runt'.",
+      split: "Lista per kort, 3 per kanal.",
+      strip: "Två korta meningar, 'ingen kötid, dygnet runt'.",
     },
   },
   {
     aspect: "App-exponering",
     values: {
-      hero: "Saknas — endast Mina sidor.",
+      hero: "Saknas, endast Mina sidor.",
       split: "Likvärdig med Mina sidor.",
       strip: "Saknas.",
     },
@@ -71,7 +71,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     aspect: "Rekommendation",
     values: {
       hero: "Kundservice-sidan, elavtal-sidan, produktsidan.",
-      split: "Om appen ska marknadsföras — hub-sida, privat/hem.",
+      split: "Om appen ska marknadsföras, hub-sida, privat/hem.",
       strip: "Upprepning på alla sidor i inloggat läge, footer.",
     },
   },

@@ -51,23 +51,23 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Pris-exponering",
     values: {
-      trygg: "Prisfält i en gul ruta — synligt men inte dominerande.",
-      progressiv: "Prisbadge ovanpå bildytan — e-commerce-mönster, omöjligt att missa.",
-      experimentell: "Sticky sidebar — priset följer scroll. Alltid i kant av synfält.",
+      trygg: "Prisfält i en gul ruta, synligt men inte dominerande.",
+      progressiv: "Prisbadge ovanpå bildytan, e-commerce-mönster, omöjligt att missa.",
+      experimentell: "Sticky sidebar, priset följer scroll. Alltid i kant av synfält.",
     },
   },
   {
     aspect: "Detalj-exponering",
     values: {
       trygg: "Tre kolumner (ingår/villkor/varför) synliga direkt.",
-      progressiv: "Tabs — användaren väljer vilken kategori de vill se.",
+      progressiv: "Tabs, användaren väljer vilken kategori de vill se.",
       experimentell: "Detaljer + lång text + relaterat scrollar fritt. Inget dolt.",
     },
   },
   {
     aspect: "Sekundär CTA ('Ställ en fråga')",
     values: {
-      trygg: "Finns inte — bara primär CTA.",
+      trygg: "Finns inte, bara primär CTA.",
       progressiv: "Finns. Fångar osäkra besökare som inte är redo att köpa.",
       experimentell: "Finns. I sidebaren tillsammans med primär CTA.",
     },
@@ -75,7 +75,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Mobil",
     values: {
-      trygg: "Bild staplas ovanför info — lång scroll men inga överraskningar.",
+      trygg: "Bild staplas ovanför info, lång scroll men inga överraskningar.",
       progressiv: "Hero-bild med prisöverlägg → compact info → tabs.",
       experimentell: "Sidebar blir en sticky fot-bar på mobil. Kräver omsorgsfull design.",
     },
@@ -83,9 +83,9 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "WCAG",
     values: {
-      trygg: "Utmärkt — ren HTML, inga dynamiska kontroller.",
-      progressiv: "Bra — tabs behöver korrekt role='tab' + tangentbordsnavigation.",
-      experimentell: "Bra — sticky-positionen behöver inte täcka innehåll vid tab-fokus.",
+      trygg: "Utmärkt, ren HTML, inga dynamiska kontroller.",
+      progressiv: "Bra, tabs behöver korrekt role='tab' + tangentbordsnavigation.",
+      experimentell: "Bra, sticky-positionen behöver inte täcka innehåll vid tab-fokus.",
     },
   },
   {
@@ -93,7 +93,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Produkter där beslutet är enkelt och kort läsning räcker.",
       progressiv: "Default för smarta produkter-sida.",
-      experimentell: "Laddbox, solceller — där användaren vill läsa mycket innan köp.",
+      experimentell: "Laddbox, solceller, där användaren vill läsa mycket innan köp.",
     },
   },
 ];
@@ -109,7 +109,7 @@ export function Produktinfo() {
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Produktinfo</p>
         <h1 className="text-h1 mb-3">Produktsida med e-commerce-känsla</h1>
         <p className="text-lede text-ink-secondary">
-          En produktsida som visar pris, villkor och CTA — "mindre formulär, mer köp". Välj
+          En produktsida som visar pris, villkor och CTA, "mindre formulär, mer köp". Välj
           produkt nedan för att se hur modulen anpassar sig.
         </p>
       </header>
@@ -144,8 +144,8 @@ export function Produktinfo() {
         <h2 className="text-h3 mb-4">Designnotering</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Varför produktväljare ovanför varianter?</strong> Modulen är generisk
-            — alla 6 produkter renderas med exakt samma komponent. Produktväljaren visar att
+            <strong>Varför produktväljare ovanför varianter?</strong> Modulen är generisk.
+            Alla 6 produkter renderas med exakt samma komponent. Produktväljaren visar att
             layouten skalar utan specialfall.
           </p>
           <p>

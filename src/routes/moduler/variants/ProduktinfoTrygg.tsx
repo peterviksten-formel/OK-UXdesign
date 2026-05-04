@@ -3,7 +3,7 @@ import { Icon } from "../../../components/Icon";
 import type { Produkt } from "../produkt-data";
 
 /**
- * VARIANT A — Trygg
+ * VARIANT A, Trygg
  *
  * Traditional product detail page. Image left, info right (desktop).
  * Plain spec table + bullet list of inclusions. CTA at bottom of info.
@@ -23,7 +23,7 @@ export function ProduktinfoTrygg({
       <Annotation
         label="Produktöversikt"
         audience="design"
-        rationale="Klassisk tvåkolumnslayout: bild vänster, info höger. All info synlig direkt — ingen accordion, inga tabs. Läsbarheten prioriteras."
+        rationale="Klassisk tvåkolumnslayout: bild vänster, info höger. All info synlig direkt, ingen accordion, inga tabs. Läsbarheten prioriteras."
       >
         <div className="grid md:grid-cols-2 gap-8 mb-8">
           {/* Image placeholder */}

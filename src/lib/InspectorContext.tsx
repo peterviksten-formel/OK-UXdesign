@@ -1,13 +1,13 @@
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 /**
- * Inspector — samlar UX-guide, Copy-guide och Redigera i en högerkolumn.
+ * Inspector ,  samlar UX-guide, Copy-guide och Redigera i en högerkolumn.
  * Kontexten tracka:
  *   - activeTab: vilken av de tre flikarna som visas
  *   - panelOpen: visuell öppen/stängd på panelen (när minst ett läge är på)
  *
  * Flaggorna för respektive läge (annotations.enabled, editorial.enabled,
- * editMode.enabled) bor kvar i sina egna kontexter — Inspector består bara
+ * editMode.enabled) bor kvar i sina egna kontexter ,  Inspector består bara
  * av navigation.
  */
 

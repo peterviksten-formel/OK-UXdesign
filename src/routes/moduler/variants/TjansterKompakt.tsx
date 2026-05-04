@@ -11,18 +11,18 @@ const TJANSTER = [
 ];
 
 /**
- * VARIANT C — Kompakt lista
+ * VARIANT C, Kompakt lista
  *
  * Vertikal lista med små ikoner + titel + länk. Tar minst yta, bra för
  * sidopaneler eller footer-navigering.
  *
  * Pro: Sparsamt med yta. Lätt att skanna alfabetiskt.
- * Kontra: Mindre visuell tyngd — passar inte som huvudsektion.
+ * Kontra: Mindre visuell tyngd, passar inte som huvudsektion.
  */
 export function TjansterKompakt() {
   return (
     <Annotation
-      label="Tjänstelista — kompakt"
+      label="Tjänstelista, kompakt"
       audience="design"
       rationale="Vertikal lista. Ikonen är liten (20px), titeln är primär, beskrivning är sekundär text. Fungerar som side-panel på hub-sidor eller som 'Fler tjänster'-block i footer."
     >

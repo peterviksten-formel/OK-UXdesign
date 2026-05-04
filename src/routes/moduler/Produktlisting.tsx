@@ -11,7 +11,7 @@ function ListingGrid() {
     <Annotation
       label="Produktgrid"
       audience="design"
-      rationale="Alla produkter synliga i ett grid. Ingen interaktion krävs — användaren scannar visuellt. Bra för 4–6 produkter. Mer än 8? Filtrera istället."
+      rationale="Alla produkter synliga i ett grid. Ingen interaktion krävs, användaren scannar visuellt. Bra för 4–6 produkter. Mer än 8? Filtrera istället."
     >
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {PRODUKTER.map((p) => <ProductCard key={p.id} produkt={p} />)}
@@ -133,7 +133,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Känsla",
     values: {
-      trygg: "Produktkatalog. Allt synligt — bra för snabb scanning.",
+      trygg: "Produktkatalog. Allt synligt, bra för snabb scanning.",
       progressiv: "Smart butik. Filtret minskar brus och gör valet tydligare.",
     },
   },
@@ -154,8 +154,8 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Tillgänglighet",
     values: {
-      trygg: "Perfekt — inget dolt innehåll.",
-      progressiv: "Bra — filter har aria-pressed.",
+      trygg: "Perfekt, inget dolt innehåll.",
+      progressiv: "Bra, filter har aria-pressed.",
     },
   },
   {
@@ -176,7 +176,7 @@ export function Produktlisting() {
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Produktlisting</p>
         <h1 className="text-h1 mb-3">Smarta produkter och tjänster</h1>
         <p className="text-lede text-ink-secondary">
-          Grid eller filtrerat grid — hur vi visar flera produkter. Varje kort länkar till
+          Grid eller filtrerat grid, hur vi visar flera produkter. Varje kort länkar till
           Produktinfo-modulen.
         </p>
       </header>

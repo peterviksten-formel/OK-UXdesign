@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT A — Hero-banner
+ * VARIANT A, Hero-banner
  *
  * Stor banner i full bredd, bild som bakgrund, stor rubrik + CTA.
  * Max impact. Används för stora kampanjer och nya tjänster.
@@ -15,7 +15,7 @@ export function KampanjHero() {
     <Annotation
       label="Kampanj Hero-banner"
       audience="design"
-      rationale="Full-bredd, bild-bakgrund-simulering, stor rubrik. Primär CTA dominant. Används sparsamt — max 1 per sida för att inte konkurrera. Kopian är kort: verb + objekt + tidslinje."
+      rationale="Full-bredd, bild-bakgrund-simulering, stor rubrik. Primär CTA dominant. Används sparsamt, max 1 per sida för att inte konkurrera. Kopian är kort: verb + objekt + tidslinje."
     >
       <section className="relative overflow-hidden rounded-lg bg-gradient-to-br from-brand-primary to-brand-accent text-white">
         <div className="relative z-10 py-12 sm:py-20 px-6 sm:px-10 max-w-reading">

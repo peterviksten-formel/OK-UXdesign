@@ -20,7 +20,7 @@ const VARIANTS: Variant[] = [
     label: "Progressiv",
     riskLevel: "medel",
     oneLiner: "Pill-väljare + jämförelsekort + 'vanligaste valet'.",
-    bestFor: "Mainstream — yngre familjer som vill förstå utan att överbelastas.",
+    bestFor: "Mainstream, yngre familjer som vill förstå utan att överbelastas.",
     render: () => <VariantProgressiv />,
   },
   {
@@ -56,13 +56,13 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Förklaras i en lugn faktaruta som måste läsas.",
       progressiv: "Förklaring som callout + länk till 'Vad är skillnaden?'.",
-      experimentell: "Tooltips med streckad understrykning — kontext utan att lämna sidan.",
+      experimentell: "Tooltips med streckad understrykning, kontext utan att lämna sidan.",
     },
   },
   {
     aspect: "Risk för 'känns gimmickig'",
     values: {
-      trygg: "Ingen risk — kan kännas tråkig istället.",
+      trygg: "Ingen risk, kan kännas tråkig istället.",
       progressiv: "Låg. Mönstren är väl etablerade.",
       experimentell: "Hög. Animationer + AI-text kräver redaktionell granskning.",
     },
@@ -78,9 +78,9 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Implementeringstid",
     values: {
-      trygg: "Lägst — en tabell + lite copy.",
-      progressiv: "Medel — komponenter finns redan i Material/Tailwind.",
-      experimentell: "Högst — kräver kalkyleringsmodell + tooltip-komponent + live-state.",
+      trygg: "Lägst, en tabell + lite copy.",
+      progressiv: "Medel, komponenter finns redan i Material/Tailwind.",
+      experimentell: "Högst, kräver kalkyleringsmodell + tooltip-komponent + live-state.",
     },
   },
   {
@@ -96,7 +96,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Lägst lyft. Möjligen lägre avhopp i juridiskt känsliga fall.",
       progressiv: "+ moderat. Mjuk nudge fungerar för obeslutsamma.",
-      experimentell: "Störst potential — användaren har 'investerat' i sliders.",
+      experimentell: "Störst potential, användaren har 'investerat' i sliders.",
     },
   },
   {
@@ -104,7 +104,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Bra som fallback / som 'detalj-vy' bakom annan variant.",
       progressiv: "Säkraste valet om vi väljer EN variant för hela siten.",
-      experimentell: "Bra för en pilot på /el — mätbart mot Progressiv via A/B-test.",
+      experimentell: "Bra för en pilot på /el, mätbart mot Progressiv via A/B-test.",
     },
   },
 ];
@@ -119,7 +119,7 @@ export function ElavtalJamfor() {
         <h1 className="text-h1 mb-3">Hitta elavtalet som passar dig</h1>
         <p className="text-lede text-ink-secondary">
           Tre designvarianter av samma modul, så vi kan diskutera trade-offs konkret.
-          Växla mellan A, B och C i raden nedan — eller öppna <em>Jämför varianter</em> för
+          Växla mellan A, B och C i raden nedan, eller öppna <em>Jämför varianter</em> för
           en punktvis genomgång.
         </p>
       </header>

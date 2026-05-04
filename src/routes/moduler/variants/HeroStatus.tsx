@@ -2,9 +2,9 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT C — Status-first
+ * VARIANT C, Status-first
  *
- * Strategy: Sidan svarar på användarens fråga direkt i H1 — en dynamisk
+ * Strategy: Sidan svarar på användarens fråga direkt i H1, en dynamisk
  * rubrik baserad på aktuell data. Används på Avbrottsinformation,
  * Kundservice-hub, live-status. Binärt svar, ingen gissning.
  *
@@ -17,7 +17,7 @@ export function HeroStatus({ pagaende = 2 }: { pagaende?: number }) {
     <Annotation
       label="Status-first hero"
       audience="user"
-      rationale="H1 är ett direktsvar. Ingen 'Välkommen' eller marknadsspråk — användaren ser svar på den fråga de hade när de klickade. Färgsignal binär: röd vid pågående, grön vid normalt. Respekterar användarens fem sekunder."
+      rationale="H1 är ett direktsvar. Ingen 'Välkommen' eller marknadsspråk, användaren ser svar på den fråga de hade när de klickade. Färgsignal binär: röd vid pågående, grön vid normalt. Respekterar användarens fem sekunder."
     >
       <section
         className={`rounded-lg p-6 sm:p-10 ${

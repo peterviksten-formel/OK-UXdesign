@@ -11,7 +11,7 @@ const VARIANTS: Variant[] = [
     label: "Ikon-kort-grid",
     riskLevel: "låg",
     oneLiner: "3×2 grid med ikon + titel + beskrivning. Ingen bildkostnad.",
-    bestFor: "Huvudingång för tjänstnavigering — startsida, hub-sidor.",
+    bestFor: "Huvudingång för tjänstnavigering, startsida, hub-sidor.",
     render: () => <TjansterIkonGrid />,
   },
   {
@@ -38,15 +38,15 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Visuell tyngd",
     values: {
-      ikon: "Medel — ikoner ger igenkänning.",
-      bild: "Hög — bilder dominerar layouten.",
-      kompakt: "Låg — känns som navigation, inte feature.",
+      ikon: "Medel, ikoner ger igenkänning.",
+      bild: "Hög, bilder dominerar layouten.",
+      kompakt: "Låg, känns som navigation, inte feature.",
     },
   },
   {
     aspect: "Bildkostnad",
     values: {
-      ikon: "Ingen — MD3-ikoner kommer med.",
+      ikon: "Ingen, MD3-ikoner kommer med.",
       bild: "6 kvalitativa bilder = fotograf eller stockfoto-budget.",
       kompakt: "Ingen.",
     },
@@ -63,7 +63,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     aspect: "Mobilbeteende",
     values: {
       ikon: "Staplas till 2 kolumner, sedan 1.",
-      bild: "Samma — men bildproportionerna måste tåla 1-kol.",
+      bild: "Samma, men bildproportionerna måste tåla 1-kol.",
       kompakt: "Listan staplar naturligt.",
     },
   },
@@ -72,7 +72,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       ikon: "Ikoner kan behöva aria-hidden när titeln räcker.",
       bild: "Bilder behöver alt-text.",
-      kompakt: "Mest tillgänglig — enkel list-struktur.",
+      kompakt: "Mest tillgänglig, enkel list-struktur.",
     },
   },
   {
@@ -95,7 +95,7 @@ export function Tjanster() {
         <h1 className="text-h1 mb-3">Tjänste-grid</h1>
         <p className="text-lede text-ink-secondary">
           Hur vi visar Öresundskrafts olika tjänster som en navigerbar översikt.
-          Ikon / bild / kompakt — beroende på kontext.
+          Ikon / bild / kompakt, beroende på kontext.
         </p>
       </header>
 

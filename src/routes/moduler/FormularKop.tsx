@@ -5,7 +5,7 @@ import { Icon } from "../../components/Icon";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
 import { FormularKonversation } from "./variants/FormularKonversation";
 
-/* ─── Variant A — Traditional form ──────────────────────────────────── */
+/* ─── Variant A, Traditional form ──────────────────────────────────── */
 function FormTrygg() {
   return (
     <Annotation
@@ -85,7 +85,7 @@ function FormTrygg() {
   );
 }
 
-/* ─── Variant B — Checkout-style stepper ────────────────────────────── */
+/* ─── Variant B, Checkout-style stepper ────────────────────────────── */
 function FormProgressiv() {
   const [step, setStep] = useState(0);
   const steps = [
@@ -100,7 +100,7 @@ function FormProgressiv() {
       <Annotation
         label="Stegindikator"
         audience="user"
-        rationale="3 steg synliga hela tiden — du vet var du är och vad som kommer. Minskar osäkerhet. Verb-konsistens: 'Beställ' hela vägen, aldrig 'Sök pris' eller 'Kontakta'."
+        rationale="3 steg synliga hela tiden, du vet var du är och vad som kommer. Minskar osäkerhet. Verb-konsistens: 'Beställ' hela vägen, aldrig 'Sök pris' eller 'Kontakta'."
       >
         <div className="flex items-center mb-8">
           {steps.map((s, i) => (
@@ -135,7 +135,7 @@ function FormProgressiv() {
           <Annotation
             label="Steg 1: Produktbekräftelse"
             audience="design"
-            rationale="Inte ett 'tomt' steg — användaren bekräftar vad de köper och ser pris + villkor innan de lämnar personuppgifter. Minskar avhopp i steg 2."
+            rationale="Inte ett 'tomt' steg, användaren bekräftar vad de köper och ser pris + villkor innan de lämnar personuppgifter. Minskar avhopp i steg 2."
           >
             <div className="space-y-4">
               <div className="rounded-md border border-border-subtle bg-surface p-5">
@@ -146,7 +146,7 @@ function FormProgressiv() {
                   <div className="flex-1">
                     <p className="text-eyebrow uppercase text-ink-muted mb-1">Elbil & laddning</p>
                     <h3 className="text-h4 font-medium mb-1">Ladda Smart</h3>
-                    <p className="text-sm text-ink-secondary">Smart laddning för elbil — hemma eller på jobbet.</p>
+                    <p className="text-sm text-ink-secondary">Smart laddning för elbil, hemma eller på jobbet.</p>
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="text-xs text-ink-muted">Från</p>
@@ -158,10 +158,10 @@ function FormProgressiv() {
               <div className="rounded-md bg-tint-notice p-4 text-sm">
                 <p className="font-medium mb-2">Så fungerar det:</p>
                 <ol className="list-decimal list-inside space-y-1 text-ink-secondary">
-                  <li>Du beställer — vi kontaktar dig inom 3 arbetsdagar</li>
+                  <li>Du beställer, vi kontaktar dig inom 3 arbetsdagar</li>
                   <li>Besiktning av din bostad (ingår)</li>
                   <li>Installation av certifierad elektriker</li>
-                  <li>Klart — börja ladda</li>
+                  <li>Klart, börja ladda</li>
                 </ol>
               </div>
 
@@ -241,7 +241,7 @@ function FormProgressiv() {
           <Annotation
             label="Steg 3: Granska & bekräfta"
             audience="user"
-            rationale="Sista steget: granska allt innan du skickar. Redigerbar — klicka 'Ändra' för att gå tillbaka. Villkor-kryssrutan och ångerrätt-texten sitter här, inte i steg 1."
+            rationale="Sista steget: granska allt innan du skickar. Redigerbar, klicka 'Ändra' för att gå tillbaka. Villkor-kryssrutan och ångerrätt-texten sitter här, inte i steg 1."
           >
             <div className="space-y-4">
               <div className="rounded-md border border-border-subtle bg-surface p-5">
@@ -339,16 +339,16 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Avhopp-risk",
     values: {
-      trygg: "Högre — alla fält synliga skapar 'formulär-ångest'.",
-      progressiv: "Lägre — steget 'Produkt' kräver noll input men skapar commitment.",
+      trygg: "Högre, alla fält synliga skapar 'formulär-ångest'.",
+      progressiv: "Lägre, steget 'Produkt' kräver noll input men skapar commitment.",
       experimentell: "Lägst för ovana användare. Hög för power-users som vill scanna.",
     },
   },
   {
     aspect: "Upplevd tid",
     values: {
-      trygg: "Snabbt — se allt, fyll i, klar.",
-      progressiv: "Medium — tre 'sidor' men tydlig progress.",
+      trygg: "Snabbt, se allt, fyll i, klar.",
+      progressiv: "Medium, tre 'sidor' men tydlig progress.",
       experimentell: "Känns snabb (en fråga i taget) men är långsammast totalt.",
     },
   },
@@ -357,7 +357,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Valideras vid submit. Fel högst upp.",
       progressiv: "Valideras per steg. Användaren fixar fel innan nästa steg.",
-      experimentell: "Per fråga. Fel visas direkt — omöjligt att gå vidare med trasig data.",
+      experimentell: "Per fråga. Fel visas direkt, omöjligt att gå vidare med trasig data.",
     },
   },
   {
@@ -371,9 +371,9 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "WCAG",
     values: {
-      trygg: "Utmärkt — standard HTML, synliga labels.",
-      progressiv: "Bra — steg-skiften behöver fokus-hantering.",
-      experimentell: "Känsligt — autofocus per steg, men screen-readers behöver aria-live.",
+      trygg: "Utmärkt, standard HTML, synliga labels.",
+      progressiv: "Bra, steg-skiften behöver fokus-hantering.",
+      experimentell: "Känsligt, autofocus per steg, men screen-readers behöver aria-live.",
     },
   },
   {
@@ -395,7 +395,7 @@ export function FormularKop() {
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Formulär-köp</p>
         <h1 className="text-h1 mb-3">Beställning som känns som köp</h1>
         <p className="text-lede text-ink-secondary">
-          Alla köp hos Öresundskraft är formulärbaserade — men vi kan få dem att <em>kännas</em>{" "}
+          Alla köp hos Öresundskraft är formulärbaserade, men vi kan få dem att <em>kännas</em>{" "}
           som en checkout istället för ett myndighetsformulär. Två varianter.
         </p>
       </header>

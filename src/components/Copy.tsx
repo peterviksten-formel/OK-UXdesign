@@ -41,7 +41,7 @@ export function Copy({ label, rationale, category = "rubrik", text, children }: 
 
   const child = Children.only(children);
   if (!isValidElement(child)) {
-    // Children is a plain string or fragment — wrap in a span so we can decorate.
+    // Children is a plain string or fragment ,  wrap in a span so we can decorate.
     return (
       <span
         ref={(node) => { elRef.current = node; }}

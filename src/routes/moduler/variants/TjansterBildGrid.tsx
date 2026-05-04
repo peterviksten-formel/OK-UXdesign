@@ -2,16 +2,16 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 const TJANSTER = [
-  { titel: "Elavtal", desc: "Teckna eller byt — tre avtal att välja mellan.", href: "#" },
+  { titel: "Elavtal", desc: "Teckna eller byt, tre avtal att välja mellan.", href: "#" },
   { titel: "Solceller", desc: "Producera din egen el. Vi sköter installation.", href: "#" },
-  { titel: "Laddbox för elbil", desc: "Smart laddning hemma — med appstyrning.", href: "#" },
+  { titel: "Laddbox för elbil", desc: "Smart laddning hemma, med appstyrning.", href: "#" },
   { titel: "Fjärrvärme", desc: "Värme från lokal panncentral. Enkelt och effektivt.", href: "#" },
   { titel: "Fjärrkyla", desc: "Miljövänlig kyla för företag och bostäder.", href: "#" },
   { titel: "Fiber (Pingday)", desc: "Snabb och stabil bredband via vårt fibernät.", href: "#" },
 ];
 
 /**
- * VARIANT B — Bildkort-grid
+ * VARIANT B, Bildkort-grid
  *
  * Sex kort med bildruta ovanför text. Mer visuellt intressant men
  * kräver sex kvalitativa produktbilder.
@@ -22,7 +22,7 @@ const TJANSTER = [
 export function TjansterBildGrid() {
   return (
     <Annotation
-      label="Tjänstegrid — bildkort"
+      label="Tjänstegrid, bildkort"
       audience="design"
       rationale="Samma struktur som ikon-grid men med bildruta överst. Aspect 16/10 ger plats åt både landskaps- och porträttbilder. Bilden bör visa användning, inte produkt (människa som laddar bil, inte bara laddbox)."
     >

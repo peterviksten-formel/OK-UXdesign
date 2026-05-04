@@ -3,7 +3,7 @@ import { Annotation } from "../../../components/Annotation";
 import { AVBROTT, STATUS_META, TYP_LABEL, type AvbrottStatus } from "../avbrott-data";
 
 /**
- * VARIANT B — Progressiv
+ * VARIANT B, Progressiv
  *
  * Strategy: tab-filtered list with status counts. Each tab shows its subset.
  * Items use a compact card with expandable timeline. A top "akutbar" shows

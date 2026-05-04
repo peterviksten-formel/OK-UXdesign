@@ -19,7 +19,7 @@ const VARIANTS: Variant[] = [
     shortName: "B",
     label: "Utvald + 2 små",
     riskLevel: "låg",
-    oneLiner: "Hierarkisk — en stor utvald, två mindre vid sidan.",
+    oneLiner: "Hierarkisk, en stor utvald, två mindre vid sidan.",
     bestFor: "När redaktör vill lyfta en specifik nyhet (prisförändring, kampanj).",
     render: () => <NyhetsUtvald />,
   },
@@ -38,23 +38,23 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Visuell hierarki",
     values: {
-      grid: "Ingen — alla nyheter lika stora.",
-      utvald: "Stark — en utvald tar 2/3.",
-      tidslinje: "Ingen — senaste syns först.",
+      grid: "Ingen, alla nyheter lika stora.",
+      utvald: "Stark, en utvald tar 2/3.",
+      tidslinje: "Ingen, senaste syns först.",
     },
   },
   {
     aspect: "Redaktionellt arbete",
     values: {
-      grid: "Minst — lägg till post.",
-      utvald: "Medel — välj utvald per vecka.",
-      tidslinje: "Minst — sortering sköter sig självt.",
+      grid: "Minst, lägg till post.",
+      utvald: "Medel, välj utvald per vecka.",
+      tidslinje: "Minst, sortering sköter sig självt.",
     },
   },
   {
     aspect: "Skalbarhet",
     values: {
-      grid: "3 kort — inga fler. Visa-alla länk tar över.",
+      grid: "3 kort, inga fler. Visa-alla länk tar över.",
       utvald: "3 kort + utvald. Visa-alla för resten.",
       tidslinje: "Obegränsat. Paginering eller 'ladda fler'.",
     },
@@ -64,13 +64,13 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       grid: "1 bild per nyhet.",
       utvald: "1 stor + 2 små (eller ingen för små).",
-      tidslinje: "Ingen bild — rent textuellt.",
+      tidslinje: "Ingen bild, rent textuellt.",
     },
   },
   {
     aspect: "Bästa användning",
     values: {
-      grid: "Block på sidor — startsida, el-hub, kundservice.",
+      grid: "Block på sidor, startsida, el-hub, kundservice.",
       utvald: "Elhandel-sida, fjärrvärme-sida där en nyhet är tidskänslig.",
       tidslinje: "Nyhetsrum, pressmeddelanden, blogg-arkiv.",
     },

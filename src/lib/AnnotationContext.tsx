@@ -44,7 +44,7 @@ export function AnnotationProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, enabled ? "on" : "off");
   }, [enabled]);
 
-  // Sync enabled state across tabs/iframes — håller mobil-/tablet-
+  // Sync enabled state across tabs/iframes ,  håller mobil-/tablet-
   // simulator i iframen i synk med parent-appens UX-guide-toggle.
   useEffect(() => {
     function handleStorage(e: StorageEvent) {

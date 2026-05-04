@@ -1,14 +1,14 @@
 import { Icon } from "./Icon";
 
 /**
- * WizardProgress — delad progress-header för multi-step-flöden (guides).
+ * WizardProgress ,  delad progress-header för multi-step-flöden (guides).
  *
- * En visuell grammatik, tre stilar — välj den som passar flödet:
- *   stepper  — cirklar + etiketter + kopplande linjer (default, bäst för 2–4 steg)
- *   bar      — filled progress-bar + text nedanför (tätast, bäst för mobila)
- *   chips    — pill-chips i rad (bäst när stegen är jämnstora / navigerbara)
+ * En visuell grammatik, tre stilar ,  välj den som passar flödet:
+ *   stepper  ,  cirklar + etiketter + kopplande linjer (default, bäst för 2–4 steg)
+ *   bar      ,  filled progress-bar + text nedanför (tätast, bäst för mobila)
+ *   chips    ,  pill-chips i rad (bäst när stegen är jämnstora / navigerbara)
  *
- * Alla tre delar samma ARIA-mönster: aria-label="Steg X av Y — [label]"
+ * Alla tre delar samma ARIA-mönster: aria-label="Steg X av Y ,  [label]"
  * uppdateras live så skärmläsare hör övergången.
  */
 
@@ -26,7 +26,7 @@ type Props = {
   /** 1-baserat index för aktuellt steg */
   current: number;
   variant?: WizardVariant;
-  /** Valfri titel ovanför progress-raden — t.ex. "Skicka ett ärende" */
+  /** Valfri titel ovanför progress-raden ,  t.ex. "Skicka ett ärende" */
   title?: string;
   /** Valfri ingress under titeln */
   subtitle?: string;
@@ -35,7 +35,7 @@ type Props = {
 export function WizardProgress({ steps, current, variant = "stepper", title, subtitle }: Props) {
   const total = steps.length;
   const active = steps[Math.min(Math.max(current, 1), total) - 1];
-  const liveLabel = `Steg ${current} av ${total} — ${active?.label ?? ""}`;
+  const liveLabel = `Steg ${current} av ${total} ,  ${active?.label ?? ""}`;
 
   return (
     <div className="mb-5">
@@ -57,7 +57,7 @@ export function WizardProgress({ steps, current, variant = "stepper", title, sub
   );
 }
 
-/* ─── A: Stepper — connected dots + labels ──────────────────────── */
+/* ─── A: Stepper ,  connected dots + labels ──────────────────────── */
 
 function StepperBody({ steps, current }: { steps: WizardStep[]; current: number }) {
   return (
@@ -97,7 +97,7 @@ function StepperBody({ steps, current }: { steps: WizardStep[]; current: number 
   );
 }
 
-/* ─── B: Bar — filled progress bar + current label ──────────────── */
+/* ─── B: Bar ,  filled progress bar + current label ──────────────── */
 
 function BarBody({
   steps,
@@ -136,7 +136,7 @@ function BarBody({
   );
 }
 
-/* ─── C: Chips — pill-chips in a row ────────────────────────────── */
+/* ─── C: Chips ,  pill-chips in a row ────────────────────────────── */
 
 function ChipsBody({ steps, current }: { steps: WizardStep[]; current: number }) {
   return (

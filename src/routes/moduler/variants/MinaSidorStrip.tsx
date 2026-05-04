@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT C — Kompakt strip
+ * VARIANT C, Kompakt strip
  *
  * Horisontell rad, minimalt med yta. Används som upprepning på flera
  * sidor eller som sekundär CTA i footer.
@@ -13,7 +13,7 @@ import { Icon } from "../../../components/Icon";
 export function MinaSidorStrip() {
   return (
     <Annotation
-      label="Mina sidor — kompakt strip"
+      label="Mina sidor, kompakt strip"
       audience="design"
       rationale="En rad. Ikon + en mening om värde + CTA. Används tillsammans med en mer prominent Mina sidor-block tidigare på sidan, eller som återupprepning i footer."
     >

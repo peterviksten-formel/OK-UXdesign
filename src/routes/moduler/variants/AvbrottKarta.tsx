@@ -4,7 +4,7 @@ import { Icon } from "../../../components/Icon";
 import { AVBROTT, STATUS_META, TYP_LABEL } from "../avbrott-data";
 
 /**
- * VARIANT C — Karta-first
+ * VARIANT C, Karta-first
  *
  * Kartan är huvudytan. Lista som sekundär vy bredvid. Pinns på kartan
  * pulserar vid pågående avbrott.
@@ -30,7 +30,7 @@ export function AvbrottKarta() {
 
   return (
     <Annotation
-      label="Avbrottslista — karta-first"
+      label="Avbrottslista, karta-first"
       audience="design"
       rationale="Karta som primär yta. Pinns klickbara → listan scrollar till detaljerna. Pulsande pin vid pågående avbrott. Listan är synlig bredvid men kartan äger beslutet 'är det nära mig?'. I produktion: riktig kartdata (Mapbox/Leaflet/MapLibre)."
     >

@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Story-narrative
+ * VARIANT B, Story-narrative
  *
  * Text-tung layout med siffror integrerade inline. Kompakt men
  * sammanhängande. Bygger trovärdighet genom kontext.
@@ -13,9 +13,9 @@ import { Icon } from "../../../components/Icon";
 export function ImpactStory() {
   return (
     <Annotation
-      label="Hållbarhets-block — story-narrative"
+      label="Hållbarhets-block, story-narrative"
       audience="redaktör"
-      rationale="Prosa med siffror som highlights. Siffrorna står ut typografiskt (bold, större) men läses i sammanhang. Visar att Öresundskraft inte bara listar mål — vi berättar varför och hur."
+      rationale="Prosa med siffror som highlights. Siffrorna står ut typografiskt (bold, större) men läses i sammanhang. Visar att Öresundskraft inte bara listar mål, vi berättar varför och hur."
     >
       <section className="rounded-lg bg-tint-info p-6 sm:p-10">
         <div className="max-w-reading">
@@ -28,7 +28,7 @@ export function ImpactStory() {
           <div className="prose prose-sm max-w-none text-ink-secondary leading-relaxed space-y-4">
             <p>
               Sedan 2024 levererar vi <strong className="text-brand-primary text-lg">100% fossilfri el</strong>{" "}
-              till alla våra avtalskunder. Det är första steget — men inte det sista.
+              till alla våra avtalskunder. Det är första steget, men inte det sista.
             </p>
             <p>
               Genom <strong>Innozhero-projektet</strong> i Helsingborg ska vi fånga in{" "}
@@ -37,7 +37,7 @@ export function ImpactStory() {
             </p>
             <p>
               Och våra <strong className="text-brand-primary text-lg">17 timmar</strong> volontärarbete
-              per anställd och år — det kallar vi "17-satsningen" efter FN:s globala mål. Förra året
+              per anställd och år, det kallar vi "17-satsningen" efter FN:s globala mål. Förra året
               hjälpte vi till att finansiera <strong>3 nya laddstationer</strong> i staden genom
               Framtidspengen.
             </p>

@@ -23,15 +23,15 @@ import { FaqGrupperad } from "../moduler/variants/FaqGrupperad";
 import { FaqSokTopplista } from "../moduler/variants/FaqSokTopplista";
 
 /**
- * SIDTYP 11 — Produktsida leadsgenerering (Solceller)
+ * SIDTYP 11, Produktsida leadsgenerering (Solceller)
  *
  * För större investeringar där användaren INTE köper direkt utan lämnar
  * intresse → kontaktas av sälj. Tröskeln är högre, så sidan måste:
  *  1. Bygga förtroende genom kundcase med konkreta siffror.
- *  2. Visa process tydligt — vad händer mellan intresseanmälan och installation?
- *  3. Personifiera säljkontakten — namn + foto + boka tid.
+ *  2. Visa process tydligt, vad händer mellan intresseanmälan och installation?
+ *  3. Personifiera säljkontakten, namn + foto + boka tid.
  *  4. Erbjuda värde-kalkylator så man kan testa "vad sparar jag?"
- *  5. Lead-form ska kännas låg-commitment — kort, fyra fält max.
+ *  5. Lead-form ska kännas låg-commitment, kort, fyra fält max.
  */
 
 const KUNDVARDE = [
@@ -132,17 +132,17 @@ export function ProduktsidaLeadsgen() {
 
   /* ─── Block-array ─────────────────────────────────────────────── */
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO — värdepropositions-fokus ────────────────────── */
+    /* ─── 1. HERO, värdepropositions-fokus ────────────────────── */
     {
       id: "hero",
       label: "Hero",
       variants: [
         {
           key: "varde",
-          label: "Värde-hero — sänk elkostnaden",
+          label: "Värde-hero, sänk elkostnaden",
           render: () => (
             <Annotation
-              label="Hero — bygger förtroende, inte konvertering direkt"
+              label="Hero, bygger förtroende, inte konvertering direkt"
               audience="user"
               rationale="Leadsgen-tröskel är hög (boka rådgivning = avsätta tid). Hero säljer drömmen i konkreta siffror (40 % lägre elkostnad, X kr/år) snarare än en transaktion. Två CTA-tier: primär 'Boka kostnadsfri rådgivning', sekundär 'Räkna själv' som låter osäkra utforska utan att prata med säljare."
             >
@@ -150,13 +150,13 @@ export function ProduktsidaLeadsgen() {
                 <div>
                   <p className="text-eyebrow uppercase text-ink-muted mb-3">Egen elproduktion</p>
                   <Copy
-                    label="H1 — utfallsbaserad rubrik"
+                    label="H1, utfallsbaserad rubrik"
                     category="rubrik"
-                    text="Solceller på taket — sänk elkostnaden upp till 40 %"
-                    rationale="Konkret löfte med siffra istället för 'Investera i solceller'. Siffran (40 %) skapar nyfikenhet utan att lova för mycket — 'upp till' är ärlig disclaimer som ändå låter ambitiös."
+                    text="Solceller på taket, sänk elkostnaden upp till 40 %"
+                    rationale="Konkret löfte med siffra istället för 'Investera i solceller'. Siffran (40 %) skapar nyfikenhet utan att lova för mycket, 'upp till' är ärlig disclaimer som ändå låter ambitiös."
                   >
                     <h1 className="text-display leading-tight mb-3">
-                      Solceller på taket — sänk elkostnaden upp till 40 %
+                      Solceller på taket, sänk elkostnaden upp till 40 %
                     </h1>
                   </Copy>
                   <Copy
@@ -170,7 +170,7 @@ export function ProduktsidaLeadsgen() {
                       skriftlig offert, du bestämmer.
                     </p>
                   </Copy>
-                  {/* Primär CTA + reassurance-text borttagna — sticky-panelen
+                  {/* Primär CTA + reassurance-text borttagna, sticky-panelen
                      till höger äger 'Boka rådgivning'-handlingen. Hero håller
                      bara värdepropositionen + sekundär 'Räkna själv'-utgång
                      för osäkra som vill testa innan de bokar. */}
@@ -195,31 +195,31 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 2. KUNDVÄRDE — fyra USPs ────────────────────────────── */
+    /* ─── 2. KUNDVÄRDE, fyra USPs ────────────────────────────── */
     {
       id: "kundvarde",
-      label: "Kundvärde — fyra USPs",
+      label: "Kundvärde, fyra USPs",
       variants: [
         {
           key: "ikoner",
           label: "Ikon-kort, fyra kolumner",
           render: () => (
             <Annotation
-              label="Kundvärde — varför just denna lösning"
+              label="Kundvärde, varför just denna lösning"
               audience="user"
-              rationale="Här ligger leadsgens viktigaste arbete: bygga övertygelse innan formuläret. Fyra fakta med siffror där det går — inte 'miljövänligt' utan '20 % grönt skatteavdrag'. Varje USP svarar på en typisk tvekan: pris, ekonomi, miljö, garanti."
+              rationale="Här ligger leadsgens viktigaste arbete: bygga övertygelse innan formuläret. Fyra fakta med siffror där det går, inte 'miljövänligt' utan '20 % grönt skatteavdrag'. Varje USP svarar på en typisk tvekan: pris, ekonomi, miljö, garanti."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
-                  label="Sektionsrubrik — varför solceller"
+                  label="Sektionsrubrik, varför solceller"
                   category="rubrik"
                   text="Varför solceller från oss"
-                  rationale="'Från oss' lägger till företagsförtroende-vinkeln. Skiljer från generiska 'Varför solceller?'-sidor som finns överallt — ger anledning att stanna här istället för att jämföra på Google."
+                  rationale="'Från oss' lägger till företagsförtroende-vinkeln. Skiljer från generiska 'Varför solceller?'-sidor som finns överallt, ger anledning att stanna här istället för att jämföra på Google."
                 >
                   <h2 className="text-h3 font-medium mb-2">Varför solceller från oss</h2>
                 </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
-                  Konkret värde — inte gröna fraser. Här är fyra anledningar varför just nu kan vara rätt tid.
+                  Konkret värde, inte gröna fraser. Här är fyra anledningar varför just nu kan vara rätt tid.
                 </p>
                 <div className="grid sm:grid-cols-2 gap-4">
                   {KUNDVARDE.map((u) => (
@@ -237,28 +237,28 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 3. SPAR-KALKYLATOR — interaktiv ─────────────────────── */
+    /* ─── 3. SPAR-KALKYLATOR, interaktiv ─────────────────────── */
     {
       id: "kalkylator",
       label: "Spar-kalkylator",
       variants: [
         {
           key: "interaktiv",
-          label: "Interaktiv kalkyl — förbrukning + takläge",
+          label: "Interaktiv kalkyl, förbrukning + takläge",
           render: () => (
             <Annotation
-              label="Spar-kalkylator — låt osäkra utforska"
+              label="Spar-kalkylator, låt osäkra utforska"
               audience="user"
-              rationale="För osäkra som inte är redo för intresseanmälan ännu. Live-kalkyl ger personlig siffra utan att lämna kontaktuppgifter — sänker tröskel för 'is it worth it'-frågan. Är medvetet en uppskattning ('exakta siffror i offerten') så användaren förstår nästa steg."
+              rationale="För osäkra som inte är redo för intresseanmälan ännu. Live-kalkyl ger personlig siffra utan att lämna kontaktuppgifter, sänker tröskel för 'is it worth it'-frågan. Är medvetet en uppskattning ('exakta siffror i offerten') så användaren förstår nästa steg."
             >
               <section id="kalkylator" className="py-10 border-t border-border-subtle">
                 <Copy
                   label="Kalkylator-rubrik"
                   category="rubrik"
-                  text="Räkna själv — vad sparar du?"
-                  rationale="Direkt fråga + verbet 'räkna'. 'Vad sparar du?' framför 'spara' eller 'din potentiella besparing' — direkt och personligt. 'Räkna själv' signalerar agency och att kalkyleringen är genomskinlig."
+                  text="Räkna själv, vad sparar du?"
+                  rationale="Direkt fråga + verbet 'räkna'. 'Vad sparar du?' framför 'spara' eller 'din potentiella besparing', direkt och personligt. 'Räkna själv' signalerar agency och att kalkyleringen är genomskinlig."
                 >
-                  <h2 className="text-h3 font-medium mb-2">Räkna själv — vad sparar du?</h2>
+                  <h2 className="text-h3 font-medium mb-2">Räkna själv, vad sparar du?</h2>
                 </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
                   Två frågor ger en uppskattning. Exakta siffror får du i offerten efter besiktning.
@@ -299,8 +299,8 @@ export function ProduktsidaLeadsgen() {
                       </legend>
                       <div role="radiogroup" className="space-y-2">
                         {[
-                          { id: "sader" as const, label: "Söderläge", hint: "Bäst — full sol mitt på dagen" },
-                          { id: "ost-vast" as const, label: "Öst eller väst", hint: "Bra — sol morgon eller eftermiddag" },
+                          { id: "sader" as const, label: "Söderläge", hint: "Bäst, full sol mitt på dagen" },
+                          { id: "ost-vast" as const, label: "Öst eller väst", hint: "Bra, sol morgon eller eftermiddag" },
                           { id: "norr" as const, label: "Norrläge", hint: "Fungerar men låg avkastning" },
                         ].map((o) => (
                           <label
@@ -374,7 +374,7 @@ export function ProduktsidaLeadsgen() {
                       <Icon name="arrow_forward" size={16} />
                     </a>
                     <p className="text-xs text-ink-muted text-center mt-2">
-                      Uppskattning — exakt offert efter besiktning
+                      Uppskattning, exakt offert efter besiktning
                     </p>
                   </div>
                 </div>
@@ -385,7 +385,7 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 4. SÅ GÅR DET TILL — 4 steg ─────────────────────────── */
+    /* ─── 4. SÅ GÅR DET TILL, 4 steg ─────────────────────────── */
     {
       id: "process",
       label: "Så går det till",
@@ -395,18 +395,18 @@ export function ProduktsidaLeadsgen() {
           label: "Fyra steg horisontellt med tidsangivelser",
           render: () => (
             <Annotation
-              label="Process-steg — sänker tröskel före formulär"
+              label="Process-steg, sänker tröskel före formulär"
               audience="user"
-              rationale="Den enskilt viktigaste delen av leadsgen. Användaren undrar 'vad händer om jag fyller i?' — process-blocket svarar exakt: 4 steg, tidsangivelser, kostnadsfri-stämpel där det gäller. Reducerar 'vill jag verkligen lämna mina uppgifter?' från ja/nej till 'OK, det här är begripligt'."
+              rationale="Den enskilt viktigaste delen av leadsgen. Användaren undrar 'vad händer om jag fyller i?', process-blocket svarar exakt: 4 steg, tidsangivelser, kostnadsfri-stämpel där det gäller. Reducerar 'vill jag verkligen lämna mina uppgifter?' från ja/nej till 'OK, det här är begripligt'."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
                   label="Process-rubrik"
                   category="rubrik"
-                  text="Så här går det till — från intresse till installation"
+                  text="Så här går det till, från intresse till installation"
                   rationale="'Från intresse till installation' definierar hela bågen. Användaren ser 'jag är på steg 0, här är 4 steg framåt' istället för en obegripligt lång process."
                 >
-                  <h2 className="text-h3 font-medium mb-2">Så här går det till — från intresse till installation</h2>
+                  <h2 className="text-h3 font-medium mb-2">Så här går det till, från intresse till installation</h2>
                 </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
                   Du går aldrig blint. Varje steg har en tydlig leverans och du bestämmer själv om du vill gå vidare.
@@ -436,14 +436,14 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 5. KUNDCASE — utförlig story default ────────────────── */
+    /* ─── 5. KUNDCASE, utförlig story default ────────────────── */
     {
       id: "kundcase",
       label: "Kundcase",
       variants: [
         {
           key: "story",
-          label: "Case-story (default — djup för stora investeringar)",
+          label: "Case-story (default, djup för stora investeringar)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseStory />
@@ -471,7 +471,7 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 6. TEKNISKA SPECS — info utan pris/CTA ─────────────────
+    /* ─── 6. TEKNISKA SPECS, info utan pris/CTA ─────────────────
      * Sticky-panelen ansvarar för CTA. Detta block är ren info. */
     {
       id: "specs",
@@ -479,12 +479,12 @@ export function ProduktsidaLeadsgen() {
       variants: [
         {
           key: "info-only",
-          label: "Renodlad info — ingår + villkor + varför (default)",
+          label: "Renodlad info, ingår + villkor + varför (default)",
           render: () => (
             <Annotation
-              label="Tekniska specs — renodlad till information"
+              label="Tekniska specs, renodlad till information"
               audience="design"
-              rationale="Pris och CTA är borttaget — sticky-panelen i höger kolumn ansvarar för 'Boka rådgivning'. Här bara: bild, beskrivning, vad som ingår i installationen, villkor, kundvärden. Renar hierarkin: en plats för åtagande, en plats för information."
+              rationale="Pris och CTA är borttaget, sticky-panelen i höger kolumn ansvarar för 'Boka rådgivning'. Här bara: bild, beskrivning, vad som ingår i installationen, villkor, kundvärden. Renar hierarkin: en plats för åtagande, en plats för information."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
@@ -496,7 +496,7 @@ export function ProduktsidaLeadsgen() {
                   <h2 className="text-h3 font-medium mb-2">Vad ingår i en solcellsanläggning från oss</h2>
                 </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
-                  Anläggningen dimensioneras efter ditt tak och din förbrukning. Inga standardpaket — alla siffror är från en typisk villa i Helsingborg.
+                  Anläggningen dimensioneras efter ditt tak och din förbrukning. Inga standardpaket, alla siffror är från en typisk villa i Helsingborg.
                 </p>
 
                 <div className="grid md:grid-cols-2 gap-8 mb-6">
@@ -556,7 +556,7 @@ export function ProduktsidaLeadsgen() {
         },
         {
           key: "progressiv",
-          label: "Progressiv — tabs med pris/CTA (dubblerar panelen)",
+          label: "Progressiv, tabs med pris/CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoProgressiv produkt={PRODUKT} inline />
@@ -565,7 +565,7 @@ export function ProduktsidaLeadsgen() {
         },
         {
           key: "trygg",
-          label: "Trygg — 2-kolumns med pris/CTA (dubblerar panelen)",
+          label: "Trygg, 2-kolumns med pris/CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoTrygg produkt={PRODUKT} inline />
@@ -575,24 +575,24 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 7. SÄLJKONTAKT — personlig ──────────────────────────── */
+    /* ─── 7. SÄLJKONTAKT, personlig ──────────────────────────── */
     {
       id: "saljkontakt",
-      label: "Säljkontakt — personlig",
+      label: "Säljkontakt, personlig",
       variants: [
         {
           key: "person",
           label: "Säljare med foto + boka tid",
           render: () => (
             <Annotation
-              label="Säljkontakt — sänk tröskel via person"
+              label="Säljkontakt, sänk tröskel via person"
               audience="user"
-              rationale="Workshop-input: 'Vi har gärna med säljkontakt i dessa flöden för personlig kontakt'. Foto + namn + roll humaniserar — 'jag pratar med Anna' är lägre tröskel än 'jag fyller i ett formulär till sälj-avdelningen'. Två kontaktvägar: telefon (direkt) och bokning (asynkron) så användaren kan välja efter sin egen rytm."
+              rationale="Workshop-input: 'Vi har gärna med säljkontakt i dessa flöden för personlig kontakt'. Foto + namn + roll humaniserar, 'jag pratar med Anna' är lägre tröskel än 'jag fyller i ett formulär till sälj-avdelningen'. Två kontaktvägar: telefon (direkt) och bokning (asynkron) så användaren kan välja efter sin egen rytm."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-lg bg-tint-info p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center max-w-reading">
                   <div className="flex items-center gap-5">
-                    {/* Säljarbild — placeholder med initialer */}
+                    {/* Säljarbild, placeholder med initialer */}
                     <div className="w-24 h-24 rounded-full bg-brand-primary text-white flex items-center justify-center text-h2 font-medium shrink-0">
                       AL
                     </div>
@@ -647,14 +647,14 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 8. FAQ — modul ──────────────────────────────────────── */
+    /* ─── 8. FAQ, modul ──────────────────────────────────────── */
     {
       id: "faq",
       label: "FAQ",
       variants: [
         {
           key: "grupperad",
-          label: "Grupperad (default — innan/under/efter)",
+          label: "Grupperad (default, innan/under/efter)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <FaqGrupperad />
@@ -689,26 +689,26 @@ export function ProduktsidaLeadsgen() {
       variants: [
         {
           key: "default",
-          label: "Synergi-curering — 3 ikon-kort",
+          label: "Synergi-curering, 3 ikon-kort",
           render: () => (
             <RelateradeProdukter
               produkter={[
                 {
                   ikon: "ev_station",
                   titel: "Ladda Smart",
-                  text: "Ladda elbilen med din egen el — smart styrning hittar timmar med högst egen-produktion.",
+                  text: "Ladda elbilen med din egen el, smart styrning hittar timmar med högst egen-produktion.",
                   href: "/sidtyper/produktsida-direktkop",
                 },
                 {
                   ikon: "support_agent",
                   titel: "Energirådgivning",
-                  text: "Kostnadsfri genomgång av huset innan du investerar — vi hittar lågt hängande optimering.",
+                  text: "Kostnadsfri genomgång av huset innan du investerar, vi hittar lågt hängande optimering.",
                   href: "#",
                 },
                 {
                   ikon: "heat_pump",
                   titel: "Värmepump",
-                  text: "Värm huset med din egen el — sänk uppvärmningskostnaden ytterligare.",
+                  text: "Värm huset med din egen el, sänk uppvärmningskostnaden ytterligare.",
                   href: "#",
                 },
               ]}
@@ -718,19 +718,19 @@ export function ProduktsidaLeadsgen() {
       ],
     },
 
-    /* ─── 10. LEAD-FORMULÄR — kort, låg-commitment ─────────────── */
+    /* ─── 10. LEAD-FORMULÄR, kort, låg-commitment ─────────────── */
     {
       id: "lead-form",
       label: "Lead-formulär",
       variants: [
         {
           key: "kort",
-          label: "Kort — 4 fält",
+          label: "Kort, 4 fält",
           render: () => (
             <Annotation
-              label="Lead-form — låg commitment"
+              label="Lead-form, låg commitment"
               audience="user"
-              rationale="Briefen: 'lämna intresse men inte slutföra köp'. Fyra fält max: namn, e-post, telefon, adress. Inget personnummer (för stort åtagande för intresseanmälan), ingen tariff-info, ingen takbild. Sub-text under CTA bekräftar VAD som händer härnäst — användaren ska veta att de inte 'köper', de bara 'pratar'."
+              rationale="Briefen: 'lämna intresse men inte slutföra köp'. Fyra fält max: namn, e-post, telefon, adress. Inget personnummer (för stort åtagande för intresseanmälan), ingen tariff-info, ingen takbild. Sub-text under CTA bekräftar VAD som händer härnäst, användaren ska veta att de inte 'köper', de bara 'pratar'."
             >
               <section id="lead-form" className="py-10 border-t border-border-subtle">
                 {!leadSubmitted ? (
@@ -749,7 +749,7 @@ export function ProduktsidaLeadsgen() {
                       </p>
                       <ul className="space-y-2 text-sm text-ink-secondary">
                         {[
-                          "Ingen säljpress — du bestämmer själv",
+                          "Ingen säljpress, du bestämmer själv",
                           "Kostnadsfri besiktning på plats",
                           "Skriftlig offert med exakta siffror",
                           "Ångerrätt 14 dagar om du ändrar dig",
@@ -848,7 +848,7 @@ export function ProduktsidaLeadsgen() {
                           tabIndex={-1}
                           className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent rounded"
                         >
-                          Tack — vi hör av oss inom 2 arbetsdagar
+                          Tack, vi hör av oss inom 2 arbetsdagar
                         </h3>
                         <p className="text-sm text-ink-secondary">
                           En bekräftelse är skickad till <strong className="text-ink">{leadEmail}</strong>.
@@ -890,10 +890,10 @@ export function ProduktsidaLeadsgen() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Produktsida leadsgenerering (Solceller)"
-        syfte="Bygga förtroende för en stor investering. Användaren ska kunna utforska kostnaden via kalkylator innan de lämnar uppgifter, läsa case som bygger förtroende, se processen tydligt, och slutligen lämna en LÅGRISK intresseanmälan (4 fält). Säljkontakten är personifierad — namn + foto — så det känns mänskligt."
-        malgrupp="Villaägare i nordvästra Skåne, ofta i mitt-livet, som överväger en investering på ~150 000+ kr. Behöver utvärdera över tid, prata med partner, jämföra leverantörer. Har inte bestämt sig vid första besöket — sidan ska räcka för flera besök."
+        syfte="Bygga förtroende för en stor investering. Användaren ska kunna utforska kostnaden via kalkylator innan de lämnar uppgifter, läsa case som bygger förtroende, se processen tydligt, och slutligen lämna en LÅGRISK intresseanmälan (4 fält). Säljkontakten är personifierad, namn + foto, så det känns mänskligt."
+        malgrupp="Villaägare i nordvästra Skåne, ofta i mitt-livet, som överväger en investering på ~150 000+ kr. Behöver utvärdera över tid, prata med partner, jämföra leverantörer. Har inte bestämt sig vid första besöket, sidan ska räcka för flera besök."
         primarHandling="Boka kostnadsfri rådgivning (lead-formulär) ELLER ring/boka tid med rådgivare ELLER räkna själv i kalkylatorn."
-        ton="Konsultativ, inte säljande. Inga 'fantastiska besparingar' — siffror med 'upp till' och 'baserat på'. Personlig (säljarens namn + foto) men inte påflugen ('ingen säljpress' upprepas på flera ställen)."
+        ton="Konsultativ, inte säljande. Inga 'fantastiska besparingar', siffror med 'upp till' och 'baserat på'. Personlig (säljarens namn + foto) men inte påflugen ('ingen säljpress' upprepas på flera ställen)."
       />
 
       <div className="flex items-center justify-between pt-6">
@@ -920,7 +920,7 @@ export function ProduktsidaLeadsgen() {
       </nav>
 
       {/* Block före lead-formuläret i 2-col med sticky-panel höger.
-          Lead-formuläret renderas i full bredd — panelen hör inte hemma
+          Lead-formuläret renderas i full bredd, panelen hör inte hemma
           där eftersom användaren redan nått yttan. */}
       {(() => {
         const formIdx = blocks.findIndex((b) => b.id === "lead-form");

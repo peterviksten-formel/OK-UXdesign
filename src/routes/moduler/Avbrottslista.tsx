@@ -38,7 +38,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Strategisk satsning",
     values: {
-      trygg: "All info synlig direkt — ingen interaktion krävs. Bulletin-modell.",
+      trygg: "All info synlig direkt, ingen interaktion krävs. Bulletin-modell.",
       progressiv: "Filtrera + drilla ner. Användaren styr vad de ser.",
       experimentell: "Kartan äger svaret. Lista är backup.",
     },
@@ -62,7 +62,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Tidslinje / uppdateringar",
     values: {
-      trygg: "Inline under varje avbrott — alltid synlig.",
+      trygg: "Inline under varje avbrott, alltid synlig.",
       progressiv: "Expanderbar: klicka kort → tidslinje glider ut.",
       experimentell: "I info-bubbel när pin valts. Kompakt.",
     },
@@ -78,17 +78,17 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "WCAG 2.2 AA",
     values: {
-      trygg: "Utmärkt — ren HTML.",
-      progressiv: "Bra — tabs + aria-expanded.",
-      experimentell: "Svår — kartpins behöver alt-text, list-view är obligatorisk fallback.",
+      trygg: "Utmärkt, ren HTML.",
+      progressiv: "Bra, tabs + aria-expanded.",
+      experimentell: "Svår, kartpins behöver alt-text, list-view är obligatorisk fallback.",
     },
   },
   {
     aspect: "Implementation",
     values: {
-      trygg: "Lägst — en lista.",
-      progressiv: "Medel — filter + expand-state.",
-      experimentell: "Högst — kartbibliotek (Mapbox/Leaflet), kartdata, geocoding.",
+      trygg: "Lägst, en lista.",
+      progressiv: "Medel, filter + expand-state.",
+      experimentell: "Högst, kartbibliotek (Mapbox/Leaflet), kartdata, geocoding.",
     },
   },
   {
@@ -111,7 +111,7 @@ export function Avbrottslista() {
         <h1 className="text-h1 mb-3">Avbrottsinformation</h1>
         <p className="text-lede text-ink-secondary">
           Planerade, pågående och avslutade avbrott i el, fjärrvärme och fiber.
-          Två varianter — från statisk bulletin till filtrerbar lista med tidslinje.
+          Två varianter, från statisk bulletin till filtrerbar lista med tidslinje.
         </p>
       </header>
 

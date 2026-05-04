@@ -18,13 +18,13 @@ function roundKr(n: number): number {
 /**
  * Ordningen i jämförelsekorten: "Vanligaste valet" (Månadspris) först så det
  * blir det läsögat landar på. De övriga två behåller sin relativa ordning.
- * Rör inte PLANS-datan — den används av Trygg-variantens semantiska tabell
+ * Rör inte PLANS-datan, den används av Trygg-variantens semantiska tabell
  * som har sin egen logik.
  */
 const KORT_ORDNING: PlanId[] = ["manadspris", "sakrat", "kvartspris"];
 
 /**
- * VARIANT B — Progressiv
+ * VARIANT B, Progressiv
  *
  * Strategy: middle path. Quiz-style boendeväljare → comparison cards with
  * progressive disclosure. Sticky elnät callout. Keeps cognitive load low
@@ -63,9 +63,9 @@ export function VariantProgressiv() {
     <div>
       {/* ─── Förbrukningsväljare: boende-pill + kWh-input ──────────── */}
       <Annotation
-        label="Förbrukningsväljare — boende + kWh"
+        label="Förbrukningsväljare, boende + kWh"
         audience="user"
-        rationale="Briefens krav: visa exakt pris direkt. Pill-knapparna sätter schablonen för bostadstypen (Lägenhet ≈ 2 000 kWh, Villa ≈ 20 000 kWh). Fältet intill är editerbart så användaren kan mata in sin riktiga årsförbrukning från senaste fakturan — priset i varje kort räknas om live."
+        rationale="Briefens krav: visa exakt pris direkt. Pill-knapparna sätter schablonen för bostadstypen (Lägenhet ≈ 2 000 kWh, Villa ≈ 20 000 kWh). Fältet intill är editerbart så användaren kan mata in sin riktiga årsförbrukning från senaste fakturan, priset i varje kort räknas om live."
       >
         <div className="mb-8 grid grid-cols-1 sm:grid-cols-[auto_auto_minmax(0,1fr)] gap-x-6 gap-y-4 items-end">
           {/* Boendetyp */}
@@ -128,12 +128,12 @@ export function VariantProgressiv() {
             </div>
           </div>
 
-          {/* Hjälp-text — baseline-linjerad med kontrollerna */}
+          {/* Hjälp-text, baseline-linjerad med kontrollerna */}
           <p
             id="elavtal-kwh-hint"
             className="text-xs text-ink-muted leading-snug max-w-[260px] py-2"
           >
-            Auto-fylld från bostadstypen. Ändra för en exaktare uppskattning — du hittar din förbrukning på senaste årsfakturan.
+            Auto-fylld från bostadstypen. Ändra för en exaktare uppskattning, du hittar din förbrukning på senaste årsfakturan.
           </p>
         </div>
       </Annotation>
@@ -146,7 +146,7 @@ export function VariantProgressiv() {
       <Annotation
         label="Jämförelsekort"
         audience="design"
-        rationale="Tre kort med samma fältordning — symmetri = jämförbarhet. 'Vanligaste valet' ligger först (vänster) så läsögat landar där. Banner-fliken ligger absolut-positionerad ovanför Månadspris-kortet så övriga kort behåller samma höjd. Den tidigare 'Bäst för'-boxen är borttagen — sentensen läggs i subhead-position istället, vilket minskar antalet visuella behållare per kort från fyra till två."
+        rationale="Tre kort med samma fältordning, symmetri = jämförbarhet. 'Vanligaste valet' ligger först (vänster) så läsögat landar där. Banner-fliken ligger absolut-positionerad ovanför Månadspris-kortet så övriga kort behåller samma höjd. Den tidigare 'Bäst för'-boxen är borttagen, sentensen läggs i subhead-position istället, vilket minskar antalet visuella behållare per kort från fyra till två."
       >
         <div className="grid md:grid-cols-3 gap-4 mb-6 mt-8">
           {KORT_ORDNING.map((id) => {
@@ -247,7 +247,7 @@ export function VariantProgressiv() {
       <Annotation
         label="Framtidspengen som tillägg"
         audience="design"
-        rationale="Tidigare presenterad som ett fjärde 'avtal' — felaktigt. Det är ett påslag, inte ett val mellan fyra. Här som opt-in toggle UNDER jämförelsen, kopplad till valt avtal."
+        rationale="Tidigare presenterad som ett fjärde 'avtal', felaktigt. Det är ett påslag, inte ett val mellan fyra. Här som opt-in toggle UNDER jämförelsen, kopplad till valt avtal."
       >
         <div className="rounded-md border border-border-subtle bg-surface p-5 flex items-start gap-4">
           <input
@@ -269,7 +269,7 @@ export function VariantProgressiv() {
       <Annotation
         label="Trygghetsrad"
         audience="user"
-        rationale="Reducerar osäkerhet i sista sekunden innan klick på 'Teckna'. Tre faktiska påståenden — inga superlativ utan källa."
+        rationale="Reducerar osäkerhet i sista sekunden innan klick på 'Teckna'. Tre faktiska påståenden, inga superlativ utan källa."
       >
         <div className="mt-6 p-5 rounded-md bg-tint-highlight grid sm:grid-cols-3 gap-4 text-center text-sm">
           <div>

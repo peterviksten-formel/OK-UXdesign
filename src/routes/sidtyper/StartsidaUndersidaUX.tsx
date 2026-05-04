@@ -6,7 +6,7 @@ import { BlockList, type BlockDef } from "../../components/Block";
 import { Icon } from "../../components/Icon";
 import { IntentCardGrid, type IntentCardItem, type IntentCardVariant } from "../../components/IntentCardGrid";
 
-// Modul-varianter — sidtyp-blocken komponerar modulens faktiska komponenter
+// Modul-varianter, sidtyp-blocken komponerar modulens faktiska komponenter
 // istället för att duplicera inline-JSX. När en variant ändras i en modul
 // uppdateras den här sidan automatiskt.
 import { HeroAction } from "../moduler/variants/HeroAction";
@@ -23,26 +23,26 @@ import { NyhetsUtvald } from "../moduler/variants/NyhetsUtvald";
 import { NyhetsTidslinje } from "../moduler/variants/NyhetsTidslinje";
 
 /**
- * SIDTYP 7 — Startsida undersida, UX-optimerad
+ * SIDTYP 7, Startsida undersida, UX-optimerad
  *
  * Refaktorerad till ren modul-variant-komposition: varje block som motsvarar
  * en modul renderar modulens faktiska variant-komponenter, inte duplicerad
  * inline-JSX. I edit-läget kan alla 3 varianter väljas per modulblock.
  *
  * UX-auditens High-impact-fixar (kvar från tidigare version):
- *  1. Elnät-callouten FÖRE intentkorten — elnät ≠ elhandel adresseras innan
+ *  1. Elnät-callouten FÖRE intentkorten, elnät ≠ elhandel adresseras innan
  *     användaren förgrenar sig.
  *  2. Jämförelsen tecknas via ElavtalJamfor-modulens varianter (A/B/C).
  *  3. "Logga in på Mina sidor" är flyttad till utility-raden vid breadcrumb.
  *     Hero:ns Action-variant har ingen konkurrerande persona-CTA.
- *  4. FAQ ligger direkt efter jämförelsen — Accordion by default.
+ *  4. FAQ ligger direkt efter jämförelsen, Accordion by default.
  *  5. Relaterade teman + genvägar är komprimerade till en custom footer-sektion.
  *     Nyheter är ett eget modulblock (3 varianter) efter genvägarna.
  */
 
 export function StartsidaUndersidaUX() {
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO — modul med 3 varianter ────────────────────────── */
+    /* ─── 1. HERO, modul med 3 varianter ────────────────────────── */
     {
       id: "hero",
       label: "Hero",
@@ -65,40 +65,40 @@ export function StartsidaUndersidaUX() {
       ],
     },
 
-    /* ─── 2. ELNÄT-CALLOUT — sidtyp-specifikt (ej modul) ───────── */
+    /* ─── 2. ELNÄT-CALLOUT, sidtyp-specifikt (ej modul) ───────── */
     {
       id: "elnat-callout",
-      label: "Elnät-callout — före intentkort",
+      label: "Elnät-callout, före intentkort",
       variants: [
         {
           key: "ovanfor-intent",
           label: "Före intentkorten",
           render: () => (
             <Annotation
-              label="Elnät vs elhandel — före intentkort"
+              label="Elnät vs elhandel, före intentkort"
               audience="user"
-              rationale="UX-audit fix #1: I Sidtyp 1 låg den här efter intentkorten. En användare som klickade 'Jag ska flytta' eller 'Jag vill teckna' missade den helt. Här är den det första de möter efter hero:n — innan de förgrenar sig."
+              rationale="UX-audit fix #1: I Sidtyp 1 låg den här efter intentkorten. En användare som klickade 'Jag ska flytta' eller 'Jag vill teckna' missade den helt. Här är den det första de möter efter hero:n, innan de förgrenar sig."
             >
               <section className="py-6">
                 <div className="p-5 rounded-md bg-tint-info border-l-4 border-brand-accent flex gap-4">
                   <Icon name="lightbulb" size={28} className="text-brand-accent" />
                   <div className="flex-1">
                     <Copy
-                      label="Lokal reassurance — rubrik"
+                      label="Lokal reassurance, rubrik"
                       category="reassurance"
                       text="Bor du i Helsingborg eller Ängelholm?"
-                      rationale="Geografisk fråga istället för påstående. 'Du' skapar omedelbar relevans — läsaren avgör själv om rutan gäller dem. Platsnamn konkret (inte 'i vårt område') så igenkänningen är binär."
+                      rationale="Geografisk fråga istället för påstående. 'Du' skapar omedelbar relevans, läsaren avgör själv om rutan gäller dem. Platsnamn konkret (inte 'i vårt område') så igenkänningen är binär."
                     >
                       <p className="font-medium mb-1">Bor du i Helsingborg eller Ängelholm?</p>
                     </Copy>
                     <Copy
-                      label="Lokal reassurance — brödtext"
+                      label="Lokal reassurance, brödtext"
                       category="reassurance"
-                      text="Då är vi redan ditt elnätsbolag — du väljer bara elhandelsavtal här."
-                      rationale="En mening, en poäng: du har redan oss som elnätsbolag, så valet här gäller bara elhandel. 'Bara' signalerar att det är enklare än man tror. Djupare förklaring (Elnät=... / Elhandel=...) är medvetet bortklippt — 'Vad är skillnaden?'-länken tar hand om nyfikenhet utan att stoppa flödet."
+                      text="Då är vi redan ditt elnätsbolag, du väljer bara elhandelsavtal här."
+                      rationale="En mening, en poäng: du har redan oss som elnätsbolag, så valet här gäller bara elhandel. 'Bara' signalerar att det är enklare än man tror. Djupare förklaring (Elnät=... / Elhandel=...) är medvetet bortklippt, 'Vad är skillnaden?'-länken tar hand om nyfikenhet utan att stoppa flödet."
                     >
                       <p className="text-sm text-ink-secondary leading-relaxed">
-                        Då är vi redan ditt elnätsbolag — du väljer bara elhandelsavtal här.{" "}
+                        Då är vi redan ditt elnätsbolag, du väljer bara elhandelsavtal här.{" "}
                         <a href="#" className="text-brand-accent underline underline-offset-2 hover:no-underline">
                           Vad är skillnaden?
                         </a>
@@ -113,30 +113,30 @@ export function StartsidaUndersidaUX() {
       ],
     },
 
-    /* ─── 3. INTENTKORT — delad komponent, 3 layout-varianter ───── */
+    /* ─── 3. INTENTKORT, delad komponent, 3 layout-varianter ───── */
     {
       id: "intent",
       label: "Intentkort",
       variants: (() => {
         const items: IntentCardItem[] = [
           { ikon: "edit", label: "Jag vill teckna elavtal", desc: "Ny kund eller saknar avtal", href: "/moduler/elavtal-jamfor" },
-          { ikon: "sync", label: "Jag vill byta elavtal", desc: "Befintlig kund — jämför och byt direkt", href: "#" },
+          { ikon: "sync", label: "Jag vill byta elavtal", desc: "Befintlig kund, jämför och byt direkt", href: "#" },
           { ikon: "home", label: "Jag ska flytta", desc: "Flytta inom, till eller från nätet", href: "#" },
           { ikon: "monitoring", label: "Jag vill förstå min elkostnad", desc: "Prishistorik, påslag och förbrukning", href: "#" },
           { ikon: "chat_bubble", label: "Jag har en fråga", desc: "Vanliga frågor och kundservice", href: "/moduler/kundservice-triage" },
         ];
         const renderWith = (v: IntentCardVariant) => (
           <Annotation
-            label="Intentkort — alternativ ingång efter hero"
+            label="Intentkort, alternativ ingång efter hero"
             audience="user"
-            rationale="Intentioner, inte produkter — skiljer sig från Tjanster-modulen. Delar mönster med Kundservice-sidtypens 'Vad gäller det?'-block via IntentCardGrid-komponenten. Välj layout (horisontell / vertikal / chips) beroende på täthet."
+            rationale="Intentioner, inte produkter, skiljer sig från Tjanster-modulen. Delar mönster med Kundservice-sidtypens 'Vad gäller det?'-block via IntentCardGrid-komponenten. Välj layout (horisontell / vertikal / chips) beroende på täthet."
           >
             <section className="py-10 border-t border-border-subtle">
               <Copy
-                label="Sektionsrubrik — intent-ingång"
+                label="Sektionsrubrik, intent-ingång"
                 category="rubrik"
                 text="Eller välj efter vad du vill göra"
-                rationale="'Eller' signalerar att detta är ett alternativ till hero:ns huvud-CTA (inte ett andra steg). 'Vad du vill göra' matchar ärende-tänkandet från Kundservice-sidtypen — användaren känner igen mönstret."
+                rationale="'Eller' signalerar att detta är ett alternativ till hero:ns huvud-CTA (inte ett andra steg). 'Vad du vill göra' matchar ärende-tänkandet från Kundservice-sidtypen, användaren känner igen mönstret."
               >
                 <h2 className="text-h2 mb-6">Eller välj efter vad du vill göra</h2>
               </Copy>
@@ -145,14 +145,14 @@ export function StartsidaUndersidaUX() {
           </Annotation>
         );
         return [
-          { key: "horizontal", label: "Horisontell — ikon vänster om text", render: () => renderWith("horizontal") },
-          { key: "vertical", label: "Vertikal — ikon över text", render: () => renderWith("vertical") },
-          { key: "chips", label: "Chips — kompakt pill-rad", render: () => renderWith("chips") },
+          { key: "horizontal", label: "Horisontell, ikon vänster om text", render: () => renderWith("horizontal") },
+          { key: "vertical", label: "Vertikal, ikon över text", render: () => renderWith("vertical") },
+          { key: "chips", label: "Chips, kompakt pill-rad", render: () => renderWith("chips") },
         ];
       })(),
     },
 
-    /* ─── 4. JÄMFÖRELSE — ElavtalJamfor-modul, 3 varianter ──────── */
+    /* ─── 4. JÄMFÖRELSE, ElavtalJamfor-modul, 3 varianter ──────── */
     {
       id: "jamforelse",
       label: "Avtalsjämförelse",
@@ -168,7 +168,7 @@ export function StartsidaUndersidaUX() {
         },
         {
           key: "trygg",
-          label: "Trygg — semantisk tabell",
+          label: "Trygg, semantisk tabell",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <VariantTrygg />
@@ -177,7 +177,7 @@ export function StartsidaUndersidaUX() {
         },
         {
           key: "experimentell",
-          label: "Experimentell — live-kalkylator",
+          label: "Experimentell, live-kalkylator",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <VariantExperimentell />
@@ -187,7 +187,7 @@ export function StartsidaUndersidaUX() {
       ],
     },
 
-    /* ─── 5. FAQ — Faq-modul, 3 varianter ───────────────────────── */
+    /* ─── 5. FAQ, Faq-modul, 3 varianter ───────────────────────── */
     {
       id: "faq",
       label: "FAQ",
@@ -203,7 +203,7 @@ export function StartsidaUndersidaUX() {
         },
         {
           key: "grupperad",
-          label: "Grupperad — innan/under/efter",
+          label: "Grupperad, innan/under/efter",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <FaqGrupperad />
@@ -222,26 +222,26 @@ export function StartsidaUndersidaUX() {
       ],
     },
 
-    /* ─── 6. VÄRDEERBJUDANDE — sidtyp-specifikt (ej modul) ──────── */
+    /* ─── 6. VÄRDEERBJUDANDE, sidtyp-specifikt (ej modul) ──────── */
     {
       id: "varde",
       label: "Värdeerbjudande",
       variants: [
         {
           key: "banner",
-          label: "Horisontell banner — lätt närvaro",
+          label: "Horisontell banner, lätt närvaro",
           render: () => (
             <Annotation
-              label="Värdeerbjudande — lätt banner efter beslutet"
+              label="Värdeerbjudande, lätt banner efter beslutet"
               audience="user"
-              rationale="Placerad efter FAQ (inte före) eftersom värde-argument påverkar tecknings-beslut mindre än svar på loss aversion. Banner-format istället för tre spalter — tar mindre yta när det inte är huvudbeslut."
+              rationale="Placerad efter FAQ (inte före) eftersom värde-argument påverkar tecknings-beslut mindre än svar på loss aversion. Banner-format istället för tre spalter, tar mindre yta när det inte är huvudbeslut."
             >
               <section className="py-8 border-t border-border-subtle">
                 <Copy
-                  label="Värdepåstående — tre korta fakta"
+                  label="Värdepåstående, tre korta fakta"
                   category="reassurance"
                   text="Lokalt · Kommunägt sedan 1892 / Transparent · 4,5 öre/kWh påslag / Allt samlat · App + Mina sidor"
-                  rationale="Tre fakta, inga adjektiv. 'Lokalt' kopplas omedelbart till 'Kommunägt sedan 1892' — påståendet bevisar sig självt utan att säga 'vi bryr oss om regionen'. Påslaget som siffra istället för 'transparent prissättning' — siffran IS bevis på transparens."
+                  rationale="Tre fakta, inga adjektiv. 'Lokalt' kopplas omedelbart till 'Kommunägt sedan 1892', påståendet bevisar sig självt utan att säga 'vi bryr oss om regionen'. Påslaget som siffra istället för 'transparent prissättning', siffran IS bevis på transparens."
                 >
                   <div className="rounded-md bg-tint-info p-5 grid sm:grid-cols-3 gap-4 text-sm">
                     {[
@@ -263,10 +263,10 @@ export function StartsidaUndersidaUX() {
       ],
     },
 
-    /* ─── 7. GENVÄGAR — relaterade + bra-att-veta (ej modul) ────── */
+    /* ─── 7. GENVÄGAR, relaterade + bra-att-veta (ej modul) ────── */
     {
       id: "genvagar",
-      label: "Genvägar — relaterade & bra att veta",
+      label: "Genvägar, relaterade & bra att veta",
       variants: [
         {
           key: "kompakt",
@@ -281,10 +281,10 @@ export function StartsidaUndersidaUX() {
                 <div className="grid md:grid-cols-2 gap-8">
                   <div>
                     <Copy
-                      label="Kolumnrubrik — relaterade teman"
+                      label="Kolumnrubrik, relaterade teman"
                       category="rubrik"
                       text="Utforska mer"
-                      rationale="'Utforska' signalerar icke-transaktionellt innehåll — skiljer det från 'Teckna'-spåret. Kort rubrik (2 ord) eftersom innehållet är en kort lista, inte en sektion som förtjänar tyngd."
+                      rationale="'Utforska' signalerar icke-transaktionellt innehåll, skiljer det från 'Teckna'-spåret. Kort rubrik (2 ord) eftersom innehållet är en kort lista, inte en sektion som förtjänar tyngd."
                     >
                       <h3 className="text-h5 font-medium mb-3">Utforska mer</h3>
                     </Copy>
@@ -306,7 +306,7 @@ export function StartsidaUndersidaUX() {
 
                   <div>
                     <Copy
-                      label="Kolumnrubrik — praktiska begrepp"
+                      label="Kolumnrubrik, praktiska begrepp"
                       category="rubrik"
                       text="Bra att veta"
                       rationale="Neutral rubrik för FAQ-light: länkar till begrepp som 'Anvisat avtal' och 'Elens ursprung'. Undviker 'Ordlista' (akademiskt) och 'Vanliga frågor' (som redan är en separat sektion)."
@@ -337,7 +337,7 @@ export function StartsidaUndersidaUX() {
       ],
     },
 
-    /* ─── 8. NYHETER — Nyheter-modul, 3 varianter ──────────────── */
+    /* ─── 8. NYHETER, Nyheter-modul, 3 varianter ──────────────── */
     {
       id: "nyheter",
       label: "Nyheter",
@@ -376,14 +376,14 @@ export function StartsidaUndersidaUX() {
   return (
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
-        kategori="Startsida undersida (Sidtyp 7 — UX-optimerad)"
-        syfte="UX-audit-driven variant av Sidtyp 1, nu med ren modul-variant-komposition. Varje block som motsvarar en modul (Hero, ElavtalJamfor, Faq, Nyheter) renderar modulens faktiska variant-komponenter — växla mellan varianter i edit-läget för att jämföra."
+        kategori="Startsida undersida (Sidtyp 7, UX-optimerad)"
+        syfte="UX-audit-driven variant av Sidtyp 1, nu med ren modul-variant-komposition. Varje block som motsvarar en modul (Hero, ElavtalJamfor, Faq, Nyheter) renderar modulens faktiska variant-komponenter, växla mellan varianter i edit-läget för att jämföra."
         malgrupp="Samma som Sidtyp 1: privatperson i Helsingborg/Ängelholm som ska teckna/byta elavtal."
         primarHandling="Klicka Hero-CTA eller ett jämförelsekort → jämförelse-modul."
         ton="Samma som Sidtyp 1. UX-skillnaden ligger i struktur och affordances, inte i ton."
       />
 
-      {/* Utility-rad — 'Logga in' har flyttats HIT från hero */}
+      {/* Utility-rad, 'Logga in' har flyttats HIT från hero */}
       <div className="flex items-center justify-between pt-6">
         <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">
           ← Översikt

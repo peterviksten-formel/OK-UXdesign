@@ -8,7 +8,7 @@ import { FaqAccordion } from "../moduler/variants/FaqAccordion";
 import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP — Nyhet (skiss)
+ * SIDTYP, Nyhet (skiss)
  *
  * Skiljer sig från Press (formell, citerbar) och Artikel (storytelling).
  * Distinkt: TL;DR-ruta överst, "Vad innebär detta för dig?", FAQ.
@@ -27,14 +27,14 @@ export function Nyhet() {
     /* ─── 1. HEADER ────────────────────────────────────────── */
     {
       id: "header",
-      label: "Header — typ + datum",
+      label: "Header, typ + datum",
       variants: [
         {
           key: "default",
           label: "Nyhet-badge + datum + h1",
           render: () => (
             <Annotation
-              label="Nyhet-header — datum prominent"
+              label="Nyhet-header, datum prominent"
               audience="user"
               rationale="Nyheter handlar om förändringar i tid (priser från visst datum, nya regler etc). Datum måste vara prominent. Typ-badge i blå info-färg signalerar 'detta är information du bör känna till', skiljer från press (grå) och artikel (kategorifärg)."
             >
@@ -51,7 +51,7 @@ export function Nyhet() {
                 </div>
 
                 <Copy
-                  label="Nyhet H1 — direkt och daterad"
+                  label="Nyhet H1, direkt och daterad"
                   category="rubrik"
                   text={POST.rubrik}
                   rationale="Datum-bunden rubrik ('Nya elnätsavgifter från 1 juli 2026') gör nyheten ögonblicksbar. Använder 'från [datum]' när det är relevant."
@@ -67,17 +67,17 @@ export function Nyhet() {
       ],
     },
 
-    /* ─── 2. TL;DR — sammanfattning ─────────────────────────── */
+    /* ─── 2. TL;DR, sammanfattning ─────────────────────────── */
     {
       id: "tldr",
-      label: "TL;DR — sammanfattning",
+      label: "TL;DR, sammanfattning",
       variants: [
         {
           key: "default",
           label: "Highlight-ruta med 3-4 punkter",
           render: () => (
             <Annotation
-              label="TL;DR — det viktigaste först"
+              label="TL;DR, det viktigaste först"
               audience="user"
               rationale="Briefen: 'Finns behov för att kunna läsa en kort sammanfattning, ofta är nyheterna relativt texttunga, vore bra att kunna highlighta det viktigaste.' TL;DR-rutan ger användaren det viktigaste på 5 sek innan de bestämmer om de vill läsa hela brödtexten."
             >
@@ -152,9 +152,9 @@ export function Nyhet() {
           label: "Konkret konsekvens-block per situation",
           render: () => (
             <Annotation
-              label="Konsekvens — översätt till kundens situation"
+              label="Konsekvens, översätt till kundens situation"
               audience="user"
-              rationale="Nyheter handlar ofta om förändringar — användaren vill veta 'vad behöver JAG göra?'. Tre tydliga situationer (lägenhet/villa/elbilsladdning) ger praktisk översättning. Bryter texttunghet och fokuserar på handling."
+              rationale="Nyheter handlar ofta om förändringar, användaren vill veta 'vad behöver JAG göra?'. Tre tydliga situationer (lägenhet/villa/elbilsladdning) ger praktisk översättning. Bryter texttunghet och fokuserar på handling."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
@@ -171,7 +171,7 @@ export function Nyhet() {
                       ikon: "apartment",
                       situation: "Bor du i lägenhet?",
                       konsekvens:
-                        "~25 kronor mer per månad. Du behöver inte göra något — höjningen sker automatiskt på din faktura.",
+                        "~25 kronor mer per månad. Du behöver inte göra något, höjningen sker automatiskt på din faktura.",
                     },
                     {
                       ikon: "home",
@@ -214,14 +214,14 @@ export function Nyhet() {
     /* ─── 5. FAQ ─────────────────────────────────────────── */
     {
       id: "faq",
-      label: "FAQ — vanliga kundfrågor",
+      label: "FAQ, vanliga kundfrågor",
       variants: [
         {
           key: "accordion",
           label: "Accordion (FAQ-modul)",
           render: () => (
             <Annotation
-              label="FAQ — adresserar kundens följdfrågor"
+              label="FAQ, adresserar kundens följdfrågor"
               audience="user"
               rationale="Briefen: 'Besvara kundens primära frågor kring ämnet via FAQ.' Återanvänder FAQ-modulen så användaren känner igen mönstret från andra sidor. Frågor svarar på 'varför nu?', 'kan jag undvika?', 'när ser jag det på fakturan?'."
             >
@@ -237,7 +237,7 @@ export function Nyhet() {
     /* ─── 6. KONTAKT KUNDSERVICE ───────────────────────────── */
     {
       id: "kontakt",
-      label: "Frågor — KC-länk",
+      label: "Frågor, KC-länk",
       variants: [
         {
           key: "default",
@@ -248,10 +248,10 @@ export function Nyhet() {
                 <Icon name="support_agent" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
                   <Copy
-                    label="KC-banner — rubrik"
+                    label="KC-banner, rubrik"
                     category="rubrik"
                     text="Frågor om elnätsavgiften?"
-                    rationale="Frågeformsrubrik som speglar exakt vad användaren tänker just nu — efter att ha läst nyheten ('jag har en fråga om min specifika räkning'). Aldrig 'Kontakta oss' (generiskt) eller 'Vi hjälper dig' (om sändaren)."
+                    rationale="Frågeformsrubrik som speglar exakt vad användaren tänker just nu, efter att ha läst nyheten ('jag har en fråga om min specifika räkning'). Aldrig 'Kontakta oss' (generiskt) eller 'Vi hjälper dig' (om sändaren)."
                   >
                     <p className="font-medium">Frågor om elnätsavgiften?</p>
                   </Copy>
@@ -260,10 +260,10 @@ export function Nyhet() {
                   </p>
                 </div>
                 <Copy
-                  label="KC-banner — CTA"
+                  label="KC-banner, CTA"
                   category="cta"
                   text="Kontakta kundservice"
-                  rationale="Verb + objekt. Förra versionen var 'Till kundservice' (riktning, inte handling). 'Kontakta' är action-first — användaren vet vad knappen GÖR, inte bara var den TAR dem."
+                  rationale="Verb + objekt. Förra versionen var 'Till kundservice' (riktning, inte handling). 'Kontakta' är action-first, användaren vet vad knappen GÖR, inte bara var den TAR dem."
                 >
                   <Link
                     to="/sidtyper/kundservice-ny"
@@ -287,14 +287,14 @@ export function Nyhet() {
       variants: [
         {
           key: "default",
-          label: "Liknande ämne — 2 kort",
+          label: "Liknande ämne, 2 kort",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <Copy
-                label="Related — rubrik"
+                label="Related, rubrik"
                 category="rubrik"
                 text={`Mer om ${KATEGORI_LABEL[POST.kategori]}`}
-                rationale="Dynamisk rubrik som speglar nyhetens kategori — 'Mer om Energi'. Förra mönstret 'Liknande nyheter' eller 'Du kanske också vill läsa' är generiskt. Kategorinamnet är konkret och säger exakt vad relationen är."
+                rationale="Dynamisk rubrik som speglar nyhetens kategori, 'Mer om Energi'. Förra mönstret 'Liknande nyheter' eller 'Du kanske också vill läsa' är generiskt. Kategorinamnet är konkret och säger exakt vad relationen är."
               >
                 <h2 className="text-h4 font-medium mb-4">Mer om {KATEGORI_LABEL[POST.kategori]}</h2>
               </Copy>
@@ -325,10 +325,10 @@ export function Nyhet() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Nyhet (skiss)"
-        syfte="Information om förändringar — priser, regler, drift. Inte pressrelease (ingen citerbar formell ton), inte artikel (ingen storytelling). Kund-fokus: TL;DR först, konsekvensblock, FAQ. Kortare format."
+        syfte="Information om förändringar, priser, regler, drift. Inte pressrelease (ingen citerbar formell ton), inte artikel (ingen storytelling). Kund-fokus: TL;DR först, konsekvensblock, FAQ. Kortare format."
         malgrupp="Befintliga kunder och allmänhet i Helsingborg/Ängelholm. Inte journalister primärt."
         primarHandling="Skanna TL;DR · Förstå konsekvensen för min situation · Hitta svar i FAQ · Vid frågor → KC."
-        ton="Informativ, direkt, inte säljande. 'Vi justerar' inte 'vi har glädjen att meddela'. Inga superlativ — bara fakta + konsekvens."
+        ton="Informativ, direkt, inte säljande. 'Vi justerar' inte 'vi har glädjen att meddela'. Inga superlativ, bara fakta + konsekvens."
       />
 
       <div className="flex items-center justify-between pt-6">

@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Story-block
+ * VARIANT B, Story-block
  *
  * Berättande. Text + liten bild sida vid sida. Fokus ligger på innehåll,
  * inte på CTA. Används för hållbarhets- och backstory-kampanjer.
@@ -15,7 +15,7 @@ export function KampanjStory() {
     <Annotation
       label="Kampanj Story-block"
       audience="design"
-      rationale="Text-tung layout. Bild som stöd, inte huvudfokus. CTA är diskret — primärt för läsare som är intresserade av djupet, inte för snabb konvertering. Bra för backstory, partnerskap, hållbarhetsrapporter."
+      rationale="Text-tung layout. Bild som stöd, inte huvudfokus. CTA är diskret, primärt för läsare som är intresserade av djupet, inte för snabb konvertering. Bra för backstory, partnerskap, hållbarhetsrapporter."
     >
       <section className="rounded-lg border border-border-subtle bg-surface overflow-hidden">
         <div className="grid md:grid-cols-2 gap-0">

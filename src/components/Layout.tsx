@@ -55,7 +55,7 @@ export function Layout() {
   const vpWidth = VIEWPORT_WIDTH[viewport];
   const framed = vpWidth != null;
 
-  // ?framed=1 signals "render this route inside an iframe — no chrome".
+  // ?framed=1 signals "render this route inside an iframe ,  no chrome".
   // Used when the parent window is simulating a mobile/tablet viewport.
   const isFramedChild = typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("framed") === "1";
@@ -176,10 +176,10 @@ export function Layout() {
               <Icon name="circle" size={8} filled style={{ color: "#FFBD2E" }} />
               <Icon name="circle" size={8} filled style={{ color: "#28C840" }} />
               <span className="ml-2 font-medium">
-                {viewport === "tablet" ? "Tablet — 834 px" : "Mobile — 390 px"}
+                {viewport === "tablet" ? "Tablet ,  834 px" : "Mobile ,  390 px"}
               </span>
               <span className="ml-auto text-ink-muted italic">
-                riktig viewport-simulation — Tailwind-breakpoints fyrar
+                riktig viewport-simulation ,  Tailwind-breakpoints fyrar
               </span>
             </div>
             {/* iframe gives the inner app a real viewport width, so sm:/md:/lg:

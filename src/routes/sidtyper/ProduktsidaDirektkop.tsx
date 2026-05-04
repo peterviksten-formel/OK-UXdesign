@@ -23,21 +23,21 @@ import { FaqGrupperad } from "../moduler/variants/FaqGrupperad";
 import { FaqSokTopplista } from "../moduler/variants/FaqSokTopplista";
 
 /**
- * SIDTYP 10 — Produktsida direktköp
+ * SIDTYP 10, Produktsida direktköp
  *
  * Säljande produktsida för tjänster som köps direkt via formulär (laddbox,
- * realtidsmätare). Konvertering är primärt — strukturen är hierarkisk så
+ * realtidsmätare). Konvertering är primärt, strukturen är hierarkisk så
  * läsaren kan stoppa när som helst och fortfarande nå CTA.
  *
  * UX-principer:
- *  1. Hero äger värdepropositionen — namn, en USP, primär CTA i hero.
- *  2. Skanningsbarhet — USP-rad direkt under hero ger 3 fakta på 5 sek.
- *  3. Pris transparent — finns synligt vid CTA, inte gömt i fotnot.
- *  4. Hur det fungerar — sänker tröskel ("vad händer efter beställning?").
- *  5. Social proof — case innan formulär, för obeslutna.
- *  6. Formulär som checkout — 3-stegs wizard, samma grammatik som
+ *  1. Hero äger värdepropositionen, namn, en USP, primär CTA i hero.
+ *  2. Skanningsbarhet, USP-rad direkt under hero ger 3 fakta på 5 sek.
+ *  3. Pris transparent, finns synligt vid CTA, inte gömt i fotnot.
+ *  4. Hur det fungerar, sänker tröskel ("vad händer efter beställning?").
+ *  5. Social proof, case innan formulär, för obeslutna.
+ *  6. Formulär som checkout, 3-stegs wizard, samma grammatik som
  *     kontaktflödet, så användaren känner igen mönstret.
- *  7. FAQ sist — för långa-svans-frågor som tvekande har.
+ *  7. FAQ sist, för långa-svans-frågor som tvekande har.
  */
 
 type Steg = { ikon: string; titel: string; text: string; tid?: string };
@@ -55,7 +55,7 @@ const USP_DATA = [
   { ikon: "shield", titel: "5 års garanti", text: "På laddbox och installation. Vi tar hand om service om något händer." },
 ];
 
-// Produkt-instans som hela sidan handlar om — Ladda Smart valdes som
+// Produkt-instans som hela sidan handlar om, Ladda Smart valdes som
 // representativt direktköp-exempel.
 const PRODUKT = PRODUKTER.find((p) => p.id === "ladda-smart")!;
 
@@ -76,7 +76,7 @@ export function ProduktsidaDirektkop() {
     [orderStep],
   );
 
-  // Focus management mellan steg — samma mönster som kontaktflödet
+  // Focus management mellan steg, samma mönster som kontaktflödet
   const stepHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const isInitialRender = useRef(true);
   useEffect(() => {
@@ -99,7 +99,7 @@ export function ProduktsidaDirektkop() {
     setGodkant(false);
   }
 
-  /* ─── Beställningsflöde — 3-stegs wizard ──────────────────────── */
+  /* ─── Beställningsflöde, 3-stegs wizard ──────────────────────── */
   function renderOrderFlow(progressVariant: WizardVariant) {
     const kanFortsattaSteg1 = adress.trim() !== "" && postnr.trim() !== "" && ort.trim() !== "";
     const kanSkicka =
@@ -111,9 +111,9 @@ export function ProduktsidaDirektkop() {
 
     return (
       <Annotation
-        label="Beställningsflöde — 3-stegs wizard"
+        label="Beställningsflöde, 3-stegs wizard"
         audience="user"
-        rationale="Direktköp är ett känsligare moment än kontaktformulär — kund delar personnr och adress. Steg 1 (adress) är lågrisk; steg 2 (personliga uppgifter) kräver förtroende; steg 3 (bekräftelse) stänger loopen med ordernummer + nästa steg. Samma WizardProgress-grammatik som kontaktflödet i Start-Kundservice — användaren känner igen mönstret."
+        rationale="Direktköp är ett känsligare moment än kontaktformulär, kund delar personnr och adress. Steg 1 (adress) är lågrisk; steg 2 (personliga uppgifter) kräver förtroende; steg 3 (bekräftelse) stänger loopen med ordernummer + nästa steg. Samma WizardProgress-grammatik som kontaktflödet i Start-Kundservice, användaren känner igen mönstret."
       >
         <section id="bestall" className="py-10 border-t border-border-subtle">
           <WizardProgress
@@ -337,17 +337,17 @@ export function ProduktsidaDirektkop() {
                   />
                   <div>
                     <Copy
-                      label="Order-bekräftelse — rubrik"
+                      label="Order-bekräftelse, rubrik"
                       category="rubrik"
-                      text="Tack — vi har tagit emot din beställning"
-                      rationale="'Tack' först (mänskligt), sen faktatum. 'Vi har tagit emot' är fait accompli — användaren kan släppa oron. Inte 'Beställningen är registrerad' (passiv förvaltningssvenska)."
+                      text="Tack, vi har tagit emot din beställning"
+                      rationale="'Tack' först (mänskligt), sen faktatum. 'Vi har tagit emot' är fait accompli, användaren kan släppa oron. Inte 'Beställningen är registrerad' (passiv förvaltningssvenska)."
                     >
                       <h3
                         ref={stepHeadingRef}
                         tabIndex={-1}
                         className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
                       >
-                        Tack — vi har tagit emot din beställning
+                        Tack, vi har tagit emot din beställning
                       </h3>
                     </Copy>
                     <p className="text-sm text-ink-secondary">
@@ -381,9 +381,9 @@ export function ProduktsidaDirektkop() {
                     {[
                       "Beställningen är registrerad (redan klart)",
                       "Vi kontaktar dig inom 3 arbetsdagar för att boka besiktning",
-                      "Besiktning hemma hos dig — kostnadsfri",
+                      "Besiktning hemma hos dig, kostnadsfri",
                       "Installation av certifierad elektriker, oftast inom 2 veckor",
-                      "Du får faktura efter installation — med rotavdrag avdraget",
+                      "Du får faktura efter installation, med rotavdrag avdraget",
                     ].map((t, i) => (
                       <li key={i} className="flex gap-3 text-sm">
                         <span className="shrink-0 w-5 h-5 rounded-full bg-brand-primary text-white grid place-items-center text-[11px] font-bold">
@@ -424,44 +424,44 @@ export function ProduktsidaDirektkop() {
   /* ─── Block-arrayen ────────────────────────────────────────────── */
 
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO — produktspecifik ────────────────────────────── */
+    /* ─── 1. HERO, produktspecifik ────────────────────────────── */
     {
       id: "hero",
       label: "Hero",
       variants: [
         {
           key: "produkt",
-          label: "Produkt-hero — namn + USP + CTA",
+          label: "Produkt-hero, namn + USP + CTA",
           render: () => (
             <Annotation
-              label="Hero — säljande, en tydlig CTA"
+              label="Hero, säljande, en tydlig CTA"
               audience="user"
-              rationale="Inget bilduppslag som dröjer, inget marknadsspråk i H1. Direkt: produktnamn (vad det är) + en USP-mening (vad det löser) + pris (transparent) + en CTA. Bilden är produktillustration, inte livstilsbild — användare som klickade hit har redan bestämt sig för att kolla produkten."
+              rationale="Inget bilduppslag som dröjer, inget marknadsspråk i H1. Direkt: produktnamn (vad det är) + en USP-mening (vad det löser) + pris (transparent) + en CTA. Bilden är produktillustration, inte livstilsbild, användare som klickade hit har redan bestämt sig för att kolla produkten."
             >
               <section className="py-8 sm:py-12 grid md:grid-cols-2 gap-8 items-start">
                 <div>
                   <p className="text-eyebrow uppercase text-ink-muted mb-3">Elbil & laddning</p>
                   <Copy
-                    label="H1 — produktnamn"
+                    label="H1, produktnamn"
                     category="rubrik"
                     text="Ladda Smart"
-                    rationale="Produktnamnet räcker som rubrik. 'Hemma-laddning för elbil' skulle vara redaktörens språk; 'Ladda Smart' är produktens egennamn — kortast möjliga och kategoriskt entydigt."
+                    rationale="Produktnamnet räcker som rubrik. 'Hemma-laddning för elbil' skulle vara redaktörens språk; 'Ladda Smart' är produktens egennamn, kortast möjliga och kategoriskt entydigt."
                   >
                     <h1 className="text-display leading-tight mb-3">Ladda Smart</h1>
                   </Copy>
                   <Copy
                     label="USP-mening"
                     category="reassurance"
-                    text="Smart laddning för elbil — hemma. Ladda billigare på natten, allt installerat på två veckor."
-                    rationale="Tre fakta i en mening: vad det är (smart laddning), vad det sparar (billigare nattladdning), vad du får (installation klar inom 2 veckor). Inga adjektiv — bara konkreta löften."
+                    text="Smart laddning för elbil, hemma. Ladda billigare på natten, allt installerat på två veckor."
+                    rationale="Tre fakta i en mening: vad det är (smart laddning), vad det sparar (billigare nattladdning), vad du får (installation klar inom 2 veckor). Inga adjektiv, bara konkreta löften."
                   >
                     <p className="text-lede text-ink-secondary mb-6 leading-relaxed">
-                      Smart laddning för elbil — hemma. Ladda billigare på natten, allt installerat på två veckor.
+                      Smart laddning för elbil, hemma. Ladda billigare på natten, allt installerat på två veckor.
                     </p>
                   </Copy>
                   {/* Pris, primär CTA och reassurance ligger i sticky-panelen
                      höger (eller fixed bottom-bar på mobil). Hero håller bara
-                     värdepropositionen — inte ett duplicerat köp. */}
+                     värdepropositionen, inte ett duplicerat köp. */}
                 </div>
 
                 <div className="bg-tint-info aspect-[4/3] rounded-md flex items-center justify-center">
@@ -474,19 +474,19 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 2. USP-RAD — fyra fakta-kort ─────────────────────────── */
+    /* ─── 2. USP-RAD, fyra fakta-kort ─────────────────────────── */
     {
       id: "usp",
-      label: "USP-rad — fyra fakta",
+      label: "USP-rad, fyra fakta",
       variants: [
         {
           key: "ikoner",
           label: "Ikon-kort, fyra kolumner",
           render: () => (
             <Annotation
-              label="USP-kort — skannbara fakta"
+              label="USP-kort, skannbara fakta"
               audience="user"
-              rationale="Direkt under hero så läsaren får tre/fyra konkreta fördelar utan att skrolla djupt. Ikoner gör korten visuellt distinkta. Samma layout-grammatik som IntentCardGrid på Start-sidor — användaren känner igen mönstret."
+              rationale="Direkt under hero så läsaren får tre/fyra konkreta fördelar utan att skrolla djupt. Ikoner gör korten visuellt distinkta. Samma layout-grammatik som IntentCardGrid på Start-sidor, användaren känner igen mönstret."
             >
               <section className="py-8 border-t border-border-subtle">
                 <div className="grid sm:grid-cols-2 gap-4">
@@ -505,8 +505,8 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 3. PRODUKTINFO — info utan pris/CTA (sticky-panel äger köpet) ─
-     * Default: ren info-variant utan pris och CTA — sticky-panelen
+    /* ─── 3. PRODUKTINFO, info utan pris/CTA (sticky-panel äger köpet) ─
+     * Default: ren info-variant utan pris och CTA, sticky-panelen
      * ansvarar för pris och beställning. Trygg/Progressiv/Köp finns kvar
      * som alternativ för sidor utan sticky-panel (fallback om man väljer
      * att stänga av panelen). */
@@ -516,12 +516,12 @@ export function ProduktsidaDirektkop() {
       variants: [
         {
           key: "info-only",
-          label: "Renodlad info — bild + ingår + villkor + varför (default)",
+          label: "Renodlad info, bild + ingår + villkor + varför (default)",
           render: () => (
             <Annotation
-              label="Produktinfo — renodlad till information"
+              label="Produktinfo, renodlad till information"
               audience="design"
-              rationale="Pris och CTA är borttaget från detta block — sticky-panelen i höger kolumn ansvarar för köpet. Här bara: bild, beskrivning, vad som ingår, villkor, varför produkten passar. Renar hierarkin: en plats för köp, en plats för information."
+              rationale="Pris och CTA är borttaget från detta block, sticky-panelen i höger kolumn ansvarar för köpet. Här bara: bild, beskrivning, vad som ingår, villkor, varför produkten passar. Renar hierarkin: en plats för köp, en plats för information."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="grid md:grid-cols-2 gap-8 mb-6">
@@ -580,7 +580,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "progressiv",
-          label: "Progressiv — tabs med pris/CTA (dubblerar panelen)",
+          label: "Progressiv, tabs med pris/CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoProgressiv produkt={PRODUKT} inline />
@@ -589,7 +589,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "trygg",
-          label: "Trygg — 2-kolumns med pris/CTA (dubblerar panelen)",
+          label: "Trygg, 2-kolumns med pris/CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoTrygg produkt={PRODUKT} inline />
@@ -598,7 +598,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "kop",
-          label: "Köp-fokuserad — egen sticky sidebar (dubblerar panelen)",
+          label: "Köp-fokuserad, egen sticky sidebar (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoKop produkt={PRODUKT} inline />
@@ -608,7 +608,7 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 4. HUR DET FUNGERAR — 3 steg ────────────────────────── */
+    /* ─── 4. HUR DET FUNGERAR, 3 steg ────────────────────────── */
     {
       id: "process",
       label: "Hur det fungerar",
@@ -618,21 +618,21 @@ export function ProduktsidaDirektkop() {
           label: "Tre steg horisontellt",
           render: () => (
             <Annotation
-              label="Process-steg — sänk tröskel innan formulär"
+              label="Process-steg, sänk tröskel innan formulär"
               audience="user"
-              rationale="Direkt-köp innebär att kund delar adress + personnr — tröskeln är högre än ett kontaktformulär. Visa exakt vad som händer EFTER beställning så det inte känns som en blindöverlämning. Tidsangivelser (5 min / 3 dagar / 1 dag) sätter förväntan."
+              rationale="Direkt-köp innebär att kund delar adress + personnr, tröskeln är högre än ett kontaktformulär. Visa exakt vad som händer EFTER beställning så det inte känns som en blindöverlämning. Tidsangivelser (5 min / 3 dagar / 1 dag) sätter förväntan."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
                   label="Process-rubrik"
                   category="rubrik"
                   text="Så här går det till"
-                  rationale="Standardformulering för process-sektioner — bekant och enkel. 'Vad händer efter du beställt?' skulle vara mer specifik men längre."
+                  rationale="Standardformulering för process-sektioner, bekant och enkel. 'Vad händer efter du beställt?' skulle vara mer specifik men längre."
                 >
                   <h2 className="text-h3 font-medium mb-2">Så här går det till</h2>
                 </Copy>
                 <p className="text-ink-secondary mb-6 max-w-reading">
-                  Från beställning till färdig installation — oftast inom 2 veckor.
+                  Från beställning till färdig installation, oftast inom 2 veckor.
                 </p>
                 <ol className="grid md:grid-cols-3 gap-4">
                   {STEG.map((s) => (
@@ -659,14 +659,14 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 5. KUNDCASE — modul, 3 varianter ────────────────────── */
+    /* ─── 5. KUNDCASE, modul, 3 varianter ────────────────────── */
     {
       id: "kundcase",
       label: "Kundcase",
       variants: [
         {
           key: "story",
-          label: "Case-story (default — djup)",
+          label: "Case-story (default, djup)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseStory />
@@ -675,7 +675,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "grid",
-          label: "Citatkort-grid — bredd",
+          label: "Citatkort-grid, bredd",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseGrid />
@@ -684,7 +684,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "hero",
-          label: "Hero-citat — ett stort",
+          label: "Hero-citat, ett stort",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseHero />
@@ -694,19 +694,19 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 6. BESTÄLLNINGSFLÖDE — 3-stegs wizard ───────────────── */
+    /* ─── 6. BESTÄLLNINGSFLÖDE, 3-stegs wizard ───────────────── */
     {
       id: "bestall",
       label: "Beställningsflöde",
       variants: [
         {
           key: "stepper",
-          label: "Stepper — cirklar med etiketter (default)",
+          label: "Stepper, cirklar med etiketter (default)",
           render: () => renderOrderFlow("stepper"),
         },
         {
           key: "bar",
-          label: "Progress-bar — kompakt",
+          label: "Progress-bar, kompakt",
           render: () => renderOrderFlow("bar"),
         },
         {
@@ -717,7 +717,7 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 7. FAQ — modul ──────────────────────────────────────── */
+    /* ─── 7. FAQ, modul ──────────────────────────────────────── */
     {
       id: "faq",
       label: "FAQ",
@@ -733,7 +733,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "grupperad",
-          label: "Grupperad — innan/under/efter",
+          label: "Grupperad, innan/under/efter",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <FaqGrupperad />
@@ -759,26 +759,26 @@ export function ProduktsidaDirektkop() {
       variants: [
         {
           key: "default",
-          label: "Synergi-curering — 3 ikon-kort",
+          label: "Synergi-curering, 3 ikon-kort",
           render: () => (
             <RelateradeProdukter
               produkter={[
                 {
                   ikon: "solar_power",
                   titel: "Solceller",
-                  text: "Producera elen du laddar bilen med — ladda gratis när solen står på.",
+                  text: "Producera elen du laddar bilen med, ladda gratis när solen står på.",
                   href: "/sidtyper/produktsida-leadsgen",
                 },
                 {
                   ikon: "support_agent",
                   titel: "Energirådgivning",
-                  text: "Kostnadsfri genomgång av ditt hushålls elanvändning — vi hittar var du kan spara mest.",
+                  text: "Kostnadsfri genomgång av ditt hushålls elanvändning, vi hittar var du kan spara mest.",
                   href: "#",
                 },
                 {
                   ikon: "heat_pump",
                   titel: "Värmepump",
-                  text: "Kombinera smart laddning med smart uppvärmning — värm huset när elen är som billigast.",
+                  text: "Kombinera smart laddning med smart uppvärmning, värm huset när elen är som billigast.",
                   href: "#",
                 },
               ]}
@@ -793,10 +793,10 @@ export function ProduktsidaDirektkop() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Produktsida direktköp (Ladda Smart)"
-        syfte="Säljande produktsida som leder till direktköp via formulär. Hierarki är: värde först (hero + USP), produktinfo, process, social proof, beställning, FAQ. Konvertering är primär — pris och CTA syns högt på sidan, formuläret är 3-stegs så avhopp blir mätbara per steg."
-        malgrupp="Privatkund som har bestämt sig för att skaffa elbilsladdning hemma och vill jämföra alternativ. Ofta efter en initial research-fas — vill se pris, villkor och process snabbt."
+        syfte="Säljande produktsida som leder till direktköp via formulär. Hierarki är: värde först (hero + USP), produktinfo, process, social proof, beställning, FAQ. Konvertering är primär, pris och CTA syns högt på sidan, formuläret är 3-stegs så avhopp blir mätbara per steg."
+        malgrupp="Privatkund som har bestämt sig för att skaffa elbilsladdning hemma och vill jämföra alternativ. Ofta efter en initial research-fas, vill se pris, villkor och process snabbt."
         primarHandling="Klicka 'Beställ Ladda Smart' i hero ELLER fyll i adress i formuläret längre ned."
-        ton="Konkret, säljande utan att vara påflugen. Pris och tid alltid synliga — inga dolda steg. Inga adjektiv som 'fantastisk' eller 'banbrytande'."
+        ton="Konkret, säljande utan att vara påflugen. Pris och tid alltid synliga, inga dolda steg. Inga adjektiv som 'fantastisk' eller 'banbrytande'."
       />
 
       <div className="flex items-center justify-between pt-6">
@@ -824,8 +824,7 @@ export function ProduktsidaDirektkop() {
 
       {/* Layouten är delad i två spår:
           1. Block FÖRE formuläret renderas i 2-col grid med sticky-panel höger.
-          2. Formulär-blocket och allt efter (FAQ) renderas i full bredd —
-             panelen hör inte hemma där eftersom användaren redan nått köpyttan.
+          2. Formulär-blocket och allt efter (FAQ) renderas i full bredd,             panelen hör inte hemma där eftersom användaren redan nått köpyttan.
           Båda BlockList-instanserna delar samma pageId så preset/edit-state
           fungerar konsistent över hela sidan. */}
       {(() => {

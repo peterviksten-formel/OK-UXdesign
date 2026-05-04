@@ -1,14 +1,14 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 /**
- * EditorialGuide — "why is the copy written this way?"
+ * EditorialGuide ,  "why is the copy written this way?"
  *
  * Annotations explain WHY a section exists. EditorialGuide explains
- * WHY a specific word/phrase was chosen — tone, voice, loss aversion,
+ * WHY a specific word/phrase was chosen ,  tone, voice, loss aversion,
  * tidslöfte, etc. Authored inline with <Copy rationale="...">...</Copy>.
  *
  * Lives in a LEFT side-panel so it never collides with the right
- * Annotation panel — both can be open simultaneously.
+ * Annotation panel ,  both can be open simultaneously.
  */
 
 export type CopyCategory = "rubrik" | "cta" | "reassurance" | "faq" | "ton" | "metadata";
@@ -67,7 +67,7 @@ export function EditorialGuideProvider({ children }: { children: ReactNode }) {
     window.localStorage.setItem(STORAGE_KEY, enabled ? "on" : "off");
   }, [enabled]);
 
-  // Sync enabled state across tabs/iframes — håller mobil-/tablet-
+  // Sync enabled state across tabs/iframes ,  håller mobil-/tablet-
   // simulator i iframen i synk med parent-appens UX-guide-toggle.
   useEffect(() => {
     function handleStorage(e: StorageEvent) {

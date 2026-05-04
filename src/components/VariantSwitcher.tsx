@@ -99,7 +99,7 @@ export function VariantSwitcher({ variants, argumentation, defaultId }: VariantS
           aria-label="Argumentation: jämförelse mellan varianter"
         >
           <header className="px-5 py-3 border-b border-border-subtle bg-tint-info">
-            <h2 className="text-h5 font-medium">Argumentation — för- och nackdelar per variant</h2>
+            <h2 className="text-h5 font-medium">Argumentation ,  för- och nackdelar per variant</h2>
             <p className="text-xs text-ink-muted mt-0.5">
               Tre olika strategiska val. Ingen är ”rätt”. Det här är en diskussionsgrund för vilken variant som passar Öresundskrafts mål och målgrupp bäst.
             </p>
@@ -131,7 +131,7 @@ export function VariantSwitcher({ variants, argumentation, defaultId }: VariantS
                     </th>
                     {variants.map((v) => (
                       <td key={v.id} className="px-4 py-3 text-ink-secondary leading-relaxed">
-                        {row.values[v.id] ?? "—"}
+                        {row.values[v.id] ?? "–"}
                       </td>
                     ))}
                   </tr>

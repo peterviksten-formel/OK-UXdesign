@@ -9,7 +9,7 @@ const STATS = [
 ];
 
 /**
- * VARIANT A — Statistik-grid
+ * VARIANT A, Statistik-grid
  *
  * 3-4 stora siffror med beskrivning. Fokus på mätbara resultat.
  *
@@ -19,14 +19,14 @@ const STATS = [
 export function ImpactStats() {
   return (
     <Annotation
-      label="Hållbarhets-block — statistik-grid"
+      label="Hållbarhets-block, statistik-grid"
       audience="redaktör"
-      rationale="Stora siffror, korta beskrivningar. Gör abstrakta åtaganden konkreta ('100% fossilfri' säger mer än 'ambitiös klimatpolicy'). Kräver löpande underhåll — föråldrade siffror blir fula."
+      rationale="Stora siffror, korta beskrivningar. Gör abstrakta åtaganden konkreta ('100% fossilfri' säger mer än 'ambitiös klimatpolicy'). Kräver löpande underhåll, föråldrade siffror blir fula."
     >
       <section>
         <h2 className="text-h3 font-medium mb-2">Vår påverkan i siffror</h2>
         <p className="text-ink-secondary mb-6 max-w-reading">
-          Vi tror på att mäta det som betyder något. Här är några av de siffror vi följer — och jobbar för att förbättra.
+          Vi tror på att mäta det som betyder något. Här är några av de siffror vi följer, och jobbar för att förbättra.
         </p>
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {STATS.map((s) => (

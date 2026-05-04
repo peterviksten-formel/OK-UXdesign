@@ -38,25 +38,25 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Synlighet",
     values: {
-      topbar: "Hög — alla som landar ser bannern.",
-      inline: "Medel — syns när användaren är på rätt sida.",
-      badge: "Låg — lätt att missa om man inte scannar header.",
+      topbar: "Hög, alla som landar ser bannern.",
+      inline: "Medel, syns när användaren är på rätt sida.",
+      badge: "Låg, lätt att missa om man inte scannar header.",
     },
   },
   {
     aspect: "Påträngande",
     values: {
-      topbar: "Hög — flyttar ner innehållet.",
-      inline: "Låg — ligger där den hör hemma.",
-      badge: "Låg — 24px i hörnet.",
+      topbar: "Hög, flyttar ner innehållet.",
+      inline: "Låg, ligger där den hör hemma.",
+      badge: "Låg, 24px i hörnet.",
     },
   },
   {
     aspect: "Användning",
     values: {
-      topbar: "Global — alla sidor.",
-      inline: "Lokal — specifika sidor.",
-      badge: "Global — alla sidor, men diskret.",
+      topbar: "Global, alla sidor.",
+      inline: "Lokal, specifika sidor.",
+      badge: "Global, alla sidor, men diskret.",
     },
   },
   {
@@ -70,7 +70,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Rekommendation",
     values: {
-      topbar: "Större avbrott — flera hundra kunder eller kris-läge.",
+      topbar: "Större avbrott, flera hundra kunder eller kris-läge.",
       inline: "Default på avbrottssidan och kundservice-sidan.",
       badge: "Alltid-på indikator i header för löpande status.",
     },

@@ -46,7 +46,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Djup vs bredd",
     values: {
-      grid: "Bredd — flera röster, olika situationer.",
+      grid: "Bredd, flera röster, olika situationer.",
       hero: "En tydlig röst i taget. Hög påverkan.",
       story: "Ett djup-case. Svarar på 'fungerar det för någon som jag?'",
     },
@@ -54,25 +54,25 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Trovärdighet",
     values: {
-      grid: "Medel — ser ut som typisk testimonial-sektion.",
-      hero: "Beror på citatets kvalitet — kan kännas staged.",
-      story: "Högst — konkreta siffror + bild av verklig person.",
+      grid: "Medel, ser ut som typisk testimonial-sektion.",
+      hero: "Beror på citatets kvalitet, kan kännas staged.",
+      story: "Högst, konkreta siffror + bild av verklig person.",
     },
   },
   {
     aspect: "Risk för känsla av reklam",
     values: {
       grid: "Medel.",
-      hero: "Högre — stort citat läses som marknadsföring.",
-      story: "Lägst — artikel-formatet signalerar journalistik.",
+      hero: "Högre, stort citat läses som marknadsföring.",
+      story: "Lägst, artikel-formatet signalerar journalistik.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
       grid: "Produktsidor, Jämför elavtal, Smarta produkter.",
-      hero: "Sparsamt — kampanjlandningar eller hub-startsida.",
-      story: "Solceller, laddbox, fjärrvärme — där beslutet är större.",
+      hero: "Sparsamt, kampanjlandningar eller hub-startsida.",
+      story: "Solceller, laddbox, fjärrvärme, där beslutet är större.",
     },
   },
 ];

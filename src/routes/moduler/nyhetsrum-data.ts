@@ -1,5 +1,5 @@
 /**
- * Nyhetsrum — delad data för Press, Nyheter och Artiklar.
+ * Nyhetsrum, delad data för Press, Nyheter och Artiklar.
  *
  * Tre publicistiska "typer" lever sida vid sida: typen styr layout, ton och
  * målgrupp. Kategorier är tvärgående (Energi, Klimat, CCS osv) och används
@@ -68,7 +68,7 @@ export const TYP_LABEL: Record<NyhetsrumTyp, string> = {
   artikel: "Artikel",
 };
 
-/** Type-färger — formell grå för press, accent-blå för nyhet, kategori-färg för artikel */
+/** Type-färger, formell grå för press, accent-blå för nyhet, kategori-färg för artikel */
 export const TYP_COLOR: Record<NyhetsrumTyp, string> = {
   press: "bg-ink/10 text-ink-secondary",
   nyhet: "bg-tint-info text-brand-primary",
@@ -146,7 +146,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "infrastruktur",
     rubrik: "Du kan nu hämta dina mätvärden direkt i appen",
     ingress:
-      "Från och med april kan du som privatkund se din timmesvis förbrukning direkt i Mina sidor — perfekt för dig som vill optimera elanvändningen.",
+      "Från och med april kan du som privatkund se din timmesvis förbrukning direkt i Mina sidor, perfekt för dig som vill optimera elanvändningen.",
     datum: "2026-04-02",
     bildAlt: "Skärmdump av app med timmesvis förbrukning",
     sammanfattning: [
@@ -162,7 +162,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "utbildning",
     rubrik: "Hur kan solceller ge större nytta i hushållen framöver?",
     ingress:
-      "Med rätt kombination av panel, batteri och styrning kan en typvilla dubbla sin självförsörjning. Vi går igenom vad som faktiskt fungerar — och vad som är överreklam.",
+      "Med rätt kombination av panel, batteri och styrning kan en typvilla dubbla sin självförsörjning. Vi går igenom vad som faktiskt fungerar, och vad som är överreklam.",
     datum: "2026-04-12",
     bildAlt: "Villa med solceller på taket i kvällsljus",
     forfattare: ERIK,
@@ -174,7 +174,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     typ: "artikel",
     kategori: "kundcase",
     rubrik:
-      "Energikartläggningen visade Clemondos besparingspotential — 1,2 miljoner kr per år",
+      "Energikartläggningen visade Clemondos besparingspotential, 1,2 miljoner kr per år",
     ingress:
       "Tillsammans gick vi igenom processflöden, ventilation och belysning. Tre konkreta åtgärder gav återbetalning på under två år.",
     datum: "2026-03-21",
@@ -208,7 +208,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     sammanfattning: [
       "Pågår 6–28 maj 2026",
       "Berör Rydebäck och Gantofta",
-      "Inga längre avbrott planerade — kortare omkopplingar kan förekomma",
+      "Inga längre avbrott planerade, kortare omkopplingar kan förekomma",
     ],
   },
   {
@@ -230,7 +230,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "energi",
     rubrik: "Bokslutskommuniké 2025: stabil tillväxt och rekordinvesteringar i nätet",
     ingress:
-      "Öresundskraft redovisar 4,2 miljarder kronor i omsättning och en ökad investeringstakt i elnätet — totalt 680 miljoner under året.",
+      "Öresundskraft redovisar 4,2 miljarder kronor i omsättning och en ökad investeringstakt i elnätet, totalt 680 miljoner under året.",
     datum: "2026-01-30",
     bildAlt: "Filbornaverket på vintern",
     presskontakt: ANNA,
@@ -242,7 +242,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "infrastruktur",
     rubrik: "Ladda Smart-appen får schemaläggning och spotpris-styrning",
     ingress:
-      "Tre nya funktioner rullar ut i april — du kan nu ställa in schema per veckodag, koppla till spotpriset och få push-notiser när elen är extra billig.",
+      "Tre nya funktioner rullar ut i april, du kan nu ställa in schema per veckodag, koppla till spotpriset och få push-notiser när elen är extra billig.",
     datum: "2026-04-18",
     bildAlt: "Skärmdump av Ladda Smart-appen",
     sammanfattning: [
@@ -256,7 +256,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     slug: "uppdaterade-villkor-mina-sidor",
     typ: "nyhet",
     kategori: "energi",
-    rubrik: "Uppdaterade villkor för Mina sidor — gäller från 1 juni",
+    rubrik: "Uppdaterade villkor för Mina sidor, gäller från 1 juni",
     ingress:
       "Vi har förenklat språket och förtydligat hanteringen av personuppgifter. Inga ekonomiska villkor ändras.",
     datum: "2026-04-05",
@@ -272,7 +272,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     slug: "effekttariffer-forklarade",
     typ: "artikel",
     kategori: "utbildning",
-    rubrik: "Effekttariffer förklarade — så undviker du onödiga toppar",
+    rubrik: "Effekttariffer förklarade, så undviker du onödiga toppar",
     ingress:
       "Effekttariffen straffar inte hur mycket el du använder, utan när du använder den mest. En liten ändring i vanor kan ge större besparing än man tror.",
     datum: "2026-02-28",
@@ -295,7 +295,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
   },
 ];
 
-/** Helper — hämtar typsäkert en post via slug */
+/** Helper, hämtar typsäkert en post via slug */
 export function getPostBySlug(slug: string): NyhetsrumPost | undefined {
   return NYHETSRUM.find((p) => p.slug === slug);
 }

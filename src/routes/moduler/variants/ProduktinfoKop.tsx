@@ -3,7 +3,7 @@ import { Icon } from "../../../components/Icon";
 import type { Produkt } from "../produkt-data";
 
 /**
- * VARIANT C — Köp-fokuserad
+ * VARIANT C, Köp-fokuserad
  *
  * Sticky köp-sidebar på desktop, sticky CTA-fot på mobil. Detaljer scrollar,
  * köp-beslutet följer med. E-handels-mönster.
@@ -23,19 +23,19 @@ export function ProduktinfoKop({
   return (
     <div>
       <Annotation
-        label="Produktinfo — köp-fokuserad med sticky sidebar"
+        label="Produktinfo, köp-fokuserad med sticky sidebar"
         audience="design"
-        rationale="Sticky köp-modul höger: pris, CTA, frakt-info. Vänster kolumn är scrollbar — bild, detaljer, villkor, relaterat. E-handelsmönster som konverterar bättre än klassisk produkt-layout eftersom priset alltid är synligt vid scroll."
+        rationale="Sticky köp-modul höger: pris, CTA, frakt-info. Vänster kolumn är scrollbar, bild, detaljer, villkor, relaterat. E-handelsmönster som konverterar bättre än klassisk produkt-layout eftersom priset alltid är synligt vid scroll."
       >
         <div className="grid lg:grid-cols-[1fr_340px] gap-8">
-          {/* Main content — scrollable */}
+          {/* Main content, scrollable */}
           <div>
             {/* Hero image */}
             <div className="rounded-lg bg-tint-info aspect-[4/3] flex items-center justify-center text-ink-muted mb-6 border border-border-subtle">
               <Icon name="image" size={64} />
             </div>
 
-            {/* Title — döljs när modulen ligger inline på en produktsida
+            {/* Title, döljs när modulen ligger inline på en produktsida
                 (kategori + namn + tagline står redan i sidans hero). */}
             {!inline && (
               <>
@@ -50,7 +50,7 @@ export function ProduktinfoKop({
               <p className="text-ink-secondary leading-relaxed">{p.beskrivning}</p>
             </div>
 
-            {/* Details — three columns (same content as Trygg/Progressiv) */}
+            {/* Details, three columns (same content as Trygg/Progressiv) */}
             <div className="grid sm:grid-cols-3 gap-6 py-6 border-y border-border-subtle">
               <div>
                 <h3 className="text-h5 font-medium mb-3">Ingår</h3>
@@ -92,8 +92,7 @@ export function ProduktinfoKop({
                 garanti-villkor, etc. Kan innehålla accordions, bilder, videos.
               </p>
               <div className="bg-tint-info rounded-md p-5 text-sm text-ink-secondary">
-                Här har du plats för 800–1200 ord detaljerad info utan att det stör köp-beslutet —
-                priset och CTA:n stannar i vyn när användaren scrollar.
+                Här har du plats för 800–1200 ord detaljerad info utan att det stör köp-beslutet,                priset och CTA:n stannar i vyn när användaren scrollar.
               </div>
             </div>
           </div>

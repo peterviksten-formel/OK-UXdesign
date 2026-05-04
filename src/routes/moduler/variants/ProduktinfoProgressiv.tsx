@@ -4,7 +4,7 @@ import { Icon } from "../../../components/Icon";
 import type { Produkt } from "../produkt-data";
 
 /**
- * VARIANT B — Progressiv
+ * VARIANT B, Progressiv
  *
  * E-commerce inspired. Hero with image + price badge + CTA. Below:
  * tab-style sections (Vad ingår / Villkor / Varför välja).
@@ -35,7 +35,7 @@ export function ProduktinfoProgressiv({
       <Annotation
         label="Produkt-hero"
         audience="design"
-        rationale="Bild med prisöverlägg + CTA i samma vy. E-commerce-känsla: priset är inte gömt i en tabell — det syns direkt. 'Passar för'-rutan under priset gör att användaren snabbt bekräftar 'detta är för mig'."
+        rationale="Bild med prisöverlägg + CTA i samma vy. E-commerce-känsla: priset är inte gömt i en tabell, det syns direkt. 'Passar för'-rutan under priset gör att användaren snabbt bekräftar 'detta är för mig'."
       >
         <div className="rounded-lg overflow-hidden border border-border-subtle mb-6">
           {/* Image area */}
@@ -55,7 +55,7 @@ export function ProduktinfoProgressiv({
                 </>
               )}
             </div>
-            {/* Category pill — döljs inline (kategorin står redan i sidans hero) */}
+            {/* Category pill, döljs inline (kategorin står redan i sidans hero) */}
             {!inline && (
               <div className="absolute top-4 left-4">
                 <span className="bg-brand-primary text-white text-xs font-medium px-3 py-1 rounded-full">{p.kategori}</span>

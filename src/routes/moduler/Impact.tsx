@@ -11,7 +11,7 @@ const VARIANTS: Variant[] = [
     label: "Statistik-grid",
     riskLevel: "låg",
     oneLiner: "Stora siffror + korta beskrivningar. Konkret och scanbart.",
-    bestFor: "Startsida, hub-sidor — där läsaren vill få snabb överblick.",
+    bestFor: "Startsida, hub-sidor, där läsaren vill få snabb överblick.",
     render: () => <ImpactStats />,
   },
   {
@@ -29,7 +29,7 @@ const VARIANTS: Variant[] = [
     label: "Tidslinje",
     riskLevel: "låg",
     oneLiner: "År-för-år med status (klart / pågår / planerat).",
-    bestFor: "Hållbarhetssida, åtagandesida — ärligt och strukturerat.",
+    bestFor: "Hållbarhetssida, åtagandesida, ärligt och strukturerat.",
     render: () => <ImpactTimeline />,
   },
 ];
@@ -38,39 +38,39 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Kognitiv belastning",
     values: {
-      stats: "Låg — 4 siffror, skannas på 5 sek.",
-      story: "Medel — kräver faktisk läsning.",
-      timeline: "Medel — struktur hjälper men det är 5+ punkter.",
+      stats: "Låg, 4 siffror, skannas på 5 sek.",
+      story: "Medel, kräver faktisk läsning.",
+      timeline: "Medel, struktur hjälper men det är 5+ punkter.",
     },
   },
   {
     aspect: "Trovärdighet",
     values: {
-      stats: "Medel — siffror utan kontext kan läsas som marknadsföring.",
-      story: "Hög — berättelse + siffror ger kontext.",
-      timeline: "Högst — visar både bakåt (klart) och framåt (åtagande).",
+      stats: "Medel, siffror utan kontext kan läsas som marknadsföring.",
+      story: "Hög, berättelse + siffror ger kontext.",
+      timeline: "Högst, visar både bakåt (klart) och framåt (åtagande).",
     },
   },
   {
     aspect: "Underhåll",
     values: {
-      stats: "Högt — siffror måste stämma med årets rapport.",
-      story: "Medel — copy uppdateras vid större händelser.",
-      timeline: "Medel — status uppdateras årligen, nya mål läggs till.",
+      stats: "Högt, siffror måste stämma med årets rapport.",
+      story: "Medel, copy uppdateras vid större händelser.",
+      timeline: "Medel, status uppdateras årligen, nya mål läggs till.",
     },
   },
   {
     aspect: "Greenwashing-risk",
     values: {
-      stats: "Högre — lätt att välja gynnsamma siffror.",
-      story: "Medel — beror på copywriter.",
-      timeline: "Lägst — 'Pågår'- och 'Planerat'-status tvingar transparens.",
+      stats: "Högre, lätt att välja gynnsamma siffror.",
+      story: "Medel, beror på copywriter.",
+      timeline: "Lägst, 'Pågår'- och 'Planerat'-status tvingar transparens.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      stats: "Startsidan och produktsidor — som teaser.",
+      stats: "Startsidan och produktsidor, som teaser.",
       story: "Om oss-sida, kampanjsida om hållbarhet.",
       timeline: "Dedikerad hållbarhetssida. Det ärligaste formatet.",
     },

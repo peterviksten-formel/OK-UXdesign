@@ -7,7 +7,7 @@ const MAL: { ar: string; mal: string; status: Status; beskrivning: string }[] = 
   { ar: "2024", mal: "100% fossilfri el till alla avtalskunder", status: "klart", beskrivning: "Alla våra elavtal levererar sedan 2024 enbart förnybar och återvunnen energi." },
   { ar: "2025", mal: "17-satsningen lanseras företagsövergripande", status: "klart", beskrivning: "Varje medarbetare får 17 timmar per år för volontärarbete kopplat till FN:s globala mål." },
   { ar: "2026", mal: "Framtidspengen betalar ut till 10 000+ kunder", status: "pagaende", beskrivning: "Uppföljning pågår. Hittills har över 8 000 kunder fått pengar tillbaka genom programmet." },
-  { ar: "2030", mal: "Innozhero-anläggningen igång — 200 000 ton CO₂/år", status: "framtida", beskrivning: "Carbon capture-anläggningen är under uppförande. Tekniken finns, investeringen görs nu." },
+  { ar: "2030", mal: "Innozhero-anläggningen igång, 200 000 ton CO₂/år", status: "framtida", beskrivning: "Carbon capture-anläggningen är under uppförande. Tekniken finns, investeringen görs nu." },
   { ar: "2035", mal: "Klimatneutralt Helsingborg", status: "framtida", beskrivning: "Ett regionalt mål som vi driver tillsammans med staden." },
 ];
 
@@ -18,7 +18,7 @@ const STATUS_META: Record<Status, { label: string; dot: string; textColor: strin
 };
 
 /**
- * VARIANT C — Checkpoints-tidslinje
+ * VARIANT C, Checkpoints-tidslinje
  *
  * Vertikal tidslinje med mål per år. Statusmarkör visar om målet är
  * nått, pågår eller framtida. Visar både historia och ambition.
@@ -29,9 +29,9 @@ const STATUS_META: Record<Status, { label: string; dot: string; textColor: strin
 export function ImpactTimeline() {
   return (
     <Annotation
-      label="Hållbarhets-block — tidslinje"
+      label="Hållbarhets-block, tidslinje"
       audience="redaktör"
-      rationale="Vertikal tidslinje med år-markörer. Status per mål (klart / pågår / planerat) — ingen greenwashing. Visar tydligt vad som redan levererats vs vad som är åtagande framåt."
+      rationale="Vertikal tidslinje med år-markörer. Status per mål (klart / pågår / planerat), ingen greenwashing. Visar tydligt vad som redan levererats vs vad som är åtagande framåt."
     >
       <section>
         <h2 className="text-h3 font-medium mb-2">Vår hållbarhetsresa</h2>

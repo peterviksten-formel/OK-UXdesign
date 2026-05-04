@@ -25,7 +25,7 @@ export const PRODUKTER: Produkt[] = [
     id: "ladda-smart",
     namn: "Ladda Smart",
     kategori: "Elbil & laddning",
-    tagline: "Smart laddning för elbil — hemma eller på jobbet.",
+    tagline: "Smart laddning för elbil, hemma eller på jobbet.",
     beskrivning: "Installation av laddbox, smart styrning via app, och en eltariff optimerad för nattladdning. Vi tar hand om allt från besiktning till installation.",
     pris: { typ: "fran", belopp: "14 900", enhet: "kr inkl. installation" },
     inkluderar: [
@@ -37,11 +37,11 @@ export const PRODUKTER: Produkt[] = [
     villkor: [
       "Kräver jordfelsbrytare typ B",
       "Elcentral max 15m från garagevägg",
-      "Besiktning ingår — kan medföra tillägg",
+      "Besiktning ingår, kan medföra tillägg",
     ],
     uspar: [
       "Ladda billigare på natten med smart styrning",
-      "Rotavdrag — dra av 30% av arbetskostnaden",
+      "Rotavdrag, dra av 30% av arbetskostnaden",
       "Installation klar inom 2 veckor",
     ],
     passarFor: "Dig som har elbil och vill ladda hemma till lägsta möjliga kostnad.",
@@ -52,7 +52,7 @@ export const PRODUKTER: Produkt[] = [
     id: "solceller",
     namn: "Solceller",
     kategori: "Egen elproduktion",
-    tagline: "Producera din egen el — vi hjälper dig hela vägen.",
+    tagline: "Producera din egen el, vi hjälper dig hela vägen.",
     beskrivning: "Solcellsanläggning dimensionerad efter ditt tak och din förbrukning. Inklusive projektering, installation och anslutning till nätet. Du säljer överskottet.",
     pris: { typ: "offert" },
     inkluderar: [
@@ -80,7 +80,7 @@ export const PRODUKTER: Produkt[] = [
     id: "varmepump",
     namn: "Värmepump",
     kategori: "Uppvärmning",
-    tagline: "Byt till värmepump — spara energi och pengar.",
+    tagline: "Byt till värmepump, spara energi och pengar.",
     beskrivning: "Vi hjälper dig välja rätt värmepump för ditt hem, hanterar installation och ser till att allt fungerar.",
     pris: { typ: "offert" },
     inkluderar: [
@@ -106,7 +106,7 @@ export const PRODUKTER: Produkt[] = [
     id: "hemmaladdare",
     namn: "Hemmaladdare Flex",
     kategori: "Elbil & laddning",
-    tagline: "Enkel laddbox utan smart styrning — lägre pris.",
+    tagline: "Enkel laddbox utan smart styrning, lägre pris.",
     beskrivning: "Grundläggande laddbox för dig som inte behöver app-styrning eller smart nattladdning. Laddboxen installeras på vägg nära parkeringen.",
     pris: { typ: "fran", belopp: "8 900", enhet: "kr inkl. installation" },
     inkluderar: [
@@ -120,7 +120,7 @@ export const PRODUKTER: Produkt[] = [
     ],
     uspar: [
       "Lägre ingångspris än Ladda Smart",
-      "Rotavdrag — dra av 30% av arbetskostnaden",
+      "Rotavdrag, dra av 30% av arbetskostnaden",
       "Snabb installation",
     ],
     passarFor: "Dig som bara vill ladda elbilen hemma utan extra funktioner.",
@@ -131,7 +131,7 @@ export const PRODUKTER: Produkt[] = [
     id: "energiradgivning",
     namn: "Energirådgivning",
     kategori: "Tjänster",
-    tagline: "Kostnadsfri rådgivning — vi hjälper dig spara.",
+    tagline: "Kostnadsfri rådgivning, vi hjälper dig spara.",
     beskrivning: "Boka ett kostnadsfritt samtal med vår energirådgivare. Vi går igenom din förbrukning och ger konkreta tips på hur du kan sänka dina kostnader.",
     pris: { typ: "fast", belopp: "0", enhet: "kr" },
     inkluderar: [
@@ -143,7 +143,7 @@ export const PRODUKTER: Produkt[] = [
     villkor: ["Bokas via telefon eller Mina sidor"],
     uspar: [
       "Helt kostnadsfritt",
-      "Personlig rådgivning — inte en chatbot",
+      "Personlig rådgivning, inte en chatbot",
       "Inga krav på att köpa något",
     ],
     passarFor: "Alla som vill förstå sin elförbrukning bättre och hitta sätt att spara.",
@@ -164,7 +164,7 @@ export const PRODUKTER: Produkt[] = [
     ],
     villkor: ["Kan slås av när som helst via Mina sidor"],
     uspar: [
-      "Gör skillnad lokalt — i ditt eget område",
+      "Gör skillnad lokalt, i ditt eget område",
       "Helt frivilligt, inga bindningstider",
       "Transparent: du ser vad pengarna går till",
     ],

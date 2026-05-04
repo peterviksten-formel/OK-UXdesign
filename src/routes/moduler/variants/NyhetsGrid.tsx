@@ -2,25 +2,25 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 const NYHETER = [
-  { datum: "2026-04-15", tag: "Marknad", rubrik: "Elpriset sjunker inför sommaren — vad betyder det för dig?" },
+  { datum: "2026-04-15", tag: "Marknad", rubrik: "Elpriset sjunker inför sommaren, vad betyder det för dig?" },
   { datum: "2026-04-08", tag: "Tjänster", rubrik: "Nu kan du följa din förbrukning i realtid via appen" },
   { datum: "2026-03-28", tag: "Hållbarhet", rubrik: "Framtidspengen finansierade 3 nya laddstationer i Helsingborg" },
 ];
 
 /**
- * VARIANT A — Grid likvärdig
+ * VARIANT A, Grid likvärdig
  *
  * Tre kort i rad. Alla lika stora, inga visuella hierarkier.
  *
  * Pro: Demokratiskt, lätt att bygga, förutsägbart.
- * Kontra: Inga utvalda nyheter — redaktören kan inte lyfta något.
+ * Kontra: Inga utvalda nyheter, redaktören kan inte lyfta något.
  */
 export function NyhetsGrid() {
   return (
     <Annotation
       label="Nyhets-grid likvärdig"
       audience="redaktör"
-      rationale="Tre kort, ingen visuell hierarki. Rubriken är länken — inte 'Läs mer' (Krug: etiketter ska förklara vart länken leder). Datum i <time>-tag, kategori som pill. Bild som placeholder."
+      rationale="Tre kort, ingen visuell hierarki. Rubriken är länken, inte 'Läs mer' (Krug: etiketter ska förklara vart länken leder). Datum i <time>-tag, kategori som pill. Bild som placeholder."
     >
       <section>
         <h2 className="text-h3 font-medium mb-6">Senaste nytt om el</h2>

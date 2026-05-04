@@ -55,7 +55,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     aspect: "Kräver bildresurser",
     values: {
       action: "Nej.",
-      brand: "Ja — högkvalitativ bild eller video.",
+      brand: "Ja, högkvalitativ bild eller video.",
       status: "Nej.",
     },
   },
@@ -64,15 +64,15 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       action: "Nej.",
       brand: "Nej.",
-      status: "Ja — live-status från backend.",
+      status: "Ja, live-status från backend.",
     },
   },
   {
     aspect: "Risk för 'känns som en reklam'",
     values: {
-      action: "Låg — ser ut som en mjukvaru-app.",
+      action: "Låg, ser ut som en mjukvaru-app.",
       brand: "Hög om bild/copy inte är på nivå.",
-      status: "Låg — data är inte reklam.",
+      status: "Låg, data är inte reklam.",
     },
   },
   {
@@ -80,7 +80,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       action: "Högst på transaktions-sidor.",
       brand: "Bäst för navigerande besök.",
-      status: "Neutral — det är utility, inte konvertering.",
+      status: "Neutral, det är utility, inte konvertering.",
     },
   },
   {
@@ -100,9 +100,9 @@ export function Hero() {
 
       <header className="mt-6 mb-8 max-w-reading">
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Hero</p>
-        <h1 className="text-h1 mb-3">Hero — sidans öppning</h1>
+        <h1 className="text-h1 mb-3">Hero, sidans öppning</h1>
         <p className="text-lede text-ink-secondary">
-          Tre strategier för hur en sida ska öppna. Alla tre är rimliga — valet beror på
+          Tre strategier för hur en sida ska öppna. Alla tre är rimliga, valet beror på
           sidans syfte. Växla mellan A, B och C för att känna skillnaden.
         </p>
       </header>

@@ -2,16 +2,16 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 const TJANSTER = [
-  { ikon: "bolt", titel: "Elavtal", desc: "Teckna eller byt — tre avtal att välja mellan.", href: "#" },
+  { ikon: "bolt", titel: "Elavtal", desc: "Teckna eller byt, tre avtal att välja mellan.", href: "#" },
   { ikon: "solar_power", titel: "Solceller", desc: "Producera din egen el. Vi sköter installation.", href: "#" },
-  { ikon: "ev_station", titel: "Laddbox för elbil", desc: "Smart laddning hemma — med appstyrning.", href: "#" },
+  { ikon: "ev_station", titel: "Laddbox för elbil", desc: "Smart laddning hemma, med appstyrning.", href: "#" },
   { ikon: "local_fire_department", titel: "Fjärrvärme", desc: "Värme från lokal panncentral. Enkelt och effektivt.", href: "#" },
   { ikon: "water_drop", titel: "Fjärrkyla", desc: "Miljövänlig kyla för företag och bostäder.", href: "#" },
   { ikon: "cable", titel: "Fiber (Pingday)", desc: "Snabb och stabil bredband via vårt fibernät.", href: "#" },
 ];
 
 /**
- * VARIANT A — Ikon-kort-grid
+ * VARIANT A, Ikon-kort-grid
  *
  * Sex klickbara kort. Varje kort har en MD3-ikon, titel, kort beskrivning
  * och en pil som signalerar länk.
@@ -22,9 +22,9 @@ const TJANSTER = [
 export function TjansterIkonGrid() {
   return (
     <Annotation
-      label="Tjänstegrid — ikon-kort"
+      label="Tjänstegrid, ikon-kort"
       audience="design"
-      rationale="Sex kort i 3-kolumns grid. Ikon som visuell markör, titel som primär, beskrivning som sekundär. Hela kortet klickbart — pil längst ner signalerar att det leder någonstans. Hover-tillstånd förstärker affordance."
+      rationale="Sex kort i 3-kolumns grid. Ikon som visuell markör, titel som primär, beskrivning som sekundär. Hela kortet klickbart, pil längst ner signalerar att det leder någonstans. Hover-tillstånd förstärker affordance."
     >
       <section>
         <h2 className="text-h3 font-medium mb-2">Våra tjänster</h2>

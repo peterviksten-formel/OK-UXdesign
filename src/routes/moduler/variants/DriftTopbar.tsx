@@ -2,10 +2,10 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT A — Global topbar
+ * VARIANT A, Global topbar
  *
  * Smal rad ovanför header. Visas endast vid störning (status ≠ normal).
- * Försvinner helt när allt är ok — dold av default.
+ * Försvinner helt när allt är ok, dold av default.
  *
  * Pro: Hög synlighet vid kris. Opåträngande när inget är fel.
  * Kontra: Tar vertikal yta, flyttar ner innehållet. Behöver stänga-knapp.
@@ -13,7 +13,7 @@ import { Icon } from "../../../components/Icon";
 export function DriftTopbar() {
   return (
     <Annotation
-      label="Driftstatus — global topbar"
+      label="Driftstatus, global topbar"
       audience="user"
       rationale="Sticky rad över hela sidan. Röd vid avbrott, gul vid längre kötid. Aria-live så screen readers meddelar. Stänga-knapp på samma rad, inte gömd."
     >

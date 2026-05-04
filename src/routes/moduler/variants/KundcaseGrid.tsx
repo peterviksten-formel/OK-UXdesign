@@ -8,7 +8,7 @@ const CITAT = [
     roll: "Villaägare, Helsingborg",
   },
   {
-    text: "Bytte till Månadspris när spotpriset var lågt — enkelt via Mina sidor. Ingen inlåsning kändes bra.",
+    text: "Bytte till Månadspris när spotpriset var lågt, enkelt via Mina sidor. Ingen inlåsning kändes bra.",
     namn: "Linda S.",
     roll: "Lägenhet, Centrum",
   },
@@ -20,7 +20,7 @@ const CITAT = [
 ];
 
 /**
- * VARIANT A — Citatkort-grid
+ * VARIANT A, Citatkort-grid
  *
  * Tre kort i rad. Varje kort har ett citat, namn och roll. Formellt och
  * balanserat. Inga bilder.
@@ -33,7 +33,7 @@ export function KundcaseGrid() {
     <Annotation
       label="Kundcase-grid (citatkort)"
       audience="redaktör"
-      rationale="Tre kort, lika vikt. Citatet dominerar visuellt — namn och roll är sekundära. Citat-tecken som visuell markör för att signalera 'detta är en röst'. Max 2 rader citat per kort."
+      rationale="Tre kort, lika vikt. Citatet dominerar visuellt, namn och roll är sekundära. Citat-tecken som visuell markör för att signalera 'detta är en röst'. Max 2 rader citat per kort."
     >
       <section>
         <h2 className="text-h3 font-medium mb-6">Vad våra kunder säger</h2>

@@ -7,13 +7,13 @@ import { Icon } from "../../components/Icon";
 import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP — Artikel (vanlig · standardformat)
+ * SIDTYP, Artikel (vanlig · standardformat)
  *
  * Det vardagliga artikelfallet: hero, lead-stycke, 2–3 brödtext-sektioner
  * med en enstaka pull-quote, källor + taggar, prenumerera, relaterade.
  *
  * För längre fördjupande artiklar med TOC, faktarutor, fancy numrerade
- * listor, tips & trick och statistik-highlights — se sidtypen
+ * listor, tips & trick och statistik-highlights, se sidtypen
  * "Artikel - format-galleri".
  */
 
@@ -26,7 +26,7 @@ function formaterDatum(iso: string): string {
 
 export function Artikel() {
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO — kategori + h1 + byline + lead-bild ──────── */
+    /* ─── 1. HERO, kategori + h1 + byline + lead-bild ──────── */
     {
       id: "hero",
       label: "Artikel-hero",
@@ -36,7 +36,7 @@ export function Artikel() {
           label: "Stor hero-bild + byline med foto + lästid",
           render: () => (
             <Annotation
-              label="Artikel-hero — storytelling-format"
+              label="Artikel-hero, storytelling-format"
               audience="user"
               rationale="Kategori-pill (kategorifärg), stor hero-bild, författar-byline med foto + roll + datum + lästid. Lästid sätter förväntan så användaren kan välja om de ska läsa nu eller spara."
             >
@@ -52,10 +52,10 @@ export function Artikel() {
                 </div>
 
                 <Copy
-                  label="Artikel H1 — narrativ rubrik"
+                  label="Artikel H1, narrativ rubrik"
                   category="rubrik"
                   text={POST.rubrik}
-                  rationale="Förklarande rubrik med löfte om praktiskt värde — 'så undviker du onödiga toppar'. Signalerar att texten ger handling, inte bara fakta."
+                  rationale="Förklarande rubrik med löfte om praktiskt värde, 'så undviker du onödiga toppar'. Signalerar att texten ger handling, inte bara fakta."
                 >
                   <h1 className="text-display leading-tight mb-4 max-w-reading">{POST.rubrik}</h1>
                 </Copy>
@@ -96,17 +96,17 @@ export function Artikel() {
       ],
     },
 
-    /* ─── 2. INTRO — lead-stycke ─────────────────────────── */
+    /* ─── 2. INTRO, lead-stycke ─────────────────────────── */
     {
       id: "intro",
-      label: "Introduktion — lead-stycke",
+      label: "Introduktion, lead-stycke",
       variants: [
         {
           key: "default",
-          label: "Större typ — markerar artikelns ingång",
+          label: "Större typ, markerar artikelns ingång",
           render: () => (
             <Annotation
-              label="Lead — något större typ än brödtext"
+              label="Lead, något större typ än brödtext"
               audience="redaktör"
               rationale="text-lg på första stycket signalerar 'det här är artikelns ingång' utan dramatisk drop-cap. Räcker som typografisk markör i 95 % av artiklarna."
             >
@@ -114,7 +114,7 @@ export function Artikel() {
                 <p className="text-lg leading-relaxed text-ink-secondary">
                   De flesta som hör ordet "effekttariff" tänker på en avgift som straffar
                   dem för att använda el. Men det är fel sätt att se det. Effekttariffen
-                  straffar inte hur mycket el du använder — den straffar när du använder
+                  straffar inte hur mycket el du använder, den straffar när du använder
                   den mest. Och det betyder att en liten ändring i vanor kan ge större
                   besparing än man tror.
                 </p>
@@ -125,10 +125,10 @@ export function Artikel() {
       ],
     },
 
-    /* ─── 3. AVSNITT 1 — h2 + brödtext ───────────────────── */
+    /* ─── 3. AVSNITT 1, h2 + brödtext ───────────────────── */
     {
       id: "avsnitt-1",
-      label: "Avsnitt 1 — Vad effekttariffen är",
+      label: "Avsnitt 1, Vad effekttariffen är",
       variants: [
         {
           key: "default",
@@ -140,7 +140,7 @@ export function Artikel() {
               </h2>
               <p>
                 I korthet: en del av din elnätsavgift baseras på din högsta uppmätta
-                effekt under en månad — inte på den totala mängden el du använt. Använder
+                effekt under en månad, inte på den totala mängden el du använt. Använder
                 du 5 kW under en timme räknas det. Använder du 5 kW i en hel vecka räknas
                 fortfarande bara den högsta toppen.
               </p>
@@ -151,7 +151,7 @@ export function Artikel() {
                 över dygnet.
               </p>
               <p>
-                Logiken bakom är att kostnaden för elnätet styrs av kapaciteten — alltså
+                Logiken bakom är att kostnaden för elnätet styrs av kapaciteten, alltså
                 hur mycket effekt nätet behöver kunna leverera samtidigt. När alla drar
                 el samtidigt behöver nätet vara större. Det är den investeringen tariffen
                 speglar.
@@ -162,17 +162,17 @@ export function Artikel() {
       ],
     },
 
-    /* ─── 4. AVSNITT 2 — h2 + pull-quote ─────────────────── */
+    /* ─── 4. AVSNITT 2, h2 + pull-quote ─────────────────── */
     {
       id: "avsnitt-2",
-      label: "Avsnitt 2 — Vad du kan göra",
+      label: "Avsnitt 2, Vad du kan göra",
       variants: [
         {
           key: "default",
           label: "H2 + paragrafer + en pull-quote",
           render: () => (
             <Annotation
-              label="En pull-quote per artikel — markerar artikelns kärnpunkt"
+              label="En pull-quote per artikel, markerar artikelns kärnpunkt"
               audience="redaktör"
               rationale="Det vanliga artikelfallet behöver inte tre olika format-rutor. En enskild pull-quote räcker som typografisk paus och pekar ut det viktigaste budskapet."
             >
@@ -181,20 +181,19 @@ export function Artikel() {
                   Vad du faktiskt kan göra
                 </h2>
                 <p>
-                  Det finns två vägar. Den ena är att medvetet sprida ut förbrukningen —
-                  kör torktumlaren när elen är klar med spisen, ladda bilen på natten i
+                  Det finns två vägar. Den ena är att medvetet sprida ut förbrukningen,                  kör torktumlaren när elen är klar med spisen, ladda bilen på natten i
                   stället för direkt när du kommer hem, schemalägg diskmaskinen.
                 </p>
 
                 <Copy
-                  label="Pull quote — artikelns sammanfattning"
+                  label="Pull quote, artikelns sammanfattning"
                   category="ton"
-                  text="Det enkla greppet — att inte göra allt samtidigt — är ofta värt mer än ny utrustning."
+                  text="Det enkla greppet, att inte göra allt samtidigt, är ofta värt mer än ny utrustning."
                   rationale="En enda pull-quote per artikel ankar läsaren vid det viktigaste budskapet. Större typ, vänsterramslinje i accent-färg."
                 >
                   <blockquote className="my-8 border-l-4 border-brand-accent pl-6 py-2">
                     <p className="text-h4 font-medium leading-snug text-ink">
-                      "Det enkla greppet — att inte göra allt samtidigt — är ofta värt
+                      "Det enkla greppet, att inte göra allt samtidigt, är ofta värt
                       mer än ny utrustning."
                     </p>
                   </blockquote>
@@ -204,7 +203,7 @@ export function Artikel() {
                   Den andra vägen är att låta tekniken göra det åt dig. Smart elcentral,
                   smart laddbox och smart varmvattenberedare kan tillsammans hålla nere
                   topparna utan att du behöver tänka på det. Många elcentraler på marknaden
-                  klarar redan av det här i dag — det är en inställning, inte en
+                  klarar redan av det här i dag, det är en inställning, inte en
                   uppgradering.
                 </p>
                 <p>
@@ -219,10 +218,10 @@ export function Artikel() {
       ],
     },
 
-    /* ─── 5. AVSNITT 3 — slutord ─────────────────────────── */
+    /* ─── 5. AVSNITT 3, slutord ─────────────────────────── */
     {
       id: "avsnitt-3",
-      label: "Avsnitt 3 — Avslutning",
+      label: "Avsnitt 3, Avslutning",
       variants: [
         {
           key: "default",
@@ -234,13 +233,13 @@ export function Artikel() {
               </h2>
               <p>
                 Logga in på Mina sidor och titta på din timmesvis förbrukning för
-                föregående månad. Ofta syns toppen direkt — det är vid 18:00 på
+                föregående månad. Ofta syns toppen direkt, det är vid 18:00 på
                 vardagar. Det är den toppen som styr din effekttariff för månaden.
               </p>
               <p>
                 Om du ser att din topp ligger på samma timme varje dag är det den
-                timmen du ska titta på först. En enda förändring — till exempel att
-                inte ladda bilen direkt när du kommer hem — kan ofta sänka toppen
+                timmen du ska titta på först. En enda förändring, till exempel att
+                inte ladda bilen direkt när du kommer hem, kan ofta sänka toppen
                 med 20 procent.
               </p>
               <p className="pt-2">
@@ -271,7 +270,7 @@ export function Artikel() {
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <Copy
-                    label="Källor — eyebrow"
+                    label="Källor, eyebrow"
                     category="metadata"
                     text="Källor"
                     rationale="Enstavig genrekonvention. Inte 'Referenser' (formellt) eller 'Mer information' (otydligt). 'Källor' = externa belägg för det som påstås i artikeln."
@@ -287,10 +286,10 @@ export function Artikel() {
                 </div>
                 <div>
                   <Copy
-                    label="Taggar — eyebrow"
+                    label="Taggar, eyebrow"
                     category="metadata"
                     text="Taggar"
-                    rationale="Enstavig label, gör tagg-listan självförklarande. 'Ämnen' eller 'Kategorier' är synonymer som skapar ordsplit i UI:t — välj en och stick. Här: 'Taggar' — matchar mönstret från Nyhetsrum-listan."
+                    rationale="Enstavig label, gör tagg-listan självförklarande. 'Ämnen' eller 'Kategorier' är synonymer som skapar ordsplit i UI:t, välj en och stick. Här: 'Taggar', matchar mönstret från Nyhetsrum-listan."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
                       Taggar
@@ -315,19 +314,19 @@ export function Artikel() {
       ],
     },
 
-    /* ─── 7. FÖRFATTAR-BIO — kort version ────────────────── */
+    /* ─── 7. FÖRFATTAR-BIO, kort version ────────────────── */
     {
       id: "forfattar-bio",
-      label: "Författar-bio — kort",
+      label: "Författar-bio, kort",
       variants: [
         {
           key: "default",
           label: "Liten bio + en länk vidare",
           render: () => (
             <Annotation
-              label="Författar-bio — kort i den vanliga artikeln"
+              label="Författar-bio, kort i den vanliga artikeln"
               audience="user"
-              rationale="Galleri-versionen har lång bio + flera länkar till andra artiklar. Den vanliga artikeln klarar sig med 1–2 meningar — räcker för förtroende utan att ta plats."
+              rationale="Galleri-versionen har lång bio + flera länkar till andra artiklar. Den vanliga artikeln klarar sig med 1–2 meningar, räcker för förtroende utan att ta plats."
             >
               <section className="py-8 max-w-reading border-t border-border-subtle">
                 <div className="flex items-start gap-4">
@@ -352,7 +351,7 @@ export function Artikel() {
     /* ─── 8. PRENUMERERA ──────────────────────────────── */
     {
       id: "subscribe",
-      label: "Prenumerera — softer-CTA",
+      label: "Prenumerera, softer-CTA",
       variants: [
         {
           key: "default",
@@ -363,19 +362,19 @@ export function Artikel() {
                 <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
                   <Copy
-                    label="Subscribe — outcome-rubrik"
+                    label="Subscribe, outcome-rubrik"
                     category="rubrik"
                     text="Få fler artiklar i mejlen"
-                    rationale="Outcome-fokuserad rubrik istället för engagement-fluff. Förra versionen var 'Tycker du om det här?' (känslo-opener) — bytt till handlingsutfall: vad användaren får om de prenumererar."
+                    rationale="Outcome-fokuserad rubrik istället för engagement-fluff. Förra versionen var 'Tycker du om det här?' (känslo-opener), bytt till handlingsutfall: vad användaren får om de prenumererar."
                   >
                     <p className="font-medium">Få fler artiklar i mejlen</p>
                   </Copy>
                   <p className="text-sm text-ink-secondary">
-                    Vi skickar inte oftare än en gång i månaden — avregistrera när du vill.
+                    Vi skickar inte oftare än en gång i månaden, avregistrera när du vill.
                   </p>
                 </div>
                 <Copy
-                  label="Subscribe — CTA"
+                  label="Subscribe, CTA"
                   category="cta"
                   text="Prenumerera"
                   rationale="Enstavig action-verb när kontexten redan är glasklar. Rubriken säger vad utfallet blir; knappen behöver bara säga handlingen. Kortare CTA = lägre kognitiv kostnad."
@@ -406,10 +405,10 @@ export function Artikel() {
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <Copy
-                label="Related — rubrik"
+                label="Related, rubrik"
                 category="rubrik"
                 text="Fortsätt läsa"
-                rationale="Action-fras istället för 'Liknande artiklar' eller 'Mer från oss'. 'Fortsätt läsa' speglar exakt vad användaren håller på med och inviterar dem att fortsätta — implicit promise om mer av samma kvalitet."
+                rationale="Action-fras istället för 'Liknande artiklar' eller 'Mer från oss'. 'Fortsätt läsa' speglar exakt vad användaren håller på med och inviterar dem att fortsätta, implicit promise om mer av samma kvalitet."
               >
                 <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
               </Copy>
@@ -450,10 +449,10 @@ export function Artikel() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Artikel (skiss · standardformat)"
-        syfte="Det vardagliga artikelfallet — hero, lead-stycke, två-tre brödtext-sektioner med en pull-quote, källor, kort författar-bio, prenumerera, relaterade. Inga TOC, faktarutor eller fancy listor: räcker för 4–5 minuters läsning utan att ta över sidan."
-        malgrupp="Kunder och allmänhet som vill förstå ett ämne på fem minuter. Sammanfattning saknas medvetet — här ska brödtexten räcka."
+        syfte="Det vardagliga artikelfallet, hero, lead-stycke, två-tre brödtext-sektioner med en pull-quote, källor, kort författar-bio, prenumerera, relaterade. Inga TOC, faktarutor eller fancy listor: räcker för 4–5 minuters läsning utan att ta över sidan."
+        malgrupp="Kunder och allmänhet som vill förstå ett ämne på fem minuter. Sammanfattning saknas medvetet, här ska brödtexten räcka."
         primarHandling="Läsa hela artikeln · Klicka vidare till relaterad artikel · Prenumerera på fler artiklar."
-        ton="Brand voice. Enklare än galleri-versionen — färre format-grepp, mer fokus på texten. 'Vi ser ...' inte 'Studier visar att ...'. Ren typografi: lead-stycke, brödtext, en pull-quote, klart."
+        ton="Brand voice. Enklare än galleri-versionen, färre format-grepp, mer fokus på texten. 'Vi ser ...' inte 'Studier visar att ...'. Ren typografi: lead-stycke, brödtext, en pull-quote, klart."
       />
 
       <div className="flex items-center justify-between pt-6">

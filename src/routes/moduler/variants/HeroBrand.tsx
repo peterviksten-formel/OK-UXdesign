@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Brand-first
+ * VARIANT B, Brand-first
  *
  * Strategy: Stor bildbakgrund + värdeproposition. Syftar till att etablera
  * trovärdighet och känsla innan användaren tar beslut. Används på

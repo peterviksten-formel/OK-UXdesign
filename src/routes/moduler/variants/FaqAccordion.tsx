@@ -3,15 +3,15 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 const FAQS = [
-  { id: "anvisat", q: "Vad händer om jag inte väljer avtal?", a: "Då får du ett anvisat avtal som oftast är dyrare. Det är tillfälligt och du kan byta gratis — det tar 3 minuter." },
-  { id: "elnat", q: "Vad är skillnaden mellan elnät och elhandel?", a: "Elnät är de fysiska ledningarna till ditt hem — du kan inte välja nätägare. Elhandel är vem som säljer elen till dig — där väljer du fritt." },
+  { id: "anvisat", q: "Vad händer om jag inte väljer avtal?", a: "Då får du ett anvisat avtal som oftast är dyrare. Det är tillfälligt och du kan byta gratis, det tar 3 minuter." },
+  { id: "elnat", q: "Vad är skillnaden mellan elnät och elhandel?", a: "Elnät är de fysiska ledningarna till ditt hem, du kan inte välja nätägare. Elhandel är vem som säljer elen till dig, där väljer du fritt." },
   { id: "behover", q: "Vad behöver jag för att teckna?", a: "Personnummer och den adress där du vill ha el." },
   { id: "tid", q: "Hur snabbt börjar avtalet gälla?", a: "Normalt inom 2–4 veckor. Vid flytt kan det gå snabbare om anmälan görs i tid." },
   { id: "byta", q: "Kan jag byta avtal senare?", a: "Ja. Avtal utan bindningstid kan sägas upp med en månads uppsägningstid." },
 ];
 
 /**
- * VARIANT A — Accordion
+ * VARIANT A, Accordion
  *
  * Button-baserad accordion (inte <details>) så vi kan animera höjden
  * smidigt mellan öppen och stängd. ARIA via aria-expanded + aria-controls.
@@ -25,7 +25,7 @@ export function FaqAccordion() {
     <Annotation
       label="FAQ Accordion"
       audience="user"
-      rationale="Ordning efter vanlighet — 'anvisat avtal' först eftersom det är topp-1 supportfråga. Öppen/stängd animeras via grid-template-rows (0fr↔1fr) så höjden går smidigt utan pop. Respekterar prefers-reduced-motion via Tailwinds motion-safe/reduce."
+      rationale="Ordning efter vanlighet, 'anvisat avtal' först eftersom det är topp-1 supportfråga. Öppen/stängd animeras via grid-template-rows (0fr↔1fr) så höjden går smidigt utan pop. Respekterar prefers-reduced-motion via Tailwinds motion-safe/reduce."
     >
       <section className="max-w-reading">
         <h2 className="text-h3 font-medium mb-4">Vanliga frågor</h2>

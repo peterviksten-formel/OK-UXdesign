@@ -1,21 +1,21 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 
 /**
- * EditMode — lets the user edit the composition of a sidtyp:
+ * EditMode ,  lets the user edit the composition of a sidtyp:
  *   - hide/show individual blocks
  *   - switch variant of a block
  *   - reorder blocks (up/down)
  *
  * Three piece of state:
- *  1. `enabled` — is the Redigera-toggle on?
- *  2. `store` — current block-state per sidtyp (the "working copy")
- *  3. `presets` — named snapshots per sidtyp, user can save/load
+ *  1. `enabled` ,  is the Redigera-toggle on?
+ *  2. `store` ,  current block-state per sidtyp (the "working copy")
+ *  3. `presets` ,  named snapshots per sidtyp, user can save/load
  */
 
 export type BlockState = {
   hidden: boolean;
   variant: string | null;
-  /** explicit order override — unordered blocks use natural mount order */
+  /** explicit order override ,  unordered blocks use natural mount order */
   order: number | null;
 };
 
@@ -101,7 +101,7 @@ export function EditModeProvider({ children }: { children: ReactNode }) {
   /**
    * Sync state across tabs/iframes. När man t.ex. stänger av
    * redigeringsläget i parent-appen ska mobil-/tablet-iframen som
-   * simulerar viewport reagera direkt — annars ligger edit-overlays
+   * simulerar viewport reagera direkt ,  annars ligger edit-overlays
    * kvar i iframen även efter toggle off.
    */
   useEffect(() => {

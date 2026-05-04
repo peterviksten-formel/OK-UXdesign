@@ -3,10 +3,10 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT C — Sök + topplista
+ * VARIANT C, Sök + topplista
  *
  * För stora FAQ-baser. Överst: sökfält som filtrerar live. Under:
- * "Just nu frågar många om…" — en redaktionellt kuraterad topplista
+ * "Just nu frågar många om…", en redaktionellt kuraterad topplista
  * som ger socialt bevis att sidan är levande.
  *
  * Pro: Skalar till 50+ frågor. Känsla av att sidan är uppdaterad.
@@ -51,7 +51,7 @@ export function FaqSokTopplista() {
               type="search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Sök — t.ex. 'mätarställning'"
+              placeholder="Sök, t.ex. 'mätarställning'"
               className="w-full border border-border-strong rounded-md pl-10 pr-4 py-3 bg-surface text-base focus:border-brand-accent focus:outline-none"
             />
           </div>

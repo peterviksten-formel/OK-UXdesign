@@ -4,12 +4,12 @@ import { Icon } from "../../../components/Icon";
 import { KATEGORIER, type KategoriId, type Underkategori } from "../kundservice-data";
 
 /**
- * VARIANT C — Experimentell
+ * VARIANT C, Experimentell
  *
  * Strategy: conversational triage. Mimics a chatbot-style flow but without
  * a chatbot. The user types or clicks their way through a narrowing funnel.
  * Each "message" is a step that remembers context. The final step delivers
- * the answer inline — no page change, no modal, no handoff to a support
+ * the answer inline, no page change, no modal, no handoff to a support
  * agent unless truly necessary.
  */
 export function KundserviceExperimentell() {

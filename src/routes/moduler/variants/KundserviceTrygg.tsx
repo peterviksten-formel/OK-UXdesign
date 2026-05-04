@@ -3,9 +3,9 @@ import { Icon } from "../../../components/Icon";
 import { KATEGORIER } from "../kundservice-data";
 
 /**
- * VARIANT A — Trygg
+ * VARIANT A, Trygg
  *
- * Strategy: structured link list with icons. Zero interaction — pure nav.
+ * Strategy: structured link list with icons. Zero interaction, pure nav.
  * Every category is an accordion section. Every item is a link. Nothing
  * is conditional. The user scans, clicks, leaves. Closest to a traditional
  * help centre / FAQ hub. Lowest development cost, lowest risk.
@@ -31,7 +31,7 @@ export function KundserviceTrygg() {
       <Annotation
         label="Kategorilista"
         audience="design"
-        rationale="Alla 6 kategorier synliga direkt, inga steg. Varje kategori expanderas med <details>/<summary> — native HTML, inget JS, fungerar utan JavaScript. Lägsta möjliga komplexitet."
+        rationale="Alla 6 kategorier synliga direkt, inga steg. Varje kategori expanderas med <details>/<summary>, native HTML, inget JS, fungerar utan JavaScript. Lägsta möjliga komplexitet."
       >
         <div className="space-y-3 max-w-reading">
           {KATEGORIER.map((k) => (

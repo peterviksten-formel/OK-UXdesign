@@ -19,7 +19,7 @@ export function AnnotationPanel() {
 
   return (
     <>
-      {/* Toggle tab — visible when panel is closed */}
+      {/* Toggle tab ,  visible when panel is closed */}
       {!open && (
         <button
           type="button"

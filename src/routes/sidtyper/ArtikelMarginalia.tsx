@@ -7,14 +7,13 @@ import { Icon } from "../../components/Icon";
 import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP — Artikel-marginalia (editorial-format med marginalia)
+ * SIDTYP, Artikel-marginalia (editorial-format med marginalia)
  *
  * Variant av Artikel-galleri där editorial-primitives (statistik-highlight,
  * faktaruta, tips & trick, kundberättelse) ligger i höger marginal istället
  * för infällda mellan brödtextstycken.
  *
- * Hypotesen: för längre texter ger marginalia bättre läsflöde —
- * brödtexten flödar oavbruten i vänster kolumn, sidoinformation finns
+ * Hypotesen: för längre texter ger marginalia bättre läsflöde, * brödtexten flödar oavbruten i vänster kolumn, sidoinformation finns
  * tillgänglig på samma vertikal nivå utan att bryta narrativet.
  *
  * Mönster: Stratechery, Bloomberg longform, NYT investigations.
@@ -70,7 +69,7 @@ function MargStatistik({
 }) {
   return (
     <Copy
-      label="Marginalia — statistik-highlight"
+      label="Marginalia, statistik-highlight"
       category="metadata"
       text={`${primarVarde} vs ${sekundarVarde}`}
       rationale="Stora siffror i marginalia-format fungerar som visuell ankarpunkt vid sidan av brödtexten. Två siffror sida vid sida ger inneboende jämförelse utan att bryta läsflödet."
@@ -130,7 +129,7 @@ function MargKundberattelse() {
         "Vi sänkte elkostnaden med 38 % första året."
       </p>
       <p className="text-xs text-ink-secondary leading-snug">
-        Anna & Per, Höganäs — installerade panel + batteri 2024.
+        Anna & Per, Höganäs, installerade panel + batteri 2024.
       </p>
     </aside>
   );
@@ -140,7 +139,7 @@ function MargKundberattelse() {
 
 export function ArtikelMarginalia() {
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO — samma som galleri ───────────────────────── */
+    /* ─── 1. HERO, samma som galleri ───────────────────────── */
     {
       id: "hero",
       label: "Artikel-hero",
@@ -150,9 +149,9 @@ export function ArtikelMarginalia() {
           label: "Stor hero-bild + byline",
           render: () => (
             <Annotation
-              label="Artikel-hero — storytelling-format"
+              label="Artikel-hero, storytelling-format"
               audience="user"
-              rationale="Identisk hero som ArtikelGalleri — same content, same byline-treatment. Skillnaden mellan formaten ligger i hur brödtext + marginalia samspelar längre ner, inte i header-blocken."
+              rationale="Identisk hero som ArtikelGalleri, same content, same byline-treatment. Skillnaden mellan formaten ligger i hur brödtext + marginalia samspelar längre ner, inte i header-blocken."
             >
               <header className="py-8 sm:py-10">
                 <div className="flex items-center gap-2 mb-4 text-xs">
@@ -169,7 +168,7 @@ export function ArtikelMarginalia() {
                   label="Artikel H1"
                   category="rubrik"
                   text={POST.rubrik}
-                  rationale="Frågeform — signalerar att texten har en röst, inte bara fakta."
+                  rationale="Frågeform, signalerar att texten har en röst, inte bara fakta."
                 >
                   <h1 className="text-display leading-tight mb-4 max-w-reading">{POST.rubrik}</h1>
                 </Copy>
@@ -222,10 +221,10 @@ export function ArtikelMarginalia() {
             <section className="max-w-reading">
               <div className="rounded-md bg-tint-info border-l-4 border-brand-accent p-5 sm:p-6">
                 <Copy
-                  label="Sammanfattning — eyebrow"
+                  label="Sammanfattning, eyebrow"
                   category="metadata"
                   text="Sammanfattning"
-                  rationale="Behåller editorial-register från Galleri-versionen — samma innehåll, samma label, så de två varianterna är lätta att jämföra för redaktören."
+                  rationale="Behåller editorial-register från Galleri-versionen, samma innehåll, samma label, så de två varianterna är lätta att jämföra för redaktören."
                 >
                   <p className="text-[11px] uppercase tracking-wider text-brand-primary font-bold mb-3">
                     Sammanfattning
@@ -234,9 +233,9 @@ export function ArtikelMarginalia() {
                 <ul className="space-y-2">
                   {[
                     "Solceller utan batteri täcker ca 40 % av en typvillas årsförbrukning. Med batteri dubblas siffran.",
-                    "De största besparingarna kommer från smart styrning — varmvatten, elbil och värmepump på rätt tid.",
+                    "De största besparingarna kommer från smart styrning, varmvatten, elbil och värmepump på rätt tid.",
                     "Nästa generation batterier väntas hösten 2026 och blir 15–20 % billigare per kWh lagring.",
-                    "Innan du investerar — kolla din timmesvis förbrukning på Mina sidor.",
+                    "Innan du investerar, kolla din timmesvis förbrukning på Mina sidor.",
                   ].map((s) => (
                     <li key={s} className="flex items-start gap-2 text-sm leading-relaxed">
                       <Icon name="check_circle" size={18} className="text-brand-accent shrink-0 mt-0.5" filled />
@@ -251,10 +250,10 @@ export function ArtikelMarginalia() {
       ],
     },
 
-    /* ─── 3. INTRO — lead-stycke ───────────────────────── */
+    /* ─── 3. INTRO, lead-stycke ───────────────────────── */
     {
       id: "intro",
-      label: "Introduktion — lead-stycke",
+      label: "Introduktion, lead-stycke",
       variants: [
         {
           key: "default",
@@ -265,7 +264,7 @@ export function ArtikelMarginalia() {
                 Solceller är inte längre en investering för entusiasten. De har blivit
                 en mainstream-produkt och vi ser fler villor i nordvästra Skåne med
                 paneler på taket varje månad. Men frågan om hur mycket nytta de
-                faktiskt ger har förändrats — och svaret beror på hur du använder dem.
+                faktiskt ger har förändrats, och svaret beror på hur du använder dem.
               </p>
             </section>
           ),
@@ -273,17 +272,17 @@ export function ArtikelMarginalia() {
       ],
     },
 
-    /* ─── 4. AVSNITT 1 — brödtext + statistik i marginal ── */
+    /* ─── 4. AVSNITT 1, brödtext + statistik i marginal ── */
     {
       id: "avsnitt-1",
-      label: "Avsnitt 1 — Vad batterier gör",
+      label: "Avsnitt 1, Vad batterier gör",
       variants: [
         {
           key: "default",
           label: "Brödtext vänster + statistik-highlight i marginal",
           render: () => (
             <Annotation
-              label="Marginalia — statistik utanför brödtextflödet"
+              label="Marginalia, statistik utanför brödtextflödet"
               audience="design"
               rationale="Brödtexten flödar oavbruten i vänster kolumn. Den stora statistik-jämförelsen (40 % vs 80 %) ligger i höger marginal vid samma vertikalnivå som det stycke som beskriver siffran. Läsare som vill ha siffran i ögonvrån får den; läsare som bara följer texten avbryts inte. Sticky-positioning på lg+ gör att marginalian följer med medan användaren skannar avsnittet."
             >
@@ -313,7 +312,7 @@ export function ArtikelMarginalia() {
                   Det vi ser i våra installationer är att kombinationen av panel +
                   batteri ger den största skillnaden. Panel ensam täcker omkring
                   40 procent av en typvillas årsförbrukning. Med ett batteri på
-                  10–13 kWh dubblas den siffran — eftersom du kan lagra
+                  10–13 kWh dubblas den siffran, eftersom du kan lagra
                   middagsproduktionen och använda kvällen.
                 </p>
                 <p>
@@ -334,19 +333,19 @@ export function ArtikelMarginalia() {
       ],
     },
 
-    /* ─── 5. AVSNITT 2 — brödtext + kundberättelse i marginal ── */
+    /* ─── 5. AVSNITT 2, brödtext + kundberättelse i marginal ── */
     {
       id: "avsnitt-2",
-      label: "Avsnitt 2 — Tre mönster + kundberättelse",
+      label: "Avsnitt 2, Tre mönster + kundberättelse",
       variants: [
         {
           key: "default",
           label: "Brödtext + punktlista + kundberättelse i marginal",
           render: () => (
             <Annotation
-              label="Marginalia — kundberättelse som social proof"
+              label="Marginalia, kundberättelse som social proof"
               audience="user"
-              rationale="Kundberättelsen ligger bredvid avsnittet om 'tre mönster vi ser fungera' — Anna & Per är ett konkret exempel på just dessa mönster. Marginalia-positionen gör att social proof finns i ögonvrån när läsaren tar in mönstren, men avbryter inte själva uppräkningen."
+              rationale="Kundberättelsen ligger bredvid avsnittet om 'tre mönster vi ser fungera', Anna & Per är ett konkret exempel på just dessa mönster. Marginalia-positionen gör att social proof finns i ögonvrån när läsaren tar in mönstren, men avbryter inte själva uppräkningen."
             >
               <SektionMedMarginalia id="tre-monster" marginalia={<MargKundberattelse />}>
                 <h2 className="text-h3 font-medium text-ink mt-8 mb-3">
@@ -369,19 +368,19 @@ export function ArtikelMarginalia() {
                 </ul>
                 <p>
                   Det här är inte teoretiskt. Vi har sett samma tre val återkomma hos
-                  installationerna med högst självförsörjning — oavsett storlek på
+                  installationerna med högst självförsörjning, oavsett storlek på
                   anläggning.
                 </p>
 
                 <Copy
-                  label="Pull quote — författarens slutsats"
+                  label="Pull quote, författarens slutsats"
                   category="ton"
-                  text="Den största förändringen är inte att solceller blivit billigare — det är att de börjar prata med resten av huset."
+                  text="Den största förändringen är inte att solceller blivit billigare, det är att de börjar prata med resten av huset."
                   rationale="Pull-quote behålls inline (inte i marginalia) eftersom det är författarens röst, inte kompletterande information. Det ska bryta brödtexten, inte ligga vid sidan."
                 >
                   <blockquote className="my-8 border-l-4 border-brand-accent pl-6 py-2 not-prose">
                     <p className="text-h4 font-medium leading-snug text-ink">
-                      "Den största förändringen är inte att solceller blivit billigare — det
+                      "Den största förändringen är inte att solceller blivit billigare, det
                       är att de börjar prata med resten av huset."
                     </p>
                   </blockquote>
@@ -393,17 +392,17 @@ export function ArtikelMarginalia() {
       ],
     },
 
-    /* ─── 6. AVSNITT 3 — brödtext + faktaruta + tips i marginal ── */
+    /* ─── 6. AVSNITT 3, brödtext + faktaruta + tips i marginal ── */
     {
       id: "avsnitt-3",
-      label: "Avsnitt 3 — Smart styrning + faktaruta + tips",
+      label: "Avsnitt 3, Smart styrning + faktaruta + tips",
       variants: [
         {
           key: "default",
           label: "Brödtext + numrerad lista + två marginalia-rutor",
           render: () => (
             <Annotation
-              label="Marginalia — flera rutor staplade vertikalt"
+              label="Marginalia, flera rutor staplade vertikalt"
               audience="design"
               rationale="Avsnittet har två stödelement (faktaruta + tips & trick). I inline-versionen bröt de varsin gång brödtexten. Här staplas de vertikalt i marginalen, separerade av space-y. Sticky-beteende: så länge avsnittet är synligt följer marginalian med utan att ta över."
             >
@@ -413,20 +412,20 @@ export function ArtikelMarginalia() {
                   <>
                     <MargFaktaruta
                       rubrik="Vad är 'självförsörjning'?"
-                      text="Andelen av din årsförbrukning som täcks av el från egna paneler. 100 % betyder att du teoretiskt inte behöver köpa el alls — i praktiken sällan möjligt."
+                      text="Andelen av din årsförbrukning som täcks av el från egna paneler. 100 % betyder att du teoretiskt inte behöver köpa el alls, i praktiken sällan möjligt."
                     />
                     <MargTipsTrick
-                      rubrik="Börja smått — testa varmvattnet först"
-                      text="Många elcentraler har redan stöd för smart styrning av varmvatten utan ny utrustning. Kontakta din elektriker — det tar oftast under en timme och du ser resultatet på elräkningen redan första månaden."
+                      rubrik="Börja smått, testa varmvattnet först"
+                      text="Många elcentraler har redan stöd för smart styrning av varmvatten utan ny utrustning. Kontakta din elektriker, det tar oftast under en timme och du ser resultatet på elräkningen redan första månaden."
                     />
                   </>
                 }
               >
                 <h2 className="text-h3 font-medium text-ink mt-8 mb-3">
-                  Smart styrning — det som binder ihop
+                  Smart styrning, det som binder ihop
                 </h2>
                 <p>
-                  Det är inte teknik i sig som ger besparingen — det är att tekniken
+                  Det är inte teknik i sig som ger besparingen, det är att tekniken
                   pratar med varandra. Här är de fyra integrationerna vi rekommenderar
                   i ordning av ROI:
                 </p>
@@ -435,7 +434,7 @@ export function ArtikelMarginalia() {
                   {[
                     {
                       titel: "Varmvattenberedaren",
-                      text: "Lägsta tröskel — många elcentraler stödjer det redan. Värmer vatten 09–14 när solen producerar.",
+                      text: "Lägsta tröskel, många elcentraler stödjer det redan. Värmer vatten 09–14 när solen producerar.",
                     },
                     {
                       titel: "Elbilsladdaren",
@@ -464,7 +463,7 @@ export function ArtikelMarginalia() {
 
                 <p>
                   Det är värt att notera att den första integrationen ofta gör 60–70
-                  procent av jobbet. Om du är osäker — börja där och utvärdera innan
+                  procent av jobbet. Om du är osäker, börja där och utvärdera innan
                   du investerar i fler.
                 </p>
               </SektionMedMarginalia>
@@ -474,17 +473,17 @@ export function ArtikelMarginalia() {
       ],
     },
 
-    /* ─── 7. AVSNITT 4 — slutord, ingen marginalia ──────── */
+    /* ─── 7. AVSNITT 4, slutord, ingen marginalia ──────── */
     {
       id: "avsnitt-4",
-      label: "Avsnitt 4 — Vad du kan göra själv",
+      label: "Avsnitt 4, Vad du kan göra själv",
       variants: [
         {
           key: "default",
-          label: "Avslutande paragrafer + numrerad CTA — full bredd",
+          label: "Avslutande paragrafer + numrerad CTA, full bredd",
           render: () => (
             <Annotation
-              label="Slutord — utan marginalia"
+              label="Slutord, utan marginalia"
               audience="design"
               rationale="Avslutningen återgår till full reading-bredd. Marginalia funkar bra mitt i artikeln för stödelement; vid slutet behöver brödtexten få vara central när läsaren ska ta åt sig handlingen."
             >
@@ -538,7 +537,7 @@ export function ArtikelMarginalia() {
               <div className="grid sm:grid-cols-2 gap-6">
                 <div>
                   <Copy
-                    label="Källor — eyebrow"
+                    label="Källor, eyebrow"
                     category="metadata"
                     text="Källor"
                     rationale="Genrekonvention. Konsekvent med övriga artikel-varianter."
@@ -555,10 +554,10 @@ export function ArtikelMarginalia() {
                 </div>
                 <div>
                   <Copy
-                    label="Taggar — eyebrow"
+                    label="Taggar, eyebrow"
                     category="metadata"
                     text="Taggar"
-                    rationale="Konsekvent med övriga artikel-varianter — en vokabulär."
+                    rationale="Konsekvent med övriga artikel-varianter, en vokabulär."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
                       Taggar
@@ -597,7 +596,7 @@ export function ArtikelMarginalia() {
                 <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
                   <Copy
-                    label="Subscribe — outcome-rubrik"
+                    label="Subscribe, outcome-rubrik"
                     category="rubrik"
                     text="Få fler artiklar i mejlen"
                     rationale="Konsekvent med övriga artikel-varianter."
@@ -605,11 +604,11 @@ export function ArtikelMarginalia() {
                     <p className="font-medium">Få fler artiklar i mejlen</p>
                   </Copy>
                   <p className="text-sm text-ink-secondary">
-                    Vi skickar inte oftare än en gång i månaden — avregistrera när du vill.
+                    Vi skickar inte oftare än en gång i månaden, avregistrera när du vill.
                   </p>
                 </div>
                 <Copy
-                  label="Subscribe — CTA"
+                  label="Subscribe, CTA"
                   category="cta"
                   text="Prenumerera"
                   rationale="Konsekvent med övriga artikel-varianter."
@@ -640,7 +639,7 @@ export function ArtikelMarginalia() {
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <Copy
-                label="Related — rubrik"
+                label="Related, rubrik"
                 category="rubrik"
                 text="Fortsätt läsa"
                 rationale="Konsekvent med övriga artikel-varianter."
@@ -649,7 +648,7 @@ export function ArtikelMarginalia() {
               </Copy>
               <div className="grid sm:grid-cols-3 gap-4">
                 {[
-                  { rubrik: "Effekttariffer förklarade — så undviker du onödiga toppar", kategori: "Utbildning", lastid: "4 min", to: "/sidtyper/artikel" },
+                  { rubrik: "Effekttariffer förklarade, så undviker du onödiga toppar", kategori: "Utbildning", lastid: "4 min", to: "/sidtyper/artikel" },
                   { rubrik: "Energikartläggningen visade Clemondos besparingspotential", kategori: "Kundcase", lastid: "5 min", to: "/sidtyper/artikel" },
                   { rubrik: "Framtidens fjärrvärme: lägre temperatur, smartare distribution", kategori: "Hållbarhet", lastid: "7 min", to: "/sidtyper/artikel" },
                 ].map((r) => (
@@ -683,11 +682,11 @@ export function ArtikelMarginalia() {
   return (
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
-        kategori="Artikel — marginalia-format (skiss)"
-        syfte="Variant av Artikel-galleri där editorial-primitives (statistik-highlight, faktaruta, tips & trick, kundberättelse) ligger i höger marginal istället för infällda i brödtexten. Hypotes: för längre texter ger marginalia bättre läsflöde — brödtexten flödar oavbruten medan stödelement finns tillgängliga i ögonvrån."
-        malgrupp="Samma som Artikel-galleri — kunder, allmänhet, journalister med tid att läsa fördjupande. Marginalia-formatet är optimerat för läsare som vill behålla läsflöde och kunna 'glide forbi' stödelement utan att tvingas pausa vid varje."
+        kategori="Artikel, marginalia-format (skiss)"
+        syfte="Variant av Artikel-galleri där editorial-primitives (statistik-highlight, faktaruta, tips & trick, kundberättelse) ligger i höger marginal istället för infällda i brödtexten. Hypotes: för längre texter ger marginalia bättre läsflöde, brödtexten flödar oavbruten medan stödelement finns tillgängliga i ögonvrån."
+        malgrupp="Samma som Artikel-galleri, kunder, allmänhet, journalister med tid att läsa fördjupande. Marginalia-formatet är optimerat för läsare som vill behålla läsflöde och kunna 'glide forbi' stödelement utan att tvingas pausa vid varje."
         primarHandling="Läsa artikeln · Använda marginalia-element selektivt · Klicka vidare till relaterad artikel."
-        ton="Brand voice. Saklig stödinformation i marginal — inte säljande. Utseendemässigt mer 'tidning' / longform än 'blog'."
+        ton="Brand voice. Saklig stödinformation i marginal, inte säljande. Utseendemässigt mer 'tidning' / longform än 'blog'."
       />
 
       <div className="flex items-center justify-between pt-6">

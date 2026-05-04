@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Inline-sektion
+ * VARIANT B, Inline-sektion
  *
  * Full-bredd banner inne i sidans flöde. Läses som en del av sidan,
  * inte som en systemavisering. Bra för sidor där status är en naturlig
@@ -14,9 +14,9 @@ import { Icon } from "../../../components/Icon";
 export function DriftInline() {
   return (
     <Annotation
-      label="Driftstatus — inline-sektion"
+      label="Driftstatus, inline-sektion"
       audience="design"
-      rationale="Placeras inne i sidan, typ överst på avbrotts- eller kundservice-sidan. Ingen stänga-knapp — det är innehåll. Ikon + färg signalerar status-nivå. Kort intro + CTA till detaljer."
+      rationale="Placeras inne i sidan, typ överst på avbrotts- eller kundservice-sidan. Ingen stänga-knapp, det är innehåll. Ikon + färg signalerar status-nivå. Kort intro + CTA till detaljer."
     >
       <div className="space-y-3">
         {/* Normal */}
@@ -31,8 +31,7 @@ export function DriftInline() {
           <Icon name="schedule" size={24} className="text-yellow-600 shrink-0" />
           <span className="flex-1">
             <strong>Längre kötider just nu.</strong> Försök gärna{" "}
-            <a href="#" className="text-brand-primary font-medium underline">Mina sidor</a> —
-            många ärenden går att lösa där på 1 minut.
+            <a href="#" className="text-brand-primary font-medium underline">Mina sidor</a>,            många ärenden går att lösa där på 1 minut.
           </span>
         </section>
         {/* Avbrott */}

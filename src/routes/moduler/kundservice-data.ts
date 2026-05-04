@@ -63,12 +63,12 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "avtal-nytt",
         label: "Jag vill teckna nytt elavtal",
-        action: { type: "link", label: "Teckna elavtal", href: "/moduler/elavtal-jamfor", description: "Jämför våra tre avtal och teckna direkt — tar ca 3 minuter." },
+        action: { type: "link", label: "Teckna elavtal", href: "/moduler/elavtal-jamfor", description: "Jämför våra tre avtal och teckna direkt, tar ca 3 minuter." },
       },
       {
         id: "avtal-byta",
         label: "Jag vill byta avtal",
-        action: { type: "mina-sidor", label: "Byt avtal på Mina sidor", description: "Logga in och välj nytt avtal. Inga samtal behövs — allt sker direkt." },
+        action: { type: "mina-sidor", label: "Byt avtal på Mina sidor", description: "Logga in och välj nytt avtal. Inga samtal behövs, allt sker direkt." },
       },
       {
         id: "avtal-forstå-pris",
@@ -78,7 +78,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "avtal-anvisat",
         label: "Jag har ett anvisat avtal",
-        action: { type: "link", label: "Vad är anvisat avtal?", href: "#", description: "Du har ett tillfälligt avtal som ofta är dyrare. Byt gratis — tar 3 min." },
+        action: { type: "link", label: "Vad är anvisat avtal?", href: "#", description: "Du har ett tillfälligt avtal som ofta är dyrare. Byt gratis, tar 3 min." },
       },
     ],
   },
@@ -101,7 +101,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "flytt-inom",
         label: "Jag flyttar inom Helsingborg/Ängelholm",
-        action: { type: "link", label: "Flytta ditt avtal", href: "#", description: "Ditt elhandelsavtal följer med dig — anmäl bara ny adress." },
+        action: { type: "link", label: "Flytta ditt avtal", href: "#", description: "Ditt elhandelsavtal följer med dig, anmäl bara ny adress." },
       },
     ],
   },
@@ -114,7 +114,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "avbrott-nu",
         label: "Jag har inget ström just nu",
-        action: { type: "link", label: "Se aktuella avbrott", href: "/moduler/avbrottslista", description: "Kolla om avbrottet redan är anmält. Om inte — gör en felanmälan." },
+        action: { type: "link", label: "Se aktuella avbrott", href: "/moduler/avbrottslista", description: "Kolla om avbrottet redan är anmält. Om inte, gör en felanmälan." },
       },
       {
         id: "avbrott-planerat",
@@ -142,7 +142,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "elnat-anslutning",
         label: "Jag behöver ny elanslutning",
-        action: { type: "link", label: "Ansök om anslutning", href: "#", description: "Ny bostad eller tillbyggnad? Ansök om ny anslutning — handläggningstid ca 4 veckor." },
+        action: { type: "link", label: "Ansök om anslutning", href: "#", description: "Ny bostad eller tillbyggnad? Ansök om ny anslutning, handläggningstid ca 4 veckor." },
       },
       {
         id: "elnat-natavgift",
@@ -160,7 +160,7 @@ export const KATEGORIER: Kategori[] = [
       {
         id: "ovrigt-sol",
         label: "Jag är intresserad av solceller",
-        action: { type: "link", label: "Solceller hos Öresundskraft", href: "#", description: "Producera din egen el — vi hjälper dig hela vägen." },
+        action: { type: "link", label: "Solceller hos Öresundskraft", href: "#", description: "Producera din egen el, vi hjälper dig hela vägen." },
       },
       {
         id: "ovrigt-laddbox",

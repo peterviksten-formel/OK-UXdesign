@@ -2,7 +2,7 @@ import { Annotation } from "../../../components/Annotation";
 import { Icon } from "../../../components/Icon";
 
 /**
- * VARIANT B — Utvald + 2 små
+ * VARIANT B, Utvald + 2 små
  *
  * Hierarkisk. En stor, två små. Redaktören kan lyfta en nyhet när det
  * är tidskritiskt (prisförändring, kampanj, avbrott-uppföljning).
@@ -31,7 +31,7 @@ export function NyhetsUtvald() {
                 <span className="ml-auto text-[10px] uppercase tracking-wider font-bold text-brand-highlight">Utvald</span>
               </div>
               <h3 className="text-h4 font-medium group-hover:text-brand-accent leading-snug">
-                Elpriset sjunker inför sommaren — vad betyder det för dig?
+                Elpriset sjunker inför sommaren, vad betyder det för dig?
               </h3>
               <p className="text-sm text-ink-secondary mt-2 leading-relaxed">
                 Spotpriset har varit lågt hela mars och prognosen pekar mot en fortsatt mild sommar.

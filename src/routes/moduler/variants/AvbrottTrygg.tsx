@@ -2,11 +2,11 @@ import { Annotation } from "../../../components/Annotation";
 import { AVBROTT, STATUS_META, TYP_LABEL, type AvbrottStatus } from "../avbrott-data";
 
 /**
- * VARIANT A — Trygg
+ * VARIANT A, Trygg
  *
  * Strategy: a plain, time-ordered list grouped by status. No filters,
  * no map, no live-updating. Closest to a news bulletin. Each item shows
- * all details up front — no expand/collapse. Sorterat med pågående överst.
+ * all details up front, no expand/collapse. Sorterat med pågående överst.
  */
 export function AvbrottTrygg() {
   const groups: AvbrottStatus[] = ["pagaende", "planerat", "avslutat"];
@@ -16,7 +16,7 @@ export function AvbrottTrygg() {
       <Annotation
         label="Statusgrupperad lista"
         audience="design"
-        rationale="Pågående → Planerat → Avslutat. Ordningen speglar brådska. Inga filter, inga tabs — allt synligt i en enda scroll. Lägsta kognitiva last."
+        rationale="Pågående → Planerat → Avslutat. Ordningen speglar brådska. Inga filter, inga tabs, allt synligt i en enda scroll. Lägsta kognitiva last."
       >
         <div className="space-y-8">
           {groups.map((status) => {
@@ -55,7 +55,7 @@ export function AvbrottTrygg() {
                         </div>
                         <div>
                           <dt className="text-ink-muted">{a.slutFaktiskt ? "Slut" : "Beräknat slut"}</dt>
-                          <dd>{a.slutFaktiskt ?? a.slutBeraknat ?? "—"}</dd>
+                          <dd>{a.slutFaktiskt ?? a.slutBeraknat ?? "–"}</dd>
                         </div>
                         <div>
                           <dt className="text-ink-muted">Berörda kunder</dt>

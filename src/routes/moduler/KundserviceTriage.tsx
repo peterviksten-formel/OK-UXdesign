@@ -48,7 +48,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "2 (öppna accordion + klicka länk).",
       progressiv: "3 (kategori + underkategori + CTA).",
-      experimentell: "3 (kategori + fråga + CTA), men känslan är snabbare — varje steg är lättare.",
+      experimentell: "3 (kategori + fråga + CTA), men känslan är snabbare, varje steg är lättare.",
     },
   },
   {
@@ -56,7 +56,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     values: {
       trygg: "Nej. Användaren scannar visuellt.",
       progressiv: "Nej. Kort + lista-mönster.",
-      experimentell: "Ja — fritextsök i intro-steget matchar mot alla kategorier/frågor.",
+      experimentell: "Ja, fritextsök i intro-steget matchar mot alla kategorier/frågor.",
     },
   },
   {
@@ -70,7 +70,7 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Risk att 'Kontakta oss' blir standard",
     values: {
-      trygg: "Låg. Alla alternativ listade inline — kontakt syns sist.",
+      trygg: "Låg. Alla alternativ listade inline, kontakt syns sist.",
       progressiv: "Låg. Badges ('Guide' / 'Mina sidor' / 'Chatt') visar vad varje val är.",
       experimentell: "Medel. Konversationsmönster kan lura användaren att tro det finns en agent i andra änden.",
     },
@@ -95,7 +95,7 @@ const ARGUMENTATION: ArgumentRow[] = [
     aspect: "Konvertering (hypotes)",
     values: {
       trygg: "Lägst. Ren information, ingen drift.",
-      progressiv: "Moderat. Strukturen leder — badges och inline-svar minskar exit rate.",
+      progressiv: "Moderat. Strukturen leder, badges och inline-svar minskar exit rate.",
       experimentell: "Högst. Investerade steg skapar commitment-bias: användaren avslutar tratten.",
     },
   },
@@ -111,7 +111,7 @@ export function KundserviceTriage() {
         <h1 className="text-h1 mb-3">Jag behöver hjälp med…</h1>
         <p className="text-lede text-ink-secondary">
           Interaktiv tratt som leder kunden till rätt svar eller kanal utan att
-          "Kontakta oss" är standardvägen. Tre varianter — från statisk lista
+          "Kontakta oss" är standardvägen. Tre varianter, från statisk lista
           till konversationsflöde.
         </p>
       </header>
@@ -127,7 +127,7 @@ export function KundserviceTriage() {
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
             <strong>Vad vi löser:</strong> Idag finns ingen kundservice-sida som "trattar"
-            kunden — alla landar på en generisk kontakt-sida. Det här blocket ersätter
+            kunden, alla landar på en generisk kontakt-sida. Det här blocket ersätter
             den med self-serve-logik: varje fråga ska antingen besvaras inline, leda till
             Mina sidor, eller (sista utväg) erbjuda chatt/telefon.
           </p>

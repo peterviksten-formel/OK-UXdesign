@@ -10,7 +10,7 @@ const SAKER = [
 ];
 
 /**
- * VARIANT A — Stor hero-banner
+ * VARIANT A, Stor hero-banner
  *
  * Mörk navy banner med stor CTA "Logga in" och topp 5-listorna av vad
  * man kan göra. Används som prominent self-service-push.
@@ -21,9 +21,9 @@ const SAKER = [
 export function MinaSidorHero() {
   return (
     <Annotation
-      label="Mina sidor — hero-banner"
+      label="Mina sidor, hero-banner"
       audience="user"
-      rationale="Navy-bakgrund ger kontrast till resten av sidan. Listan till höger visar konkret VAD man kan göra, inte bara 'Logga in'. Logga-in-knappen är vit på navy — högsta visuella prioritet i blocket."
+      rationale="Navy-bakgrund ger kontrast till resten av sidan. Listan till höger visar konkret VAD man kan göra, inte bara 'Logga in'. Logga-in-knappen är vit på navy, högsta visuella prioritet i blocket."
     >
       <section className="rounded-lg bg-brand-primary text-white p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
         <div>
