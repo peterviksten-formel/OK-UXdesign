@@ -30,13 +30,6 @@ function formaterDatum(iso: string): string {
   return d.toLocaleDateString("sv-SE", { day: "numeric", month: "long", year: "numeric" });
 }
 
-const SECTIONS = [
-  { id: "vad-batterier-gor", titel: "Vad batterier faktiskt gör" },
-  { id: "tre-monster", titel: "Tre mönster vi ser fungera" },
-  { id: "smart-styrning", titel: "Smart styrning — det som binder ihop" },
-  { id: "vad-du-kan-gora", titel: "Vad du kan göra själv" },
-];
-
 /* ─── Marginalia-byggstenar ─────────────────────────────────────── */
 
 /**
