@@ -176,11 +176,23 @@ export function ProduktsidaLeadsgen2() {
                       skriftlig offert, du bestämmer.
                     </p>
                   </Copy>
-                  {/* Primär CTA + reassurance-text borttagna, sticky-panelen
-                     till höger äger 'Boka rådgivning'-handlingen. Hero håller
-                     bara värdepropositionen + sekundär 'Räkna själv'-utgång
-                     för osäkra som vill testa innan de bokar. */}
+                  {/* Primär + sekundär CTA i hero. v2 har ingen sticky-panel,
+                     så heron äger den primära handlingen direkt. */}
                   <div className="flex flex-wrap gap-3">
+                    <Copy
+                      label="Primär CTA, kostnadsfri rådgivning"
+                      category="cta"
+                      text="Boka kostnadsfri rådgivning"
+                      rationale="'Boka' är konsultativ, inte transaktionell. 'Kostnadsfri' tar bort den primära oron innan klick. 'Rådgivning' (inte 'samtal' eller 'kontakt') signalerar expert-värde, du får något, inte ger något."
+                    >
+                      <a
+                        href="#lead-form"
+                        className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-7 py-3.5 rounded hover:opacity-90 transition-opacity text-base"
+                      >
+                        Boka kostnadsfri rådgivning
+                        <Icon name="arrow_forward" size={18} />
+                      </a>
+                    </Copy>
                     <a
                       href="#kalkylator"
                       className="inline-flex items-center gap-2 border border-border-strong text-brand-primary font-medium px-6 py-3.5 rounded hover:bg-tint-info text-base"
@@ -189,6 +201,9 @@ export function ProduktsidaLeadsgen2() {
                       Räkna själv först
                     </a>
                   </div>
+                  <p className="text-xs text-ink-muted mt-3">
+                    Vi ringer upp inom 2 arbetsdagar · Ingen säljpress · Du bestämmer själv när och om
+                  </p>
                 </div>
 
                 <div className="bg-tint-info aspect-[4/3] rounded-md flex items-center justify-center">
@@ -235,56 +250,6 @@ export function ProduktsidaLeadsgen2() {
                       <p className="text-sm text-ink-secondary leading-snug">{u.text}</p>
                     </div>
                   ))}
-                </div>
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 2b. INLINE-CTA, mellan kundvärde och kalkylator ──────── */
-    {
-      id: "inline-cta-1",
-      label: "Inline-CTA, första beslutspunkten",
-      variants: [
-        {
-          key: "default",
-          label: "Mjuk CTA, två val (räkna eller boka)",
-          render: () => (
-            <Annotation
-              label="Inline-CTA, beslutspunkt efter värdebeskrivning"
-              audience="user"
-              rationale="Användaren har precis läst om värdet (4 USPs). Vissa är klara att boka direkt, andra vill räkna själva först. Två-val-CTA respekterar båda intent: 'Räkna själv' (sekundär, för osäkra) och 'Boka rådgivning' (primär, för redo). Ingen pressur, bara öppna dörrar."
-            >
-              <section className="py-8">
-                <div className="rounded-md bg-tint-info border border-border-subtle p-6 sm:p-7">
-                  <p className="text-[11px] uppercase tracking-wider text-brand-primary font-bold mb-2">
-                    Kostnadsfri rådgivning
-                  </p>
-                  <h2 className="text-h4 font-medium mb-2">
-                    Vill du räkna själv eller boka rådgivning direkt?
-                  </h2>
-                  <p className="text-sm text-ink-secondary mb-5 max-w-reading">
-                    Båda är gratis. Räknaren ger en uppskattning baserat på din förbrukning och takläge.
-                    Rådgivningen är ett samtal med Anna som besöker ditt tak och ger en exakt offert.
-                  </p>
-                  <div className="flex flex-wrap gap-3">
-                    <a
-                      href="#kalkylator"
-                      className="inline-flex items-center gap-2 border border-border-strong text-brand-primary font-medium px-5 py-2.5 rounded text-sm hover:bg-canvas"
-                    >
-                      <Icon name="calculate" size={16} />
-                      Räkna själv
-                    </a>
-                    <a
-                      href="#lead-form"
-                      className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded text-sm hover:opacity-90"
-                    >
-                      Boka rådgivning
-                      <Icon name="arrow_forward" size={16} />
-                    </a>
-                  </div>
                 </div>
               </section>
             </Annotation>
@@ -441,45 +406,6 @@ export function ProduktsidaLeadsgen2() {
       ],
     },
 
-    /* ─── 3b. INLINE-CTA, efter kalkylator ──────────────────── */
-    {
-      id: "inline-cta-2",
-      label: "Inline-CTA, andra beslutspunkten",
-      variants: [
-        {
-          key: "default",
-          label: "Data-driven CTA efter siffror",
-          render: () => (
-            <Annotation
-              label="Inline-CTA, beslutspunkt efter sparkalkyl"
-              audience="user"
-              rationale="Användaren har precis sett en siffra på vad de skulle spara. Det är optimalt timing för att ta nästa steg. Tone: 'siffran är ungefärlig, vi gör en exakt offert vid besiktning'. Bygger förtroende genom transparens, inte säljpress."
-            >
-              <section className="py-8">
-                <div className="rounded-md bg-tint-notice border-l-4 border-brand-highlight p-5 sm:p-6 max-w-reading">
-                  <p className="text-[11px] uppercase tracking-wider text-brand-highlight font-bold mb-2 inline-flex items-center gap-1.5">
-                    <Icon name="lightbulb" size={14} filled />
-                    Nästa steg
-                  </p>
-                  <p className="text-base mb-4">
-                    Siffran ovan är en uppskattning. För en exakt offert mäter vi ditt tak,
-                    räknar på er förbrukning och dimensionerar. Allt kostnadsfritt och utan åtagande.
-                  </p>
-                  <a
-                    href="#lead-form"
-                    className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded text-sm hover:opacity-90"
-                  >
-                    Boka kostnadsfri besiktning
-                    <Icon name="arrow_forward" size={16} />
-                  </a>
-                </div>
-              </section>
-            </Annotation>
-          ),
-        },
-      ],
-    },
-
     /* ─── 4. SÅ GÅR DET TILL, 4 steg ─────────────────────────── */
     {
       id: "process",
@@ -524,6 +450,60 @@ export function ProduktsidaLeadsgen2() {
                     </li>
                   ))}
                 </ol>
+              </section>
+            </Annotation>
+          ),
+        },
+      ],
+    },
+
+    /* ─── 4b. INLINE-CTA, efter process ─────────────────────── */
+    {
+      id: "inline-cta-nasta-steg",
+      label: "Inline-CTA, Nästa steg (efter process)",
+      variants: [
+        {
+          key: "fullbredd",
+          label: "Fullbredds-CTA-banner efter process-stegen",
+          render: () => (
+            <Annotation
+              label="Inline-CTA, beslutspunkt efter förståelse av processen"
+              audience="user"
+              rationale="Användaren har sett: värdet (USPs), siffran (kalkylator), och stegen (process). Tre steg av research klara, dags att handla. Fullbredd matchar process-blockets fullbredd direkt ovanför, ger en visuell vikt till handlingen utan att kännas påflugen. Banner-stil med 'Nästa steg'-eyebrow signalerar att detta är ett naturligt led i flödet, inte en avbrytande säljpitch."
+            >
+              <section className="py-10 border-t border-border-subtle">
+                <div className="rounded-lg bg-tint-notice border-l-4 border-brand-highlight p-6 sm:p-8">
+                  <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
+                    <div>
+                      <p className="text-[11px] uppercase tracking-wider text-brand-highlight font-bold mb-2 inline-flex items-center gap-1.5">
+                        <Icon name="lightbulb" size={14} filled />
+                        Nästa steg
+                      </p>
+                      <Copy
+                        label="Nästa steg, rubrik"
+                        category="rubrik"
+                        text="Redo för en exakt offert?"
+                        rationale="Frågeform som speglar exakt var användaren är just nu efter att ha läst processen. 'Redo' adresserar tvekan utan att förneka den, frågan inviterar till svar utan att kräva."
+                      >
+                        <h2 className="text-h3 font-medium text-ink mb-2">
+                          Redo för en exakt offert?
+                        </h2>
+                      </Copy>
+                      <p className="text-base text-ink-secondary max-w-reading">
+                        Kalkylatorn ger en uppskattning. För en exakt offert mäter vi ditt
+                        tak, räknar på er förbrukning och dimensionerar paneler + växelriktare.
+                        Allt kostnadsfritt och utan åtagande.
+                      </p>
+                    </div>
+                    <a
+                      href="#lead-form"
+                      className="inline-flex items-center justify-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-7 py-3.5 rounded text-base hover:opacity-90 shrink-0"
+                    >
+                      Boka kostnadsfri besiktning
+                      <Icon name="arrow_forward" size={18} />
+                    </a>
+                  </div>
+                </div>
               </section>
             </Annotation>
           ),
@@ -685,48 +665,56 @@ export function ProduktsidaLeadsgen2() {
               rationale="Workshop-input: 'Vi har gärna med säljkontakt i dessa flöden för personlig kontakt'. Foto + namn + roll humaniserar, 'jag pratar med Anna' är lägre tröskel än 'jag fyller i ett formulär till sälj-avdelningen'. Två kontaktvägar: telefon (direkt) och bokning (asynkron) så användaren kan välja efter sin egen rytm."
             >
               <section className="py-10 border-t border-border-subtle">
-                <div className="rounded-lg bg-tint-info p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center max-w-reading">
-                  <div className="flex items-center gap-5">
-                    {/* Säljarbild, placeholder med initialer */}
-                    <div className="w-24 h-24 rounded-full bg-brand-primary text-white flex items-center justify-center text-h2 font-medium shrink-0">
-                      AL
+                <div className="rounded-lg bg-tint-info p-6 sm:p-8 grid md:grid-cols-[280px_1fr] gap-8 items-center">
+                  {/* Stort foto-block av rådgivaren, placeholder */}
+                  <div className="relative aspect-[4/5] rounded-lg overflow-hidden bg-brand-primary shrink-0">
+                    <div className="absolute inset-0 grid place-items-center text-white">
+                      <div className="text-center">
+                        <span className="text-[80px] font-medium leading-none">AL</span>
+                        <p className="text-xs uppercase tracking-wider mt-3 opacity-80">
+                          Foto: Anna Lindqvist
+                        </p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-1">
+                    {/* Nederkant-overlay med namn + roll */}
+                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-5 pt-12">
+                      <p className="text-[10px] uppercase tracking-wider text-white/80 font-medium mb-0.5">
                         Din rådgivare
                       </p>
-                      <h3 className="text-h4 font-medium">Anna Lindqvist</h3>
-                      <p className="text-sm text-ink-secondary">
-                        Solrådgivare, Helsingborg · 8 års erfarenhet
+                      <p className="text-white font-medium text-lg leading-tight">Anna Lindqvist</p>
+                      <p className="text-white/80 text-xs">
+                        Solrådgivare · 8 års erfarenhet
                       </p>
                     </div>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-4 max-w-reading">
                     <Copy
                       label="Säljkontakt-rubrik"
                       category="rubrik"
                       text="Hellre prata än fylla i?"
                       rationale="Fråga som ger användaren en alternativ väg utan att kännas pushy. 'Hellre' (inte 'Vill du hellre') är kortast möjliga form."
                     >
-                      <p className="font-medium">Hellre prata än fylla i?</p>
+                      <h2 className="text-h3 font-medium text-ink">Hellre prata än fylla i?</h2>
                     </Copy>
-                    <p className="text-sm text-ink-secondary">
-                      Anna eller hennes kollegor svarar gärna på frågor utan att du måste lämna intresseanmälan först.
+                    <p className="text-base text-ink-secondary leading-relaxed">
+                      Anna eller hennes kollegor svarar gärna på frågor utan att du måste lämna
+                      intresseanmälan först. Ingen säljpress, bara en konsultativ pratstund om
+                      vad solceller skulle innebära för just ditt hus.
                     </p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="flex flex-wrap gap-3 pt-1">
                       <a
                         href="tel:0424903200"
-                        className="inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-4 py-2.5 rounded hover:opacity-90 text-sm"
+                        className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-3 rounded hover:opacity-90 text-base"
                       >
-                        <Icon name="call" size={16} />
+                        <Icon name="call" size={18} />
                         Ring 042-490 32 00
                       </a>
                       <a
                         href="#"
-                        className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-surface text-sm"
+                        className="inline-flex items-center gap-2 border border-border-strong text-brand-primary font-medium px-5 py-3 rounded hover:bg-surface text-base"
                       >
-                        <Icon name="event_available" size={16} />
+                        <Icon name="event_available" size={18} />
                         Boka tid när du vill
                       </a>
                     </div>
