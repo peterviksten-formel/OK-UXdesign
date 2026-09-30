@@ -3,8 +3,8 @@ import { useState, type ReactNode } from "react";
 export type Variant = {
   id: string;
   shortName: string;       // "A" / "B" / "C"
-  label: string;           // "Trygg"
-  oneLiner: string;        // "Monokrom, formell, klassisk jämförelse"
+  label: string;           // "Trygg", visas i knappen och tabellhuvudet
+  oneLiner: string;        // En mening om vad varianten är
   riskLevel: "låg" | "medel" | "hög";
   bestFor: string;
   render: () => ReactNode;
@@ -92,16 +92,16 @@ export function VariantSwitcher({ variants, argumentation, defaultId }: VariantS
         </p>
       </div>
 
-      {/* ─── Argumentation drawer ──────────────────────────────────────── */}
+      {/* ─── Argumentation (utfällbar panel) ──────────────────────────────────────── */}
       {showArguments && (
         <section
           className="mb-8 rounded-md border border-border-subtle bg-surface overflow-hidden"
           aria-label="Argumentation: jämförelse mellan varianter"
         >
           <header className="px-5 py-3 border-b border-border-subtle bg-tint-info">
-            <h2 className="text-h5 font-medium">Argumentation ,  för- och nackdelar per variant</h2>
+            <h2 className="text-h5 font-medium">Argumentation: för- och nackdelar per variant</h2>
             <p className="text-xs text-ink-muted mt-0.5">
-              Tre olika strategiska val. Ingen är ”rätt”. Det här är en diskussionsgrund för vilken variant som passar Öresundskrafts mål och målgrupp bäst.
+              Tre strategiska val, och inget av dem är det enda rätta. Använd jämförelsen som underlag när ni diskuterar vilken variant som passar Öresundskrafts mål och målgrupper bäst.
             </p>
           </header>
           <div className="overflow-x-auto">
@@ -131,7 +131,7 @@ export function VariantSwitcher({ variants, argumentation, defaultId }: VariantS
                     </th>
                     {variants.map((v) => (
                       <td key={v.id} className="px-4 py-3 text-ink-secondary leading-relaxed">
-                        {row.values[v.id] ?? "–"}
+                        {row.values[v.id] ?? "Ej angivet"}
                       </td>
                     ))}
                   </tr>

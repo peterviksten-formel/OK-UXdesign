@@ -8,28 +8,28 @@ const VARIANTS: Variant[] = [
   {
     id: "topbar",
     shortName: "A",
-    label: "Global topbar",
+    label: "Toppbanner",
     riskLevel: "medel",
-    oneLiner: "Sticky rad över header. Visas endast vid störning.",
-    bestFor: "Global drift-avisering som måste nå alla besökare.",
+    oneLiner: "Smal rad överst på alla sidor. Syns bara när något är fel.",
+    bestFor: "Större störningar som alla besökare behöver känna till, oavsett vilken sida de landar på.",
     render: () => <DriftTopbar />,
   },
   {
     id: "inline",
     shortName: "B",
-    label: "Inline-sektion",
+    label: "I sidan",
     riskLevel: "låg",
-    oneLiner: "Full-bredd banner i sidflödet. Del av innehållet.",
-    bestFor: "Kundservice- och avbrottssida där status är huvudämnet.",
+    oneLiner: "Statusruta i sidans innehåll, i samma ton som resten av sidan.",
+    bestFor: "Avbrottssidan och kundservicesidan, där driftstatus är det besökaren kommit för.",
     render: () => <DriftInline />,
   },
   {
     id: "badge",
     shortName: "C",
-    label: "Badge + drawer",
+    label: "Märke",
     riskLevel: "medel",
-    oneLiner: "Liten badge i header, öppnar detaljer vid klick.",
-    bestFor: "När status ska vara tillgänglig men inte dominant.",
+    oneLiner: "Litet statusmärke i sidhuvudet. Detaljerna visas när man klickar.",
+    bestFor: "När status ska finnas nära till hands men inte ta fokus från sidans innehåll.",
     render: () => <DriftBadge />,
   },
 ];
@@ -38,41 +38,41 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Synlighet",
     values: {
-      topbar: "Hög, alla som landar ser bannern.",
-      inline: "Medel, syns när användaren är på rätt sida.",
-      badge: "Låg, lätt att missa om man inte scannar header.",
+      topbar: "Hög. Alla som besöker webbplatsen ser bannern.",
+      inline: "Medel. Syns för den som är på avbrotts- eller kundservicesidan.",
+      badge: "Låg. Lätt att missa för den som inte tittar i sidhuvudet.",
     },
   },
   {
-    aspect: "Påträngande",
+    aspect: "Hur mycket den stör",
     values: {
-      topbar: "Hög, flyttar ner innehållet.",
-      inline: "Låg, ligger där den hör hemma.",
-      badge: "Låg, 24px i hörnet.",
+      topbar: "Mycket. Den trycker ner sidans innehåll.",
+      inline: "Lite. Den ligger där informationen hör hemma.",
+      badge: "Nästan inte alls. Ett litet märke i hörnet.",
     },
   },
   {
-    aspect: "Användning",
+    aspect: "Var den visas",
     values: {
-      topbar: "Global, alla sidor.",
-      inline: "Lokal, specifika sidor.",
-      badge: "Global, alla sidor, men diskret.",
+      topbar: "På alla sidor.",
+      inline: "Bara på utvalda sidor.",
+      badge: "På alla sidor, men diskret.",
     },
   },
   {
-    aspect: "Teknik",
+    aspect: "Tillgänglighet",
     values: {
-      topbar: "Villkorsrendering i Layout. Aria-live.",
-      inline: "Ren HTML-sektion.",
-      badge: "Header-komponent + dropdown-state.",
+      topbar: "Skärmläsare läser upp meddelandet automatiskt när det dyker upp.",
+      inline: "Läses som vanlig text i sidans ordning.",
+      badge: "Detaljerna nås först när man öppnar märket.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      topbar: "Större avbrott, flera hundra kunder eller kris-läge.",
-      inline: "Default på avbrottssidan och kundservice-sidan.",
-      badge: "Alltid-på indikator i header för löpande status.",
+      topbar: "Större avbrott som berör flera hundra kunder, eller krisläge.",
+      inline: "Förval på avbrottssidan och kundservicesidan.",
+      badge: "Ständigt synlig statusindikator i sidhuvudet.",
     },
   },
 ];
@@ -83,11 +83,11 @@ export function Driftstatus() {
       <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">← Översikt</Link>
 
       <header className="mt-6 mb-8 max-w-reading">
-        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Driftstatus-banner</p>
+        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Driftstatus</p>
         <h1 className="text-h1 mb-3">Driftstatus just nu</h1>
         <p className="text-lede text-ink-secondary">
-          Tre sätt att kommunicera live drift-status. Från global topbar vid kris till
-          diskret badge-indikator i header.
+          Tre sätt att visa aktuell driftstatus för besökaren. Från en toppbanner på alla
+          sidor vid kris till ett diskret märke i sidhuvudet.
         </p>
       </header>
 

@@ -161,7 +161,7 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
                                 >
                                   <div className="w-[96px] h-[64px] bg-canvas border-r border-border-subtle flex items-center justify-center shrink-0 overflow-hidden">
                                     {v.preview ?? (
-                                      <span className="text-[10px] text-ink-muted">Ingen preview</span>
+                                      <span className="text-[10px] text-ink-muted">Ingen förhandsvisning</span>
                                     )}
                                   </div>
                                   <div className="flex-1 min-w-0 px-3 py-2 flex items-center justify-between gap-2">
@@ -209,10 +209,10 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
                 type="button"
                 onClick={() => update(pageId, def.id, { hidden: !state.hidden })}
                 className="px-2 py-1 rounded hover:bg-tint-highlight text-ink-secondary inline-flex items-center gap-1"
-                title={state.hidden ? "Visa blocket igen" : "Ta bort blocket"}
+                title={state.hidden ? "Visa blocket igen" : "Dölj blocket"}
               >
                 <Icon name={state.hidden ? "restart_alt" : "close"} size={14} />
-                {state.hidden ? "Återställ" : "Ta bort"}
+                {state.hidden ? "Visa igen" : "Dölj"}
               </button>
             </div>
           </div>
@@ -221,8 +221,8 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
 
       {editEnabled && state.hidden ? (
         <div className="py-6 px-4 my-2 border-2 border-dashed border-border-strong rounded-md text-center text-sm text-ink-muted">
-          <span className="font-medium">{def.label}</span> är borttaget.
-          Klicka <strong>Återställ</strong> i verktygsraden ovan.
+          <span className="font-medium">{def.label}</span> är dolt.
+          Klicka på <strong>Visa igen</strong> i verktygsraden ovanför.
         </div>
       ) : (
         active?.render()

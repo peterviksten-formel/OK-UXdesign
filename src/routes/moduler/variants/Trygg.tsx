@@ -1,45 +1,60 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Copy } from "../../../components/Copy";
 import { PLANS, type BoendeTyp } from "../elavtal-data";
 
 /**
  * VARIANT A, Trygg
  *
- * Strategy: behave like an institution. Strip all color accents from the
- * comparison (reserve color for state/status). No badges, no nudges, no
- * "Vanligaste valet", every plan presented as equally legitimate so the
- * user feels in control. A real semantic <table> for screen readers.
- * Footnotes and avtalsvillkor visible inline. Verbose where the brief
- * matters. Reading-room feel.
+ * Idé: uppträd som en institution. Jämförelsen har inga färgaccenter (färg
+ * används bara för status), inga märken, ingen knuff och inget "Vanligaste
+ * valet". Alla avtal presenteras som lika bra val, så att kunden känner att
+ * beslutet är kundens eget. En riktig tabell gör jämförelsen läsbar
+ * för skärmläsare. Fotnoter och avtalsvillkor syns direkt i sidan. Utförlig
+ * text där det behövs, med känslan av en lugn läsesal.
  */
 export function VariantTrygg() {
   const [boende, setBoende] = useState<BoendeTyp>("lagenhet");
 
   return (
     <div>
-      {/* ─── Inramning: vad du ska göra här ─────────────────────────── */}
+      {/* ─── Inledning: vad kunden kan göra här ─────────────────────── */}
       <Annotation
-        label="Tydlig inramning"
+        label="Lugn inledning"
         audience="user"
-        rationale="Variant A börjar med en lugn redaktionell inramning istället för en interaktiv väljare. Sätter förväntningarna: 'detta är information, du behöver inte fatta beslut nu'."
+        rationale="Varianten börjar med en kort text i stället för en väljare. Kunden får veta vad sidan innehåller och att kunden inte behöver bestämma sig direkt, vilket minskar stressen inför valet."
       >
         <div className="mb-8 max-w-reading">
-          <p className="text-lede leading-relaxed text-ink-secondary">
-            Hos oss kan du välja mellan tre elhandelsavtal. På denna sida hittar du villkor,
-            prismekanism och en uppskattad månadskostnad för varje avtal. När du har valt
-            tecknar du själv via Mina sidor, eller hör av dig om du vill ha hjälp.
-          </p>
+          <Copy
+            label="Ingress, vad sidan hjälper dig med"
+            category="ton"
+            text="Du kan välja mellan tre elavtal hos oss. Här ser du villkoren, hur priset sätts och vad varje avtal ungefär kostar per månad. När du har bestämt dig kan du teckna avtalet själv, eller kontakta oss om du vill ha hjälp."
+            rationale="Saklig och lugn ton med du-tilltal. Beskriver vad kunden får på sidan och att hjälp finns. Undvik säljande ord som 'bästa' eller 'unikt', de bryter mot variantens neutrala hållning."
+          >
+            <p className="text-lede leading-relaxed text-ink-secondary">
+              Du kan välja mellan tre elavtal hos oss. Här ser du villkoren, hur priset sätts
+              och vad varje avtal ungefär kostar per månad. När du har bestämt dig kan du
+              teckna avtalet själv, eller kontakta oss om du vill ha hjälp.
+            </p>
+          </Copy>
         </div>
       </Annotation>
 
-      {/* ─── Boende-väljare som diskret radio-grupp ─────────────────── */}
+      {/* ─── Boendeval som diskreta radioknappar ────────────────────── */}
       <Annotation
-        label="Boendeval som radioknappar"
+        label="Boendeval med radioknappar"
         audience="design"
-        rationale="Använder native form-semantik istället för pill-toggle. Mer institutionellt, tar mindre visuellt utrymme, signalerar 'detta är en parameter, inte ett val du fattar'."
+        rationale="Vanliga radioknappar i stället för stora växlingsknappar. De tar lite plats och visar att valet bara ändrar vilken månadskostnad som visas, inte vilket avtal kunden väljer."
       >
         <fieldset className="mb-8">
-          <legend className="text-sm font-medium mb-2">Visa månadskostnad för</legend>
+          <Copy
+            label="Rubrik för boendeval"
+            category="rubrik"
+            text="Visa månadskostnad för"
+            rationale="Säger exakt vad valet påverkar: bara vilken kostnad som visas. En rubrik som 'Välj boende' kunde tolkas som att kunden binder sig till något."
+          >
+            <legend className="text-sm font-medium mb-2">Visa månadskostnad för</legend>
+          </Copy>
           <div className="flex gap-6 text-sm">
             <label className="inline-flex items-center gap-2 cursor-pointer">
               <input
@@ -67,39 +82,46 @@ export function VariantTrygg() {
         </fieldset>
       </Annotation>
 
-      {/* ─── Elnät / Elhandel som faktaruta ─────────────────────────── */}
+      {/* ─── Faktaruta om elnät och elhandel ────────────────────────── */}
       <Annotation
-        label="Faktaruta: Elnät vs elhandel"
-        audience="user"
-        rationale="Fakta-ramverk istället för callout. Ingen färg, ingen ikon. Behandlas som regulatorisk information som måste läsas. För äldre användare och de som faktiskt vill ha detaljer."
+        label="Faktaruta om elnät och elhandel"
+        audience="redaktör"
+        rationale="En enkel ram utan färg och ikon, för kunder som vill förstå grunderna. Håll texten till tre korta stycken: vad elnät är, vad elhandel är och vad det betyder för kunden i Helsingborg och Ängelholm."
       >
         <aside className="mb-8 border border-border-strong p-5 max-w-reading">
           <p className="text-eyebrow uppercase text-ink-muted mb-2">Bra att veta</p>
-          <h3 className="text-h5 mb-2 font-medium">Skillnaden mellan elnät och elhandel</h3>
+          <Copy
+            label="Faktarutans rubrik"
+            category="rubrik"
+            text="Skillnaden mellan elnät och elhandel"
+            rationale="Rubriken säger rakt ut vad rutan förklarar. Många kunder blandar ihop begreppen, därför nämns båda orden så att de känner igen sin egen fråga."
+          >
+            <h3 className="text-h5 mb-2 font-medium">Skillnaden mellan elnät och elhandel</h3>
+          </Copy>
           <p className="text-sm text-ink-secondary leading-relaxed mb-2">
-            <strong>Elnät</strong> är de fysiska ledningarna som transporterar el till ditt
-            hem. Du kan inte välja nätägare, det är bestämt av var du bor.
+            <strong>Elnät</strong> är ledningarna som för elen hem till dig. Du kan inte välja
+            nätbolag, det bestäms av var du bor.
           </p>
           <p className="text-sm text-ink-secondary leading-relaxed mb-2">
-            <strong>Elhandel</strong> är vem som säljer själva elen till dig. Här kan du
-            välja fritt mellan olika leverantörer.
+            <strong>Elhandel</strong> är företaget som säljer själva elen till dig. Här kan du
+            välja fritt mellan olika elbolag.
           </p>
           <p className="text-sm text-ink-secondary leading-relaxed">
-            Bor du i Helsingborg eller Ängelholm är Öresundskraft redan ditt nätbolag, du
-            ska bara välja elhandel.
+            Bor du i Helsingborg eller Ängelholm är Öresundskraft redan ditt nätbolag. Du
+            behöver bara välja elavtal.
           </p>
         </aside>
       </Annotation>
 
-      {/* ─── Semantisk jämförelsetabell ─────────────────────────────── */}
+      {/* ─── Jämförelsetabell ───────────────────────────────────────── */}
       <Annotation
-        label="Jämförelsetabell (semantisk)"
+        label="Jämförelsetabell"
         audience="design"
-        rationale="Riktig HTML-tabell med <th scope>. Skärmläsare kan läsa 'Bindning för Säkrat pris: 12 eller 36 månader'. Färre visuella effekter, men varje rad är direkt jämförbar."
+        rationale="En riktig tabell med rad- och kolumnrubriker. Skärmläsare kan läsa upp till exempel 'Bindningstid för Säkrat pris: 12 eller 36 månader'. Få visuella effekter, men varje rad går att jämföra direkt."
       >
         <div className="overflow-x-auto mb-8 border border-border-strong">
           <table className="w-full text-sm">
-            <caption className="sr-only">Jämförelse av Öresundskrafts tre elhandelsavtal</caption>
+            <caption className="sr-only">Jämförelse av Öresundskrafts tre elavtal</caption>
             <thead className="bg-surface border-b border-border-strong">
               <tr>
                 <th scope="col" className="text-left px-4 py-3 font-medium w-1/4">
@@ -118,7 +140,7 @@ export function VariantTrygg() {
             <tbody className="divide-y divide-border-subtle">
               <tr>
                 <th scope="row" className="text-left px-4 py-3 font-medium text-ink-secondary align-top">
-                  Bäst för
+                  Bäst för dig som
                 </th>
                 {PLANS.map((p) => (
                   <td key={p.id} className="px-4 py-3 text-ink-secondary align-top">
@@ -128,7 +150,7 @@ export function VariantTrygg() {
               </tr>
               <tr>
                 <th scope="row" className="text-left px-4 py-3 font-medium text-ink-secondary align-top">
-                  Prismekanism
+                  Så sätts priset
                 </th>
                 {PLANS.map((p) => (
                   <td key={p.id} className="px-4 py-3 align-top">{p.prismekanism}</td>
@@ -191,39 +213,62 @@ export function VariantTrygg() {
                 <th scope="row" className="text-left px-4 py-3 font-medium text-ink-secondary align-top">
                   &nbsp;
                 </th>
-                {PLANS.map((p) => (
-                  <td key={p.id} className="px-4 py-3 align-top">
+                {PLANS.map((p, idx) => {
+                  const knapp = (
                     <button
                       type="button"
                       className="w-full bg-brand-primary text-ink-onbrand text-sm font-medium py-2.5 rounded hover:opacity-90 transition-opacity"
                     >
                       Teckna {p.kortNamn.toLowerCase()}
                     </button>
-                  </td>
-                ))}
+                  );
+                  return (
+                    <td key={p.id} className="px-4 py-3 align-top">
+                      {idx === 0 ? (
+                        <Copy
+                          label="Knapp för att teckna avtal"
+                          category="cta"
+                          text={`Teckna ${p.kortNamn.toLowerCase()}`}
+                          rationale="Verb och avtalets namn, så att kunden vet exakt vilket avtal knappen gäller. Samma formulering i alla kolumner. Undvik 'Välj' eller 'Gå vidare', de säger inte att kunden tecknar ett avtal."
+                        >
+                          {knapp}
+                        </Copy>
+                      ) : (
+                        knapp
+                      )}
+                    </td>
+                  );
+                })}
               </tr>
             </tbody>
           </table>
         </div>
       </Annotation>
 
-      {/* ─── Footnoter och avtalsinfo ───────────────────────────────── */}
+      {/* ─── Fotnoter och avtalsinformation ─────────────────────────── */}
       <Annotation
-        label="Synlig juridik"
+        label="Villkor som syns direkt"
         audience="redaktör"
-        rationale="Variant A visar fotnoter inline istället för att gömma dem. Bygger förtroende hos äldre kunder och hos jurister. Mindre 'snygg', mer 'redbar'."
+        rationale="Fotnoterna visas öppet i stället för att gömmas, vilket bygger förtroende hos kunder och jurister. Stäm av texten med juridik vid varje prisändring och kontrollera att länkarna går till gällande villkor."
       >
         <footer className="text-xs text-ink-muted leading-relaxed border-t border-border-subtle pt-4 max-w-reading">
           <p className="mb-2">
-            <strong className="text-ink-secondary">Notera:</strong> Uppskattad månadskostnad
-            avser elhandel (vad du betalar oss). Elnätskostnaden faktureras separat av
-            ditt nätbolag och varierar med din användning.
+            <strong className="text-ink-secondary">Bra att veta:</strong> Den uppskattade
+            månadskostnaden gäller elhandel, alltså det du betalar till oss. Elnätet
+            faktureras separat av ditt nätbolag och beror på hur mycket el du använder.
           </p>
-          <p className="mb-2">
-            Påslag och energiskatt tillkommer enligt vid var tid gällande priser. Avtal
-            ingås enligt EFET:s standardvillkor. Du har 14 dagars ångerrätt enligt
-            distansavtalslagen.
-          </p>
+          <Copy
+            label="Villkorstext och ångerrätt"
+            category="reassurance"
+            text="Påslag och energiskatt tillkommer enligt de priser som gäller vid varje tillfälle. Avtalen följer EFET:s standardvillkor. Du har 14 dagars ångerrätt enligt distansavtalslagen."
+            rationale="Korta meningar i stället för avtalsspråk som 'vid var tid gällande'. Ångerrätten står sist så att den är det kunden minns. Ändra inte sakinnehållet utan att juridik har godkänt."
+          >
+            <p className="mb-2">
+              Påslag och energiskatt tillkommer enligt de priser som gäller vid varje
+              tillfälle. Avtalen följer EFET:s standardvillkor. Du har 14 dagars ångerrätt
+              enligt distansavtalslagen.
+            </p>
+          </Copy>
           <p>
             <a href="#" className="underline">Fullständiga avtalsvillkor</a> ·{" "}
             <a href="#" className="underline">Prishistorik</a> ·{" "}

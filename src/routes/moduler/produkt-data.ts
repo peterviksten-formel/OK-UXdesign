@@ -1,6 +1,11 @@
 /**
- * Shared placeholder data for Produktinfo + Produktlisting modules.
- * Based on Öresundskraft's "Smarta produkter och tjänster" category.
+ * Gemensamt exempelinnehåll för modulerna Produktinfo och Produktlisting,
+ * och för produktsidorna som bygger på dem. Innehållet utgår från
+ * Öresundskrafts kategori "Smarta produkter och tjänster".
+ *
+ * Skrivregler för fälten: tagline är en mening om nyttan för kunden,
+ * uspar är korta påståenden som börjar med nyttan, villkor skrivs som
+ * hela meningar som kunden förstår utan fackkunskap.
  */
 
 export type ProduktId = "ladda-smart" | "solceller" | "varmepump" | "hemmaladdare" | "energiradgivning" | "framtidspengen";
@@ -14,9 +19,9 @@ export type Produkt = {
   pris: { typ: "fast" | "fran" | "offert"; belopp?: string; enhet?: string };
   inkluderar: string[];
   villkor: string[];
-  uspar: string[];       // USPs / selling points
+  uspar: string[];       // säljargument (USP:ar), nyttan först
   passarFor: string;
-  bildAlt: string;       // alt text for placeholder image
+  bildAlt: string;       // alt-text som beskriver bilden
   cta: { label: string; typ: "kop" | "offert" | "kontakt" };
 };
 
@@ -26,7 +31,7 @@ export const PRODUKTER: Produkt[] = [
     namn: "Ladda Smart",
     kategori: "Elbil & laddning",
     tagline: "Smart laddning för elbil, hemma eller på jobbet.",
-    beskrivning: "Installation av laddbox, smart styrning via app, och en eltariff optimerad för nattladdning. Vi tar hand om allt från besiktning till installation.",
+    beskrivning: "Vi installerar laddboxen, kopplar in smart styrning via app och ger dig ett elpris anpassat för nattladdning. Vi tar hand om allt, från besiktning till färdig installation.",
     pris: { typ: "fran", belopp: "14 900", enhet: "kr inkl. installation" },
     inkluderar: [
       "Laddbox (Easee eller Zaptec)",
@@ -36,12 +41,12 @@ export const PRODUKTER: Produkt[] = [
     ],
     villkor: [
       "Kräver jordfelsbrytare typ B",
-      "Elcentral max 15m från garagevägg",
-      "Besiktning ingår, kan medföra tillägg",
+      "Elcentralen får sitta högst 15 m från garageväggen",
+      "Besiktning ingår. Om den visar att något behöver åtgärdas kan det tillkomma kostnader",
     ],
     uspar: [
       "Ladda billigare på natten med smart styrning",
-      "Rotavdrag, dra av 30% av arbetskostnaden",
+      "Rotavdrag: du betalar 30 % mindre för arbetet",
       "Installation klar inom 2 veckor",
     ],
     passarFor: "Dig som har elbil och vill ladda hemma till lägsta möjliga kostnad.",
@@ -53,24 +58,24 @@ export const PRODUKTER: Produkt[] = [
     namn: "Solceller",
     kategori: "Egen elproduktion",
     tagline: "Producera din egen el, vi hjälper dig hela vägen.",
-    beskrivning: "Solcellsanläggning dimensionerad efter ditt tak och din förbrukning. Inklusive projektering, installation och anslutning till nätet. Du säljer överskottet.",
+    beskrivning: "En solcellsanläggning anpassad efter ditt tak och din förbrukning. Vi planerar, installerar och ansluter den till elnätet. Den el du inte använder själv kan du sälja.",
     pris: { typ: "offert" },
     inkluderar: [
-      "Solcellspaneler + växelriktare",
-      "Projektering och dimensionering",
+      "Solcellspaneler och växelriktare",
+      "Planering och beräkning av rätt storlek",
       "Installation av certifierad montör",
       "Anslutning till elnätet",
       "10 års produktgaranti",
     ],
     villkor: [
       "Takbesiktning krävs",
-      "Söder-/väst-/östläge rekommenderas",
+      "Taket bör vara vänt mot söder, väster eller öster",
       "Bygglov kan krävas i kulturmiljö",
     ],
     uspar: [
-      "Sänk dina elkostnader med upp till 40%",
-      "Sälj överskottselen till nätet",
-      "Grönt skatteavdrag: 20% av totalkostnaden",
+      "Sänk dina elkostnader med upp till 40 %",
+      "Sälj den el du inte använder själv",
+      "Grönt avdrag: 20 % av totalkostnaden",
     ],
     passarFor: "Villaägare som vill producera egen el och sänka sina elkostnader långsiktigt.",
     bildAlt: "Solcellspaneler på ett villatak i nordvästra Skåne",
@@ -81,7 +86,7 @@ export const PRODUKTER: Produkt[] = [
     namn: "Värmepump",
     kategori: "Uppvärmning",
     tagline: "Byt till värmepump, spara energi och pengar.",
-    beskrivning: "Vi hjälper dig välja rätt värmepump för ditt hem, hanterar installation och ser till att allt fungerar.",
+    beskrivning: "Vi hjälper dig välja rätt värmepump för ditt hem, installerar den och ser till att allt fungerar.",
     pris: { typ: "offert" },
     inkluderar: [
       "Energirådgivning",
@@ -90,13 +95,13 @@ export const PRODUKTER: Produkt[] = [
       "Injustering och driftsättning",
     ],
     villkor: [
-      "Besiktning av befintlig uppvärmning",
-      "Bergvärme kräver borrning (separat tillstånd)",
+      "Vi besiktigar din nuvarande uppvärmning först",
+      "Bergvärme kräver borrning och ett eget tillstånd",
     ],
     uspar: [
-      "Spara upp till 75% på uppvärmningskostnaden",
-      "Grönt skatteavdrag",
-      "Kombinerbart med solceller",
+      "Spara upp till 75 % på uppvärmningen",
+      "Grönt avdrag på installationen",
+      "Går att kombinera med solceller",
     ],
     passarFor: "Villaägare med direktel eller äldre oljepanna som vill sänka uppvärmningskostnaden.",
     bildAlt: "Luft-vattenvärmepump monterad på villavägg",
@@ -107,7 +112,7 @@ export const PRODUKTER: Produkt[] = [
     namn: "Hemmaladdare Flex",
     kategori: "Elbil & laddning",
     tagline: "Enkel laddbox utan smart styrning, lägre pris.",
-    beskrivning: "Grundläggande laddbox för dig som inte behöver app-styrning eller smart nattladdning. Laddboxen installeras på vägg nära parkeringen.",
+    beskrivning: "En enkel laddbox för dig som inte behöver app eller smart nattladdning. Vi monterar den på väggen nära där du parkerar.",
     pris: { typ: "fran", belopp: "8 900", enhet: "kr inkl. installation" },
     inkluderar: [
       "Laddbox (standardmodell)",
@@ -116,11 +121,11 @@ export const PRODUKTER: Produkt[] = [
     ],
     villkor: [
       "Kräver jordfelsbrytare typ B",
-      "Enkel = ingen app, ingen smart styrning",
+      "Ingen app eller smart styrning ingår",
     ],
     uspar: [
       "Lägre ingångspris än Ladda Smart",
-      "Rotavdrag, dra av 30% av arbetskostnaden",
+      "Rotavdrag: du betalar 30 % mindre för arbetet",
       "Snabb installation",
     ],
     passarFor: "Dig som bara vill ladda elbilen hemma utan extra funktioner.",
@@ -132,19 +137,19 @@ export const PRODUKTER: Produkt[] = [
     namn: "Energirådgivning",
     kategori: "Tjänster",
     tagline: "Kostnadsfri rådgivning, vi hjälper dig spara.",
-    beskrivning: "Boka ett kostnadsfritt samtal med vår energirådgivare. Vi går igenom din förbrukning och ger konkreta tips på hur du kan sänka dina kostnader.",
+    beskrivning: "Boka ett kostnadsfritt samtal med en energirådgivare. Vi går igenom din förbrukning och ger dig konkreta tips på hur du sänker dina kostnader.",
     pris: { typ: "fast", belopp: "0", enhet: "kr" },
     inkluderar: [
-      "30 min rådgivningssamtal",
+      "Rådgivningssamtal på 30 minuter",
       "Genomgång av din årsförbrukning",
-      "Konkreta sparåtgärder",
-      "Uppföljning via e-post",
+      "Konkreta förslag på hur du kan spara",
+      "Sammanfattning och uppföljning via e-post",
     ],
-    villkor: ["Bokas via telefon eller Mina sidor"],
+    villkor: ["Du bokar via telefon eller Mina sidor"],
     uspar: [
       "Helt kostnadsfritt",
-      "Personlig rådgivning, inte en chatbot",
-      "Inga krav på att köpa något",
+      "Du pratar med en person, inte en chattbot",
+      "Du behöver inte köpa något",
     ],
     passarFor: "Alla som vill förstå sin elförbrukning bättre och hitta sätt att spara.",
     bildAlt: "Energirådgivare i samtal med kund",
@@ -158,15 +163,15 @@ export const PRODUKTER: Produkt[] = [
     beskrivning: "Ett frivilligt tillägg till ditt elavtal. För varje kWh du använder går en del till lokala hållbarhetsprojekt i nordvästra Skåne.",
     pris: { typ: "fast", belopp: "3", enhet: "öre/kWh" },
     inkluderar: [
-      "Automatiskt tillägg på din elfaktura",
+      "Läggs automatiskt på din elfaktura",
       "Pengarna går till lokala miljöprojekt",
-      "Kvartalsvis rapport om vad pengarna använts till",
+      "Rapport varje kvartal om vad pengarna använts till",
     ],
-    villkor: ["Kan slås av när som helst via Mina sidor"],
+    villkor: ["Du kan stänga av tillägget när du vill via Mina sidor"],
     uspar: [
       "Gör skillnad lokalt, i ditt eget område",
-      "Helt frivilligt, inga bindningstider",
-      "Transparent: du ser vad pengarna går till",
+      "Helt frivilligt, ingen bindningstid",
+      "Du ser exakt vad pengarna går till",
     ],
     passarFor: "Dig som vill bidra till hållbarhet utan att byta avtal eller livsstil.",
     bildAlt: "Naturområde i nordvästra Skåne med vindkraftverk i bakgrunden",

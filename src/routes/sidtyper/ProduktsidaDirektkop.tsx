@@ -23,44 +23,45 @@ import { FaqGrupperad } from "../moduler/variants/FaqGrupperad";
 import { FaqSokTopplista } from "../moduler/variants/FaqSokTopplista";
 
 /**
- * SIDTYP 10, Produktsida direktköp
+ * SIDTYP 10: Produktsida direktköp
  *
  * Säljande produktsida för tjänster som köps direkt via formulär (laddbox,
- * realtidsmätare). Konvertering är primärt, strukturen är hierarkisk så
- * läsaren kan stoppa när som helst och fortfarande nå CTA.
+ * realtidsmätare). Konvertering är huvudmålet. Strukturen är hierarkisk, så
+ * läsaren kan sluta läsa när som helst och ändå nå köpknappen.
  *
  * UX-principer:
- *  1. Hero äger värdepropositionen, namn, en USP, primär CTA i hero.
- *  2. Skanningsbarhet, USP-rad direkt under hero ger 3 fakta på 5 sek.
- *  3. Pris transparent, finns synligt vid CTA, inte gömt i fotnot.
- *  4. Hur det fungerar, sänker tröskel ("vad händer efter beställning?").
- *  5. Social proof, case innan formulär, för obeslutna.
- *  6. Formulär som checkout, 3-stegs wizard, samma grammatik som
- *     kontaktflödet, så användaren känner igen mönstret.
- *  7. FAQ sist, för långa-svans-frågor som tvekande har.
+ *  1. Hero äger värdeerbjudandet: produktnamn och en mening om nyttan.
+ *     Pris och CTA ligger i den fasta köppanelen.
+ *  2. Skanningsbarhet: USP-raden direkt under hero ger fyra fakta på fem sekunder.
+ *  3. Transparent pris: priset syns vid CTA:n, inte gömt i en fotnot.
+ *  4. Så här går det till: sänker tröskeln ("vad händer efter beställningen?").
+ *  5. Kundcase före formuläret, för den som ännu inte har bestämt sig.
+ *  6. Formulär som kassa: tre steg med samma mönster som kontaktflödet,
+ *     så användaren känner igen det.
+ *  7. FAQ sist, för mer ovanliga frågor som den tveksamme har.
  */
 
 type Steg = { ikon: string; titel: string; text: string; tid?: string };
 
 const STEG: Steg[] = [
-  { ikon: "shopping_cart", titel: "1. Beställ", text: "Fyll i adress och betalningsuppgifter. Tar ca 5 min.", tid: "5 min" },
-  { ikon: "home_repair_service", titel: "2. Besiktning", text: "Vi kontaktar dig inom 3 arbetsdagar och bokar en besiktning på plats. Kostnadsfritt.", tid: "Inom 3 dagar" },
-  { ikon: "build", titel: "3. Installation", text: "Certifierad elektriker monterar laddboxen. Du får full styrning via appen samma dag.", tid: "1 dag" },
+  { ikon: "shopping_cart", titel: "1. Beställ", text: "Fyll i adressen och dina kontaktuppgifter. Det tar ungefär 5 minuter.", tid: "5 min" },
+  { ikon: "home_repair_service", titel: "2. Besiktning", text: "Vi kontaktar dig inom 3 arbetsdagar och bokar en besiktning hemma hos dig. Den är kostnadsfri.", tid: "Inom 3 arbetsdagar" },
+  { ikon: "build", titel: "3. Installation", text: "En certifierad elektriker monterar laddboxen. Samma dag kan du styra laddningen i appen.", tid: "1 dag" },
 ];
 
 const USP_DATA = [
-  { ikon: "savings", titel: "Lägre laddningspris", text: "Smart styrning hittar billigaste timmen och laddar då." },
-  { ikon: "verified", titel: "Rotavdrag hanterat", text: "Vi drar av 30 % av arbetskostnaden direkt på fakturan." },
-  { ikon: "schedule", titel: "Klart inom 2 veckor", text: "Från beställning till färdig installation. Inga väntelistor." },
-  { ikon: "shield", titel: "5 års garanti", text: "På laddbox och installation. Vi tar hand om service om något händer." },
+  { ikon: "savings", titel: "Lägre laddningspris", text: "Laddboxen laddar automatiskt när elen är som billigast." },
+  { ikon: "verified", titel: "Vi sköter rotavdraget", text: "Vi drar av 30 % av arbetskostnaden direkt på fakturan." },
+  { ikon: "schedule", titel: "Klart inom 2 veckor", text: "Från beställning till färdig installation. Ingen väntelista." },
+  { ikon: "shield", titel: "5 års garanti", text: "Gäller både laddbox och installation. Om något går fel tar vi hand om servicen." },
 ];
 
-// Produkt-instans som hela sidan handlar om, Ladda Smart valdes som
-// representativt direktköp-exempel.
+// Produkten som hela sidan handlar om. Ladda Smart valdes som
+// representativt exempel på direktköp.
 const PRODUKT = PRODUKTER.find((p) => p.id === "ladda-smart")!;
 
 export function ProduktsidaDirektkop() {
-  /* ─── Köp-flöde state ─────────────────────────────────────────── */
+  /* ─── Köpflödets tillstånd ────────────────────────────────────── */
   const [orderStep, setOrderStep] = useState<1 | 2 | 3>(1);
   const [adress, setAdress] = useState("");
   const [postnr, setPostnr] = useState("");
@@ -76,7 +77,7 @@ export function ProduktsidaDirektkop() {
     [orderStep],
   );
 
-  // Focus management mellan steg, samma mönster som kontaktflödet
+  // Fokus flyttas till stegets rubrik vid stegbyte, samma mönster som kontaktflödet
   const stepHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const isInitialRender = useRef(true);
   useEffect(() => {
@@ -99,7 +100,7 @@ export function ProduktsidaDirektkop() {
     setGodkant(false);
   }
 
-  /* ─── Beställningsflöde, 3-stegs wizard ──────────────────────── */
+  /* ─── Beställningsflöde i tre steg ───────────────────────────── */
   function renderOrderFlow(progressVariant: WizardVariant) {
     const kanFortsattaSteg1 = adress.trim() !== "" && postnr.trim() !== "" && ort.trim() !== "";
     const kanSkicka =
@@ -111,309 +112,419 @@ export function ProduktsidaDirektkop() {
 
     return (
       <Annotation
-        label="Beställningsflöde, 3-stegs wizard"
+        label="Beställningsflöde i tre steg"
         audience="user"
-        rationale="Direktköp är ett känsligare moment än kontaktformulär, kund delar personnr och adress. Steg 1 (adress) är lågrisk; steg 2 (personliga uppgifter) kräver förtroende; steg 3 (bekräftelse) stänger loopen med ordernummer + nästa steg. Samma WizardProgress-grammatik som kontaktflödet i Start-Kundservice, användaren känner igen mönstret."
+        rationale="Direktköp kräver mer förtroende än ett kontaktformulär, eftersom kunden lämnar adress och personnummer. Flödet börjar därför med adressen (lågt hinder), fortsätter med personuppgifter och avslutas med ordernummer och nästa steg. Stegmönstret är detsamma som i kontaktflödet."
       >
         <section id="bestall" className="py-10 border-t border-border-subtle">
-          <WizardProgress
-            variant={progressVariant}
-            title="Beställ Ladda Smart"
-            subtitle="Tre korta steg. Du får orderbekräftelse direkt och vi kontaktar dig inom 3 arbetsdagar."
-            steps={[
-              { key: "adress", label: "Adress" },
-              { key: "uppgifter", label: "Uppgifter" },
-              { key: "klart", label: "Klart" },
-            ]}
-            current={orderStep}
-          />
+          <Copy
+            label="Formulärets rubrik och ingress"
+            category="rubrik"
+            text="Beställ Ladda Smart. Tre korta steg. Du får en orderbekräftelse direkt och vi kontaktar dig inom 3 arbetsdagar."
+            rationale="Rubriken upprepar köpknappens ord, så kunden ser att hen kommit rätt. Ingressen svarar på två oro-frågor innan de ställs: hur lång tid det tar och vad som händer sedan. Undvik 'Fyll i formuläret', det beskriver jobbet i stället för målet."
+          >
+            <div>
+              <WizardProgress
+                variant={progressVariant}
+                title="Beställ Ladda Smart"
+                subtitle="Tre korta steg. Du får en orderbekräftelse direkt och vi kontaktar dig inom 3 arbetsdagar."
+                steps={[
+                  { key: "adress", label: "Adress" },
+                  { key: "uppgifter", label: "Uppgifter" },
+                  { key: "klart", label: "Klart" },
+                ]}
+                current={orderStep}
+              />
+            </div>
+          </Copy>
 
           <div className="rounded-md border-2 border-border-subtle bg-surface p-5 sm:p-6">
-            {/* Order summary, alltid synlig */}
+            {/* Sammanfattning av beställningen, syns i steg 1 och 2 */}
             {orderStep < 3 && (
-              <div className="mb-5 pb-4 border-b border-border-subtle">
-                <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-1">
-                  Din beställning
-                </p>
-                <p className="font-medium">Ladda Smart</p>
-                <p className="text-sm text-ink-secondary">14 900 kr inkl. installation · Rotavdrag dras av direkt</p>
-              </div>
+              <Annotation
+                label="Sammanfattning av beställningen"
+                audience="user"
+                rationale="Visar produkt och pris under steg 1 och 2. Kunden ser hela tiden vad hen beställer och vad det kostar, och behöver inte skrolla tillbaka för att kontrollera."
+              >
+                <div className="mb-5 pb-4 border-b border-border-subtle">
+                  <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-1">
+                    Din beställning
+                  </p>
+                  <p className="font-medium">Ladda Smart</p>
+                  <Copy
+                    label="Pris i sammanfattningen"
+                    category="metadata"
+                    text="14 900 kr inkl. installation · rotavdraget dras av direkt på fakturan"
+                    rationale="Samma pris och samma ordval som i köppanelen, så kunden inte undrar om det är två olika belopp. 'Direkt på fakturan' förklarar att kunden inte behöver ansöka om rotavdraget själv."
+                  >
+                    <p className="text-sm text-ink-secondary">14 900 kr inkl. installation · rotavdraget dras av direkt på fakturan</p>
+                  </Copy>
+                </div>
+              </Annotation>
             )}
 
             {/* Steg 1: Installationsadress */}
             {orderStep === 1 && (
-              <div>
-                <h3
-                  ref={stepHeadingRef}
-                  tabIndex={-1}
-                  className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
-                >
-                  Var ska laddboxen sitta?
-                </h3>
-                <p className="text-sm text-ink-secondary mb-4">
-                  Adressen där installationen ska ske. Behöver vara godkänd för installation.
-                </p>
-                <div className="space-y-3 mb-5">
-                  <div>
-                    <label htmlFor="ord-adress" className="text-sm font-medium block mb-1">
-                      Gatuadress
-                    </label>
-                    <input
-                      id="ord-adress"
-                      type="text"
-                      value={adress}
-                      onChange={(e) => setAdress(e.target.value)}
-                      required
-                      placeholder="Storgatan 12"
-                      className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
-                    />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-3">
+              <Annotation
+                label="Steg 1: installationsadress"
+                audience="user"
+                rationale="Första steget frågar bara efter adressen, något kunden kan svara på utan att tveka. Knappen blir aktiv när alla tre fälten är ifyllda. I en skarp version behövs felmeddelanden vid fälten, så kunden förstår varför knappen inte går att klicka på."
+              >
+                <div>
+                  <Copy
+                    label="Steg 1, rubrik"
+                    category="rubrik"
+                    text="Var ska laddboxen sitta?"
+                    rationale="En fråga i vardagsspråk i stället för fältnamnet 'Installationsadress'. Kunden tänker på sitt garage, inte på en adress i ett system."
+                  >
+                    <h3
+                      ref={stepHeadingRef}
+                      tabIndex={-1}
+                      className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                    >
+                      Var ska laddboxen sitta?
+                    </h3>
+                  </Copy>
+                  <Copy
+                    label="Steg 1, hjälptext"
+                    category="reassurance"
+                    text="Ange adressen där laddboxen ska installeras. Vid besiktningen kontrollerar vi att elcentralen klarar installationen."
+                    rationale="Förklarar varför adressen behövs och att kunden inte själv behöver veta om elen räcker. Det tar bort ett vanligt skäl att avbryta. Undvik tekniska krav här; de står under Villkor."
+                  >
+                    <p className="text-sm text-ink-secondary mb-4">
+                      Ange adressen där laddboxen ska installeras. Vid besiktningen kontrollerar vi att elcentralen klarar installationen.
+                    </p>
+                  </Copy>
+                  <div className="space-y-3 mb-5">
                     <div>
-                      <label htmlFor="ord-postnr" className="text-sm font-medium block mb-1">
-                        Postnummer
+                      <label htmlFor="ord-adress" className="text-sm font-medium block mb-1">
+                        Gatuadress
                       </label>
                       <input
-                        id="ord-postnr"
+                        id="ord-adress"
                         type="text"
-                        inputMode="numeric"
-                        value={postnr}
-                        onChange={(e) => setPostnr(e.target.value)}
+                        value={adress}
+                        onChange={(e) => setAdress(e.target.value)}
                         required
-                        placeholder="252 25"
+                        placeholder="Storgatan 12"
                         className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
                       />
                     </div>
-                    <div>
-                      <label htmlFor="ord-ort" className="text-sm font-medium block mb-1">
-                        Ort
-                      </label>
-                      <input
-                        id="ord-ort"
-                        type="text"
-                        value={ort}
-                        onChange={(e) => setOrt(e.target.value)}
-                        required
-                        placeholder="Helsingborg"
-                        className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
-                      />
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      <div>
+                        <label htmlFor="ord-postnr" className="text-sm font-medium block mb-1">
+                          Postnummer
+                        </label>
+                        <input
+                          id="ord-postnr"
+                          type="text"
+                          inputMode="numeric"
+                          value={postnr}
+                          onChange={(e) => setPostnr(e.target.value)}
+                          required
+                          placeholder="252 25"
+                          className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="ord-ort" className="text-sm font-medium block mb-1">
+                          Ort
+                        </label>
+                        <input
+                          id="ord-ort"
+                          type="text"
+                          value={ort}
+                          onChange={(e) => setOrt(e.target.value)}
+                          required
+                          placeholder="Helsingborg"
+                          className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
+                        />
+                      </div>
                     </div>
                   </div>
+                  <Copy
+                    label="Steg 1, knapp"
+                    category="cta"
+                    text="Fortsätt till dina uppgifter"
+                    rationale="Säger vart knappen leder, inte bara att det finns mer. Kunden vet att nästa steg handlar om personuppgifter och blir inte överraskad. Undvik 'Nästa' eller 'Skicka'."
+                  >
+                    <button
+                      type="button"
+                      disabled={!kanFortsattaSteg1}
+                      onClick={() => setOrderStep(2)}
+                      className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                    >
+                      Fortsätt till dina uppgifter
+                      <Icon name="arrow_forward" size={16} />
+                    </button>
+                  </Copy>
                 </div>
-                <button
-                  type="button"
-                  disabled={!kanFortsattaSteg1}
-                  onClick={() => setOrderStep(2)}
-                  className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
-                >
-                  Fortsätt
-                  <Icon name="arrow_forward" size={16} />
-                </button>
-              </div>
+              </Annotation>
             )}
 
             {/* Steg 2: Personliga uppgifter */}
             {orderStep === 2 && (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (kanSkicka) setOrderStep(3);
-                }}
+              <Annotation
+                label="Steg 2: personuppgifter och godkännande"
+                audience="user"
+                rationale="Här lämnar kunden de känsligaste uppgifterna, så varje fält motiveras och trygghetsraden står intill knappen. Knappen blir aktiv när alla fält är ifyllda och villkoren godkända. I en skarp version behövs felmeddelanden vid fälten."
               >
-                <h3
-                  ref={stepHeadingRef}
-                  tabIndex={-1}
-                  className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                <form
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    if (kanSkicka) setOrderStep(3);
+                  }}
                 >
-                  Dina uppgifter
-                </h3>
-                <p className="text-sm text-ink-secondary mb-4">
-                  Personnumret behövs för rotavdrag och kreditupplysning. Vi sparar inte uppgifter vi inte måste.
-                </p>
-                <div className="space-y-3 mb-5">
-                  <div>
-                    <label htmlFor="ord-namn" className="text-sm font-medium block mb-1">
-                      För- och efternamn
-                    </label>
-                    <input
-                      id="ord-namn"
-                      type="text"
-                      value={namn}
-                      onChange={(e) => setNamn(e.target.value)}
-                      required
-                      className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
-                    />
-                  </div>
-                  <div>
-                    <label htmlFor="ord-personnr" className="text-sm font-medium block mb-1">
-                      Personnummer
-                    </label>
-                    <input
-                      id="ord-personnr"
-                      type="text"
-                      value={personnr}
-                      onChange={(e) => setPersonnr(e.target.value)}
-                      required
-                      placeholder="ÅÅÅÅMMDD-XXXX"
-                      className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
-                    />
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-3">
+                  <h3
+                    ref={stepHeadingRef}
+                    tabIndex={-1}
+                    className="font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                  >
+                    Dina uppgifter
+                  </h3>
+                  <Copy
+                    label="Varför vi behöver personnummer"
+                    category="reassurance"
+                    text="Vi behöver ditt personnummer för rotavdraget och en kreditupplysning. Vi sparar bara de uppgifter vi måste."
+                    rationale="Personnummer är det fält där flest tvekar. Att säga varför ('för rotavdraget') innan kunden frågar minskar avhoppen. Skriv konkret vad uppgiften används till, inte bara 'av säkerhetsskäl'."
+                  >
+                    <p className="text-sm text-ink-secondary mb-4">
+                      Vi behöver ditt personnummer för rotavdraget och en kreditupplysning. Vi sparar bara de uppgifter vi måste.
+                    </p>
+                  </Copy>
+                  <div className="space-y-3 mb-5">
                     <div>
-                      <label htmlFor="ord-epost" className="text-sm font-medium block mb-1">
-                        E-post
+                      <label htmlFor="ord-namn" className="text-sm font-medium block mb-1">
+                        För- och efternamn
                       </label>
                       <input
-                        id="ord-epost"
-                        type="email"
-                        value={epost}
-                        onChange={(e) => setEpost(e.target.value)}
+                        id="ord-namn"
+                        type="text"
+                        value={namn}
+                        onChange={(e) => setNamn(e.target.value)}
                         required
                         className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
                       />
                     </div>
                     <div>
-                      <label htmlFor="ord-telefon" className="text-sm font-medium block mb-1">
-                        Telefon
+                      <label htmlFor="ord-personnr" className="text-sm font-medium block mb-1">
+                        Personnummer
                       </label>
                       <input
-                        id="ord-telefon"
-                        type="tel"
-                        value={telefon}
-                        onChange={(e) => setTelefon(e.target.value)}
+                        id="ord-personnr"
+                        type="text"
+                        value={personnr}
+                        onChange={(e) => setPersonnr(e.target.value)}
                         required
+                        placeholder="ÅÅÅÅMMDD-XXXX"
                         className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
                       />
                     </div>
+                    <div className="grid sm:grid-cols-2 gap-3">
+                      <div>
+                        <label htmlFor="ord-epost" className="text-sm font-medium block mb-1">
+                          E-post
+                        </label>
+                        <input
+                          id="ord-epost"
+                          type="email"
+                          value={epost}
+                          onChange={(e) => setEpost(e.target.value)}
+                          required
+                          className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
+                        />
+                      </div>
+                      <div>
+                        <label htmlFor="ord-telefon" className="text-sm font-medium block mb-1">
+                          Telefonnummer
+                        </label>
+                        <input
+                          id="ord-telefon"
+                          type="tel"
+                          value={telefon}
+                          onChange={(e) => setTelefon(e.target.value)}
+                          required
+                          className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none"
+                        />
+                      </div>
+                    </div>
+                    <Copy
+                      label="Godkännande av villkor"
+                      category="metadata"
+                      text="Jag godkänner avtalsvillkoren och har läst integritetspolicyn."
+                      rationale="Kunden godkänner avtalet men läser integritetspolicyn, den är information och inget man samtycker till. Formuleringen är juridiskt korrekt och ärlig. Båda länkarna ska öppnas i nytt fönster så att ifyllda uppgifter inte försvinner."
+                    >
+                      <label className="flex items-start gap-2 mt-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={godkant}
+                          onChange={(e) => setGodkant(e.target.checked)}
+                          className="mt-1 w-4 h-4 accent-brand-primary"
+                        />
+                        <span className="text-sm text-ink-secondary">
+                          Jag godkänner{" "}
+                          <a href="#" className="text-brand-accent underline underline-offset-2">avtalsvillkoren</a>{" "}
+                          och har läst{" "}
+                          <a href="#" className="text-brand-accent underline underline-offset-2">integritetspolicyn</a>.
+                        </span>
+                      </label>
+                    </Copy>
                   </div>
-                  <label className="flex items-start gap-2 mt-2 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={godkant}
-                      onChange={(e) => setGodkant(e.target.checked)}
-                      className="mt-1 w-4 h-4 accent-brand-primary"
-                    />
-                    <span className="text-sm text-ink-secondary">
-                      Jag godkänner{" "}
-                      <a href="#" className="text-brand-accent underline underline-offset-2">avtalsvillkoren</a>{" "}
-                      och{" "}
-                      <a href="#" className="text-brand-accent underline underline-offset-2">integritetspolicyn</a>.
-                    </span>
-                  </label>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setOrderStep(1)}
-                    className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-tint-info"
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setOrderStep(1)}
+                      className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-tint-info"
+                    >
+                      <Icon name="arrow_back" size={16} />
+                      Tillbaka
+                    </button>
+                    <Copy
+                      label="Skicka beställningen, knapp"
+                      category="cta"
+                      text="Skicka beställning"
+                      rationale="Beskriver exakt vad som händer: beställningen skickas, men inga pengar dras. Undvik 'Köp' och 'Betala', eftersom kunden inte betalar förrän efter installationen."
+                    >
+                      <button
+                        type="submit"
+                        disabled={!kanSkicka}
+                        className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                      >
+                        Skicka beställning
+                        <Icon name="check" size={16} />
+                      </button>
+                    </Copy>
+                  </div>
+                  <Copy
+                    label="Trygghetsrad vid knappen"
+                    category="reassurance"
+                    text="Du betalar ingenting nu. Fakturan kommer när installationen är klar. Inga dolda avgifter."
+                    rationale="Står direkt under knappen, där oron för att binda sig är som störst. Tre korta meningar: inget dras nu, när fakturan kommer och att inget tillkommer i hemlighet."
                   >
-                    <Icon name="arrow_back" size={16} />
-                    Tillbaka
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={!kanSkicka}
-                    className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    Slutför beställning
-                    <Icon name="check" size={16} />
-                  </button>
-                </div>
-                <p className="text-xs text-ink-muted mt-3">
-                  Du betalar inget förrän vi har gjort besiktning och bekräftat installationen. Inga dolda avgifter.
-                </p>
-              </form>
+                    <p className="text-xs text-ink-muted mt-3">
+                      Du betalar ingenting nu. Fakturan kommer när installationen är klar. Inga dolda avgifter.
+                    </p>
+                  </Copy>
+                </form>
+              </Annotation>
             )}
 
             {/* Steg 3: Bekräftelse */}
             {orderStep === 3 && (
-              <div role="status" aria-live="polite">
-                <div className="flex items-start gap-3 mb-4">
-                  <Icon
-                    name="check_circle"
-                    size={28}
-                    className="text-brand-accent shrink-0"
-                    filled
-                  />
-                  <div>
-                    <Copy
-                      label="Order-bekräftelse, rubrik"
-                      category="rubrik"
-                      text="Tack, vi har tagit emot din beställning"
-                      rationale="'Tack' först (mänskligt), sen faktatum. 'Vi har tagit emot' är fait accompli, användaren kan släppa oron. Inte 'Beställningen är registrerad' (passiv förvaltningssvenska)."
-                    >
-                      <h3
-                        ref={stepHeadingRef}
-                        tabIndex={-1}
-                        className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+              <Annotation
+                label="Steg 3: orderbekräftelse"
+                audience="user"
+                rationale="Bekräftar att beställningen har kommit fram och visar ordernummer, adress och när kunden betalar. Listan med nästa steg svarar på 'vad händer nu?' så att kunden inte behöver ringa kundservice."
+              >
+                <div role="status" aria-live="polite">
+                  <div className="flex items-start gap-3 mb-4">
+                    <Icon
+                      name="check_circle"
+                      size={28}
+                      className="text-brand-accent shrink-0"
+                      filled
+                    />
+                    <div>
+                      <Copy
+                        label="Orderbekräftelse, rubrik"
+                        category="rubrik"
+                        text="Tack, vi har tagit emot din beställning"
+                        rationale="'Tack' först, för att det låter mänskligt, sedan beskedet. 'Vi har tagit emot' säger att det är klart och att kunden kan släppa oron. Undvik passiv myndighetssvenska som 'Beställningen är registrerad'."
                       >
-                        Tack, vi har tagit emot din beställning
-                      </h3>
+                        <h3
+                          ref={stepHeadingRef}
+                          tabIndex={-1}
+                          className="text-h5 font-medium mb-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2 rounded"
+                        >
+                          Tack, vi har tagit emot din beställning
+                        </h3>
+                      </Copy>
+                      <Copy
+                        label="Bekräftelse via e-post"
+                        category="reassurance"
+                        text="Vi har skickat en orderbekräftelse till din e-post."
+                        rationale="Visar kundens egen e-postadress, så hen kan se att den är rätt stavad och vet var bekräftelsen hamnar. Aktiv form ('Vi har skickat') i stället för 'En bekräftelse är skickad'."
+                      >
+                        <p className="text-sm text-ink-secondary">
+                          Vi har skickat en orderbekräftelse till <strong className="text-ink">{epost || "din e-post"}</strong>.
+                        </p>
+                      </Copy>
+                    </div>
+                  </div>
+                  <dl className="text-sm grid sm:grid-cols-2 gap-3 mb-5 p-4 rounded-md bg-tint-info">
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Ordernummer</dt>
+                      <dd className="font-medium font-mono">{ordernr}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Produkt</dt>
+                      <dd className="font-medium">Ladda Smart · 14 900 kr</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Installationsadress</dt>
+                      <dd className="font-medium">{adress}, {postnr} {ort}</dd>
+                    </div>
+                    <div>
+                      <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Du betalar</dt>
+                      <dd className="font-medium">När installationen är klar</dd>
+                    </div>
+                  </dl>
+                  <Copy
+                    label="Nästa steg efter beställningen"
+                    category="reassurance"
+                    text="Det här händer nu: Vi har tagit emot din beställning (klart). Vi kontaktar dig inom 3 arbetsdagar och bokar besiktning. Kostnadsfri besiktning hemma hos dig. En certifierad elektriker installerar laddboxen, oftast inom 2 veckor. Du får fakturan när installationen är klar, med rotavdraget redan avdraget."
+                    rationale="Samma tider och ordval som i 'Så här går det till', så beskeden stämmer överens. Första punkten är överstruken och märkt 'klart', så kunden ser att processen redan är igång. Varje punkt börjar med vem som gör vad."
+                  >
+                    <div className="mb-5">
+                      <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-2">
+                        Det här händer nu
+                      </p>
+                      <ol className="space-y-2">
+                        {[
+                          "Vi har tagit emot din beställning (klart)",
+                          "Vi kontaktar dig inom 3 arbetsdagar och bokar besiktning",
+                          "Kostnadsfri besiktning hemma hos dig",
+                          "En certifierad elektriker installerar laddboxen, oftast inom 2 veckor",
+                          "Du får fakturan när installationen är klar, med rotavdraget redan avdraget",
+                        ].map((t, i) => (
+                          <li key={i} className="flex gap-3 text-sm">
+                            <span className="shrink-0 w-5 h-5 rounded-full bg-brand-primary text-white grid place-items-center text-[11px] font-bold">
+                              {i + 1}
+                            </span>
+                            <span className={i === 0 ? "text-ink-secondary line-through" : ""}>
+                              {t}
+                            </span>
+                          </li>
+                        ))}
+                      </ol>
+                    </div>
+                  </Copy>
+                  <div className="flex flex-wrap gap-2">
+                    <Copy
+                      label="Följ ordern, knapp"
+                      category="cta"
+                      text="Följ ordern på Mina sidor"
+                      rationale="Ger kunden något att göra efter köpet och visar var hen hittar sin order senare. Verb och mål i samma knapp, så man vet vad som händer vid klick."
+                    >
+                      <a
+                        href="#"
+                        className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-tint-info text-sm"
+                      >
+                        <Icon name="person" size={16} />
+                        Följ ordern på Mina sidor
+                      </a>
                     </Copy>
-                    <p className="text-sm text-ink-secondary">
-                      En orderbekräftelse är skickad till <strong className="text-ink">{epost || "din e-post"}</strong>.
-                    </p>
+                    <button
+                      type="button"
+                      onClick={reinitOrder}
+                      className="inline-flex items-center gap-1.5 text-ink-secondary hover:text-brand-accent text-sm px-3 py-2.5"
+                    >
+                      <Icon name="restart_alt" size={16} />
+                      Gör en ny beställning
+                    </button>
                   </div>
                 </div>
-                <dl className="text-sm grid sm:grid-cols-2 gap-3 mb-5 p-4 rounded-md bg-tint-info">
-                  <div>
-                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Ordernummer</dt>
-                    <dd className="font-medium font-mono">{ordernr}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Produkt</dt>
-                    <dd className="font-medium">Ladda Smart · 14 900 kr</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Adress</dt>
-                    <dd className="font-medium">{adress}, {postnr} {ort}</dd>
-                  </div>
-                  <div>
-                    <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Du betalar</dt>
-                    <dd className="font-medium">Efter besiktning</dd>
-                  </div>
-                </dl>
-                <div className="mb-5">
-                  <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-2">
-                    Så här händer det härnäst
-                  </p>
-                  <ol className="space-y-2">
-                    {[
-                      "Beställningen är registrerad (redan klart)",
-                      "Vi kontaktar dig inom 3 arbetsdagar för att boka besiktning",
-                      "Besiktning hemma hos dig, kostnadsfri",
-                      "Installation av certifierad elektriker, oftast inom 2 veckor",
-                      "Du får faktura efter installation, med rotavdrag avdraget",
-                    ].map((t, i) => (
-                      <li key={i} className="flex gap-3 text-sm">
-                        <span className="shrink-0 w-5 h-5 rounded-full bg-brand-primary text-white grid place-items-center text-[11px] font-bold">
-                          {i + 1}
-                        </span>
-                        <span className={i === 0 ? "text-ink-secondary line-through" : ""}>
-                          {t}
-                        </span>
-                      </li>
-                    ))}
-                  </ol>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-1.5 border border-border-strong text-brand-primary font-medium px-4 py-2.5 rounded hover:bg-tint-info text-sm"
-                  >
-                    <Icon name="person" size={16} />
-                    Följ ordern på Mina sidor
-                  </a>
-                  <button
-                    type="button"
-                    onClick={reinitOrder}
-                    className="inline-flex items-center gap-1.5 text-ink-secondary hover:text-brand-accent text-sm px-3 py-2.5"
-                  >
-                    <Icon name="restart_alt" size={16} />
-                    Ny beställning
-                  </button>
-                </div>
-              </div>
+              </Annotation>
             )}
           </div>
         </section>
@@ -421,22 +532,22 @@ export function ProduktsidaDirektkop() {
     );
   }
 
-  /* ─── Block-arrayen ────────────────────────────────────────────── */
+  /* ─── Sidans block ─────────────────────────────────────────────── */
 
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO, produktspecifik ────────────────────────────── */
+    /* ─── 1. HERO: produktnamn och nytta ──────────────────────── */
     {
       id: "hero",
       label: "Hero",
       variants: [
         {
           key: "produkt",
-          label: "Produkt-hero, namn + USP + CTA",
+          label: "Produkthero: namn och USP",
           render: () => (
             <Annotation
-              label="Hero, säljande, en tydlig CTA"
+              label="Hero: produktnamn och nytta"
               audience="user"
-              rationale="Inget bilduppslag som dröjer, inget marknadsspråk i H1. Direkt: produktnamn (vad det är) + en USP-mening (vad det löser) + pris (transparent) + en CTA. Bilden är produktillustration, inte livstilsbild, användare som klickade hit har redan bestämt sig för att kolla produkten."
+              rationale="Hero säger direkt vad produkten är och vad den löser: produktnamnet som rubrik och en mening om nyttan. Bilden visar produkten, inte en livsstil, eftersom besökaren redan valt att titta på den. Pris och köpknapp finns i köppanelen."
             >
               <section className="py-8 sm:py-12 grid md:grid-cols-2 gap-8 items-start">
                 <div>
@@ -445,23 +556,23 @@ export function ProduktsidaDirektkop() {
                     label="H1, produktnamn"
                     category="rubrik"
                     text="Ladda Smart"
-                    rationale="Produktnamnet räcker som rubrik. 'Hemma-laddning för elbil' skulle vara redaktörens språk; 'Ladda Smart' är produktens egennamn, kortast möjliga och kategoriskt entydigt."
+                    rationale="Produktnamnet räcker som rubrik. Besökaren har klickat på just Ladda Smart och vill få bekräftat att hen kommit rätt. Undvik beskrivande rubriker som 'Hemmaladdning för elbil'; nyttan hör hemma i ingressen."
                   >
                     <h1 className="text-display leading-tight mb-3">Ladda Smart</h1>
                   </Copy>
                   <Copy
-                    label="USP-mening"
+                    label="Ingress, nyttan i en mening"
                     category="reassurance"
-                    text="Smart laddning för elbil, hemma. Ladda billigare på natten, allt installerat på två veckor."
-                    rationale="Tre fakta i en mening: vad det är (smart laddning), vad det sparar (billigare nattladdning), vad du får (installation klar inom 2 veckor). Inga adjektiv, bara konkreta löften."
+                    text="Ladda elbilen hemma på natten, när elen är billigast. Vi installerar allt inom 2 veckor."
+                    rationale="Två korta meningar med tre fakta: var (hemma), varför (billigare el på natten) och hur snabbt (2 veckor). Du-tilltal och konkreta löften i stället för adjektiv som 'smidig' eller 'smart'."
                   >
                     <p className="text-lede text-ink-secondary mb-6 leading-relaxed">
-                      Smart laddning för elbil, hemma. Ladda billigare på natten, allt installerat på två veckor.
+                      Ladda elbilen hemma på natten, när elen är billigast. Vi installerar allt inom 2 veckor.
                     </p>
                   </Copy>
-                  {/* Pris, primär CTA och reassurance ligger i sticky-panelen
-                     höger (eller fixed bottom-bar på mobil). Hero håller bara
-                     värdepropositionen, inte ett duplicerat köp. */}
+                  {/* Pris, primär CTA och trygghetsrader ligger i köppanelen till
+                     höger (på mobil i köpraden längst ned). Hero håller bara
+                     värdeerbjudandet, så köpet inte dubbleras. */}
                 </div>
 
                 <div className="bg-tint-info aspect-[4/3] rounded-md flex items-center justify-center">
@@ -474,30 +585,37 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 2. USP-RAD, fyra fakta-kort ─────────────────────────── */
+    /* ─── 2. USP-RAD: fyra faktakort ──────────────────────────── */
     {
       id: "usp",
       label: "USP-rad, fyra fakta",
       variants: [
         {
           key: "ikoner",
-          label: "Ikon-kort, fyra kolumner",
+          label: "Ikonkort i rutnät",
           render: () => (
             <Annotation
-              label="USP-kort, skannbara fakta"
+              label="USP-kort: fyra snabba fakta"
               audience="user"
-              rationale="Direkt under hero så läsaren får tre/fyra konkreta fördelar utan att skrolla djupt. Ikoner gör korten visuellt distinkta. Samma layout-grammatik som IntentCardGrid på Start-sidor, användaren känner igen mönstret."
+              rationale="Ligger direkt under hero, så besökaren får fyra konkreta fördelar utan att skrolla långt. Ikonerna gör korten lätta att skilja åt. Samma kortmönster som på startsidorna, så besökaren känner igen det."
             >
               <section className="py-8 border-t border-border-subtle">
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {USP_DATA.map((u) => (
-                    <div key={u.titel} className="p-4 rounded-md bg-surface border border-border-subtle">
-                      <Icon name={u.ikon} size={28} className="text-brand-accent mb-2" />
-                      <h3 className="font-medium mb-1 text-sm">{u.titel}</h3>
-                      <p className="text-sm text-ink-secondary leading-snug">{u.text}</p>
-                    </div>
-                  ))}
-                </div>
+                <Copy
+                  label="USP-kortens rubriker"
+                  category="rubrik"
+                  text="Lägre laddningspris · Vi sköter rotavdraget · Klart inom 2 veckor · 5 års garanti"
+                  rationale="Varje rubrik är en fördel som går att läsa på en sekund, med siffra där det finns en. Brödtexten under förklarar hur. Undvik abstrakta ord som 'Trygghet' eller 'Enkelhet' som rubrik; de säger inget om vad kunden får."
+                >
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    {USP_DATA.map((u) => (
+                      <div key={u.titel} className="p-4 rounded-md bg-surface border border-border-subtle">
+                        <Icon name={u.ikon} size={28} className="text-brand-accent mb-2" />
+                        <h3 className="font-medium mb-1 text-sm">{u.titel}</h3>
+                        <p className="text-sm text-ink-secondary leading-snug">{u.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -505,23 +623,22 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 3. PRODUKTINFO, info utan pris/CTA (sticky-panel äger köpet) ─
-     * Default: ren info-variant utan pris och CTA, sticky-panelen
-     * ansvarar för pris och beställning. Trygg/Progressiv/Köp finns kvar
-     * som alternativ för sidor utan sticky-panel (fallback om man väljer
-     * att stänga av panelen). */
+    /* ─── 3. PRODUKTINFO: information utan pris och CTA ─────────
+     * Standard: ren informationsvariant utan pris och CTA, eftersom
+     * köppanelen ansvarar för pris och beställning. Trygg, Progressiv
+     * och Köp finns kvar som alternativ för sidor utan köppanel. */
     {
       id: "produktinfo",
       label: "Produktinfo",
       variants: [
         {
           key: "info-only",
-          label: "Renodlad info, bild + ingår + villkor + varför (default)",
+          label: "Bara information: bild, ingår, villkor, varför (standard)",
           render: () => (
             <Annotation
-              label="Produktinfo, renodlad till information"
+              label="Produktinfo: bara information"
               audience="design"
-              rationale="Pris och CTA är borttaget från detta block, sticky-panelen i höger kolumn ansvarar för köpet. Här bara: bild, beskrivning, vad som ingår, villkor, varför produkten passar. Renar hierarkin: en plats för köp, en plats för information."
+              rationale="Här finns bara information: bild, beskrivning, vad som ingår, villkor och varför produkten passar. Pris och köpknapp ligger i köppanelen. En plats för köp och en för information gör sidan lättare att överblicka."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="grid md:grid-cols-2 gap-8 mb-6">
@@ -552,7 +669,14 @@ export function ProduktsidaDirektkop() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-h5 font-medium mb-3">Villkor</h3>
+                    <Copy
+                      label="Villkor, rubrik"
+                      category="rubrik"
+                      text="Villkor"
+                      rationale="Rak rubrik som är lätt att hitta för den som letar efter förbehåll innan köpet. Undvik mjukare varianter som 'Bra att veta', de döljer att det handlar om krav på bostaden."
+                    >
+                      <h3 className="text-h5 font-medium mb-3">Villkor</h3>
+                    </Copy>
                     <ul className="space-y-1.5 text-sm text-ink-secondary">
                       {PRODUKT.villkor.map((v) => (
                         <li key={v} className="flex gap-2">
@@ -563,7 +687,14 @@ export function ProduktsidaDirektkop() {
                     </ul>
                   </div>
                   <div>
-                    <h3 className="text-h5 font-medium mb-3">Varför {PRODUKT.namn}?</h3>
+                    <Copy
+                      label="Varför-rubrik"
+                      category="rubrik"
+                      text={`Varför ${PRODUKT.namn}?`}
+                      rationale="Formulerad som kundens egen fråga, så listan under läses som svar och inte som reklam. Redaktören byter produktnamn i produktdatan; rubriken följer med."
+                    >
+                      <h3 className="text-h5 font-medium mb-3">Varför {PRODUKT.namn}?</h3>
+                    </Copy>
                     <ul className="space-y-1.5 text-sm text-ink-secondary">
                       {PRODUKT.uspar.map((u) => (
                         <li key={u} className="flex gap-2">
@@ -580,7 +711,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "progressiv",
-          label: "Progressiv, tabs med pris/CTA (dubblerar panelen)",
+          label: "Progressiv: flikar med pris och CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoProgressiv produkt={PRODUKT} inline />
@@ -589,7 +720,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "trygg",
-          label: "Trygg, 2-kolumns med pris/CTA (dubblerar panelen)",
+          label: "Trygg: två kolumner med pris och CTA (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoTrygg produkt={PRODUKT} inline />
@@ -598,7 +729,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "kop",
-          label: "Köp-fokuserad, egen sticky sidebar (dubblerar panelen)",
+          label: "Köpfokuserad: egen fast sidopanel (dubblerar panelen)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <ProduktinfoKop produkt={PRODUKT} inline />
@@ -608,50 +739,64 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 4. HUR DET FUNGERAR, 3 steg ────────────────────────── */
+    /* ─── 4. SÅ HÄR GÅR DET TILL: tre steg ──────────────────── */
     {
       id: "process",
-      label: "Hur det fungerar",
+      label: "Så här går det till",
       variants: [
         {
           key: "tre-steg",
-          label: "Tre steg horisontellt",
+          label: "Tre steg bredvid varandra",
           render: () => (
             <Annotation
-              label="Process-steg, sänk tröskel innan formulär"
+              label="Så här går det till: tre steg"
               audience="user"
-              rationale="Direkt-köp innebär att kund delar adress + personnr, tröskeln är högre än ett kontaktformulär. Visa exakt vad som händer EFTER beställning så det inte känns som en blindöverlämning. Tidsangivelser (5 min / 3 dagar / 1 dag) sätter förväntan."
+              rationale="Vid direktköp lämnar kunden adress och personnummer, så tröskeln är högre än för ett kontaktformulär. Här visas exakt vad som händer efter beställningen, så det inte känns som att hoppa i blindo. Tidsangivelserna sätter rätt förväntningar."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
-                  label="Process-rubrik"
+                  label="Processens rubrik"
                   category="rubrik"
                   text="Så här går det till"
-                  rationale="Standardformulering för process-sektioner, bekant och enkel. 'Vad händer efter du beställt?' skulle vara mer specifik men längre."
+                  rationale="Välkänd formulering som alla förstår direkt. 'Vad händer när du har beställt?' är mer specifik men längre och passar bättre som FAQ-fråga."
                 >
                   <h2 className="text-h3 font-medium mb-2">Så här går det till</h2>
                 </Copy>
-                <p className="text-ink-secondary mb-6 max-w-reading">
-                  Från beställning till färdig installation, oftast inom 2 veckor.
-                </p>
-                <ol className="grid md:grid-cols-3 gap-4">
-                  {STEG.map((s) => (
-                    <li
-                      key={s.titel}
-                      className="p-5 rounded-md border border-border-subtle bg-surface flex flex-col gap-2"
-                    >
-                      <Icon name={s.ikon} size={28} className="text-brand-accent" />
-                      <h3 className="font-medium">{s.titel}</h3>
-                      <p className="text-sm text-ink-secondary leading-snug flex-1">{s.text}</p>
-                      {s.tid && (
-                        <span className="text-xs text-ink-muted font-medium uppercase tracking-wider mt-2 inline-flex items-center gap-1">
-                          <Icon name="schedule" size={12} />
-                          {s.tid}
-                        </span>
-                      )}
-                    </li>
-                  ))}
-                </ol>
+                <Copy
+                  label="Processens ingress"
+                  category="reassurance"
+                  text="Från beställning till färdig installation tar det oftast 2 veckor."
+                  rationale="Svarar på den viktigaste frågan, hur lång tid det tar, innan stegen visas. 'Oftast' är ärligt: ledtiden kan variera och vi lovar inte mer än vi kan hålla."
+                >
+                  <p className="text-ink-secondary mb-6 max-w-reading">
+                    Från beställning till färdig installation tar det oftast 2 veckor.
+                  </p>
+                </Copy>
+                <Copy
+                  label="Stegen och tidsangivelserna"
+                  category="reassurance"
+                  text="1. Beställ · 2. Besiktning · 3. Installation"
+                  rationale="Varje steg har en kort rubrik, en mening om vad som händer och en tid. Tiderna ska stämma med orderbekräftelsen (3 arbetsdagar, 2 veckor). Ändrar redaktören en tid här ska den ändras på båda ställena."
+                >
+                  <ol className="grid md:grid-cols-3 gap-4">
+                    {STEG.map((s) => (
+                      <li
+                        key={s.titel}
+                        className="p-5 rounded-md border border-border-subtle bg-surface flex flex-col gap-2"
+                      >
+                        <Icon name={s.ikon} size={28} className="text-brand-accent" />
+                        <h3 className="font-medium">{s.titel}</h3>
+                        <p className="text-sm text-ink-secondary leading-snug flex-1">{s.text}</p>
+                        {s.tid && (
+                          <span className="text-xs text-ink-muted font-medium uppercase tracking-wider mt-2 inline-flex items-center gap-1">
+                            <Icon name="schedule" size={12} />
+                            {s.tid}
+                          </span>
+                        )}
+                      </li>
+                    ))}
+                  </ol>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -659,14 +804,14 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 5. KUNDCASE, modul, 3 varianter ────────────────────── */
+    /* ─── 5. KUNDCASE: modul med tre varianter ───────────────── */
     {
       id: "kundcase",
       label: "Kundcase",
       variants: [
         {
           key: "story",
-          label: "Case-story (default, djup)",
+          label: "Kundberättelse (standard, fördjupning)",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseStory />
@@ -675,7 +820,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "grid",
-          label: "Citatkort-grid, bredd",
+          label: "Citatkort i rutnät, bredd",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseGrid />
@@ -684,7 +829,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "hero",
-          label: "Hero-citat, ett stort",
+          label: "Ett stort citat",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <KundcaseHero />
@@ -694,37 +839,37 @@ export function ProduktsidaDirektkop() {
       ],
     },
 
-    /* ─── 6. BESTÄLLNINGSFLÖDE, 3-stegs wizard ───────────────── */
+    /* ─── 6. BESTÄLLNINGSFLÖDE: tre steg ─────────────────────── */
     {
       id: "bestall",
       label: "Beställningsflöde",
       variants: [
         {
           key: "stepper",
-          label: "Stepper, cirklar med etiketter (default)",
+          label: "Stegindikator med cirklar och etiketter (standard)",
           render: () => renderOrderFlow("stepper"),
         },
         {
           key: "bar",
-          label: "Progress-bar, kompakt",
+          label: "Förloppsindikator, kompakt",
           render: () => renderOrderFlow("bar"),
         },
         {
           key: "chips",
-          label: "Pill-chips",
+          label: "Stegindikator med etiketter i rad",
           render: () => renderOrderFlow("chips"),
         },
       ],
     },
 
-    /* ─── 7. FAQ, modul ──────────────────────────────────────── */
+    /* ─── 7. FAQ: modul ──────────────────────────────────────── */
     {
       id: "faq",
       label: "FAQ",
       variants: [
         {
           key: "accordion",
-          label: "Accordion (default)",
+          label: "Utfällbar lista (standard)",
           render: () => (
             <section className="py-10 border-t border-border-subtle [&_section]:max-w-none">
               <FaqAccordion />
@@ -733,7 +878,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "grupperad",
-          label: "Grupperad, innan/under/efter",
+          label: "Grupperad: före, under och efter köpet",
           render: () => (
             <section className="py-10 border-t border-border-subtle">
               <FaqGrupperad />
@@ -742,7 +887,7 @@ export function ProduktsidaDirektkop() {
         },
         {
           key: "sok",
-          label: "Sök + topplista",
+          label: "Sökfält och vanligaste frågorna",
           render: () => (
             <section className="py-10 border-t border-border-subtle [&_section]:max-w-none">
               <FaqSokTopplista />
@@ -759,26 +904,26 @@ export function ProduktsidaDirektkop() {
       variants: [
         {
           key: "default",
-          label: "Synergi-curering, 3 ikon-kort",
+          label: "Produkter som kompletterar, tre ikonkort",
           render: () => (
             <RelateradeProdukter
               produkter={[
                 {
                   ikon: "solar_power",
                   titel: "Solceller",
-                  text: "Producera elen du laddar bilen med, ladda gratis när solen står på.",
+                  text: "Gör din egen el och ladda bilen med solkraft när solen skiner.",
                   href: "/sidtyper/produktsida-leadsgen",
                 },
                 {
                   ikon: "support_agent",
                   titel: "Energirådgivning",
-                  text: "Kostnadsfri genomgång av ditt hushålls elanvändning, vi hittar var du kan spara mest.",
+                  text: "Gratis genomgång av hushållets elanvändning. Vi visar var du kan spara mest.",
                   href: "#",
                 },
                 {
                   ikon: "heat_pump",
                   titel: "Värmepump",
-                  text: "Kombinera smart laddning med smart uppvärmning, värm huset när elen är som billigast.",
+                  text: "Styr både laddning och uppvärmning efter elpriset. Huset värms när elen är billigast.",
                   href: "#",
                 },
               ]}
@@ -793,10 +938,10 @@ export function ProduktsidaDirektkop() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Produktsida direktköp (Ladda Smart)"
-        syfte="Säljande produktsida som leder till direktköp via formulär. Hierarki är: värde först (hero + USP), produktinfo, process, social proof, beställning, FAQ. Konvertering är primär, pris och CTA syns högt på sidan, formuläret är 3-stegs så avhopp blir mätbara per steg."
-        malgrupp="Privatkund som har bestämt sig för att skaffa elbilsladdning hemma och vill jämföra alternativ. Ofta efter en initial research-fas, vill se pris, villkor och process snabbt."
-        primarHandling="Klicka 'Beställ Ladda Smart' i hero ELLER fyll i adress i formuläret längre ned."
-        ton="Konkret, säljande utan att vara påflugen. Pris och tid alltid synliga, inga dolda steg. Inga adjektiv som 'fantastisk' eller 'banbrytande'."
+        syfte="Sälja Ladda Smart direkt via ett beställningsformulär på sidan. Ordningen är värde (hero och USP-rad), produktinfo, så här går det till, kundcase, beställning och FAQ. Pris och köpknapp syns hela tiden i en fast köppanel. Formuläret har tre steg, så att avhopp kan mätas per steg."
+        malgrupp="Privatkund som har bestämt sig för att ladda elbilen hemma och jämför alternativ. Har ofta redan läst på och vill snabbt se pris, villkor och vad som händer efter beställningen."
+        primarHandling="Klicka på 'Beställ Ladda Smart' i köppanelen (på mobil 'Beställ' i köpraden längst ned) och skicka beställningen i formuläret."
+        ton="Konkret och säljande utan att vara påträngande. Pris och tider syns alltid och inga steg är dolda. Undvik värdeladdade ord som 'fantastisk' och 'banbrytande'."
       />
 
       <div className="flex items-center justify-between pt-6">
@@ -812,21 +957,28 @@ export function ProduktsidaDirektkop() {
         </a>
       </div>
 
-      <nav aria-label="Breadcrumb" className="text-xs text-ink-muted mt-4 mb-2">
-        <ol className="flex gap-1">
-          <li><a href="#" className="hover:text-brand-accent">Privat</a></li>
-          <li aria-hidden="true">›</li>
-          <li><a href="#" className="hover:text-brand-accent">Smarta produkter</a></li>
-          <li aria-hidden="true">›</li>
-          <li aria-current="page" className="font-medium text-ink">Ladda Smart</li>
-        </ol>
-      </nav>
+      <Annotation
+        label="Brödsmulor"
+        audience="design"
+        rationale="Visar var sidan ligger på webbplatsen och ger en väg tillbaka till Smarta produkter, för den som vill jämföra med andra produkter innan köpet."
+      >
+        <nav aria-label="Brödsmulor" className="text-xs text-ink-muted mt-4 mb-2">
+          <ol className="flex gap-1">
+            <li><a href="#" className="hover:text-brand-accent">Privat</a></li>
+            <li aria-hidden="true">›</li>
+            <li><a href="#" className="hover:text-brand-accent">Smarta produkter</a></li>
+            <li aria-hidden="true">›</li>
+            <li aria-current="page" className="font-medium text-ink">Ladda Smart</li>
+          </ol>
+        </nav>
+      </Annotation>
 
-      {/* Layouten är delad i två spår:
-          1. Block FÖRE formuläret renderas i 2-col grid med sticky-panel höger.
-          2. Formulär-blocket och allt efter (FAQ) renderas i full bredd,             panelen hör inte hemma där eftersom användaren redan nått köpyttan.
-          Båda BlockList-instanserna delar samma pageId så preset/edit-state
-          fungerar konsistent över hela sidan. */}
+      {/* Layouten är delad i två delar:
+          1. Blocken före formuläret visas i två kolumner, med köppanelen till höger.
+          2. Formuläret och allt efter (FAQ) visas i full bredd. Där behövs
+             ingen panel, eftersom användaren redan har nått köpet.
+          Båda blocklistorna delar samma pageId, så förval och redigering
+          fungerar likadant över hela sidan. */}
       {(() => {
         const formIdx = blocks.findIndex((b) => b.id === "bestall");
         const beforeForm = formIdx >= 0 ? blocks.slice(0, formIdx) : blocks;
@@ -837,21 +989,27 @@ export function ProduktsidaDirektkop() {
               <div className="min-w-0">
                 <BlockList pageId="produktsida-direktkop" blocks={beforeForm} />
               </div>
-              <div className="hidden lg:block pt-8 sm:pt-12">
-                <StickyPurchaseSidebar
-                  eyebrow="Din beställning"
-                  title="14 900 kr"
-                  subtitle="inkl. installation · rotavdrag dras av direkt"
-                  ctaLabel="Beställ Ladda Smart"
-                  ctaHref="#bestall"
-                  reassurance={[
-                    "Du betalar först efter besiktning",
-                    "14 dagars ångerrätt",
-                    "Klart inom 2 veckor",
-                  ]}
-                  hideWhenSelector="#bestall"
-                />
-              </div>
+              <Annotation
+                label="Fast köppanel: pris och CTA"
+                audience="design"
+                rationale="Panelen följer med när man skrollar, så pris, köpknapp och tre trygghetsrader alltid syns. Den döljs när formuläret kommer i bild, så att köpknappen inte finns på två ställen. På mobil ersätts den av en köprad längst ned."
+              >
+                <div className="hidden lg:block pt-8 sm:pt-12">
+                  <StickyPurchaseSidebar
+                    eyebrow="Ladda Smart"
+                    title="14 900 kr"
+                    subtitle="inkl. installation · rotavdraget dras av direkt"
+                    ctaLabel="Beställ Ladda Smart"
+                    ctaHref="#bestall"
+                    reassurance={[
+                      "Du betalar först när installationen är klar",
+                      "14 dagars ångerrätt",
+                      "Klart inom 2 veckor",
+                    ]}
+                    hideWhenSelector="#bestall"
+                  />
+                </div>
+              </Annotation>
             </div>
 
             {formAndAfter.length > 0 && (
@@ -861,14 +1019,23 @@ export function ProduktsidaDirektkop() {
         );
       })()}
 
-      <StickyPurchaseBottomBar
-        eyebrow="Ladda Smart"
-        title="14 900 kr"
-        subtitle="inkl. installation · rotavdrag"
-        ctaLabel="Beställ"
-        ctaHref="#bestall"
-        hideWhenSelector="#bestall"
-      />
+      <Copy
+        label="Köppanel och köprad, CTA och trygghetsrader"
+        category="cta"
+        text="Beställ Ladda Smart / Beställ · Du betalar först när installationen är klar · 14 dagars ångerrätt · Klart inom 2 veckor"
+        rationale="Köpknappen säger 'Beställ Ladda Smart' i panelen och bara 'Beställ' på mobil, där produktnamnet redan står bredvid. Undvik 'Köp nu', kunden betalar först efter installationen. Trygghetsraderna svarar på de tre vanligaste tvekandena: pengarna, ångerrätten och tiden."
+      >
+        <div>
+          <StickyPurchaseBottomBar
+            eyebrow="Ladda Smart"
+            title="14 900 kr"
+            subtitle="inkl. installation · rotavdrag"
+            ctaLabel="Beställ"
+            ctaHref="#bestall"
+            hideWhenSelector="#bestall"
+          />
+        </div>
+      </Copy>
     </div>
   );
 }

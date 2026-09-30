@@ -34,11 +34,11 @@ export function IndexPage() {
     <div className="max-w-content mx-auto px-4 sm:px-6 py-10 sm:py-16">
       <header className="mb-12 max-w-reading">
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Öresundskraft · UX-prototyp · Fas 1</p>
-        <h1 className="text-h1 mb-4">Innehållshierarki, sidtyper och nyckelmoduler</h1>
+        <h1 className="text-h1 mb-4">Innehållshierarki, sidtyper och viktiga moduler</h1>
         <p className="text-lede text-ink-secondary">
-          Klickbar prototyp för diskussion kring sidtyper och kritiska block. Innehållet är
-          placeholder. Aktivera <em>designanteckningar</em> i sidhuvudet för att se motivering
-          per element.
+          En klickbar prototyp att diskutera sidtyper och viktiga block kring. Allt innehåll är
+          exempeltext. Klicka på <em>UX-guide</em> i sidhuvudet för att se varför varje del ser
+          ut som den gör.
         </p>
         <div className="mt-6 flex flex-wrap gap-3 text-xs">
           <span className="px-3 py-1.5 rounded-full bg-tint-info text-brand-primary">Användare</span>

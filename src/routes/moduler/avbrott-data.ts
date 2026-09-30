@@ -1,6 +1,11 @@
 /**
- * Shared placeholder data for the Avbrottslista module.
- * All dates, areas and customer counts are placeholder.
+ * Gemensamma exempeldata för modulen Avbrottslista (används även av sidtypen
+ * för avbrott). Alla datum, områden och kundantal är påhittade exempel.
+ *
+ * Skrivregler för texterna:
+ * - rubrik: vad som hänt + var, t.ex. "Strömavbrott i centrala Helsingborg".
+ * - beskrivning: orsak och vad vi gör nu, i korta meningar med vi-form.
+ * - uppdateringar: en händelse per rad, klockslag skrivs som 08:22.
  */
 
 export type AvbrottStatus = "pagaende" | "planerat" | "avslutat";
@@ -11,9 +16,9 @@ export type Avbrott = {
   typ: "el" | "fjarrvarme" | "fiber";
   rubrik: string;
   omrade: string;
-  start: string;          // ISO or display string
-  slutBeraknat?: string;  // for pågående / planerat
-  slutFaktiskt?: string;  // for avslutat
+  start: string;          // "ÅÅÅÅ-MM-DD TT:MM", visas via formatTid()
+  slutBeraknat?: string;  // beräknat slut, för pågående och planerade
+  slutFaktiskt?: string;  // faktiskt slut, för avslutade
   berordaKunder: number;
   beskrivning: string;
   uppdateringar?: { tid: string; text: string }[];
@@ -29,11 +34,11 @@ export const AVBROTT: Avbrott[] = [
     start: "2026-04-19 08:22",
     slutBeraknat: "2026-04-19 12:00",
     berordaKunder: 340,
-    beskrivning: "Kabelfelet lokaliserat till transformatorstation Söder T4. Reparation pågår.",
+    beskrivning: "Felet sitter i en kabel vid nätstationen Söder T4. Vi reparerar den nu.",
     uppdateringar: [
-      { tid: "08:22", text: "Avbrott upptäckt. Automatisk felanmälan mottagen." },
-      { tid: "08:45", text: "Serviceteam på plats. Kabelfelet lokaliserat." },
-      { tid: "09:30", text: "Reparation påbörjad. Beräknad klar ~12:00." },
+      { tid: "08:22", text: "Vi upptäckte avbrottet via en automatisk felanmälan." },
+      { tid: "08:45", text: "Våra montörer är på plats och har hittat kabelfelet." },
+      { tid: "09:30", text: "Reparationen har börjat. Vi räknar med att strömmen är tillbaka cirka 12:00." },
     ],
   },
   {
@@ -45,7 +50,7 @@ export const AVBROTT: Avbrott[] = [
     start: "2026-04-19 06:00",
     slutBeraknat: "2026-04-19 14:00",
     berordaKunder: 120,
-    beskrivning: "Ventilbyte i distributionsnätet. Tillfällig temperaturminskning i berörda fastigheter.",
+    beskrivning: "Vi byter en ventil i fjärrvärmenätet. Under tiden kan värmen och varmvattnet bli svalare i berörda fastigheter.",
   },
   {
     id: "a3",
@@ -56,7 +61,7 @@ export const AVBROTT: Avbrott[] = [
     start: "2026-04-22 07:00",
     slutBeraknat: "2026-04-22 16:00",
     berordaKunder: 45,
-    beskrivning: "Byte av kabel i nätstationsområdet. Berörda kunder meddelas via SMS.",
+    beskrivning: "Vi byter en elkabel i området. Berörda kunder får ett sms innan arbetet börjar.",
   },
   {
     id: "a4",
@@ -67,7 +72,7 @@ export const AVBROTT: Avbrott[] = [
     start: "2026-04-25 08:00",
     slutBeraknat: "2026-04-25 15:00",
     berordaKunder: 210,
-    beskrivning: "Förstärkning av kabelstråk för bostadsområde i expansion.",
+    beskrivning: "Vi förstärker elnätet så att det räcker till de nya bostäderna i området.",
   },
   {
     id: "a5",
@@ -78,7 +83,7 @@ export const AVBROTT: Avbrott[] = [
     start: "2026-04-18 14:10",
     slutFaktiskt: "2026-04-18 16:45",
     berordaKunder: 85,
-    beskrivning: "Träd fallit över luftledning. Avhjälpt och ström återställd.",
+    beskrivning: "Ett träd föll över en elledning. Ledningen är lagad och strömmen är tillbaka.",
   },
   {
     id: "a6",
@@ -89,7 +94,7 @@ export const AVBROTT: Avbrott[] = [
     start: "2026-04-17 06:00",
     slutFaktiskt: "2026-04-17 14:30",
     berordaKunder: 60,
-    beskrivning: "Ventilbyte slutfört. Normal drift återställd.",
+    beskrivning: "Ventilen är bytt och fjärrvärmen fungerar som vanligt igen.",
   },
 ];
 
@@ -104,3 +109,30 @@ export const TYP_LABEL: Record<Avbrott["typ"], string> = {
   fjarrvarme: "Fjärrvärme",
   fiber: "Fiber",
 };
+
+const MANADER = [
+  "januari", "februari", "mars", "april", "maj", "juni",
+  "juli", "augusti", "september", "oktober", "november", "december",
+];
+
+/**
+ * Gör om "2026-04-19 08:22" till "19 april kl. 08:22".
+ * Okänt format visas som det är.
+ */
+export function formatTid(tid: string): string {
+  const m = tid.match(/^(\d{4})-(\d{2})-(\d{2})(?:[ T](\d{2}):(\d{2}))?/);
+  if (!m) return tid;
+  const datum = `${Number(m[3])} ${MANADER[Number(m[2]) - 1]}`;
+  return m[4] ? `${datum} kl. ${m[4]}:${m[5]}` : datum;
+}
+
+/**
+ * Tidsspann för ett avbrott, t.ex. "19 april kl. 08:22 till 12:00" eller
+ * "22 april kl. 07:00 till 23 april kl. 16:00". Utan sluttid: "från 19 april kl. 08:22".
+ */
+export function formatIntervall(start: string, slut?: string): string {
+  if (!slut) return `från ${formatTid(start)}`;
+  const sammaDag = start.slice(0, 10) === slut.slice(0, 10);
+  const slutText = sammaDag && slut.length >= 16 ? slut.slice(11, 16) : formatTid(slut);
+  return `${formatTid(start)} till ${slutText}`;
+}

@@ -8,87 +8,87 @@ const VARIANTS: Variant[] = [
   {
     id: "action",
     shortName: "A",
-    label: "Action-first",
+    label: "Handlingsfokuserad",
     riskLevel: "låg",
-    oneLiner: "H1 = verb + objekt. Primär CTA dominant. Ingen bild.",
-    bestFor: "Transaktionssidor: teckna elavtal, köpa produkt, göra felanmälan.",
+    oneLiner: "Rubriken säger vad besökaren kan göra. En tydlig huvudknapp, ingen bild.",
+    bestFor: "Sidor där besökaren ska göra något: teckna elavtal, köpa en produkt, felanmäla.",
     render: () => <HeroAction />,
   },
   {
     id: "brand",
     shortName: "B",
-    label: "Brand-first",
+    label: "Varumärkesfokuserad",
     riskLevel: "medel",
-    oneLiner: "Bildbakgrund + värdeproposition. Mjukare CTA:s.",
-    bestFor: "Hub-sidor, kampanjlandningar, första-besökare.",
+    oneLiner: "Stor bild och ett varumärkeslöfte. Knapparna bjuder in snarare än uppmanar.",
+    bestFor: "Översiktssidor, kampanjsidor och besökare som är nya hos oss.",
     render: () => <HeroBrand />,
   },
   {
     id: "status",
     shortName: "C",
-    label: "Status-first",
+    label: "Statusfokuserad",
     riskLevel: "medel",
-    oneLiner: "H1 är ett direktsvar på sidans fråga. Dynamisk färg.",
-    bestFor: "Avbrott, kundservice, live-data-sidor.",
+    oneLiner: "Rubriken svarar direkt på besökarens fråga. Färgen visar läget.",
+    bestFor: "Avbrott, kundservice och sidor som visar läget i realtid.",
     render: () => <HeroStatus pagaende={2} />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Vad läsaren ser först",
+    aspect: "Det besökaren ser först",
     values: {
-      action: "Ett verb + objekt. 'Gör X.'",
-      brand: "En bild och ett varumärkeslöfte.",
-      status: "Ett direktsvar på deras fråga.",
+      action: "En uppmaning: vad du kan göra här.",
+      brand: "En bild och ett löfte om vilka vi är.",
+      status: "Ett direkt svar på frågan besökaren kom med.",
     },
   },
   {
     aspect: "Syfte",
     values: {
-      action: "Driva konvertering. Minst friktion till CTA.",
-      brand: "Bygga trovärdighet. Etablera känsla.",
-      status: "Snabba svar. Respektera användarens tid.",
+      action: "Få fler att slutföra ärendet. Kortast möjliga väg till knappen.",
+      brand: "Bygga förtroende och skapa en känsla för Öresundskraft.",
+      status: "Ge snabba svar och spara besökarens tid.",
     },
   },
   {
-    aspect: "Kräver bildresurser",
+    aspect: "Behöver bilder",
     values: {
       action: "Nej.",
-      brand: "Ja, högkvalitativ bild eller video.",
+      brand: "Ja, en bild eller film av hög kvalitet.",
       status: "Nej.",
     },
   },
   {
-    aspect: "Kräver data-backend",
+    aspect: "Behöver data från våra system",
     values: {
       action: "Nej.",
       brand: "Nej.",
-      status: "Ja, live-status från backend.",
+      status: "Ja, aktuell driftstatus i realtid.",
     },
   },
   {
-    aspect: "Risk för 'känns som en reklam'",
+    aspect: "Risk att det känns som reklam",
     values: {
-      action: "Låg, ser ut som en mjukvaru-app.",
-      brand: "Hög om bild/copy inte är på nivå.",
-      status: "Låg, data är inte reklam.",
+      action: "Låg, upplevs som en tjänst snarare än en annons.",
+      brand: "Hög om bild eller text inte håller måttet.",
+      status: "Låg, fakta upplevs inte som reklam.",
     },
   },
   {
-    aspect: "Hypotes om konvertering",
+    aspect: "Förväntad effekt",
     values: {
-      action: "Högst på transaktions-sidor.",
-      brand: "Bäst för navigerande besök.",
-      status: "Neutral, det är utility, inte konvertering.",
+      action: "Flest avslut på sidor där besökaren ska göra något.",
+      brand: "Bäst för besökare som vill orientera sig.",
+      status: "Mäts i nytta, inte i avslut.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      action: "Default för privat/el, privat/produktsida, privat/felanmälan.",
+      action: "Förval för elavtal, produktsidor och felanmälan.",
       brand: "Startsidan och kampanjsidor.",
-      status: "Avbrott, kundservice, driftstatus.",
+      status: "Avbrott, kundservice och driftstatus.",
     },
   },
 ];
@@ -100,10 +100,11 @@ export function Hero() {
 
       <header className="mt-6 mb-8 max-w-reading">
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Hero</p>
-        <h1 className="text-h1 mb-3">Hero, sidans öppning</h1>
+        <h1 className="text-h1 mb-3">Hero: så öppnar sidan</h1>
         <p className="text-lede text-ink-secondary">
-          Tre strategier för hur en sida ska öppna. Alla tre är rimliga, valet beror på
-          sidans syfte. Växla mellan A, B och C för att känna skillnaden.
+          Tre sätt att öppna en sida. Alla fungerar, men passar olika syften: att få
+          besökaren att agera, att bygga förtroende eller att ge ett snabbt svar. Växla
+          mellan A, B och C och jämför.
         </p>
       </header>
 

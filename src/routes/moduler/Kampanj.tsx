@@ -8,71 +8,71 @@ const VARIANTS: Variant[] = [
   {
     id: "hero",
     shortName: "A",
-    label: "Hero-banner",
+    label: "Stor banner",
     riskLevel: "medel",
-    oneLiner: "Stor banner med gradient + primär CTA. Max impact.",
-    bestFor: "Stora kampanjer, nya tjänster, säsongs-erbjudanden.",
+    oneLiner: "Stor färgyta med rubrik och en tydlig huvudknapp. Syns mest av de tre.",
+    bestFor: "Stora kampanjer, nya tjänster och säsongserbjudanden.",
     render: () => <KampanjHero />,
   },
   {
     id: "story",
     shortName: "B",
-    label: "Story-block",
+    label: "Berättelse",
     riskLevel: "låg",
-    oneLiner: "Text + bild sida vid sida. Berättande. Diskret CTA.",
-    bestFor: "Hållbarhet, klimatarbete, partnerskap, backstory.",
+    oneLiner: "Bild och text sida vid sida. Berättar och förklarar, länken är diskret.",
+    bestFor: "Hållbarhet, klimatarbete, partnerskap och bakgrunden till ett projekt.",
     render: () => <KampanjStory />,
   },
   {
     id: "strip",
     shortName: "C",
-    label: "Strip",
+    label: "Remsa",
     riskLevel: "hög",
-    oneLiner: "Smal färgstark rad med tidsmarkör + CTA. Risk för dark pattern.",
-    bestFor: "Tidskritiska erbjudanden med äkta deadline. Max 1 per sida.",
+    oneLiner: "Smal färgstark remsa med datum och knapp. Kan lätt kännas påträngande.",
+    bestFor: "Erbjudanden med ett verkligt sista datum. Högst en per sida.",
     render: () => <KampanjStrip />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Visuell impact",
+    aspect: "Hur mycket den syns",
     values: {
-      hero: "Hög, dominerar sidan.",
-      story: "Medel, inbjuder till läsning.",
-      strip: "Låg yta, medel uppmärksamhet, beror på färg.",
+      hero: "Mycket, den tar över sidan.",
+      story: "Måttligt, den bjuder in till läsning.",
+      strip: "Liten yta men märks, beroende på färg.",
     },
   },
   {
-    aspect: "Copy-behov",
+    aspect: "Textbehov",
     values: {
-      hero: "Kort: verb + objekt + tidslinje.",
+      hero: "Kort: rubrik, en mening och ett datum.",
       story: "Längre: brödtext på 50-100 ord.",
-      strip: "En mening. Max 15 ord.",
+      strip: "En mening, högst 15 ord.",
     },
   },
   {
-    aspect: "Risk för dark pattern",
+    aspect: "Risk att pressa besökaren",
     values: {
-      hero: "Låg, tydlig CTA, ingen dold urgency.",
-      story: "Inget. Det är redaktionellt innehåll.",
-      strip: "Hög om 'Senast X' inte är sant. Riktlinje: använd bara med äkta deadline.",
+      hero: "Låg, tydlig knapp och ingen konstlad brådska.",
+      story: "Ingen, det är redaktionellt innehåll.",
+      strip: "Hög om datumet inte stämmer. Använd bara när erbjudandet verkligen tar slut.",
     },
   },
   {
     aspect: "Bildbehov",
     values: {
-      hero: "Gradient räcker. Bild höjer ribban.",
-      story: "Ja, konkretiserar berättelsen.",
-      strip: "Nej, ikon räcker.",
+      hero: "Färgytan räcker. En bild lyfter den.",
+      story: "Ja, bilden gör berättelsen konkret.",
+      strip: "Nej, en ikon räcker.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      hero: "Framtidspengen, solceller-kampanjer, nya tjänstelanseringar.",
-      story: "Carbon capture, Framtidspengen-results, volontärarbete.",
-      strip: "Endast med äkta deadline (senast 31 mars etc). Aldrig permanent.",
+      hero: "Framtidspengen, solcellskampanjer och lansering av nya tjänster.",
+      story: "Koldioxidinfångning, resultat från Framtidspengen och volontärarbete.",
+      strip: "Bara med ett verkligt sista datum (till exempel 31 mars). Aldrig permanent.",
     },
   },
 ];
@@ -83,11 +83,11 @@ export function Kampanj() {
       <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">← Översikt</Link>
 
       <header className="mt-6 mb-8 max-w-reading">
-        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Kampanj- och story-banner</p>
-        <h1 className="text-h1 mb-3">Kampanj- och story-banner</h1>
+        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Kampanj och berättelse</p>
+        <h1 className="text-h1 mb-3">Kampanj och berättelse</h1>
         <p className="text-lede text-ink-secondary">
-          Tre format för kampanj- och berättelse-inslag. Hero för hög impact, Story för
-          djup, Strip för tidskritiska erbjudanden.
+          Tre format för kampanjer och berättelser. Den stora bannern syns mest, berättelsen
+          ger djup och remsan passar erbjudanden med ett sista datum.
         </p>
       </header>
 

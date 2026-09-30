@@ -1,6 +1,8 @@
 /**
- * Shared data for the Kundservice-triage module.
- * This is the "Jag behöver hjälp med…" interactive narrowing pattern.
+ * Gemensamt innehåll för kundservicemodulen ("Jag behöver hjälp med…").
+ * Alla tre varianterna hämtar ämnen, frågor och svar härifrån, så en ändring
+ * här slår igenom överallt. Frågorna skrivs i kundens röst ("Jag vill…"),
+ * knapptexterna som verb + objekt och svaren i en eller två korta meningar.
  */
 
 export type KategoriId = "faktura" | "avtal" | "flytt" | "avbrott" | "elnat" | "ovrigt";
@@ -29,56 +31,56 @@ export const KATEGORIER: Kategori[] = [
   {
     id: "faktura",
     ikon: "description",
-    label: "Faktura & betalning",
-    beskrivning: "Frågor om fakturor, betalning, autogiro och e-faktura.",
+    label: "Faktura och betalning",
+    beskrivning: "Fakturor, betalning, autogiro och e-faktura.",
     underkategorier: [
       {
         id: "faktura-forstar-inte",
         label: "Jag förstår inte min faktura",
-        action: { type: "link", label: "Förstå din faktura", href: "#", description: "Steg-för-steg-guide som förklarar varje rad på din faktura." },
+        action: { type: "link", label: "Läs guiden om fakturan", href: "#", description: "Guiden går igenom din faktura rad för rad." },
       },
       {
         id: "faktura-betala",
         label: "Jag vill ändra betalsätt",
-        action: { type: "mina-sidor", label: "Ändra betalsätt", description: "Logga in på Mina sidor för att ställa in autogiro eller e-faktura." },
+        action: { type: "mina-sidor", label: "Ändra betalsätt", description: "Logga in på Mina sidor och välj autogiro eller e-faktura." },
       },
       {
         id: "faktura-hog",
         label: "Min faktura är ovanligt hög",
-        action: { type: "link", label: "Varför är min faktura hög?", href: "#", description: "Vanliga orsaker: vintermånader, ändrad förbrukning, eller prisändring. Vi förklarar." },
+        action: { type: "link", label: "Se vanliga orsaker", href: "#", description: "Oftast beror det på vintermånader, att du använt mer el eller att priset har ändrats." },
       },
       {
         id: "faktura-betalat",
-        label: "Jag har redan betalat men fått påminnelse",
-        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Betalningar kan ta 1–3 bankdagar. Chatten hjälper dig kontrollera status.", tid: "Svarstid: ~2 min" },
+        label: "Jag har betalat men fått en påminnelse",
+        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "En betalning kan ta 1-3 bankdagar att nå oss. I chatten kan vi se om din betalning har kommit in.", tid: "Svarstid cirka 2 min" },
       },
     ],
   },
   {
     id: "avtal",
     ikon: "edit_note",
-    label: "Avtal & priser",
-    beskrivning: "Teckna, byta eller förstå ditt elavtal.",
+    label: "Avtal och priser",
+    beskrivning: "Teckna, byt eller förstå ditt elavtal.",
     underkategorier: [
       {
         id: "avtal-nytt",
         label: "Jag vill teckna nytt elavtal",
-        action: { type: "link", label: "Teckna elavtal", href: "/moduler/elavtal-jamfor", description: "Jämför våra tre avtal och teckna direkt, tar ca 3 minuter." },
+        action: { type: "link", label: "Teckna elavtal", href: "/moduler/elavtal-jamfor", description: "Jämför våra tre avtal och teckna direkt. Det tar ungefär 3 minuter." },
       },
       {
         id: "avtal-byta",
         label: "Jag vill byta avtal",
-        action: { type: "mina-sidor", label: "Byt avtal på Mina sidor", description: "Logga in och välj nytt avtal. Inga samtal behövs, allt sker direkt." },
+        action: { type: "mina-sidor", label: "Byt avtal på Mina sidor", description: "Logga in och välj nytt avtal. Bytet görs direkt och du behöver inte ringa." },
       },
       {
         id: "avtal-forstå-pris",
         label: "Jag förstår inte mitt elpris",
-        action: { type: "link", label: "Så fungerar elpriset", href: "#", description: "Vad är påslag, spotpris och energiskatt? Vi förklarar varje del." },
+        action: { type: "link", label: "Läs om elpriset", href: "#", description: "Vi förklarar vad påslag, spotpris och energiskatt betyder för ditt pris." },
       },
       {
         id: "avtal-anvisat",
         label: "Jag har ett anvisat avtal",
-        action: { type: "link", label: "Vad är anvisat avtal?", href: "#", description: "Du har ett tillfälligt avtal som ofta är dyrare. Byt gratis, tar 3 min." },
+        action: { type: "link", label: "Läs om anvisat avtal", href: "#", description: "Ett anvisat avtal är tillfälligt och ofta dyrare. Du byter gratis på ungefär 3 minuter." },
       },
     ],
   },
@@ -86,22 +88,22 @@ export const KATEGORIER: Kategori[] = [
     id: "flytt",
     ikon: "home",
     label: "Flytta",
-    beskrivning: "Flytta in, flytta ut, eller flytta inom nätet.",
+    beskrivning: "Flytta in, flytta ut eller flytta inom vårt område.",
     underkategorier: [
       {
         id: "flytt-in",
         label: "Jag ska flytta in",
-        action: { type: "link", label: "Anmäl inflyttning", href: "#", description: "Gör det senast 3 veckor före. Du behöver personnummer och tillträdesdag." },
+        action: { type: "link", label: "Anmäl inflyttning", href: "#", description: "Anmäl senast 3 veckor innan du flyttar in. Ha personnummer och tillträdesdag till hands." },
       },
       {
         id: "flytt-ut",
         label: "Jag ska flytta ut",
-        action: { type: "link", label: "Anmäl utflyttning", href: "#", description: "Avanmäl senast 3 veckor före. Du behöver sista dag och mätarnummer." },
+        action: { type: "link", label: "Anmäl utflyttning", href: "#", description: "Anmäl senast 3 veckor innan du flyttar ut. Ha sista boendedag och mätarnummer till hands." },
       },
       {
         id: "flytt-inom",
         label: "Jag flyttar inom Helsingborg/Ängelholm",
-        action: { type: "link", label: "Flytta ditt avtal", href: "#", description: "Ditt elhandelsavtal följer med dig, anmäl bara ny adress." },
+        action: { type: "link", label: "Anmäl ny adress", href: "#", description: "Ditt elavtal följer med dig. Du behöver bara anmäla din nya adress." },
       },
     ],
   },
@@ -109,45 +111,45 @@ export const KATEGORIER: Kategori[] = [
     id: "avbrott",
     ikon: "bolt",
     label: "Strömavbrott",
-    beskrivning: "Aktuella avbrott, felanmälan och driftstörningar.",
+    beskrivning: "Pågående avbrott, planerade avbrott och felanmälan.",
     underkategorier: [
       {
         id: "avbrott-nu",
-        label: "Jag har inget ström just nu",
-        action: { type: "link", label: "Se aktuella avbrott", href: "/moduler/avbrottslista", description: "Kolla om avbrottet redan är anmält. Om inte, gör en felanmälan." },
+        label: "Jag har ingen ström just nu",
+        action: { type: "link", label: "Se aktuella avbrott", href: "/moduler/avbrottslista", description: "Se om avbrottet redan är känt. Finns det inte med kan du göra en felanmälan." },
       },
       {
         id: "avbrott-planerat",
-        label: "Kommer det bli avbrott snart?",
-        action: { type: "link", label: "Planerade avbrott", href: "/moduler/avbrottslista", description: "Se kommande planerade avbrott i ditt område." },
+        label: "Blir det avbrott i mitt område snart?",
+        action: { type: "link", label: "Se planerade avbrott", href: "/moduler/avbrottslista", description: "Här ser du när vi planerar arbeten som stänger av strömmen i ditt område." },
       },
       {
         id: "avbrott-felanmal",
         label: "Jag vill göra en felanmälan",
-        action: { type: "kontakt", kanal: "telefon", label: "Ring felanmälan", description: "Akuta fel anmäls via telefon dygnet runt.", tid: "042-490 32 00" },
+        action: { type: "kontakt", kanal: "telefon", label: "Ring felanmälan", description: "Ring oss om du har ett akut fel. Vi svarar dygnet runt.", tid: "042-490 32 00" },
       },
     ],
   },
   {
     id: "elnat",
     ikon: "power",
-    label: "Elnät & mätare",
-    beskrivning: "Mätarställning, nätavgift, anslutning och servis.",
+    label: "Elnät och mätare",
+    beskrivning: "Mätarställning, nätavgift och ny anslutning.",
     underkategorier: [
       {
         id: "elnat-matare",
         label: "Jag vill rapportera mätarställning",
-        action: { type: "mina-sidor", label: "Rapportera mätarställning", description: "Logga in på Mina sidor och rapportera din aktuella mätarställning." },
+        action: { type: "mina-sidor", label: "Rapportera mätarställning", description: "Logga in på Mina sidor och skriv in vad din mätare visar i dag." },
       },
       {
         id: "elnat-anslutning",
         label: "Jag behöver ny elanslutning",
-        action: { type: "link", label: "Ansök om anslutning", href: "#", description: "Ny bostad eller tillbyggnad? Ansök om ny anslutning, handläggningstid ca 4 veckor." },
+        action: { type: "link", label: "Ansök om anslutning", href: "#", description: "Bygger du nytt eller bygger till? Ansök om anslutning. Handläggningen tar ungefär 4 veckor." },
       },
       {
         id: "elnat-natavgift",
         label: "Vad kostar nätavgiften?",
-        action: { type: "link", label: "Se nätavgifter", href: "#", description: "Nätavgiften består av en fast del och en rörlig del baserad på förbrukning." },
+        action: { type: "link", label: "Se nätavgifter", href: "#", description: "Nätavgiften har en fast del och en rörlig del som beror på hur mycket el du använder." },
       },
     ],
   },
@@ -155,22 +157,22 @@ export const KATEGORIER: Kategori[] = [
     id: "ovrigt",
     ikon: "help",
     label: "Annat",
-    beskrivning: "Solceller, laddbox, fjärrvärme, eller en fråga vi inte listade.",
+    beskrivning: "Solceller, laddbox, fjärrvärme eller något annat.",
     underkategorier: [
       {
         id: "ovrigt-sol",
         label: "Jag är intresserad av solceller",
-        action: { type: "link", label: "Solceller hos Öresundskraft", href: "#", description: "Producera din egen el, vi hjälper dig hela vägen." },
+        action: { type: "link", label: "Läs om solceller", href: "#", description: "Producera din egen el. Vi hjälper dig hela vägen." },
       },
       {
         id: "ovrigt-laddbox",
         label: "Jag vill installera laddbox",
-        action: { type: "link", label: "Ladda Smart", href: "#", description: "Installation och smarta laddtjänster för elbil." },
+        action: { type: "link", label: "Läs om Ladda Smart", href: "#", description: "Vi installerar laddbox och erbjuder smarta laddtjänster för elbilen." },
       },
       {
         id: "ovrigt-kontakt",
         label: "Jag hittar inte det jag letar efter",
-        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Vår chatt är öppen vardagar 08–17. Vi hjälper dig hitta rätt.", tid: "Svarstid: ~2 min" },
+        action: { type: "kontakt", kanal: "chatt", label: "Chatta med oss", description: "Chatten är öppen vardagar 08-17. Vi hjälper dig att hitta rätt.", tid: "Svarstid cirka 2 min" },
       },
     ],
   },

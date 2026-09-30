@@ -17,7 +17,7 @@ export function StubPage({ kind }: { kind: "sidtyp" | "modul" }) {
         <p className="text-lede text-ink-secondary">{entry?.subtitle ?? ""}</p>
       </header>
       <div className="rounded-md border border-dashed border-border-strong bg-surface p-10 text-center">
-        <p className="text-ink-muted">Wireframe + motivering kommer i nästa iteration.</p>
+        <p className="text-ink-muted">Skiss och motivering kommer i nästa version.</p>
         <p className="text-xs text-ink-muted mt-2">
           Status: <span className="font-medium uppercase tracking-wider">{entry?.status ?? "stub"}</span>
         </p>

@@ -9,9 +9,9 @@ import { InspectorPanel } from "./InspectorPanel";
 import { Icon } from "./Icon";
 
 const VP_OPTIONS: { key: Viewport; label: string; icon: string }[] = [
-  { key: "desktop", label: "Desktop", icon: "desktop_windows" },
-  { key: "tablet", label: "Tablet", icon: "tablet_mac" },
-  { key: "mobile", label: "Mobile", icon: "smartphone" },
+  { key: "desktop", label: "Dator", icon: "desktop_windows" },
+  { key: "tablet", label: "Surfplatta", icon: "tablet_mac" },
+  { key: "mobile", label: "Mobil", icon: "smartphone" },
 ];
 
 export function Layout() {
@@ -47,7 +47,7 @@ export function Layout() {
   }
 
   function handleResetAll() {
-    if (confirm("Återställer alla sidtyper till rekommenderad variant. Sparade presets behålls. Fortsätt?")) {
+    if (confirm("Alla sidtyper återställs till den rekommenderade varianten. Dina sparade vyer finns kvar. Vill du fortsätta?")) {
       resetAll();
     }
   }
@@ -55,7 +55,7 @@ export function Layout() {
   const vpWidth = VIEWPORT_WIDTH[viewport];
   const framed = vpWidth != null;
 
-  // ?framed=1 signals "render this route inside an iframe ,  no chrome".
+  // ?framed=1 signals "render this route inside an iframe, without chrome".
   // Used when the parent window is simulating a mobile/tablet viewport.
   const isFramedChild = typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("framed") === "1";
@@ -92,7 +92,7 @@ export function Layout() {
             <span className="inline-block w-7 h-7 rounded bg-brand-primary text-white grid place-items-center font-bold text-sm">
               Ö
             </span>
-            <span className="hidden sm:inline">Öresundskraft · UX Prototyp</span>
+            <span className="hidden sm:inline">Öresundskraft · UX-prototyp</span>
             <span className="sm:hidden">ÖK · UX</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1 text-sm ml-4">
@@ -116,7 +116,7 @@ export function Layout() {
                   : "bg-transparent text-ink-secondary border-border-strong hover:bg-tint-info"
               }`}
               aria-pressed={uxGuideOn}
-              title={uxGuideOn ? "Stäng UX-guide" : "Öppna UX-guide (design, copy, redigera)"}
+              title={uxGuideOn ? "Stäng UX-guiden" : "Öppna UX-guiden (design, copy, redigera)"}
             >
               {uxGuideOn ? <Icon name="check" size={14} /> : <Icon name="tips_and_updates" size={14} />}
               UX-guide
@@ -176,10 +176,10 @@ export function Layout() {
               <Icon name="circle" size={8} filled style={{ color: "#FFBD2E" }} />
               <Icon name="circle" size={8} filled style={{ color: "#28C840" }} />
               <span className="ml-2 font-medium">
-                {viewport === "tablet" ? "Tablet ,  834 px" : "Mobile ,  390 px"}
+                {viewport === "tablet" ? "Surfplatta (834 px)" : "Mobil (390 px)"}
               </span>
               <span className="ml-auto text-ink-muted italic">
-                riktig viewport-simulation ,  Tailwind-breakpoints fyrar
+                Sidan visas i verklig skärmbredd
               </span>
             </div>
             {/* iframe gives the inner app a real viewport width, so sm:/md:/lg:
@@ -187,7 +187,7 @@ export function Layout() {
             <iframe
               key={`${viewport}-${location.pathname}-${location.search}`}
               src={`${location.pathname}${location.search ? location.search + "&" : "?"}framed=1`}
-              title="Viewport-förhandsvisning"
+              title="Förhandsvisning i vald skärmstorlek"
               className="w-full flex-1 border-0 bg-canvas"
               style={{ height: "calc(100vh - 180px)" }}
             />
@@ -200,13 +200,13 @@ export function Layout() {
       )}
 
       <footer className="border-t border-border-subtle py-6 text-center text-xs text-ink-muted flex flex-wrap items-center justify-center gap-x-3 gap-y-1 px-4">
-        <span>Prototyp · ej offentlig produkt · placeholder-innehåll</span>
+        <span>Prototyp · inte en publicerad tjänst · exempelinnehåll</span>
         <span aria-hidden="true" className="opacity-50">·</span>
         <button
           type="button"
           onClick={handleResetAll}
           className="inline-flex items-center gap-1 hover:text-brand-accent underline underline-offset-2"
-          title="Nollställer block-ordning, dolda block och variantval för alla sidtyper"
+          title="Återställer blockordning, dolda block och valda varianter på alla sidtyper"
         >
           <Icon name="restart_alt" size={12} />
           Återställ alla sidtyper

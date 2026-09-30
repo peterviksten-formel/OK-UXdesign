@@ -16,17 +16,17 @@ import {
 } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP, Startsida Nyhetsrum (YouTube-inspirerad)
+ * SIDTYP: Startsida Nyhetsrum (inspirerad av YouTubes kanalsidor)
  *
- * Layout-koncept lånat från YouTube channel pages:
- *   1. Featured/pinned post överst, det redaktören främst vill pusha.
- *   2. Kategori-rader (horisontell scroll), en rad per typ:
- *      "Pressmeddelanden", "Nyheter", "Artiklar". Varje rad har "Visa alla".
- *   3. Tematiska rader, t.ex. "På djupet: CCS" för aktuella fokusområden.
- *   4. Bläddra alla, filter + grid längre ner för power-browsing.
- *   5. Press-kontakter + prenumerera.
+ * Upplägget:
+ *   1. En utvald post överst, det redaktören helst vill att fler läser.
+ *   2. En rad per innehållstyp: Nyheter, Artiklar och Pressmeddelanden.
+ *      Varje rad har länken "Visa alla".
+ *   3. Tematiska rader, till exempel "På djupet: CCS", för aktuella fokusområden.
+ *   4. Filter, sök och alla poster längre ner, för den som letar efter något specifikt.
+ *   5. Presskontakt och prenumeration.
  *
- * Skiss-läge, strukturen står, detaljer förfinas i nästa iteration.
+ * Skiss: strukturen är klar, detaljerna förfinas i nästa version.
  */
 
 const ALLA_KATEGORIER: NyhetsrumKategori[] = [
@@ -78,37 +78,44 @@ export function StartsidaNyhetsrum() {
   const ccs = NYHETSRUM.filter((p) => p.kategori === "ccs").sort(sortByDatumDesc);
 
   const blocks: BlockDef[] = [
-    /* ─── 1. HEADER + FEATURED, det vi främst vill pusha ──────── */
+    /* ─── 1. SIDHUVUD OCH UTVALD POST ──────────────────────── */
     {
       id: "featured",
-      label: "Header + featured-post",
+      label: "Sidhuvud och utvald post",
       variants: [
         {
           key: "default",
-          label: "Eyebrow + h1 + utvald featured-card",
+          label: "Överrubrik, rubrik, ingress och utvalt kort",
           render: () => (
             <Annotation
-              label="Featured, det vi främst vill pusha"
+              label="Utvald post, det viktigaste just nu"
               audience="redaktör"
-              rationale="YouTube-kanaler har en pinned video överst, sidan tjänar redaktören. Featured-kortet är det Öresundskraft aktivt vill ha läst just nu (typiskt nyaste pressrelease eller ett aktuellt strategiskt budskap). Stort, dominant, separerar 'redaktionellt val' från 'kronologisk lista' nedan."
+              rationale="Det stora kortet överst visar det Öresundskraft helst vill att fler läser just nu, oftast det senaste viktiga pressmeddelandet. Välj en post i taget. Kortet skiljer ert redaktionella val från raderna nedanför, som sorteras efter datum."
             >
               <section className="py-8 sm:py-10">
                 <p className="text-eyebrow uppercase text-ink-muted mb-3">Nyhetsrum</p>
                 <Copy
-                  label="H1, nyhetsrums-rubrik"
+                  label="Sidrubrik"
                   category="rubrik"
                   text="Det här händer på Öresundskraft"
-                  rationale="Narrativ presens-rubrik. 'Händer' (presens) gör Nyhetsrummet levande, det pågår, inte bara sker. 'På Öresundskraft' placerar läsaren inne hos avsändaren snarare än som extern mottagare. Eyebrowet 'Nyhetsrum' bär sektionsidentiteten, så H1 behöver inte upprepa funktionen utan kan vara mer mänsklig. Förra versionen 'Senaste från Öresundskraft' var databas-aktig (sorterat efter datum) och passade dåligt eftersom innehållet är redaktionellt kuraterat."
+                  rationale="Presens ('händer') visar att det pågår något här och nu. Överrubriken 'Nyhetsrum' säger redan vad sidan är, så rubriken kan vara mer personlig. Den tidigare 'Senaste från Öresundskraft' lät som en datumsorterad lista, fast innehållet är utvalt."
                 >
                   <h1 className="text-display leading-tight mb-3">Det här händer på Öresundskraft</h1>
                 </Copy>
-                <p className="text-lede text-ink-secondary max-w-reading mb-8 leading-relaxed">
-                  Pressmeddelanden, nyheter och artiklar, sorterat per typ. Eller{" "}
-                  <a href="#prenumerera" className="text-brand-accent underline underline-offset-2 hover:no-underline">
-                    prenumerera
-                  </a>{" "}
-                  och få det i mejlen.
-                </p>
+                <Copy
+                  label="Ingress, vad som finns här"
+                  category="ton"
+                  text="Här hittar du våra pressmeddelanden, nyheter och artiklar. Du kan också prenumerera och få dem via mejl."
+                  rationale="Ingressen säger vad sidan innehåller och erbjuder direkt en genväg till prenumerationen. Du-tilltal och korta meningar gör att både kunder och journalister känner sig välkomna."
+                >
+                  <p className="text-lede text-ink-secondary max-w-reading mb-8 leading-relaxed">
+                    Här hittar du våra pressmeddelanden, nyheter och artiklar. Du kan också{" "}
+                    <a href="#prenumerera" className="text-brand-accent underline underline-offset-2 hover:no-underline">
+                      prenumerera
+                    </a>{" "}
+                    och få dem via mejl.
+                  </p>
+                </Copy>
 
                 {utvald && <FeaturedCard post={utvald} />}
               </section>
@@ -121,23 +128,23 @@ export function StartsidaNyhetsrum() {
     /* ─── 2. RAD, Nyheter ──────────────────────────────────── */
     {
       id: "row-nyheter",
-      label: "Rad, Nyheter",
+      label: "Rad: Nyheter",
       variants: [
         {
           key: "default",
-          label: "Horisontell scroll-rad",
+          label: "Rad som bläddras i sidled",
           render: () => (
             <Annotation
-              label="Kategori-rad, Nyheter (primary audience)"
+              label="Rad: Nyheter, för kunderna"
               audience="design"
-              rationale="Nyheter ligger först eftersom kunder är primary audience (~125 000), pixlarna närmast featured-kortet ska tjäna majoriteten. Förändringar (priser, regler, drift) är det som flest besökare aktivt vill se."
+              rationale="Nyheterna ligger först eftersom kunderna (cirka 125 000) är de flesta besökarna. Förändringar i priser, regler och drift är det de oftast letar efter, så det ska synas närmast den utvalda posten."
             >
               <PostRow
                 titel="Nyheter"
                 undertitel="Förändringar som påverkar dig som kund."
                 posts={nyheter}
                 visaAllaHref="#filter-alla"
-                copyRationale="Underrubriken är outcome-fokuserad, 'påverkar dig som kund' säger varför läsaren bör bry sig. Inte 'Senaste nyheterna från oss' (om sändaren) utan om mottagaren."
+                copyRationale="Underrubriken säger varför kunden bör bry sig: det här påverkar dig. Undvik formuleringar som 'Senaste nytt från oss', som handlar om avsändaren i stället för läsaren."
               />
             </Annotation>
           ),
@@ -148,23 +155,23 @@ export function StartsidaNyhetsrum() {
     /* ─── 3. RAD, Artiklar ─────────────────────────────────── */
     {
       id: "row-artiklar",
-      label: "Rad, Artiklar",
+      label: "Rad: Artiklar",
       variants: [
         {
           key: "default",
-          label: "Horisontell scroll-rad",
+          label: "Rad som bläddras i sidled",
           render: () => (
             <Annotation
-              label="Kategori-rad, Artiklar"
+              label="Rad: Artiklar, för den som vill veta mer"
               audience="design"
-              rationale="Artiklar är längre format, ofta utan tidskritisk komponent. Egen rad signalerar 'browsa när du har tid', man väljer att läsa, inte tvingas. Mellan-position eftersom de tjänar både kunder (förklaringar) och journalister (bakgrund)."
+              rationale="Artiklar är längre och sällan bråttom att läsa, så de får en egen rad att bläddra i när man har tid. Raden ligger i mitten eftersom artiklarna passar både kunder (förklaringar) och journalister (bakgrund)."
             >
               <PostRow
                 titel="Artiklar"
                 undertitel="Fördjupning, kundcase och förklaringar."
                 posts={artiklar}
                 visaAllaHref="#filter-alla"
-                copyRationale="Tre konkreta substantiv (fördjupning/kundcase/förklaringar) räcker, förra versionen var 'Berättelser, kundcase och utbildning, för dig som vill förstå djupare' (11 ord, scan-fail). Conciseness-princip."
+                copyRationale="Tre konkreta ord räcker för att visa vad raden innehåller. Den tidigare versionen, 'Berättelser, kundcase och utbildning, för dig som vill förstå djupare', var för lång för att läsas i en blick."
               />
             </Annotation>
           ),
@@ -175,23 +182,23 @@ export function StartsidaNyhetsrum() {
     /* ─── 4. RAD, Pressmeddelanden ──────────────────────────── */
     {
       id: "row-press",
-      label: "Rad, Pressmeddelanden",
+      label: "Rad: Pressmeddelanden",
       variants: [
         {
           key: "default",
-          label: "Horisontell scroll-rad med scroll-snap",
+          label: "Rad som bläddras i sidled",
           render: () => (
             <Annotation
-              label="Kategori-rad, Pressmeddelanden (sekundär audience)"
+              label="Rad: Pressmeddelanden, för journalister"
               audience="design"
-              rationale="Pressmeddelanden ligger sist eftersom journalister (~50–100 aktiva) hittar hit via direktlänk, prenumerationer eller sök, de behöver inte top-of-fold. Featured-kortet är fortfarande tillgängligt om en pressrelease är dagens viktigaste, oavsett rad-ordning."
+              rationale="Pressmeddelandena ligger efter nyheter och artiklar. De cirka 50 till 100 journalister som bevakar bolaget kommer oftast hit via direktlänk, prenumeration eller sök. Är ett pressmeddelande dagens viktigaste kan det ändå visas som utvald post överst."
             >
               <PostRow
                 titel="Pressmeddelanden"
                 undertitel="Officiella besked från Öresundskraft."
                 posts={press}
                 visaAllaHref="#filter-alla"
-                copyRationale="Front-loadat substantiv (Pressmeddelanden), kort innehållsbeskrivning som underrubrik. Förra versionen sa 'För journalister och allmänheten, citerbar källa' (jargong + målgruppsdefinition i samma fras)."
+                copyRationale="Rubriken börjar med det läsaren letar efter, och underrubriken säger kort vad det är. Den tidigare 'För journalister och allmänheten, citerbar källa' blandade målgrupp och fackspråk i samma fras."
               />
             </Annotation>
           ),
@@ -202,7 +209,7 @@ export function StartsidaNyhetsrum() {
     /* ─── 5. RAD, Tematisk: CCS ─────────────────────────────── */
     {
       id: "row-ccs",
-      label: "Tematisk rad, På djupet: CCS",
+      label: "Tematisk rad: På djupet: CCS",
       variants: [
         {
           key: "default",
@@ -211,16 +218,16 @@ export function StartsidaNyhetsrum() {
             if (ccs.length === 0) return null;
             return (
               <Annotation
-                label="Tematisk rad, fokusområde"
+                label="Tematisk rad för ett fokusområde"
                 audience="redaktör"
-                rationale="YouTube har 'Playlists' eller 'Topics', Öresundskraft kan kuratera tematiska rader för aktuella fokusområden. CCS, hållbarhet, framtidens nät. Redaktören styr vilka som visas."
+                rationale="Samlar allt om ett aktuellt fokusområde, oavsett typ, som en spellista. Redaktören väljer vilka teman som visas, till exempel CCS, hållbarhet eller framtidens elnät. Raden döljs automatiskt om temat saknar poster."
               >
                 <PostRow
                   titel="På djupet: CCS"
-                  undertitel="Koldioxidinfångning på Filbornaverket, pressmeddelanden, nyheter och bakgrund."
+                  undertitel="Allt om koldioxidinfångningen på Filbornaverket: pressmeddelanden, nyheter och bakgrund."
                   posts={ccs}
                   visaAllaHref="#filter-alla"
-                  copyRationale="'På djupet:'-prefix är genrekonvention för redaktionellt kuraterad samling (jämför Spotifys 'Editorial picks' eller Apples 'Today In'). Underrubriken förtydligar kontexten, vad CCS är i konkret form (Filbornaverket)."
+                  copyRationale="'På djupet:' visar att raden är ett redaktionellt urval kring ett tema. Underrubriken förklarar förkortningen CCS med vanliga ord och knyter den till en plats läsaren känner igen, Filbornaverket."
                 />
               </Annotation>
             );
@@ -232,34 +239,48 @@ export function StartsidaNyhetsrum() {
     /* ─── 6. FILTER + ALLA ─────────────────────────────────── */
     {
       id: "filter-alla",
-      label: "Bläddra alla, filter + grid",
+      label: "Bläddra bland allt: filter och alla poster",
       variants: [
         {
           key: "default",
-          label: "Filter-bar + grid (för power-browsing)",
+          label: "Filter, sök och rutnät med alla poster",
           render: () => (
             <Annotation
-              label="Bläddra alla, för dem som vill djupgräva"
+              label="Filter och sök, för den som letar efter något"
               audience="user"
-              rationale="Raderna ovan är redaktionellt kuraterade. Filtret här är för dem som har ett specifikt sökmål, datum, ämne, fritext. Demoterat under raderna eftersom det inte är primärt mål för de flesta besökare."
+              rationale="Raderna ovan är ett urval. Här kan den som letar efter något specifikt filtrera på typ och ämne eller söka på ett ord. Delen ligger längre ner eftersom de flesta besökare nöjer sig med raderna."
             >
               <section id="filter-alla" className="py-10 border-t border-border-subtle">
                 <Copy
-                  label="Bläddra alla, rubrik"
+                  label="Filter och sök, rubrik"
                   category="rubrik"
-                  text="Bläddra alla"
-                  rationale="Verb + objekt-rubrik. 'Bläddra' speglar handlingen användaren ska göra (klicka filter, scrolla grid). 'Arkiv' eller 'Hela materialet' skulle vara abstraktare och systemnära."
+                  text="Bläddra bland allt"
+                  rationale="Rubriken börjar med ett verb som beskriver vad läsaren gör här. 'Arkiv' eller 'Hela materialet' låter mer som ett system än som en handling."
                 >
-                  <h2 className="text-h3 font-medium mb-2">Bläddra alla</h2>
+                  <h2 className="text-h3 font-medium mb-2">Bläddra bland allt</h2>
                 </Copy>
-                <p className="text-ink-secondary mb-6 max-w-reading">
-                  Filter, sök eller bläddra i hela arkivet av pressmeddelanden, nyheter och artiklar.
-                </p>
+                <Copy
+                  label="Filter och sök, förklarande text"
+                  category="ton"
+                  text="Filtrera på typ och kategori eller sök på ett ord bland alla pressmeddelanden, nyheter och artiklar."
+                  rationale="Texten säger vilka sätt det finns att hitta rätt, i samma ordning som verktygen står. 'Filtrera' och 'sök' är verb läsaren känner igen från andra webbplatser."
+                >
+                  <p className="text-ink-secondary mb-6 max-w-reading">
+                    Filtrera på typ och kategori eller sök på ett ord bland alla pressmeddelanden, nyheter och artiklar.
+                  </p>
+                </Copy>
 
                 {/* Filter-rad */}
                 <div className="flex flex-wrap items-end gap-x-6 gap-y-3 mb-6">
                   <div>
-                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-1.5">Typ</p>
+                    <Copy
+                      label="Filteretiketter (Typ, Kategori, Sök)"
+                      category="metadata"
+                      text="Typ"
+                      rationale="Etiketterna Typ, Kategori och Sök är ett ord var så att filtren går snabbt att läsa. Valen under Typ heter Press, Nyhet och Artikel, samma ord som på korten, så att läsaren känner igen dem."
+                    >
+                      <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-1.5">Typ</p>
+                    </Copy>
                     <div role="radiogroup" aria-label="Typ av innehåll" className="inline-flex p-1 rounded-md bg-surface border border-border-subtle">
                       {(["alla", "press", "nyhet", "artikel"] as const).map((t) => (
                         <button
@@ -302,10 +323,10 @@ export function StartsidaNyhetsrum() {
                     <div className="relative">
                       <Icon name="search" size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-muted" />
                       <Copy
-                        label="Sök, placeholder"
+                        label="Sökfält, exempeltext"
                         category="metadata"
                         text="T.ex. fjärrvärme, CCS, elnätsavgift"
-                        rationale="Placeholder visar EXEMPEL på söktermer (UX-writing-pattern). Förra versionen var 'Sök i rubrik och ingress', instruktion, inte exempel. Tre konkreta exempel sänker användarens 'vad kan jag söka på?'-friktion."
+                        rationale="Exempeltexten i fältet visar vad man kan söka på. Tre konkreta ord hjälper mer än en instruktion som den tidigare 'Sök i rubrik och ingress'."
                       >
                         <input
                           id="sok-filter"
@@ -320,32 +341,46 @@ export function StartsidaNyhetsrum() {
                   </div>
 
                   {(typFilter !== "alla" || katFilter !== "alla" || sok) && (
-                    <button
-                      type="button"
-                      onClick={() => { setTypFilter("alla"); setKatFilter("alla"); setSok(""); }}
-                      className="h-9 px-3 text-sm text-brand-accent hover:underline self-end"
+                    <Copy
+                      label="Rensa filter, knapp"
+                      category="cta"
+                      text="Rensa filter"
+                      rationale="Knappen visas bara när något filter är valt. Verb och objekt säger exakt vad som händer: alla val nollställs. Samma ord används i tomtillståndet nedanför."
                     >
-                      Rensa filter
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => { setTypFilter("alla"); setKatFilter("alla"); setSok(""); }}
+                        className="h-9 px-3 text-sm text-brand-accent hover:underline self-end"
+                      >
+                        Rensa filter
+                      </button>
+                    </Copy>
                   )}
                 </div>
 
-                <p className="text-sm text-ink-muted mb-4" aria-live="polite">
-                  {filtrerad.length} {filtrerad.length === 1 ? "post" : "poster"}
-                  {(typFilter !== "alla" || katFilter !== "alla" || sok) && " (filtrerade)"}
-                </p>
+                <Copy
+                  label="Antal träffar"
+                  category="metadata"
+                  text={`${filtrerad.length} ${filtrerad.length === 1 ? "post" : "poster"}${typFilter !== "alla" || katFilter !== "alla" || sok ? " (filtrerade)" : ""}`}
+                  rationale="Antalet visar direkt om filtren ger för många eller för få träffar. '(filtrerade)' påminner om att allt inte visas. Siffran läses också upp för den som använder skärmläsare."
+                >
+                  <p className="text-sm text-ink-muted mb-4" aria-live="polite">
+                    {filtrerad.length} {filtrerad.length === 1 ? "post" : "poster"}
+                    {(typFilter !== "alla" || katFilter !== "alla" || sok) && " (filtrerade)"}
+                  </p>
+                </Copy>
 
                 {filtrerad.length === 0 ? (
                   <Copy
-                    label="Tomtillstånd, inga träffar"
+                    label="Inga träffar"
                     category="reassurance"
-                    text="Inga träffar med de filtren. Prova andra filter eller rensa filtret."
-                    rationale="Empty-state-pattern: status + förklaring + CTA. 'Inga träffar' (status) + implicit förklaring (filtren är för restriktiva) + två konkreta vägar framåt (prova andra / rensa). Aldrig dead-end. Förra versionen sa 'Inga poster matchade' (system-y)."
+                    text="Inga träffar med de här filtren. Prova andra filter eller rensa alla filter."
+                    rationale="Säger först vad som hänt och ger sedan två vägar vidare, så att läsaren aldrig fastnar. Den tidigare 'Inga poster matchade' lät som ett systemmeddelande."
                   >
                     <p className="text-ink-muted py-8 text-center">
-                      Inga träffar med de filtren. Prova andra filter eller{" "}
+                      Inga träffar med de här filtren. Prova andra filter eller{" "}
                       <button onClick={() => { setTypFilter("alla"); setKatFilter("alla"); setSok(""); }} className="text-brand-accent underline">
-                        rensa filtret
+                        rensa alla filter
                       </button>.
                     </p>
                   </Copy>
@@ -364,25 +399,37 @@ export function StartsidaNyhetsrum() {
     /* ─── 7. PRESS-KONTAKTER ───────────────────────────────── */
     {
       id: "press-kontakter",
-      label: "För journalister, kontaktblock",
+      label: "För journalister: presskontakt",
       variants: [
         {
           key: "default",
-          label: "Presskontakter prominent",
+          label: "Presskontakt, jourtelefon och bildbank",
           render: () => (
+            <Annotation
+              label="Presskontakt för journalister"
+              audience="user"
+              rationale="Journalister ska snabbt hitta en person att ringa eller mejla. Blocket samlar presschefen, jourtelefonen och bildbanken på ett ställe och lovar en svarstid, så att journalisten vet när hen kan räkna med svar."
+            >
             <section className="py-10 border-t border-border-subtle">
               <Copy
-                label="Press-kontakt, rubrik"
+                label="För journalister, rubrik"
                 category="rubrik"
                 text="För journalister"
-                rationale="Målgruppsadresserande rubrik, 'För journalister' säger direkt vem detta är för. Alternativ som 'Presskontakt' eller 'Kontakta press' fungerar också men 'För X' signalerar tydligare 'detta block är inte för dig som vanlig läsare'."
+                rationale="Rubriken säger direkt vem blocket är till för. Då vet andra läsare att de kan hoppa över det. 'Presskontakt' fungerar också, men säger inte lika tydligt vem som är mottagaren."
               >
                 <h2 className="text-h3 font-medium mb-2">För journalister</h2>
               </Copy>
-              <p className="text-ink-secondary mb-6 max-w-reading">
-                Kontakta vår presstjänst för intervjuer, kommentarer eller högupplöst bildmaterial.
-                Vi svarar inom 1 arbetsdag.
-              </p>
+              <Copy
+                label="För journalister, svarstid"
+                category="reassurance"
+                text="Kontakta vår presstjänst för intervjuer, kommentarer eller bilder i hög upplösning. Vi svarar inom 1 arbetsdag."
+                rationale="Texten räknar upp vad journalisten kan få hjälp med och lovar en konkret svarstid. Ett tydligt tidslöfte gör det lättare att planera och minskar antalet påminnelser."
+              >
+                <p className="text-ink-secondary mb-6 max-w-reading">
+                  Kontakta vår presstjänst för intervjuer, kommentarer eller bilder i hög upplösning.
+                  Vi svarar inom 1 arbetsdag.
+                </p>
+              </Copy>
               <div className="grid sm:grid-cols-2 gap-4 max-w-reading">
                 <div className="p-5 rounded-md border-2 border-border-subtle bg-surface flex items-start gap-4">
                   <span className="shrink-0 w-12 h-12 rounded-full bg-brand-primary text-white grid place-items-center font-medium">AL</span>
@@ -399,18 +446,33 @@ export function StartsidaNyhetsrum() {
                 </div>
 
                 <div className="p-5 rounded-md border border-border-subtle bg-surface text-sm text-ink-secondary">
-                  <p className="font-medium text-ink mb-2">Akut press-ärende?</p>
+                  <Copy
+                    label="Jourtelefon, rubrik"
+                    category="rubrik"
+                    text="Brådskande?"
+                    rationale="Ett ord som fångar den som har deadline. 'Brådskande' är vardagligare än 'akut press-ärende'. Texten under säger direkt vad man gör: ringer, dygnet runt."
+                  >
+                    <p className="font-medium text-ink mb-2">Brådskande?</p>
+                  </Copy>
                   <p className="mb-3">Ring presstjänsten dygnet runt på <a href="tel:0424903250" className="text-brand-accent">042-490 32 50</a>.</p>
                   <p className="font-medium text-ink mt-4 mb-2">Bildbank</p>
                   <p>
-                    <a href="#" className="text-brand-accent hover:underline inline-flex items-center gap-1">
-                      Ladda ner högupplösta bilder
-                      <Icon name="download" size={14} />
-                    </a>
+                    <Copy
+                      label="Bildbank, länk"
+                      category="cta"
+                      text="Ladda ner bilder i hög upplösning"
+                      rationale="Länken säger vad som händer (ladda ner) och vad journalisten får (bilder i hög upplösning). Undvik 'Till bildbanken', som bara säger vart länken leder."
+                    >
+                      <a href="#" className="text-brand-accent hover:underline inline-flex items-center gap-1">
+                        Ladda ner bilder i hög upplösning
+                        <Icon name="download" size={14} />
+                      </a>
+                    </Copy>
                   </p>
                 </div>
               </div>
             </section>
+            </Annotation>
           ),
         },
       ],
@@ -419,12 +481,17 @@ export function StartsidaNyhetsrum() {
     /* ─── 8. PRENUMERERA ──────────────────────────────────── */
     {
       id: "prenumerera",
-      label: "Prenumerera, mejl-uppdateringar",
+      label: "Prenumerera via mejl",
       variants: [
         {
           key: "banner",
-          label: "Banner med ämnesval",
+          label: "Ruta med e-postfält och ämnesval",
           render: () => (
+            <Annotation
+              label="Prenumeration, få nyheterna via mejl"
+              audience="user"
+              rationale="Den som vill hålla sig uppdaterad ska inte behöva komma tillbaka hit. Bara ett fält, e-postadress, gör det enkelt att börja. Ämnena väljs i nästa steg, så att läsaren bara får det som är intressant för hen."
+            >
             <section id="prenumerera" className="py-10 border-t border-border-subtle">
               <div className="rounded-lg bg-tint-info p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
                 <div>
@@ -432,37 +499,60 @@ export function StartsidaNyhetsrum() {
                     label="Prenumerera, rubrik"
                     category="rubrik"
                     text="Prenumerera på nyheter"
-                    rationale="Verb + objekt. Förra versionen var 'Få Öresundskraft i mejlen', fluff (vad är 'Öresundskraft i mejlen'?). 'Prenumerera på nyheter' säger handlingen och vad som prenumereras på."
+                    rationale="Verb och objekt säger vad läsaren gör och vad hen får. Den tidigare 'Få Öresundskraft i mejlen' var oklar: vad är det man får?"
                   >
                     <h2 className="text-h3 mb-2">Prenumerera på nyheter</h2>
                   </Copy>
-                  <p className="text-ink-secondary mb-4">
-                    Välj vad du vill följa, pressmeddelanden, nyheter eller specifika ämnen som CCS och hållbarhet. Avregistrera när som helst.
-                  </p>
+                  <Copy
+                    label="Prenumerera, förklarande text"
+                    category="reassurance"
+                    text="Välj vad du vill följa: pressmeddelanden, nyheter eller ämnen som CCS och hållbarhet. Du kan avsluta prenumerationen när du vill."
+                    rationale="Texten visar vad man kan välja mellan och lovar att det är lätt att sluta. Det sänker tröskeln att börja. 'Avsluta prenumerationen' är tydligare än 'avregistrera'."
+                  >
+                    <p className="text-ink-secondary mb-4">
+                      Välj vad du vill följa: pressmeddelanden, nyheter eller ämnen som CCS och hållbarhet. Du kan avsluta prenumerationen när du vill.
+                    </p>
+                  </Copy>
                 </div>
                 <form onSubmit={(e) => e.preventDefault()} className="flex flex-col gap-3 max-w-md w-full">
-                  <input
-                    type="email"
-                    placeholder="din.epost@example.se"
-                    className="h-11 px-3 rounded-md border border-border-strong bg-canvas focus:outline-none focus:border-brand-accent"
-                  />
                   <Copy
-                    label="Prenumerera, CTA"
+                    label="E-postfält, exempeltext"
+                    category="metadata"
+                    text="din.epost@example.se"
+                    rationale="Exempeltexten visar formatet på en e-postadress så att läsaren förstår fältet utan extra instruktion. Fältet har också en dold etikett, E-postadress, för skärmläsare."
+                  >
+                    <input
+                      type="email"
+                      aria-label="E-postadress"
+                      placeholder="din.epost@example.se"
+                      className="h-11 px-3 rounded-md border border-border-strong bg-canvas focus:outline-none focus:border-brand-accent"
+                    />
+                  </Copy>
+                  <Copy
+                    label="Prenumerera, knapp"
                     category="cta"
                     text="Välj ämnen och prenumerera"
-                    rationale="Verb + objekt + outcome-signal. 'Välj ämnen' förkonsumtion-signalerar att nästa steg är ett val (inte 'klicka här och du är prenumerant nu'), 'prenumerera' bekräftar handlingen. Sätter rätt förväntan."
+                    rationale="Knappen säger vad som händer härnäst: först väljer man ämnen, sedan är prenumerationen klar. Då blir ingen överraskad av ett steg till. Undvik 'Skicka', som inte säger något om resultatet."
                   >
                     <button type="submit" className="h-11 inline-flex items-center justify-center gap-2 bg-brand-primary text-ink-onbrand font-medium rounded hover:opacity-90">
                       Välj ämnen och prenumerera
                       <Icon name="arrow_forward" size={16} />
                     </button>
                   </Copy>
-                  <p className="text-xs text-ink-muted">
-                    Du kan välja ämnen på nästa steg · Vi delar inte din e-post med tredje part
-                  </p>
+                  <Copy
+                    label="Prenumerera, trygghetstext"
+                    category="reassurance"
+                    text="Du väljer ämnen i nästa steg · Vi delar inte din e-postadress med någon annan"
+                    rationale="Svarar på två vanliga farhågor innan läsaren klickar: vad händer nu och vad händer med min adress? 'Någon annan' är vardagligare än juridiska 'tredje part'."
+                  >
+                    <p className="text-xs text-ink-muted">
+                      Du väljer ämnen i nästa steg · Vi delar inte din e-postadress med någon annan
+                    </p>
+                  </Copy>
                 </form>
               </div>
             </section>
+            </Annotation>
           ),
         },
       ],
@@ -472,11 +562,11 @@ export function StartsidaNyhetsrum() {
   return (
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
-        kategori="Startsida Nyhetsrum (YouTube-inspirerad)"
-        syfte="Redaktionellt kuraterad ingång till Öresundskrafts publicistiska innehåll. YouTube-mönster: featured överst (det redaktören främst vill pusha), kategori-rader med horisontell scroll per typ, tematiska rader för fokusområden, filter+grid för power-browsing längre ner."
-        malgrupp="Primary: kunder och allmänhet (Nyheter överst, Artiklar mitten). Sekundär: journalister (Pressmeddelanden sist, de hittar via direktlänk/prenumeration). Featured-kortet är redaktörens aktiva pick oavsett rad-ordning."
-        primarHandling="Skanna featured + tre typ-rader → klicka in på en post. För specifika sökmål: filter + sök längre ner."
-        ton="Saklig och tillgänglig. Raderna är browsing-vänliga (som en strömmingstjänst) snarare än arkiv-tunga."
+        kategori="Startsida Nyhetsrum (inspirerad av YouTubes kanalsidor)"
+        syfte="En redaktionellt vald ingång till Öresundskrafts pressmeddelanden, nyheter och artiklar. Överst en utvald post, sedan en rad per typ och tematiska rader för aktuella fokusområden. Längre ner finns filter och sök för den som letar efter något specifikt, följt av presskontakt och prenumeration."
+        malgrupp="Främst kunder och allmänheten, därför kommer Nyheter först och Artiklar i mitten. I andra hand journalister, som oftast kommer hit via direktlänk eller prenumeration, därför kommer Pressmeddelanden sist. Den utvalda posten överst är redaktörens val, oavsett typ."
+        primarHandling="Titta på den utvalda posten och raderna och klicka vidare till en post. Den som letar efter något specifikt använder filter och sök längre ner."
+        ton="Saklig och lättillgänglig. Raderna ska kännas lätta att bläddra i, som en strömningstjänst, inte som ett tungt arkiv."
       />
 
       <div className="flex items-center justify-between pt-6">
@@ -505,8 +595,8 @@ export function StartsidaNyhetsrum() {
 /* ─── Helpers ────────────────────────────────────────────────── */
 
 /**
- * Featured-kort, stort, dominant, som YouTube:s pinned video.
- * Lite mer visuell tyngd än vanliga kort i raderna.
+ * Utvalt kort: stort och tydligt, som en fäst video på YouTube.
+ * Får mer visuell tyngd än de vanliga korten i raderna.
  */
 function FeaturedCard({ post }: { post: NyhetsrumPost }) {
   const detaljSlug = post.typ === "press" ? "pressmeddelande" : post.typ === "nyhet" ? "nyhet" : "artikel";
@@ -521,9 +611,16 @@ function FeaturedCard({ post }: { post: NyhetsrumPost }) {
         </div>
         <div className="p-6 sm:p-8 flex flex-col">
           <div className="flex items-center gap-2 mb-3 text-xs">
-            <span className="px-2 py-1 rounded bg-brand-accent text-white font-bold uppercase tracking-wider">
-              Utvald
-            </span>
+            <Copy
+              label="Utvald post, etikett"
+              category="metadata"
+              text="Utvald"
+              rationale="Etiketten visar att posten är ett redaktionellt val och inte bara den senaste. Ett ord räcker. Undvik 'Rekommenderas', som låter som reklam."
+            >
+              <span className="px-2 py-1 rounded bg-brand-accent text-white font-bold uppercase tracking-wider">
+                Utvald
+              </span>
+            </Copy>
             <span className={`px-2 py-1 rounded uppercase tracking-wider font-medium ${TYP_COLOR[post.typ]}`}>
               {TYP_LABEL[post.typ]}
             </span>
@@ -535,10 +632,17 @@ function FeaturedCard({ post }: { post: NyhetsrumPost }) {
             {post.rubrik}
           </h2>
           <p className="text-ink-secondary leading-relaxed mb-4 flex-1">{post.ingress}</p>
-          <span className="inline-flex items-center gap-1.5 text-sm text-brand-accent font-medium">
-            Läs {post.typ === "press" ? "pressmeddelandet" : post.typ === "nyhet" ? "nyheten" : "artikeln"}
-            <Icon name="arrow_forward" size={16} />
-          </span>
+          <Copy
+            label="Utvald post, länktext"
+            category="cta"
+            text={`Läs ${post.typ === "press" ? "pressmeddelandet" : post.typ === "nyhet" ? "nyheten" : "artikeln"}`}
+            rationale="Länktexten anpassas efter typen, till exempel 'Läs pressmeddelandet', så att läsaren vet vad som väntar. Det är tydligare än ett allmänt 'Läs mer'."
+          >
+            <span className="inline-flex items-center gap-1.5 text-sm text-brand-accent font-medium">
+              Läs {post.typ === "press" ? "pressmeddelandet" : post.typ === "nyhet" ? "nyheten" : "artikeln"}
+              <Icon name="arrow_forward" size={16} />
+            </span>
+          </Copy>
         </div>
       </div>
     </Link>
@@ -546,15 +650,14 @@ function FeaturedCard({ post }: { post: NyhetsrumPost }) {
 }
 
 /**
- * Per-stream-rad, två layouter beroende på viewport:
+ * En rad per innehållstyp, med två layouter beroende på skärmstorlek:
  *
- * Desktop (lg+): horisontell scroll-snap-rail (3-4 kort synliga, scrolla för fler).
- * Mobil/tablet (<lg): YouTube-style, första posten som stort featured-kort,
- * resten som kompakta list-rows med thumbnail vänster + text höger.
+ * Större skärmar: en rad som bläddras i sidled (3 till 4 kort syns åt gången).
+ * Mobil och surfplatta: första posten som ett stort kort, resten som
+ * kompakta rader med bild till vänster och text till höger, som i YouTubes app.
  *
- * Mobilflödet är vertikalt eftersom horisontella scrollers ger dåligt
- * affordance på små skärmar (1.x kort synligt) och bryter mot YouTubes
- * etablerade mönster för channel-streams.
+ * På små skärmar är flödet lodrätt, eftersom rader i sidled är svåra att
+ * upptäcka när bara drygt ett kort syns.
  */
 function PostRow({
   titel,
@@ -567,7 +670,7 @@ function PostRow({
   undertitel?: string;
   posts: NyhetsrumPost[];
   visaAllaHref: string;
-  /** Optional UX-writing-rationale shown in editorial-guide-panel for this row. */
+  /** Valfri motivering för radens rubrik, visas under fliken Copy i UX-guiden. */
   copyRationale?: string;
 }) {
   if (posts.length === 0) return null;
@@ -608,7 +711,7 @@ function PostRow({
         </a>
       </div>
 
-      {/* Mobil/tablet: vertikal layout, featured först + list-rows */}
+      {/* Mobil och surfplatta: stort kort först, sedan kompakta rader */}
       <div className="lg:hidden">
         <PostKortFeatured post={forsta} />
         {resten.length > 0 && (
@@ -622,7 +725,7 @@ function PostRow({
         )}
       </div>
 
-      {/* Desktop: horisontell scroll-snap-rail */}
+      {/* Större skärmar: rad som bläddras i sidled */}
       <div
         className="hidden lg:block overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 snap-x snap-mandatory pb-2"
         role="region"
@@ -641,8 +744,8 @@ function PostRow({
 }
 
 /**
- * Mobil featured-kort, första posten i varje stream.
- * Stor 16:9-bild + titel/ingress/meta nedanför. YouTube-mobile-pattern.
+ * Stort kort i mobil: första posten i varje rad.
+ * Stor bild i formatet 16:9 med rubrik, ingress och datum under.
  */
 function PostKortFeatured({ post }: { post: NyhetsrumPost }) {
   const detaljSlug = post.typ === "press" ? "pressmeddelande" : post.typ === "nyhet" ? "nyhet" : "artikel";
@@ -680,8 +783,8 @@ function PostKortFeatured({ post }: { post: NyhetsrumPost }) {
 }
 
 /**
- * Mobil list-row, thumbnail vänster, text höger.
- * Kompakt YouTube-style för 2:a, 3:e posten i varje stream.
+ * Kompakt rad i mobil: liten bild till vänster, text till höger.
+ * Används för andra, tredje och följande post i varje rad.
  */
 function PostKortListRow({ post }: { post: NyhetsrumPost }) {
   const detaljSlug = post.typ === "press" ? "pressmeddelande" : post.typ === "nyhet" ? "nyhet" : "artikel";
@@ -720,7 +823,7 @@ function PostKortListRow({ post }: { post: NyhetsrumPost }) {
   );
 }
 
-/** Standardkort, används i både rader och fullt grid längre ner. */
+/** Standardkort, används både i raderna och i rutnätet med alla poster. */
 function PostKort({ post }: { post: NyhetsrumPost }) {
   const detaljSlug = post.typ === "press" ? "pressmeddelande" : post.typ === "nyhet" ? "nyhet" : "artikel";
   return (

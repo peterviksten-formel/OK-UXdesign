@@ -14,8 +14,8 @@ function makeVariants(produktId: ProduktId): Variant[] {
       shortName: "A",
       label: "Trygg",
       riskLevel: "låg",
-      oneLiner: "Bild + info sida vid sida. All info synlig direkt.",
-      bestFor: "Tydlighet. Äldre kunder. Print-vänlig.",
+      oneLiner: "Bild och fakta sida vid sida. All information syns direkt, inget är dolt.",
+      bestFor: "Enkla beslut, kunder som vill se allt på en gång och sidor som ska gå att skriva ut.",
       render: () => <ProduktinfoTrygg produkt={p} />,
     },
     {
@@ -23,17 +23,17 @@ function makeVariants(produktId: ProduktId): Variant[] {
       shortName: "B",
       label: "Progressiv",
       riskLevel: "medel",
-      oneLiner: "Hero med prisöverlägg + detalj-tabs. E-commerce-känsla.",
-      bestFor: "Konvertering. Visuell produkt med tydlig CTA.",
+      oneLiner: "Stor bild med priset ovanpå och detaljerna i flikar. Känns som en webbshop.",
+      bestFor: "Produkter där en bild säger mycket och kunden ska kunna köpa eller fråga direkt.",
       render: () => <ProduktinfoProgressiv produkt={p} />,
     },
     {
       id: "experimentell",
       shortName: "C",
-      label: "Köp-fokuserad",
+      label: "Köpfokuserad",
       riskLevel: "medel",
-      oneLiner: "Sticky köp-sidebar. Detaljer scrollar, pris + CTA följer med.",
-      bestFor: "Produkter där beslutsvägen är lång (läsa mycket innan köp).",
+      oneLiner: "En köpruta med pris och knapp följer med när kunden scrollar genom detaljerna.",
+      bestFor: "Större köp där kunden läser mycket innan beslut, till exempel laddbox och solceller.",
       render: () => <ProduktinfoKop produkt={p} />,
     },
   ];
@@ -43,57 +43,57 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Känsla",
     values: {
-      trygg: "Informationsblad. Sakligt, förtroendeingivande, lite tråkigt.",
-      progressiv: "Webbshop. Visuellt, actionorienterat, modernt.",
-      experimentell: "Amazon / IKEA. Köp-beslut alltid synligt medan du läser.",
+      trygg: "Som ett informationsblad. Sakligt och förtroendeingivande, men lite torrt.",
+      progressiv: "Som en webbshop. Visuellt, modernt och inbjuder till handling.",
+      experimentell: "Som IKEA eller Amazon. Köpet finns alltid inom räckhåll medan du läser.",
     },
   },
   {
-    aspect: "Pris-exponering",
+    aspect: "Hur priset visas",
     values: {
-      trygg: "Prisfält i en gul ruta, synligt men inte dominerande.",
-      progressiv: "Prisbadge ovanpå bildytan, e-commerce-mönster, omöjligt att missa.",
-      experimentell: "Sticky sidebar, priset följer scroll. Alltid i kant av synfält.",
+      trygg: "I en gul ruta bredvid bilden. Syns tydligt men tar inte över.",
+      progressiv: "Som en etikett ovanpå bilden. Det första man ser, svårt att missa.",
+      experimentell: "I köprutan som följer med vid scroll. Priset syns hela tiden.",
     },
   },
   {
-    aspect: "Detalj-exponering",
+    aspect: "Hur detaljerna visas",
     values: {
-      trygg: "Tre kolumner (ingår/villkor/varför) synliga direkt.",
-      progressiv: "Tabs, användaren väljer vilken kategori de vill se.",
-      experimentell: "Detaljer + lång text + relaterat scrollar fritt. Inget dolt.",
+      trygg: "Tre kolumner (ingår, villkor, varför) som syns direkt.",
+      progressiv: "Flikar där kunden själv väljer vad hen vill läsa om.",
+      experimentell: "Detaljer, längre text och fördjupning ligger öppet i en lång sida. Inget är dolt.",
     },
   },
   {
-    aspect: "Sekundär CTA ('Ställ en fråga')",
+    aspect: "Sekundär knapp (Ställ en fråga)",
     values: {
-      trygg: "Finns inte, bara primär CTA.",
-      progressiv: "Finns. Fångar osäkra besökare som inte är redo att köpa.",
-      experimentell: "Finns. I sidebaren tillsammans med primär CTA.",
+      trygg: "Saknas. Bara en huvudknapp.",
+      progressiv: "Finns. Fångar kunder som är intresserade men inte redo att köpa.",
+      experimentell: "Finns, i köprutan direkt under huvudknappen.",
     },
   },
   {
     aspect: "Mobil",
     values: {
-      trygg: "Bild staplas ovanför info, lång scroll men inga överraskningar.",
-      progressiv: "Hero-bild med prisöverlägg → compact info → tabs.",
-      experimentell: "Sidebar blir en sticky fot-bar på mobil. Kräver omsorgsfull design.",
+      trygg: "Bilden hamnar ovanför texten. Lång sida, men inga överraskningar.",
+      progressiv: "Bild med pris överst, sedan kort info och flikarna.",
+      experimentell: "Köprutan behöver bli en fast list längst ned på skärmen. Kräver noggrann design.",
     },
   },
   {
-    aspect: "WCAG",
+    aspect: "Tillgänglighet (WCAG)",
     values: {
-      trygg: "Utmärkt, ren HTML, inga dynamiska kontroller.",
-      progressiv: "Bra, tabs behöver korrekt role='tab' + tangentbordsnavigation.",
-      experimentell: "Bra, sticky-positionen behöver inte täcka innehåll vid tab-fokus.",
+      trygg: "Mycket bra. Ren text utan dolt innehåll eller interaktiva kontroller.",
+      progressiv: "Bra, om flikarna går att använda med tangentbord och skärmläsare.",
+      experimentell: "Bra, om köprutan aldrig skymmer innehåll som får tangentbordsfokus.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      trygg: "Produkter där beslutet är enkelt och kort läsning räcker.",
-      progressiv: "Default för smarta produkter-sida.",
-      experimentell: "Laddbox, solceller, där användaren vill läsa mycket innan köp.",
+      trygg: "Produkter med enkla beslut där en kort text räcker.",
+      progressiv: "Förval för sidorna om smarta produkter och tjänster.",
+      experimentell: "Laddbox, solceller och andra köp där kunden vill läsa mycket först.",
     },
   },
 ];
@@ -107,14 +107,15 @@ export function Produktinfo() {
 
       <header className="mt-6 mb-8 max-w-reading">
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Produktinfo</p>
-        <h1 className="text-h1 mb-3">Produktsida med e-commerce-känsla</h1>
+        <h1 className="text-h1 mb-3">Produktinfo: pris, innehåll och köp på ett ställe</h1>
         <p className="text-lede text-ink-secondary">
-          En produktsida som visar pris, villkor och CTA, "mindre formulär, mer köp". Välj
-          produkt nedan för att se hur modulen anpassar sig.
+          Modulen visar vad produkten kostar, vad som ingår, vilka villkor som gäller och hur
+          kunden går vidare. Målet är färre formulär och fler avslutade köp. Välj en produkt
+          nedan och se hur samma modul fungerar för olika erbjudanden.
         </p>
       </header>
 
-      {/* Product selector */}
+      {/* Produktväljare */}
       <div className="mb-6 flex flex-wrap gap-2">
         <span className="text-xs uppercase tracking-wider text-ink-muted self-center mr-2">Visa produkt:</span>
         {PRODUKTER.map((p) => (
@@ -144,13 +145,13 @@ export function Produktinfo() {
         <h2 className="text-h3 mb-4">Designnotering</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Varför produktväljare ovanför varianter?</strong> Modulen är generisk.
-            Alla 6 produkter renderas med exakt samma komponent. Produktväljaren visar att
-            layouten skalar utan specialfall.
+            <strong>Varför en produktväljare ovanför varianterna?</strong> Modulen är gemensam
+            för alla produkter. Alla 6 produkter visas med exakt samma upplägg, och väljaren
+            visar att det håller för både fast pris, från-pris och offert utan specialanpassningar.
           </p>
           <p>
-            <strong>Rekommendation:</strong> <em>B (Progressiv)</em>. E-commerce-känslan gör att
-            köp och offert-förfrågan blir lika naturligt som att lägga något i en varukorg.
+            <strong>Rekommendation:</strong> <em>B (Progressiv)</em>. Webbshopskänslan gör att
+            det känns lika naturligt att beställa eller begära offert som att lägga något i en varukorg.
           </p>
         </div>
       </section>

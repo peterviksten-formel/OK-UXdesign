@@ -4,7 +4,7 @@ import { Icon } from "./Icon";
 
 /**
  * Thin top bar shown below header when edit mode is on.
- * Gives the user preset controls + escape hatches.
+ * Gives the user saved-view controls and a way to reset.
  */
 export function EditModeBar() {
   const {
@@ -59,16 +59,16 @@ export function EditModeBar() {
           <span className="inline-block w-2 h-2 rounded-full bg-brand-highlight animate-pulse" />
           <strong>Redigeringsläge</strong>
           <span className="hidden sm:inline opacity-80">
-            Ändringar sparas lokalt
+            Ändringarna sparas bara i din webbläsare
           </span>
           {hidden > 0 && (
             <span className="ml-1 px-2 py-0.5 rounded bg-white/15">
-              {hidden} dolt{hidden === 1 ? "" : "a"}
+              {hidden} {hidden === 1 ? "dolt block" : "dolda block"}
             </span>
           )}
           {dirty && (
             <span className="ml-1 px-2 py-0.5 rounded bg-white/15">
-              ändrat
+              ändrad
             </span>
           )}
         </span>
@@ -87,7 +87,7 @@ export function EditModeBar() {
               aria-expanded={menuOpen}
             >
               <Icon name="bookmark" size={14} />
-              Preset
+              Sparade vyer
               {presets.length > 0 && (
                 <span className="text-[10px] opacity-70">({presets.length})</span>
               )}
@@ -105,12 +105,12 @@ export function EditModeBar() {
                   className="absolute right-0 top-full mt-1 min-w-[280px] rounded-md border border-border-subtle bg-elevated text-ink shadow-xl p-2 z-30"
                 >
                   <p className="text-[10px] uppercase tracking-wider text-ink-muted font-medium px-2 py-1">
-                    Sparade varianter
+                    Sparade vyer
                   </p>
 
                   {presets.length === 0 ? (
                     <p className="px-2 py-2 text-xs text-ink-muted italic">
-                      Inga sparade presets för denna sidtyp ännu.
+                      Du har inga sparade vyer för den här sidtypen än.
                     </p>
                   ) : (
                     <ul className="mb-2">
@@ -129,7 +129,7 @@ export function EditModeBar() {
                             <Icon name="bookmark" size={14} className="text-brand-accent" filled />
                             <span className="flex-1 truncate">{name}</span>
                             <span className="text-[10px] text-ink-muted opacity-0 group-hover:opacity-100">
-                              ladda
+                              öppna
                             </span>
                           </button>
                           <button
@@ -137,13 +137,13 @@ export function EditModeBar() {
                             onClick={(e) => {
                               e.stopPropagation();
                               if (!activePageId) return;
-                              if (confirm(`Radera presetet "${name}"?`)) {
+                              if (confirm(`Vill du radera vyn "${name}"?`)) {
                                 deletePreset(activePageId, name);
                               }
                             }}
                             className="p-1 rounded hover:bg-tint-highlight text-ink-muted hover:text-brand-highlight opacity-0 group-hover:opacity-100"
-                            aria-label={`Radera ${name}`}
-                            title="Radera"
+                            aria-label={`Radera vyn ${name}`}
+                            title="Radera vyn"
                           >
                             <Icon name="delete" size={14} />
                           </button>
@@ -164,8 +164,8 @@ export function EditModeBar() {
                       role="menuitem"
                     >
                       <Icon name="restart_alt" size={14} className="text-ink-muted" />
-                      <span className="flex-1">Rekommendation</span>
-                      <span className="text-[10px] text-ink-muted">default</span>
+                      <span className="flex-1">Rekommenderad vy</span>
+                      <span className="text-[10px] text-ink-muted">standard</span>
                     </button>
                   </div>
 
@@ -180,7 +180,7 @@ export function EditModeBar() {
                           type="text"
                           value={presetName}
                           onChange={(e) => setPresetName(e.target.value)}
-                          placeholder="Namn på preset…"
+                          placeholder="T.ex. Förslag till ledningsgruppen"
                           className="flex-1 min-w-0 border border-border-strong rounded px-2 py-1 text-xs bg-surface focus:border-brand-accent focus:outline-none"
                         />
                         <button
@@ -204,10 +204,10 @@ export function EditModeBar() {
                         onClick={() => setSaveMode(true)}
                         disabled={!dirty}
                         className="w-full text-left px-2 py-1.5 rounded hover:bg-tint-info text-xs flex items-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-transparent"
-                        title={dirty ? "Spara nuvarande variant-kombination" : "Inga ändringar att spara"}
+                        title={dirty ? "Spara de varianter du valt som en egen vy" : "Du har inga ändringar att spara"}
                       >
                         <Icon name="add" size={14} className="text-brand-accent" />
-                        Spara nuvarande som preset
+                        Spara som ny vy
                       </button>
                     )}
                   </div>

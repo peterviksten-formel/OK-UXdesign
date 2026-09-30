@@ -39,9 +39,10 @@ export function Copy({ label, rationale, category = "rubrik", text, children }: 
 
   if (!enabled) return <>{children}</>;
 
-  const child = Children.only(children);
+  // Children.only throws on plain strings, so check for a single element first.
+  const child = isValidElement(children) ? Children.only(children) : null;
   if (!isValidElement(child)) {
-    // Children is a plain string or fragment ,  wrap in a span so we can decorate.
+    // Children is a plain string or fragment: wrap in a span so we can decorate.
     return (
       <span
         ref={(node) => { elRef.current = node; }}

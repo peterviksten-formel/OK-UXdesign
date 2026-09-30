@@ -27,7 +27,7 @@ export type RelateradProdukt = {
 };
 
 type Props = {
-  /** Sektionsrubrik. Default "Komplettera med", synergi-frame. */
+  /** Sektionsrubrik. Standard är "Komplettera med" (produkter som passar ihop). */
   rubrik?: string;
   produkter: RelateradProdukt[];
 };
@@ -43,16 +43,16 @@ export function RelateradeProdukter({
 
   return (
     <Annotation
-      label="Relaterade produkter, synergi-curering"
+      label="Relaterade produkter"
       audience="design"
-      rationale="Ligger efter FAQ (på direktköp efter formuläret, på leadsgen före lead-formet) som 'vägar vidare', inte för att konkurrera med primary CTA. Små ikon-kort utan pris och utan köp-CTA, signalerar 'klicka för att utforska', inte 'ny butikssida'. Curering är synergi (kompletterande), inte alternativ, frågar inte 'kanske vill du backa?' utan 'tillsammans med detta blir det bättre'."
+      rationale="Visar produkter som kompletterar det kunden redan tittar på, som en väg vidare efter FAQ. Små kort utan pris och köpknapp, så att de inte tävlar med sidans huvudsakliga CTA. Välj produkter som passar ihop, inte alternativ som får kunden att tveka."
     >
       <section className="py-10 border-t border-border-subtle">
         <Copy
-          label="Relaterade, rubrik"
+          label="Relaterade produkter, rubrik"
           category="rubrik"
           text={rubrik}
-          rationale="'Komplettera med' är synergi-frame, den säger 'du har en grund, lägg till'. Undviker e-com-floskeln 'Andra köpte också' (som passar dåligt för utility-bolag) och alternativ-tone 'Vill du jämföra?' (som triggar tvivel inför primary CTA)."
+          rationale="'Komplettera med' säger att kunden bygger vidare på det hen redan valt. Undvik e-handelsfrasen 'Andra köpte också', som passar dåligt för ett energibolag, och 'Vill du jämföra?', som väcker tvivel inför huvudvalet."
         >
           <h2 className="text-h3 font-medium mb-2">{rubrik}</h2>
         </Copy>

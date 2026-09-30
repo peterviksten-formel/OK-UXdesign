@@ -9,19 +9,19 @@ import { WizardProgress, type WizardVariant } from "../../components/WizardProgr
 import { AVBROTT, STATUS_META, TYP_LABEL } from "../moduler/avbrott-data";
 
 /**
- * SIDTYP 9, Avbrottsinformation
+ * SIDTYP 9: Avbrottsinformation
  *
- * Skifte från informationssida → beslutsstöd i realtid. Hela flödet styrs
- * av två frågor: "Är jag påverkad?" och "När är det löst?".
+ * Från informationssida till beslutsstöd i realtid. Hela flödet utgår
+ * från två frågor: "Är jag påverkad?" och "När är det löst?".
  *
  * Fem principer från UX-briefen:
- *   1. Adress först, sidan startar i adressfrågan, inte i en hero-text.
- *   2. Ett tydligt svar, statuskort med påverkan per infrastruktur
- *      (el, värme, gas, fiber), prognos och förenklad orsak.
- *   3. Tydliga nästa steg, kontextuella CTAs som följer av status:
- *      pågående → följ SMS + läs tips · inget → felsök själv först.
- *   4. Kartan som sekundär, under "fördjupning", inte huvudflöde.
- *   5. Enad datakälla, karta, lista och SMS visar samma status.
+ *   1. Adressen först: sidan börjar med adressfrågan, inte med en herotext.
+ *   2. Ett tydligt svar: statuskort med påverkan per tjänst
+ *      (el, värme, gas, fiber), prognos och enkel förklaring av orsaken.
+ *   3. Tydliga nästa steg som beror på läget:
+ *      pågående avbrott → SMS och tips · inget avbrott → felsök själv först.
+ *   4. Kartan är sekundär och ligger under "Översikt och historik".
+ *   5. En gemensam datakälla: karta, lista och SMS visar samma status.
  */
 
 /* ─── Data ──────────────────────────────────────────────────────── */
@@ -58,7 +58,7 @@ const MOCK_TRAFF: DemoResult = {
   adress: "Storgatan 12, 252 25 Helsingborg",
   slutBeraknat: "12:00",
   minuterKvar: 95,
-  senasteUppdatering: "08:45, Reparationsteam på plats, kabelfelet lokaliserat",
+  senasteUppdatering: "08:45: Reparatörerna är på plats och har hittat kabelfelet.",
   orsakEnkel: "Ett kabelfel vid transformatorstation Söder T4 påverkar området. Reparation pågår just nu.",
   paverkan: [
     { typ: "el", ikon: "bolt", label: "El", drabbad: true, detalj: "Ca 340 kunder utan ström sedan 08:22" },
@@ -74,35 +74,35 @@ const MOCK_INGET: DemoResult = {
   paverkan: PAVERKAN_OK,
 };
 
-/* ─── Felsökning-wizard (oförändrad sedan v1) ─────────────────────── */
+/* ─── Felsökningsguide (oförändrad sedan version 1) ──────────────── */
 
 type Diagnos = { id: string; fraga: string; ja: string; nej: string };
 
 const DIAGNOS_STEG: Diagnos[] = [
   { id: "grannar", fraga: "Har dina grannar också strömavbrott?", ja: "natverk", nej: "propp" },
-  { id: "natverk", fraga: "Då är det ett nätavbrott. Står avbrottet i listan ovan?", ja: "listad", nej: "rapportera" },
-  { id: "propp", fraga: "Har du kontrollerat säkringarna och jordfelsbrytaren?", ja: "proppar-ok", nej: "propp-check" },
-  { id: "propp-check", fraga: "Leta upp elcentralen och slå tillbaka utlösta säkringar. Fungerar det nu?", ja: "fungerar", nej: "rapportera" },
+  { id: "natverk", fraga: "Då är det troligen ett avbrott i elnätet. Står det med bland pågående avbrott?", ja: "listad", nej: "rapportera" },
+  { id: "propp", fraga: "Har du kollat säkringarna och jordfelsbrytaren?", ja: "proppar-ok", nej: "propp-check" },
+  { id: "propp-check", fraga: "Gå till elcentralen och slå tillbaka säkringar som har löst ut. Fungerar det nu?", ja: "fungerar", nej: "rapportera" },
   { id: "proppar-ok", fraga: "Har du betalat senaste elräkningen?", ja: "rapportera", nej: "obetald" },
 ];
 
 const DIAGNOS_SLUT: Record<string, { rubrik: string; text: string; cta?: { label: string; href: string; primary?: boolean } }> = {
   listad: {
-    rubrik: "Då vet vi om det.",
-    text: "Vi arbetar med att få tillbaka strömmen. Se tidslinjen för uppdateringar. Du behöver inte göra något mer.",
+    rubrik: "Vi känner till avbrottet",
+    text: "Du behöver inte göra något mer. Vi arbetar med att få tillbaka strömmen, och nya uppdateringar ser du under Pågående avbrott.",
   },
   fungerar: {
-    rubrik: "Bra, då var det en utlöst säkring.",
-    text: "Händer det ofta är det värt att låta en elektriker gå igenom din elcentral.",
+    rubrik: "Då var det en säkring som löst ut",
+    text: "Händer det ofta? Låt en elektriker se över din elcentral.",
   },
   obetald: {
-    rubrik: "Kontakta kundservice.",
-    text: "Vid obetald räkning kan leveransen ha stängts av. Logga in på Mina sidor eller ring kundservice.",
-    cta: { label: "Till Mina sidor", href: "#" },
+    rubrik: "Kontakta kundservice",
+    text: "Är räkningen obetald kan elen ha stängts av. Logga in på Mina sidor eller ring kundservice.",
+    cta: { label: "Logga in på Mina sidor", href: "#" },
   },
   rapportera: {
-    rubrik: "Gör en felanmälan.",
-    text: "Ring 042-490 32 00, dygnet runt. Ha din adress och fastighetsbeteckning redo.",
+    rubrik: "Gör en felanmälan",
+    text: "Ring 042-490 32 00. Vi svarar dygnet runt. Ha din adress och gärna fastighetsbeteckningen till hands.",
     cta: { label: "Ring 042-490 32 00", href: "tel:0424903200", primary: true },
   },
 };
@@ -124,8 +124,8 @@ export function AvbrottNy() {
   const [openAvbrott, setOpenAvbrott] = useState<string | null>(pagaende[0]?.id ?? null);
   const [fordjupningTab, setFordjupningTab] = useState<"karta" | "pagaende" | "planerade" | "avklarade">("karta");
 
-  // Flytta fokus till statuskortet när användaren har fått ett svar
-  //, skärmläsare hör resultatet, tangentbordsanvändare landar i nästa region.
+  // Flytta fokus till statuskortet när användaren har fått ett svar.
+  // Skärmläsare läser då upp resultatet och tangentbordsanvändare hamnar rätt.
   const statusCardRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (resultat) statusCardRef.current?.focus();
@@ -180,9 +180,9 @@ export function AvbrottNy() {
   const antalDrabbade = resultat?.paverkan.filter((p) => p.drabbad).length ?? 0;
 
   /**
-   * Felsökningsguidens body, delad mellan tre block-varianter som bara
-   * byter progress-header (stepper/bar/chips). Samma WizardProgress-grammatik
-   * som kontaktflödet i Kundservice-sidtypen, så guides känns enhetliga.
+   * Felsökningsguidens innehåll, delat mellan tre blockvarianter som bara
+   * visar stegen på olika sätt (cirklar, stapel eller knappar). Samma mönster
+   * som kontaktflödet på Kundservice, så guiderna känns igen.
    */
   function renderFelsokningWizard(progressVariant: WizardVariant) {
     const slut = diagnosSteg.startsWith("slut:") ? DIAGNOS_SLUT[diagnosSteg.replace("slut:", "")] : null;
@@ -191,21 +191,30 @@ export function AvbrottNy() {
 
     return (
       <Annotation
-        label="Felsökning, wizard, minskar felanmälningar"
+        label="Felsökningsguide före samtal"
         audience="user"
-        rationale="De flesta 'strömavbrott' är utlösta säkringar eller jordfelsbrytare. Att fråga grannar först → kolla säkringar → ring som sista utväg löser majoriteten utan att belasta KC. Briefens princip 6.1: felsökning FÖRE kontakt, explicit. Progress-header är delad med kontaktflödet så guides känns enhetliga."
+        rationale="Många strömavbrott hemma beror på en säkring eller jordfelsbrytare som löst ut. Guiden ställer en fråga i taget, och de flesta får svar utan att behöva ringa. Att ringa blir sista steget, inte det första."
       >
         <section id="felsokning" className="py-10 border-t border-border-subtle">
-          <WizardProgress
-            variant={progressVariant}
-            title="Testa det här innan du ringer"
-            subtitle="De flesta strömproblem beror på utlösta säkringar eller jordfelsbrytare. Guiden tar en minut och sparar ofta ett samtal."
-            steps={[
-              { key: "fragor", label: "Frågor", hint: aktiv && !slut ? `Fråga ${diagnosHistorik.length + 1}` : undefined },
-              { key: "resultat", label: "Resultat" },
-            ]}
-            current={wizardCurrent}
-          />
+          <Copy
+            label="Felsökning, rubrik och löfte"
+            category="rubrik"
+            text="Testa det här innan du ringer. Oftast beror strömavbrott hemma på en säkring eller jordfelsbrytare som löst ut. Guiden tar en minut och kan spara dig ett samtal."
+            rationale="Rubriken säger vad man ska göra och när. Undertexten förklarar varför det lönar sig och hur lång tid det tar. Undvik att låta som att vi inte vill att kunden ringer."
+          >
+            <div>
+              <WizardProgress
+                variant={progressVariant}
+                title="Testa det här innan du ringer"
+                subtitle="Oftast beror strömavbrott hemma på en säkring eller jordfelsbrytare som löst ut. Guiden tar en minut och kan spara dig ett samtal."
+                steps={[
+                  { key: "fragor", label: "Frågor", hint: aktiv && !slut ? `Fråga ${diagnosHistorik.length + 1}` : undefined },
+                  { key: "resultat", label: "Resultat" },
+                ]}
+                current={wizardCurrent}
+              />
+            </div>
+          </Copy>
 
           <div className="rounded-md border-2 border-brand-accent bg-surface p-5 sm:p-6 max-w-reading">
             {diagnosHistorik.length > 0 && (
@@ -221,7 +230,14 @@ export function AvbrottNy() {
 
             {aktiv && !slut && (
               <>
-                <p className="font-medium text-h5 mb-4">{aktiv.fraga}</p>
+                <Copy
+                  label="Felsökning, aktuell fråga"
+                  category="ton"
+                  text={aktiv.fraga}
+                  rationale="Varje fråga går att svara ja eller nej på och handlar om en sak i taget. Vardagsord som 'kollat' och 'löst ut' i stället för tekniska termer."
+                >
+                  <p className="font-medium text-h5 mb-4">{aktiv.fraga}</p>
+                </Copy>
                 <div className="flex gap-3">
                   <button
                     type="button"
@@ -243,8 +259,17 @@ export function AvbrottNy() {
 
             {slut && (
               <div role="status" aria-live="polite">
-                <h3 className="font-medium text-h5 mb-2">{slut.rubrik}</h3>
-                <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{slut.text}</p>
+                <Copy
+                  label="Felsökning, resultat"
+                  category="reassurance"
+                  text={`${slut.rubrik}. ${slut.text}`}
+                  rationale="Rubriken ger svaret direkt och texten säger vad man gör nu. När kunden inte behöver göra något säger vi det rakt ut, så ingen ringer i onödan."
+                >
+                  <div>
+                    <h3 className="font-medium text-h5 mb-2">{slut.rubrik}</h3>
+                    <p className="text-sm text-ink-secondary mb-4 leading-relaxed">{slut.text}</p>
+                  </div>
+                </Copy>
                 <div className="flex flex-wrap gap-3">
                   {slut.cta && (
                     <a
@@ -277,19 +302,19 @@ export function AvbrottNy() {
   }
 
   const blocks: BlockDef[] = [
-    /* ─── 1. START, Adress först → statuskort ──────────────────── */
+    /* ─── 1. START: adressen först, sedan statuskortet ─────────── */
     {
       id: "start",
-      label: "Adress först → statuskort",
+      label: "Adress först, sedan statuskort",
       variants: [
         {
           key: "unified",
-          label: "Sök adress + statuskort i en yta",
+          label: "Adressök och statuskort på samma yta",
           render: () => (
             <Annotation
-              label="Adress först"
+              label="Adressen först, sedan svaret"
               audience="user"
-              rationale="Briefens princip 1: sidan startar i adressfrågan. 'Är jag påverkad?' är frågan, adressfältet är sättet att få svar. Ingen generell hero-text före, ingen lista först. En klick från sökträff till fullt statuskort."
+              rationale="Den som har strömavbrott vill veta om det gäller hen. Därför börjar sidan med adressfältet, utan herotext eller lista före. Ett sök ger ett statuskort med läget för el, fjärrvärme, gas och fiber."
             >
               <section className="pt-6 pb-8">
                 {!resultat && (
@@ -297,25 +322,31 @@ export function AvbrottNy() {
                     label="H1, användarens fråga"
                     category="rubrik"
                     text="Är ditt hem påverkat av ett avbrott?"
-                    rationale="Direkt fråga i användarens språk. 'Avbrottsinformation' säger vad sidan är; 'Är ditt hem påverkat?' säger vad den svarar på."
+                    rationale="En fråga med besökarens egna ord. 'Avbrottsinformation' säger vad sidan är, 'Är ditt hem påverkat?' säger vilken fråga den besvarar."
                   >
                     <h1 className="text-h1 leading-tight mb-2">Är ditt hem påverkat av ett avbrott?</h1>
                   </Copy>
                 )}
                 {!resultat && (
                   <Copy
-                    label="Hero-lede, förklarar scope"
+                    label="Ingress, vad sidan visar"
                     category="reassurance"
-                    text="Skriv in din adress eller använd din position, vi visar status för el, fjärrvärme, gas och fiber på en gång."
-                    rationale="Sätter förväntan i två dimensioner: hur man kommer igång (input eller geoposition) och vad man får tillbaka (alla fyra infrastruktur-typer i ett svar, inte 'el' separat). Klargör att sidan hanterar mer än strömavbrott innan användaren börjar gissa."
+                    text="Skriv din adress eller använd din position. Vi visar status för el, fjärrvärme, gas och fiber på en gång."
+                    rationale="Säger hur man kommer igång (adress eller position) och vad man får tillbaka (läget för alla fyra tjänster i ett svar). Då förstår besökaren direkt att sidan gäller mer än el."
                   >
                     <p className="text-lede text-ink-secondary mb-5 max-w-reading">
-                      Skriv in din adress eller använd din position, vi visar status för el, fjärrvärme, gas och fiber på en gång.
+                      Skriv din adress eller använd din position. Vi visar status för el, fjärrvärme, gas och fiber på en gång.
                     </p>
                   </Copy>
                 )}
 
-                {/* Adress-input, alltid synlig, blir smalare när resultat finns */}
+                {/* Adressfältet syns alltid och tar mindre plats när det finns ett resultat */}
+                <Copy
+                  label="Adressök, fält och knappar"
+                  category="cta"
+                  text="T.ex. Storgatan 12 eller 252 25 / Se status / Använd min position"
+                  rationale="Exemplet i fältet visar att både gatuadress och postnummer fungerar. 'Se status' säger vad man får. Positionsknappen sparar tid för den som står i ett mörkt hus med mobilen."
+                >
                 <form
                   role="search"
                   onSubmit={(e) => { e.preventDefault(); sok(); }}
@@ -330,7 +361,7 @@ export function AvbrottNy() {
                       inputMode="text"
                       value={query}
                       onChange={(e) => setQuery(e.target.value)}
-                      placeholder="Ex. Storgatan 12 eller 252 25"
+                      placeholder="T.ex. Storgatan 12 eller 252 25"
                       className="w-full border border-border-strong rounded-md pl-10 pr-3 py-3 text-base bg-canvas focus:outline-none focus:border-brand-accent focus-visible:ring-2 focus-visible:ring-brand-accent"
                     />
                   </div>
@@ -353,14 +384,15 @@ export function AvbrottNy() {
                     <span className="sm:hidden">Position</span>
                   </button>
                 </form>
+                </Copy>
 
                 {!resultat && (
                   <p className="text-xs text-ink-muted">
-                    Tips: prova <button type="button" onClick={() => sok("252 25")} className="text-brand-accent underline underline-offset-2 hover:no-underline">252 25</button> för att se ett avbrott i demon, annars "inget avbrott".
+                    Demo: sök på <button type="button" onClick={() => sok("252 25")} className="text-brand-accent underline underline-offset-2 hover:no-underline">252 25</button> för att se ett pågående avbrott. Andra adresser visar läget utan avbrott.
                   </p>
                 )}
 
-                {/* STATUSKORT, briefens princip 2 */}
+                {/* STATUSKORT: briefens princip 2 */}
                 {resultat && (
                   <div
                     ref={statusCardRef}
@@ -374,7 +406,13 @@ export function AvbrottNy() {
                         : "border-brand-accent bg-tint-info"
                     }`}
                   >
-                    {/* Header-rad: status-badge + adress + ändra */}
+                    {/* Översta raden: statusmärke, adress och ändra */}
+                    <Copy
+                      label="Statuskort, märke och adress"
+                      category="metadata"
+                      text={`${resultat.kind === "pagaende" ? "Pågående avbrott" : resultat.kind === "planerat" ? "Planerat arbete" : "Inget avbrott"} / Adress: ${resultat.adress} / Ändra adress`}
+                      rationale="Märket ger läget med ett par ord, och adressen visar vad svaret gäller. 'Ändra adress' säger vad knappen gör, till skillnad från bara 'Ändra'."
+                    >
                     <header className="px-5 py-4 flex flex-wrap items-center gap-3 border-b border-border-subtle bg-surface/50">
                       <span
                         className={`inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded ${
@@ -398,44 +436,65 @@ export function AvbrottNy() {
                         className="text-sm text-brand-primary hover:underline inline-flex items-center gap-1"
                       >
                         <Icon name="edit" size={14} />
-                        Ändra
+                        Ändra adress
                       </button>
                     </header>
+                    </Copy>
 
-                    {/* Statussvar, stor rubrik */}
+                    {/* Statussvar med stor rubrik */}
                     <div className="px-5 py-5">
                       <Copy
-                        label="Statusrubrik, binärt svar"
+                        label="Statusrubrik, direkt svar"
                         category="rubrik"
                         text={
                           harAvbrott
-                            ? `${antalDrabbade} av 4 infrastrukturer påverkas just nu`
+                            ? `${antalDrabbade} av 4 tjänster påverkas just nu`
                             : "Allt fungerar normalt"
                         }
-                        rationale="Konkret svar, inte beskrivning. Siffran först när det finns problem, det är det läsaren letar efter."
+                        rationale="Ett konkret svar, inte en beskrivning. Vid avbrott kommer siffran först, eftersom det är den läsaren letar efter. 'Tjänster' i stället för 'infrastrukturer', som är vårt interna ord."
                       >
                         <h2 className="text-h3 leading-tight mb-1">
                           {harAvbrott
-                            ? `${antalDrabbade} av 4 infrastrukturer påverkas just nu`
+                            ? `${antalDrabbade} av 4 tjänster påverkas just nu`
                             : "Allt fungerar normalt"}
                         </h2>
                       </Copy>
                       {harAvbrott && resultat.slutBeraknat && (
-                        <p className="text-ink-secondary">
-                          Beräknad klar: <strong className="text-ink">{resultat.slutBeraknat}</strong>
-                          {resultat.minuterKvar != null && (
-                            <span className="text-ink-muted"> (om ca {resultat.minuterKvar} min)</span>
-                          )}
-                        </p>
+                        <Copy
+                          label="Prognos, när det är löst"
+                          category="metadata"
+                          text={`Beräknas klart: ${resultat.slutBeraknat}${resultat.minuterKvar != null ? ` (om ca ${resultat.minuterKvar} min)` : ""}`}
+                          rationale="Svarar på den andra frågan: när är det löst? Klockslaget är lätt att komma ihåg och minuterna gör det konkret. 'Beräknas' visar ärligt att det är en prognos."
+                        >
+                          <p className="text-ink-secondary">
+                            Beräknas klart: <strong className="text-ink">{resultat.slutBeraknat}</strong>
+                            {resultat.minuterKvar != null && (
+                              <span className="text-ink-muted"> (om ca {resultat.minuterKvar} min)</span>
+                            )}
+                          </p>
+                        </Copy>
                       )}
                       {!harAvbrott && (
-                        <p className="text-ink-secondary">
-                          Inga kända avbrott på din adress för el, fjärrvärme, gas eller fiber.
-                        </p>
+                        <Copy
+                          label="Inget avbrott, förklaring"
+                          category="reassurance"
+                          text="Vi känner inte till några avbrott på din adress för el, fjärrvärme, gas eller fiber."
+                          rationale="Bekräftar att alla fyra tjänster är kontrollerade. 'Vi känner inte till' är ärligt: felet kan finnas hemma, och då hjälper nästa steg nedanför."
+                        >
+                          <p className="text-ink-secondary">
+                            Vi känner inte till några avbrott på din adress för el, fjärrvärme, gas eller fiber.
+                          </p>
+                        </Copy>
                       )}
                     </div>
 
-                    {/* Påverkan per infrastruktur, briefens ikoner */}
+                    {/* Påverkan per tjänst, med briefens ikoner */}
+                    <Copy
+                      label="Påverkan per tjänst"
+                      category="metadata"
+                      text={`Påverkan just nu: ${resultat.paverkan.map((p) => `${p.label} ${p.drabbad ? "Avbrott" : "Fungerar"}`).join(" / ")}`}
+                      rationale="Ett ord per tjänst: 'Avbrott' eller 'Fungerar'. Vanliga ord i stället för 'Ej i drift' och 'OK'. Status visas både med färg och text, så ingen behöver tolka färgen."
+                    >
                     <div className="px-5 pb-5">
                       <p className="text-[11px] uppercase tracking-wider font-medium text-ink-muted mb-2">
                         Påverkan just nu
@@ -459,16 +518,23 @@ export function AvbrottNy() {
                             <div className="min-w-0">
                               <p className="text-sm font-medium">{p.label}</p>
                               <p className={`text-xs ${p.drabbad ? "text-brand-highlight font-medium" : "text-ink-muted"}`}>
-                                {p.drabbad ? "Ej i drift" : "OK"}
+                                {p.drabbad ? "Avbrott" : "Fungerar"}
                               </p>
                             </div>
                           </li>
                         ))}
                       </ul>
                     </div>
+                    </Copy>
 
-                    {/* Orsak + senaste uppdatering */}
+                    {/* Orsak och senaste uppdatering */}
                     {harAvbrott && (resultat.orsakEnkel || resultat.senasteUppdatering) && (
+                      <Copy
+                        label="Orsak och senaste uppdatering"
+                        category="ton"
+                        text={`Orsak: ${resultat.orsakEnkel ?? ""} / Senaste uppdatering: ${resultat.senasteUppdatering ?? ""}`}
+                        rationale="Redaktören skriver orsaken i en eller två meningar utan teknisk jargong: vad som hänt och att vi arbetar med det. Uppdateringen börjar med klockslag, så man ser hur färsk den är."
+                      >
                       <div className="px-5 pb-5 border-t border-border-subtle pt-4 space-y-3">
                         {resultat.orsakEnkel && (
                           <div>
@@ -487,11 +553,19 @@ export function AvbrottNy() {
                           </div>
                         )}
                       </div>
+                      </Copy>
                     )}
 
-                    <footer className="px-5 py-2.5 bg-surface/40 border-t border-border-subtle text-xs text-ink-muted">
-                      Status uppdateras i realtid · senast {senastUppdaterad}
-                    </footer>
+                    <Copy
+                      label="Statuskort, uppdateringstid"
+                      category="metadata"
+                      text={`Status uppdateras löpande · senast ${senastUppdaterad}`}
+                      rationale="Visar att uppgifterna är färska och när de senast uppdaterades. Klockslaget gör det möjligt att se om det är värt att ladda om sidan."
+                    >
+                      <footer className="px-5 py-2.5 bg-surface/40 border-t border-border-subtle text-xs text-ink-muted">
+                        Status uppdateras löpande · senast {senastUppdaterad}
+                      </footer>
+                    </Copy>
                   </div>
                 )}
               </section>
@@ -501,40 +575,47 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 2. NÄSTA STEG, kontextuell CTA-rad ─────────────────── */
+    /* ─── 2. NÄSTA STEG: knappar som beror på läget ────────────── */
     {
       id: "nasta-steg",
-      label: "Nästa steg (kontextuellt)",
+      label: "Nästa steg (beror på läget)",
       variants: [
         {
           key: "kontextuell",
-          label: "Beror på sök-status",
+          label: "Beror på sökresultatet",
           render: () => {
-            // Innan sökresultat, rendera ingenting. Hero:ns lede säger redan
-            // vad som händer efter att man fyllt i adressen; ett tomt-state
-            // här skulle bara upprepa det.
+            // Visa ingenting före sökningen. Ingressen säger redan vad som
+            // händer när man fyllt i adressen, och ett tomt läge här skulle
+            // bara upprepa det.
             if (!resultat) return null;
 
             return (
               <Annotation
-                label="Nästa steg, styrda av status"
+                label="Nästa steg som beror på läget"
                 audience="user"
-                rationale="Briefens princip 3: nästa steg beror på status. Vid avbrott → SMS + tips. Inget avbrott → felsök själv först, därefter ring. Primär-CTA är alltid den insats som ger mest värde för det tillståndet."
+                rationale="Vad man bör göra beror på svaret. Vid avbrott: få SMS när det är löst och läs tips. Utan avbrott: felsök hemma först och ring sedan. Den viktigaste knappen är alltid den som hjälper mest i just det läget."
               >
                 <section className="py-6 border-t border-border-subtle">
-                  <h2 className="text-h4 font-medium mb-3">
-                    {harAvbrott ? "Vad gör jag nu?" : "Har du ändå problem hemma?"}
-                  </h2>
+                  <Copy
+                    label="Nästa steg, rubrik"
+                    category="rubrik"
+                    text={harAvbrott ? "Vad gör jag nu?" : "Har du ändå problem hemma?"}
+                    rationale="Rubriken är frågan besökaren ställer sig i just det läget. Utan avbrott bekräftar 'ändå' att problemet kan vara verkligt, även om nätet fungerar."
+                  >
+                    <h2 className="text-h4 font-medium mb-3">
+                      {harAvbrott ? "Vad gör jag nu?" : "Har du ändå problem hemma?"}
+                    </h2>
+                  </Copy>
 
                   {harAvbrott ? (
                     <div className="grid sm:grid-cols-3 gap-3 max-w-reading">
-                      {/* PRIMÄR: Prenumerera på SMS */}
+                      {/* Viktigaste knappen: få SMS */}
                       {smsStatus === "idle" ? (
                         <Copy
                           label="Primär CTA vid avbrott, SMS"
                           category="cta"
                           text="Få SMS när det är löst"
-                          rationale="Verbformulering med utfall: 'Få SMS när det är löst', användaren får en sak, vid en konkret tidpunkt. 'Prenumerera på SMS' skulle vara en transaktion, inte ett utfall. Pair: 'Gratis · Avregistrera när som helst' adresserar de två vanligaste tvekansfrågorna (kostnad, kontroll) innan de uppstår."
+                          rationale="Säger vad man får och när: ett SMS när det är löst. 'Prenumerera på SMS' beskriver bara en handling. Raden 'Gratis · Avsluta när du vill' svarar på de två vanligaste tvekarna, kostnad och bindning, innan de dyker upp."
                         >
                           <button
                             type="button"
@@ -543,42 +624,56 @@ export function AvbrottNy() {
                           >
                             <Icon name="sms" size={22} />
                             <span className="font-medium">Få SMS när det är löst</span>
-                            <span className="text-xs opacity-90">Gratis · Avregistrera när som helst</span>
+                            <span className="text-xs opacity-90">Gratis · Avsluta när du vill</span>
                           </button>
                         </Copy>
                       ) : (
-                        <div className="p-4 rounded-md bg-tint-info border border-brand-accent text-left flex flex-col gap-1.5">
-                          <Icon name="check_circle" size={22} className="text-brand-accent" filled />
-                          <span className="font-medium">Du får SMS när det är löst</span>
-                          <span className="text-xs text-ink-secondary">
-                            Vi skickar till numret kopplat till adressen.
-                          </span>
-                        </div>
+                        <Copy
+                          label="SMS, bekräftelse"
+                          category="reassurance"
+                          text="Du får SMS när det är löst / Vi skickar till numret som är kopplat till adressen."
+                          rationale="Bekräftar med samma ord som knappen, så det är tydligt att det fungerade. Undertexten säger vart SMS:et går, så ingen undrar om de behöver lämna sitt nummer."
+                        >
+                          <div className="p-4 rounded-md bg-tint-info border border-brand-accent text-left flex flex-col gap-1.5">
+                            <Icon name="check_circle" size={22} className="text-brand-accent" filled />
+                            <span className="font-medium">Du får SMS när det är löst</span>
+                            <span className="text-xs text-ink-secondary">
+                              Vi skickar till numret som är kopplat till adressen.
+                            </span>
+                          </div>
+                        </Copy>
                       )}
 
-                      <a
-                        href="#felsokning"
-                        className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                      <Copy
+                        label="Tips medan du väntar"
+                        category="cta"
+                        text="Tips medan du väntar / Det här kan du göra medan vi lagar felet."
+                        rationale="Ger den som väntar något att göra. 'Medan du väntar' säger när tipsen passar, till skillnad från det vaga 'Tips just nu'."
                       >
-                        <Icon name="tips_and_updates" size={22} className="text-brand-accent" />
-                        <span className="font-medium">Tips just nu</span>
-                        <span className="text-xs text-ink-secondary">
-                          Vad du kan göra medan vi reparerar.
-                        </span>
-                      </a>
+                        <a
+                          href="#felsokning"
+                          className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
+                        >
+                          <Icon name="tips_and_updates" size={22} className="text-brand-accent" />
+                          <span className="font-medium">Tips medan du väntar</span>
+                          <span className="text-xs text-ink-secondary">
+                            Det här kan du göra medan vi lagar felet.
+                          </span>
+                        </a>
+                      </Copy>
 
                       <Copy
-                        label="Tertiär CTA, styr bort från telefon"
+                        label="Ring vid akut behov"
                         category="cta"
-                        text="Ring endast vid akut behov"
-                        rationale="Ovanlig formulering för en CTA: 'Ring endast' är faktiskt en instruktion att inte ringa utan skäl. Medvetet val för att minska onödiga samtal, användaren ser att telefonen finns men uppmanas att överväga SMS/tips först. 'Akut behov' definierar undantaget utan att vara avskräckande."
+                        text="Ring bara vid akut behov / 042-490 32 00 · dygnet runt"
+                        rationale="Ovanligt för en knapp: den ber besökaren att bara ringa om det verkligen behövs. Numret syns, men SMS och tips kommer först. 'Akut behov' anger undantaget utan att skrämma bort den som behöver hjälp."
                       >
                         <a
                           href="tel:0424903200"
                           className="p-4 rounded-md border border-border-strong text-brand-primary text-left hover:bg-tint-info flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
                         >
                           <Icon name="call" size={22} className="text-brand-accent" />
-                          <span className="font-medium">Ring endast vid akut behov</span>
+                          <span className="font-medium">Ring bara vid akut behov</span>
                           <span className="text-xs text-ink-secondary">
                             042-490 32 00 · dygnet runt
                           </span>
@@ -586,8 +681,14 @@ export function AvbrottNy() {
                       </Copy>
                     </div>
                   ) : (
+                    <Copy
+                      label="Utan avbrott, felsök först och ring sedan"
+                      category="cta"
+                      text="Felsök hemma först / De flesta strömavbrott hemma beror på en säkring som löst ut. / Ring om felsökningen inte hjälper / 042-490 32 00 · dygnet runt"
+                      rationale="När nätet fungerar ligger felet oftast hemma. Knapparna står i den ordning man bör ta dem: felsök först, ring sedan. Undertexten ger skälet att börja med felsökningen."
+                    >
                     <div className="grid sm:grid-cols-2 gap-3 max-w-reading">
-                      {/* Ingen avbrott, felsök först, ring sen */}
+                      {/* Inget avbrott: felsök först, ring sedan */}
                       <a
                         href="#felsokning"
                         className="p-4 rounded-md bg-brand-primary text-ink-onbrand text-left hover:opacity-90 flex flex-col gap-1.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
@@ -595,7 +696,7 @@ export function AvbrottNy() {
                         <Icon name="settings_suggest" size={22} />
                         <span className="font-medium">Felsök hemma först</span>
                         <span className="text-xs opacity-90">
-                          De flesta strömbortfall beror på utlösta säkringar.
+                          De flesta strömavbrott hemma beror på en säkring som löst ut.
                         </span>
                       </a>
 
@@ -610,6 +711,7 @@ export function AvbrottNy() {
                         </span>
                       </a>
                     </div>
+                    </Copy>
                   )}
                 </section>
               </Annotation>
@@ -619,47 +721,67 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 3. FELSÖKNING, innan du ringer ───────────────────────── */
+    /* ─── 3. FELSÖKNING: innan du ringer ───────────────────────── */
     {
       id: "felsokning",
-      label: "Felsökning, innan du ringer",
+      label: "Felsökning innan du ringer",
       variants: [
         {
           key: "stepper",
-          label: "Wizard · stepper (default)",
+          label: "Guide med stegcirklar (standard)",
           render: () => renderFelsokningWizard("stepper"),
         },
         {
           key: "bar",
-          label: "Wizard · progress-bar (kompakt)",
+          label: "Guide med stapel (kompakt)",
           render: () => renderFelsokningWizard("bar"),
         },
         {
           key: "chips",
-          label: "Wizard · pill-chips",
+          label: "Guide med stegknappar",
           render: () => renderFelsokningWizard("chips"),
         },
         {
           key: "statisk",
-          label: "Statisk lista, 5 steg",
+          label: "Checklista med fem steg",
           render: () => (
             <Annotation
-              label="Felsökning, statisk checklista"
+              label="Felsökning som checklista"
               audience="design"
-              rationale="Alternativ för skärmläsaranvändare och de som föredrar att se allt på en gång. Fungerar utan JS."
+              rationale="Ett alternativ till guiden för den som vill se alla steg på en gång, till exempel med skärmläsare. Fungerar även om sidan inte laddats helt."
             >
               <section id="felsokning" className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-2">Testa det här innan du ringer</h2>
-                <p className="text-ink-secondary mb-6 max-w-reading">
-                  Gå igenom listan i tur och ordning. De flesta strömproblem löser du på en minut.
-                </p>
+                <Copy
+                  label="Checklista, rubrik"
+                  category="rubrik"
+                  text="Testa det här innan du ringer"
+                  rationale="Samma rubrik som i guiden, så sektionen känns igen oavsett variant."
+                >
+                  <h2 className="text-h3 font-medium mb-2">Testa det här innan du ringer</h2>
+                </Copy>
+                <Copy
+                  label="Checklista, ingress"
+                  category="ton"
+                  text="Gå igenom stegen i tur och ordning. De flesta problem löser du på en minut."
+                  rationale="Säger hur listan ska användas och hur lång tid det tar. Tidslöftet gör det lättare att börja."
+                >
+                  <p className="text-ink-secondary mb-6 max-w-reading">
+                    Gå igenom stegen i tur och ordning. De flesta problem löser du på en minut.
+                  </p>
+                </Copy>
+                <Copy
+                  label="Checklista, steg"
+                  category="ton"
+                  text="Har grannarna också avbrott? / Kolla jordfelsbrytaren / Kolla säkringarna / Kolla att räkningen är betald / Gör en felanmälan"
+                  rationale="Varje steg börjar med en uppmaning eller en fråga, i den ordning som löser flest problem först. Förklaringen under säger var man hittar saken och vad man gör sedan."
+                >
                 <ol className="space-y-4 max-w-reading">
                   {[
-                    { t: "Har grannarna också avbrott?", d: "Om ja: det är ett nätavbrott, se statusen ovan eller ring felanmälan." },
-                    { t: "Kolla jordfelsbrytaren", d: "Den sitter i elcentralen. Slå om den om den är nedslagen." },
-                    { t: "Kolla utlösta säkringar", d: "Slå tillbaka utlösta säkringar. Händer det ofta, kontakta en elektriker." },
-                    { t: "Kolla om räkningen är betald", d: "Obetalda räkningar kan leda till avstängning. Logga in på Mina sidor." },
-                    { t: "Gör en felanmälan", d: "Hjälper inget av ovan: 042-490 32 00, dygnet runt." },
+                    { t: "Har grannarna också avbrott?", d: "Om ja är det troligen ett avbrott i elnätet. Se statusen ovan eller gör en felanmälan." },
+                    { t: "Kolla jordfelsbrytaren", d: "Den sitter i elcentralen. Har den löst ut, slå tillbaka den." },
+                    { t: "Kolla säkringarna", d: "Slå tillbaka säkringar som har löst ut. Händer det ofta, kontakta en elektriker." },
+                    { t: "Kolla att räkningen är betald", d: "En obetald räkning kan leda till att elen stängs av. Du ser dina fakturor på Mina sidor." },
+                    { t: "Gör en felanmälan", d: "Hjälper inget av det här? Ring 042-490 32 00, dygnet runt." },
                   ].map((s, i) => (
                     <li key={s.t} className="flex gap-4">
                       <span className="shrink-0 w-8 h-8 rounded-full bg-brand-primary text-white grid place-items-center font-bold text-sm">
@@ -672,6 +794,7 @@ export function AvbrottNy() {
                     </li>
                   ))}
                 </ol>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -679,19 +802,19 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 4. FELANMÄLAN, telefon som sista utväg ────────────── */
+    /* ─── 4. FELANMÄLAN: telefon som sista steg ──────────────── */
     {
       id: "felanmalan",
       label: "Felanmälan",
       variants: [
         {
           key: "telefon-primar",
-          label: "Telefon primär, dygnet runt",
+          label: "Telefon först, dygnet runt",
           render: () => (
             <Annotation
-              label="Felanmälan, explicit sista steg"
+              label="Felanmälan som sista steg"
               audience="user"
-              rationale="Placerad efter felsökning så användaren har testat själv först. Dygnet-runt-tillgänglighet signalerar trovärdighet. Checklistan reducerar samtalstiden, handläggaren behöver inte gräva fram uppgifterna."
+              rationale="Ligger efter felsökningen, så att besökaren har hunnit testa själv. Att vi svarar dygnet runt skapar trygghet. Listan över vad man ska ha till hands gör samtalet kortare för både kunden och oss."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-lg bg-brand-primary text-white p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
@@ -700,31 +823,53 @@ export function AvbrottNy() {
                       label="Felanmälan, sista utväg"
                       category="rubrik"
                       text="Fortfarande fel?"
-                      rationale="Kort fråga istället för påstående. 'Fortfarande' antyder att användaren redan försökt något (felsökning ovan), sätter samtalet rätt innan de ringer. 'Gör en felanmälan' skulle vara förvaltningssvenska; frågan är personlig."
+                      rationale="En kort fråga i stället för ett påstående. 'Fortfarande' visar att vi vet att besökaren redan har försökt. En rubrik som 'Gör en felanmälan' låter mer som en myndighet."
                     >
                       <h2 className="text-h2 text-white mb-2">Fortfarande fel?</h2>
                     </Copy>
-                    <p className="opacity-90 mb-4 max-w-reading">
-                      Har felsökningen inte löst det, ring oss. Vi svarar dygnet runt
-                      när det gäller avbrott och akuta nätfel.
-                    </p>
-                    <a
-                      href="tel:0424903200"
-                      className="inline-flex items-center gap-3 bg-white text-brand-primary font-medium px-6 py-3.5 rounded hover:opacity-90 text-lg"
+                    <Copy
+                      label="Felanmälan, brödtext"
+                      category="ton"
+                      text="Hjälpte inte felsökningen? Ring oss. Vi svarar dygnet runt om avbrott och akuta fel i elnätet."
+                      rationale="Kort uppmaning och ett löfte om när vi svarar. 'Akuta fel i elnätet' avgränsar vad numret är till för, utan att skrämma."
                     >
-                      <Icon name="call" size={22} />
-                      042-490 32 00
-                    </a>
-                    <p className="text-xs opacity-80 mt-2">Dygnet runt · alla dagar</p>
+                      <p className="opacity-90 mb-4 max-w-reading">
+                        Hjälpte inte felsökningen? Ring oss. Vi svarar dygnet runt
+                        om avbrott och akuta fel i elnätet.
+                      </p>
+                    </Copy>
+                    <Copy
+                      label="Felanmälan, telefonnummer"
+                      category="cta"
+                      text="042-490 32 00 / Dygnet runt · alla dagar"
+                      rationale="Numret är själva knappen, så man kan ringa direkt från mobilen eller skriva av det. Öppettiden under tar bort tvekan om det är för sent att ringa."
+                    >
+                      <div>
+                        <a
+                          href="tel:0424903200"
+                          className="inline-flex items-center gap-3 bg-white text-brand-primary font-medium px-6 py-3.5 rounded hover:opacity-90 text-lg"
+                        >
+                          <Icon name="call" size={22} />
+                          042-490 32 00
+                        </a>
+                        <p className="text-xs opacity-80 mt-2">Dygnet runt · alla dagar</p>
+                      </div>
+                    </Copy>
                   </div>
+                  <Copy
+                    label="Felanmälan, ha till hands"
+                    category="reassurance"
+                    text="Ha det här till hands när du ringer: Din adress (gata och postnummer) / Fastighetsbeteckning, om du har den / Vad som inte fungerar (el, värme, gas, fiber) / Om grannarna också är drabbade"
+                    rationale="En kort lista som gör samtalet snabbare. 'Om du har den' visar att fastighetsbeteckning inte är ett krav, så ingen avstår från att ringa för att den saknas."
+                  >
                   <div className="bg-white/10 rounded-md p-5">
                     <p className="text-xs uppercase tracking-wider font-medium mb-3 opacity-80">
-                      Ha redo när du ringer:
+                      Ha det här till hands när du ringer
                     </p>
                     <ul className="space-y-2 text-sm">
                       {[
-                        "Din adress (gata + postnummer)",
-                        "Fastighetsbeteckning om du har",
+                        "Din adress (gata och postnummer)",
+                        "Fastighetsbeteckning, om du har den",
                         "Vad som inte fungerar (el, värme, gas, fiber)",
                         "Om grannarna också är drabbade",
                       ].map((s) => (
@@ -735,6 +880,7 @@ export function AvbrottNy() {
                       ))}
                     </ul>
                   </div>
+                  </Copy>
                 </div>
               </section>
             </Annotation>
@@ -743,26 +889,46 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 5. FÖRDJUPNING, karta + pågående + planerade + avklarade */
+    /* ─── 5. FÖRDJUPNING: karta, pågående, planerade och avklarade */
     {
       id: "fordjupning",
-      label: "Fördjupning, karta, pågående, historik",
+      label: "Fördjupning: karta, pågående och historik",
       variants: [
         {
           key: "tabs",
-          label: "Tab-struktur, karta default",
+          label: "Flikar, kartan visas först",
           render: () => (
             <Annotation
-              label="Fördjupning, sekundärt innehåll bakom tabs"
+              label="Fördjupning i flikar"
               audience="design"
-              rationale="Briefens princip 6.3: kartan är sekundär, för överblick, inte för beslut. Samlar karta + hela nätets pågående + planerade + avklarade bakom tabs så de inte konkurrerar med användarens adress-svar ovan."
+              rationale="Kartan ger överblick men är inte till för att fatta beslut. Därför ligger den, tillsammans med pågående, planerade och avklarade avbrott, i flikar under svaret för den egna adressen. Då konkurrerar de inte med det viktigaste."
             >
               <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-2">Översikt och historik</h2>
-                <p className="text-ink-secondary mb-5 max-w-reading">
-                  Karta över hela nätet samt avbrott utanför din adress, för dig som vill se helheten.
-                </p>
+                <Copy
+                  label="Fördjupning, rubrik"
+                  category="rubrik"
+                  text="Översikt och historik"
+                  rationale="Säger att det här är för den som vill se helheten, inte svaret för den egna adressen. Neutral rubrik för sekundärt innehåll."
+                >
+                  <h2 className="text-h3 font-medium mb-2">Översikt och historik</h2>
+                </Copy>
+                <Copy
+                  label="Fördjupning, ingress"
+                  category="ton"
+                  text="Se kartan över hela elnätet och avbrott på andra adresser än din."
+                  rationale="Säger vad som finns här och vem det passar. Den som bara bryr sig om sin egen adress förstår att hen kan hoppa över sektionen."
+                >
+                  <p className="text-ink-secondary mb-5 max-w-reading">
+                    Se kartan över hela elnätet och avbrott på andra adresser än din.
+                  </p>
+                </Copy>
 
+                <Copy
+                  label="Fördjupning, flikar"
+                  category="metadata"
+                  text="Karta / Pågående / Planerade / Avklarade"
+                  rationale="Ett ord per flik, och antalet inom parentes visar direkt om det finns något att titta på. Samma ord som statusmärket i statuskortet."
+                >
                 <div
                   role="tablist"
                   aria-label="Fördjupning"
@@ -796,21 +962,36 @@ export function AvbrottNy() {
                     );
                   })}
                 </div>
+                </Copy>
 
                 {fordjupningTab === "karta" && (
                   <div role="tabpanel" id="fordjupning-panel-karta" aria-labelledby="fordjupning-tab-karta">
                     <MapPlaceholder avbrott={pagaende} />
-                    <p className="text-xs text-ink-muted mt-3 max-w-reading">
-                      Kartan är en överblick. För beslut om din adress, använd statuskortet ovan.
-                      Datan kommer från samma driftsystem (DMS/Trimble) som listan och SMS-tjänsten.
-                    </p>
+                    <Copy
+                      label="Karta, förklaring"
+                      category="ton"
+                      text="Kartan ger en överblick. Vill du veta vad som gäller för din adress, sök på den ovan. Kartan, listan och SMS-tjänsten visar samma uppgifter."
+                      rationale="Påminner om att sökningen ger det säkraste svaret för den egna adressen. Att alla kanaler visar samma uppgifter skapar förtroende. Systemnamn hör inte hemma i texten."
+                    >
+                      <p className="text-xs text-ink-muted mt-3 max-w-reading">
+                        Kartan ger en överblick. Vill du veta vad som gäller för din adress, sök på den ovan.
+                        Kartan, listan och SMS-tjänsten visar samma uppgifter.
+                      </p>
+                    </Copy>
                   </div>
                 )}
 
                 {fordjupningTab === "pagaende" && (
                   <div role="tabpanel" id="fordjupning-panel-pagaende" aria-labelledby="fordjupning-tab-pagaende">
                     {pagaende.length === 0 ? (
-                      <p className="text-ink-muted italic">Inga pågående avbrott just nu.</p>
+                      <Copy
+                        label="Tomt läge, pågående"
+                        category="reassurance"
+                        text="Inga pågående avbrott just nu."
+                        rationale="Ett lugnande besked när listan är tom. 'Just nu' visar att läget kan ändras."
+                      >
+                        <p className="text-ink-muted italic">Inga pågående avbrott just nu.</p>
+                      </Copy>
                     ) : (
                       <ul className="space-y-3">
                         {pagaende.map((a) => {
@@ -837,8 +1018,8 @@ export function AvbrottNy() {
                                     </p>
                                   </div>
                                   <span className="hidden sm:block text-right text-sm">
-                                    <span className="block text-ink-muted text-xs">Beräknad klar</span>
-                                    <span className="font-medium">{a.slutBeraknat?.split(" ")[1] ?? "–"}</span>
+                                    <span className="block text-ink-muted text-xs">Beräknas klart</span>
+                                    <span className="font-medium">{a.slutBeraknat?.split(" ")[1] ?? "Okänt"}</span>
                                   </span>
                                   <Icon
                                     name="expand_more"
@@ -885,7 +1066,14 @@ export function AvbrottNy() {
                 {fordjupningTab === "planerade" && (
                   <div role="tabpanel" id="fordjupning-panel-planerade" aria-labelledby="fordjupning-tab-planerade">
                     {planerat.length === 0 ? (
-                      <p className="text-ink-muted italic">Inga planerade avbrott denna vecka.</p>
+                      <Copy
+                        label="Tomt läge, planerade"
+                        category="reassurance"
+                        text="Inga planerade arbeten den här veckan."
+                        rationale="Säger vilken period det gäller, så besökaren vet att det kan komma arbeten längre fram."
+                      >
+                        <p className="text-ink-muted italic">Inga planerade arbeten den här veckan.</p>
+                      </Copy>
                     ) : (
                       <ul className="divide-y divide-border-subtle rounded-md border border-border-subtle bg-surface">
                         {planerat.map((a) => (
@@ -914,7 +1102,14 @@ export function AvbrottNy() {
                 {fordjupningTab === "avklarade" && (
                   <div role="tabpanel" id="fordjupning-panel-avklarade" aria-labelledby="fordjupning-tab-avklarade">
                     {avslutat.length === 0 ? (
-                      <p className="text-ink-muted italic">Inga avklarade avbrott senaste 7 dagar.</p>
+                      <Copy
+                        label="Tomt läge, avklarade"
+                        category="reassurance"
+                        text="Inga avbrott har avslutats de senaste 7 dagarna."
+                        rationale="Anger tidsperioden så att den tomma listan inte ser ut som ett fel."
+                      >
+                        <p className="text-ink-muted italic">Inga avbrott har avslutats de senaste 7 dagarna.</p>
+                      </Copy>
                     ) : (
                       <ul className="divide-y divide-border-subtle rounded-md border border-border-subtle bg-surface">
                         {avslutat.map((a) => (
@@ -942,37 +1137,50 @@ export function AvbrottNy() {
       ],
     },
 
-    /* ─── 6. STÖD, ersättning, FAQ, andra kanaler ────────────── */
+    /* ─── 6. STÖD: ersättning, FAQ och andra kanaler ─────────── */
     {
       id: "stod",
-      label: "Stöd, ersättning, FAQ, SMS",
+      label: "Stöd: ersättning, FAQ och SMS",
       variants: [
         {
           key: "kompakt",
           label: "Fyra kompakta länkar",
           render: () => (
             <Annotation
-              label="Stöd, komprimerad sekundärt"
+              label="Bra att veta, kompakta genvägar"
               audience="redaktör"
-              rationale="Briefens innehållsstrategi: juridiska förklaringar, ersättning, djup FAQ ska vara tillgängligt men inte konkurrera med huvudflödet. Fyra korta kort med länk vidare till respektive detaljsida."
+              rationale="Här länkar du till fördjupning om ersättning, SMS-tjänsten, vanliga frågor och grävarbeten. Håll dig till fyra kort med en rubrik och en mening var. Detaljerna hör hemma på respektive undersida."
             >
               <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h4 font-medium mb-4">Bra att veta</h2>
+                <Copy
+                  label="Bra att veta, rubrik"
+                  category="rubrik"
+                  text="Bra att veta"
+                  rationale="Neutral rubrik som visar att innehållet är extra, inte nödvändigt för att lösa problemet just nu."
+                >
+                  <h2 className="text-h4 font-medium mb-4">Bra att veta</h2>
+                </Copy>
+                <Copy
+                  label="Bra att veta, kort"
+                  category="faq"
+                  text="Ersättning / SMS om avbrott / Vanliga frågor / Här gräver vi"
+                  rationale="Kortrubrikerna är de ord kunderna söker på. Meningen under säger vad man får veta, till exempel när man har rätt till ersättning, så man vet om det är värt att klicka."
+                >
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
                   <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
                     <Icon name="paid" size={20} className="text-brand-accent" />
                     <span className="font-medium group-hover:text-brand-accent">Ersättning</span>
-                    <span className="text-xs text-ink-secondary">Rätt till ersättning vid avbrott &gt; 12 timmar.</span>
+                    <span className="text-xs text-ink-secondary">Har strömmen varit borta i mer än 12 timmar kan du ha rätt till ersättning.</span>
                   </a>
                   <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
                     <Icon name="sms" size={20} className="text-brand-accent" />
-                    <span className="font-medium group-hover:text-brand-accent">SMS-prenumeration</span>
-                    <span className="text-xs text-ink-secondary">Registrera ditt nummer utan att söka just nu.</span>
+                    <span className="font-medium group-hover:text-brand-accent">SMS om avbrott</span>
+                    <span className="text-xs text-ink-secondary">Anmäl ditt nummer och få SMS vid avbrott på din adress.</span>
                   </a>
                   <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
                     <Icon name="quiz" size={20} className="text-brand-accent" />
                     <span className="font-medium group-hover:text-brand-accent">Vanliga frågor</span>
-                    <span className="text-xs text-ink-secondary">Anvisat avtal, elnät vs elhandel, vem ansvarar.</span>
+                    <span className="text-xs text-ink-secondary">Om anvisat avtal, elnät och elhandel och vem som ansvarar för vad.</span>
                   </a>
                   <a href="#" className="group p-4 rounded-md border border-border-subtle bg-surface hover:border-brand-accent hover:shadow-sm flex flex-col gap-1.5">
                     <Icon name="construction" size={20} className="text-brand-accent" />
@@ -980,6 +1188,7 @@ export function AvbrottNy() {
                     <span className="text-xs text-ink-secondary">Pågående och kommande grävarbeten.</span>
                   </a>
                 </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -992,12 +1201,17 @@ export function AvbrottNy() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Avbrottsinformation (Sidtyp 9, beslutsstöd i realtid)"
-        syfte="Svara på 'Är jag påverkad?' och 'När är det löst?' på under 5 sekunder. Adress först, ett samlat statuskort med påverkan per infrastruktur, kontextuella nästa steg och felsökning före kontakt. Karta och historik som sekundärt innehåll."
-        malgrupp="Kund med akut problem, ofta mobil, stressad, fem sekunder av uppmärksamhet. Även förvaltare och redaktionell personal som följer läget."
-        primarHandling="Skriv in adress (eller använd position) → se statuskort → gör rätt nästa steg: prenumerera på SMS / felsök själv / ring."
-        ton="Saklig, direkt, transparent om prognos och osäkerhet. Inga marknadsfraser. Avbrott får röd signal, normaltillstånd får lugnt grönt."
+        syfte="Svara på 'Är jag påverkad?' och 'När är det löst?' på under fem sekunder. Sidan börjar med adressen och ger ett samlat statuskort för el, fjärrvärme, gas och fiber. Därefter kommer nästa steg som passar läget, och felsökning före kontakt. Karta och historik ligger längre ner."
+        malgrupp="Kunder med ett akut problem, ofta i mobilen och stressade, med bara några sekunders tålamod. Även fastighetsförvaltare och personal som följer läget."
+        primarHandling="Skriva sin adress eller använda sin position, se statuskortet och sedan välja rätt nästa steg: få SMS, felsöka själv eller ringa."
+        ton="Saklig, rak och öppen om prognoser och osäkerhet. Inga säljfraser. Avbrott markeras med varningsfärg, normalt läge med lugn färg."
       />
 
+      <Annotation
+        label="Inloggning alltid synlig"
+        audience="design"
+        rationale="Den som redan är kund kan logga in på Mina sidor uppe till höger, där de flesta letar. Inloggningen tar ingen plats från adressfältet, som är sidans viktigaste del."
+      >
       <div className="flex items-center justify-between pt-6">
         <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">
           ← Översikt
@@ -1007,9 +1221,17 @@ export function AvbrottNy() {
           className="inline-flex items-center gap-1.5 text-sm text-ink-secondary hover:text-brand-accent"
         >
           <Icon name="person" size={16} />
-          Logga in på Mina sidor
+          <Copy
+            label="Inloggningslänk"
+            category="cta"
+            text="Logga in på Mina sidor"
+            rationale="Verb plus plats: besökaren vet vart länken leder. Samma formulering som på övriga sidor."
+          >
+            Logga in på Mina sidor
+          </Copy>
         </a>
       </div>
+      </Annotation>
 
       <nav aria-label="Breadcrumb" className="text-xs text-ink-muted mt-4 mb-2">
         <ol className="flex gap-1">
@@ -1027,13 +1249,13 @@ export function AvbrottNy() {
 /* ─── Helpers ───────────────────────────────────────────────────── */
 
 /**
- * Schematisk karta (prototyp), inte en riktig kartmotor. Visar nätets
- * geografi med markörer för pågående avbrott. I produktion ersätts denna
- * med Trimble-kartan, gränssnittet är detsamma: klickbara markörer
- * leder till samma statuskort som adresssöket ger.
+ * Schematisk karta för prototypen, inte en riktig karta. Visar nätets
+ * område med markörer för pågående avbrott. I skarp drift ersätts den av
+ * Trimble-kartan med samma funktion: klickbara markörer leder till samma
+ * statuskort som adressökningen ger.
  *
- * Positioner är manuellt satta för prototypen (Helsingborg/omland). I
- * produktion kommer DMS att leverera koordinater som kartmotorn renderar.
+ * Markörerna är placerade för hand (Helsingborg med omnejd). I skarp drift
+ * levererar DMS koordinaterna som kartan visar.
  */
 function MapPlaceholder({ avbrott }: { avbrott: typeof pagaende }) {
   const markerPositions: { top: string; left: string }[] = [
@@ -1086,7 +1308,7 @@ function MapPlaceholder({ avbrott }: { avbrott: typeof pagaende }) {
         </span>
         <span className="inline-flex items-center gap-1.5 text-ink-muted">
           <Icon name="info" size={14} />
-          Prototyp, kartmotorn (Trimble) renderar riktiga koordinater i produktion.
+          Prototyp. Den riktiga kartan visar var avbrotten finns.
         </span>
       </div>
     </div>

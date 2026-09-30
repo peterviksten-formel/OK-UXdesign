@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Icon } from "./Icon";
 
 /**
- * Sticky köp-/lead-CTA-panel ,  delar logik mellan två renderingar:
+ * Sticky köp-/lead-CTA-panel. Delar logik mellan två renderingar:
  *
  *   • <StickyPurchaseSidebar>    Desktop, sticky kort i grid-kolumn höger.
  *   • <StickyPurchaseBottomBar>  Mobil, fixed bottom-bar i nederkant.
@@ -11,7 +11,7 @@ import { Icon } from "./Icon";
  * att sticky ska fungera relativt kolumnen) och mobil-baren måste ligga
  * utanför wrappers med `display: none` på sm-/md-bredd. Båda delar
  * `useFormHidden`-hooken så de göms samtidigt när målformuläret är synligt
- * i viewport ,  CTA dubbleras inte när användaren har nått köpyttan.
+ * i viewport, så att CTA:n inte dubbleras när användaren har nått köpyttan.
  */
 
 export type StickyPurchasePanelProps = {
@@ -25,9 +25,9 @@ export type StickyPurchasePanelProps = {
   ctaLabel: string;
   /** Anchor som CTA:n hoppar till */
   ctaHref: string;
-  /** Korta reassurance-punkter (max 3) ,  visas bara på desktop-varianten */
+  /** Korta trygghetspunkter (max 3). Visas bara på desktop-varianten */
   reassurance?: string[];
-  /** Säljkontakt ,  visas bara på desktop-varianten */
+  /** Säljkontakt. Visas bara på desktop-varianten */
   saljare?: { initialer: string; namn: string; roll: string };
   /**
    * CSS-selector för formulär-elementet som ska gömma panelen
@@ -36,7 +36,7 @@ export type StickyPurchasePanelProps = {
   hideWhenSelector?: string;
 };
 
-/* ─── Delad hook ,  hide-on-form intersection ──────────────────── */
+/* ─── Delad hook: hide-on-form intersection ──────────────────── */
 
 function useFormHidden(selector?: string): boolean {
   const [hidden, setHidden] = useState(false);
@@ -59,7 +59,7 @@ function useFormHidden(selector?: string): boolean {
   return hidden;
 }
 
-/* ─── Desktop ,  sticky i höger kolumn ──────────────────────────── */
+/* ─── Desktop: sticky i höger kolumn ──────────────────────────── */
 
 export function StickyPurchaseSidebar(props: StickyPurchasePanelProps) {
   const hidden = useFormHidden(props.hideWhenSelector);
@@ -133,7 +133,7 @@ export function StickyPurchaseSidebar(props: StickyPurchasePanelProps) {
 
 export function StickyPurchaseBottomBar(
   props: StickyPurchasePanelProps & {
-    /** Default false — barrar bara på <lg. När true visas även på desktop. */
+    /** Default false: visas bara under lg. När true visas även på desktop. */
     desktopVisible?: boolean;
     /** Default 'sm'. 'lg' ger ~60 % större yta (mer padding + större typ). */
     size?: "sm" | "lg";

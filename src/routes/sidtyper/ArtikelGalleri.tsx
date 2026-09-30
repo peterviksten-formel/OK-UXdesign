@@ -7,14 +7,14 @@ import { Icon } from "../../components/Icon";
 import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP, Artikel-galleri (rik editorial-struktur)
+ * SIDTYP: Artikel, formatgalleri (rik redaktionell struktur)
  *
- * Galleri av editorial-format: TOC med djuplänkar, faktarutor, fancy
- * numrerade listor, tips & trick-rutor, statistik-highlights, författarbio.
+ * Samlar de redaktionella formaten: innehållsförteckning med hopplänkar,
+ * sammanfattning, statistikruta, faktaruta, numrerade listor, tipsruta,
+ * kundberättelse och författarbio. Rutorna ligger infällda i brödtexten.
  *
- * Används som referens när redaktören ska välja format för en specifik
- * artikel, den vanliga Artikel-sidtypen är enklare och täcker det
- * vardagliga fallet utan alla varianter.
+ * Används som referens när redaktören väljer format för en artikel. Den
+ * vanliga sidtypen Artikel är enklare och räcker för de flesta texter.
  */
 
 const POST = getPostBySlug("solceller-storre-nytta")!;
@@ -25,31 +25,31 @@ function formaterDatum(iso: string): string {
 }
 
 /**
- * Artikelns inre TOC, speglas i innehåll-blocket och som anchor-id på H2.
- * Genererar både länkar och rubrikerna konsekvent.
+ * Artikelns innehållsförteckning. Samma id används som ankare på
+ * mellanrubrikerna, så länkar och rubriker hålls i synk.
  */
 const SECTIONS = [
   { id: "vad-batterier-gor", titel: "Vad batterier faktiskt gör" },
-  { id: "tre-monster", titel: "Tre mönster vi ser fungera" },
-  { id: "smart-styrning", titel: "Smart styrning, det som binder ihop" },
-  { id: "vad-du-kan-gora", titel: "Vad du kan göra själv" },
+  { id: "tre-monster", titel: "Tre mönster som fungerar" },
+  { id: "smart-styrning", titel: "Smart styrning binder ihop allt" },
+  { id: "vad-du-kan-gora", titel: "Det här kan du göra själv" },
 ];
 
 export function ArtikelGalleri() {
   const blocks: BlockDef[] = [
-    /* ─── 1. HERO, kategori + h1 + byline + lead-bild ──────── */
+    /* ─── 1. TOPP: kategori, rubrik, byline och bild ──────── */
     {
       id: "hero",
-      label: "Artikel-hero",
+      label: "Artikelns topp",
       variants: [
         {
           key: "default",
-          label: "Stor hero-bild + byline med foto + lästid",
+          label: "Stor bild, byline med foto och lästid",
           render: () => (
             <Annotation
-              label="Artikel-hero, storytelling-format"
+              label="Artikelns topp: rubrik, byline och bild"
               audience="user"
-              rationale="Kategori-pill (kategorifärg), stor hero-bild, författar-byline med foto + roll + datum + lästid. Lästid sätter förväntan så användaren kan välja om de ska läsa nu eller spara."
+              rationale="Kategori, rubrik och ingress berättar direkt vad artikeln handlar om, och bylinen visar vem som skrivit den. Lästiden låter läsaren avgöra om hen läser nu eller sparar till senare."
             >
               <header className="py-8 sm:py-10">
                 <div className="flex items-center gap-2 mb-4 text-xs">
@@ -63,17 +63,24 @@ export function ArtikelGalleri() {
                 </div>
 
                 <Copy
-                  label="Artikel H1, narrativ rubrik"
+                  label="Rubrik (H1)"
                   category="rubrik"
                   text={POST.rubrik}
-                  rationale="Frågeform eller berättande, signalerar att texten har en röst, inte bara fakta."
+                  rationale="Rubriken är en fråga som läsaren själv kan ha ställt. Den väcker nyfikenhet och visar att artikeln resonerar, inte bara räknar upp fakta. Använd frågeform bara när texten faktiskt svarar på frågan."
                 >
                   <h1 className="text-display leading-tight mb-4 max-w-reading">{POST.rubrik}</h1>
                 </Copy>
 
-                <p className="text-lede text-ink-secondary mb-6 max-w-reading leading-relaxed">
-                  {POST.ingress}
-                </p>
+                <Copy
+                  label="Ingress"
+                  category="ton"
+                  text={POST.ingress}
+                  rationale="Ingressen ger ett löfte och visar ärlighet genom att även ta upp det som är överdrivet. Två meningar räcker för att läsaren ska veta om artikeln är värd tiden."
+                >
+                  <p className="text-lede text-ink-secondary mb-6 max-w-reading leading-relaxed">
+                    {POST.ingress}
+                  </p>
+                </Copy>
 
                 <div className="flex items-center gap-3 max-w-reading">
                   <span className="shrink-0 w-11 h-11 rounded-full bg-brand-primary text-white grid place-items-center font-medium text-sm">
@@ -107,27 +114,27 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 2. SAMMANFATTNING, key takeaways ──────────────── */
+    /* ─── 2. SAMMANFATTNING ─────────────────────────────── */
     {
       id: "sammanfattning",
-      label: "Sammanfattning, key takeaways",
+      label: "Sammanfattning",
       variants: [
         {
           key: "default",
-          label: "Ruta med 3-4 punkter",
+          label: "Ruta med tre eller fyra punkter",
           render: () => (
             <Annotation
-              label="Sammanfattning överst, för dem som inte hinner läsa allt"
+              label="Sammanfattning"
               audience="user"
-              rationale="Editorial-konvention: ge bortskumningsläsaren det viktigaste i 3-4 punkter. Den som har 30 sekunder får värde direkt; den som har 6 minuter scrollar förbi och läser fördjupningen. Stylad som highlight-ruta så den syns mot brödtexten."
+              rationale="Tre eller fyra punkter överst ger den som bara skummar det viktigaste direkt, medan den som har tid läser vidare. Rutan har egen bakgrund så att den skiljer sig från brödtexten."
             >
               <section className="max-w-reading">
                 <div className="rounded-md bg-tint-info border-l-4 border-brand-accent p-5 sm:p-6">
                   <Copy
-                    label="Sammanfattning, eyebrow"
+                    label="Rubrik: Sammanfattning"
                     category="metadata"
                     text="Sammanfattning"
-                    rationale="Editorial register passar artikel-genren, 'Sammanfattning' speglar redaktionellt språkbruk. Jämför med Nyhet som använder 'Det viktigaste' (vardagssvenska för kund). Konsekvens: olika typsidor, olika register."
+                    rationale="'Sammanfattning' passar artikelns redaktionella ton. Nyheter använder i stället 'Det viktigaste', som är mer vardagligt. Håll samma ord inom varje sidtyp."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-brand-primary font-bold mb-3">
                       Sammanfattning
@@ -135,10 +142,10 @@ export function ArtikelGalleri() {
                   </Copy>
                   <ul className="space-y-2">
                     {[
-                      "Solceller utan batteri täcker ca 40 % av en typvillas årsförbrukning. Med batteri dubblas siffran.",
-                      "De största besparingarna kommer från smart styrning, varmvatten, elbil och värmepump på rätt tid.",
-                      "Nästa generation batterier väntas hösten 2026 och blir 15–20 % billigare per kWh lagring.",
-                      "Innan du investerar, kolla din timmesvis förbrukning på Mina sidor.",
+                      "Solceller utan batteri täcker cirka 40 % av en typvillas årsförbrukning. Med batteri blir det dubbelt så mycket.",
+                      "De största besparingarna kommer från smart styrning: varmvatten, elbil och värmepump som går vid rätt tid.",
+                      "Nästa generation batterier väntas hösten 2026 och blir 15 till 20 % billigare per kWh lagring.",
+                      "Innan du investerar: titta på din förbrukning timme för timme på Mina sidor.",
                     ].map((s) => (
                       <li key={s} className="flex items-start gap-2 text-sm leading-relaxed">
                         <Icon name="check_circle" size={18} className="text-brand-accent shrink-0 mt-0.5" filled />
@@ -154,30 +161,30 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 3. INNEHÅLL, TOC med djuplänkar ─────────────── */
+    /* ─── 3. INNEHÅLLSFÖRTECKNING med hopplänkar ─────────── */
     {
       id: "innehall",
-      label: "Innehåll, TOC med djuplänkar",
+      label: "Innehållsförteckning",
       variants: [
         {
           key: "default",
-          label: "Lista med ankarlänkar + pil-indikator",
+          label: "Lista med hopplänkar och pilar",
           render: () => (
             <Annotation
-              label="Innehållsförteckning, djuplänkar i längre artiklar"
+              label="Innehållsförteckning"
               audience="user"
-              rationale="Vid 5+ minuter lästid uppskattar läsaren att kunna hoppa till en specifik del. Ankarlänkar med smooth-scroll fungerar både för 'jag är tillbaka från igår, vart läste jag?' och 'jag bryr mig bara om del 3'. Pil-ikonen vid varje länk + hover-shift gör djuplänken affordance entydig, det är inte en numrerad lista, det är klickbara hopp."
+              rationale="I längre artiklar vill läsaren kunna hoppa direkt till den del som intresserar hen, eller hitta tillbaka dit hen slutade läsa. Pilen vid varje rad visar att raden är en länk längre ner på sidan."
             >
               <section className="max-w-reading mt-6">
                 <div className="rounded-md border border-border-subtle bg-surface p-5">
                   <Copy
-                    label="TOC, eyebrow"
+                    label="Rubrik: innehållsförteckning"
                     category="metadata"
-                    text="I denna artikel"
-                    rationale="Editorial-konvention för innehållsförteckning i longform. 'Innehåll' (för formellt) eller 'Det här tar vi upp' (för vardagligt) skulle bryta artikelns redaktionella register. Pilen vid varje länk gör djuplänk-affordancen entydig."
+                    text="I den här artikeln"
+                    rationale="Säger med vardagliga ord vad listan visar. 'Innehåll' känns formellt och 'I denna artikel' lite stelt. Raderna är samma som mellanrubrikerna, så läsaren känner igen var hen hamnar."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-3">
-                      I denna artikel
+                      I den här artikeln
                     </p>
                   </Copy>
                   <ol className="space-y-1">
@@ -208,96 +215,27 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 4. INTRO, större lead-stycke ───────────────────── */
+    /* ─── 4. INLEDANDE STYCKE ─────────────────────────── */
     {
       id: "intro",
-      label: "Introduktion, lead-stycke",
+      label: "Inledande stycke",
       variants: [
         {
           key: "default",
-          label: "Större typ, markerar artikelns ingång",
-          render: () => (
-            <section className="max-w-reading">
-              <p className="text-lg leading-relaxed text-ink-secondary">
-                Solceller är inte längre en investering för entusiasten. De har blivit
-                en mainstream-produkt och vi ser fler villor i nordvästra Skåne med
-                paneler på taket varje månad. Men frågan om hur mycket nytta de
-                faktiskt ger har förändrats, och svaret beror på hur du använder dem.
-              </p>
-            </section>
-          ),
-        },
-      ],
-    },
-
-    /* ─── 5. AVSNITT 1, h2 + brödtext + faktaruta + statistik ─ */
-    {
-      id: "avsnitt-1",
-      label: "Avsnitt 1, Vad batterier gör",
-      variants: [
-        {
-          key: "default",
-          label: "H2 + paragrafer + statistik-highlight + faktaruta",
+          label: "Större text som markerar var artikeln börjar",
           render: () => (
             <Annotation
-              label="Editorial-mix, paragraf, statistik, faktaruta"
+              label="Inledande stycke"
               audience="redaktör"
-              rationale="Traditionell brödtext bryts av med en stor statistik (visar siffran man pratar om visuellt) och en faktaruta som pausar läsaren vid något hen behöver veta för att förstå resten. Båda är scrollbara förbi för dem som inte vill ha alla detaljer."
+              rationale="Första stycket har något större text och visar var själva artikeln börjar. Använd det för att väcka intresse eller rätta en missuppfattning, och håll det till tre eller fyra meningar."
             >
-              <section className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
-                <h2 id="vad-batterier-gor" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
-                  Vad batterier faktiskt gör
-                </h2>
-                <p>
-                  Det vi ser i våra installationer är att kombinationen av panel +
-                  batteri ger den största skillnaden. Panel ensam täcker omkring
-                  40 procent av en typvillas årsförbrukning. Med ett batteri på
-                  10–13 kWh dubblas den siffran, eftersom du kan lagra
-                  middagsproduktionen och använda kvällen.
+              <section className="max-w-reading">
+                <p className="text-lg leading-relaxed text-ink-secondary">
+                  Solceller är inte längre något bara för entusiaster. De har blivit
+                  vanliga, och varje månad ser vi fler villor i nordvästra Skåne med
+                  paneler på taket. Men frågan om hur stor nytta de gör har förändrats,
+                  och svaret beror på hur du använder dem.
                 </p>
-
-                {/* Statistik-highlight */}
-                <Copy
-                  label="Statistik-highlight"
-                  category="metadata"
-                  text="40 % självförsörjning utan batteri · 80 % med"
-                  rationale="Stora siffror i editorial-format, 'pull stat' istället för 'pull quote'. Drar uppmärksamhet, gör abstrakt argument konkret. Två siffror sida vid sida ger inneboende jämförelse."
-                >
-                  <div className="rounded-md bg-tint-notice p-5 grid grid-cols-2 gap-4 my-4 not-prose">
-                    <div>
-                      <p className="text-display font-medium leading-none">40<span className="text-h3 text-ink-muted"> %</span></p>
-                      <p className="text-xs text-ink-secondary mt-2 leading-snug">
-                        Självförsörjning för en typvilla med <strong>endast solceller</strong>.
-                      </p>
-                    </div>
-                    <div className="border-l border-border-subtle pl-4">
-                      <p className="text-display font-medium leading-none text-brand-accent">80<span className="text-h3 text-ink-muted"> %</span></p>
-                      <p className="text-xs text-ink-secondary mt-2 leading-snug">
-                        Med <strong>panel + batteri</strong> 10–13 kWh.
-                      </p>
-                    </div>
-                  </div>
-                </Copy>
-
-                <p>
-                  Skillnaden blir extra tydlig på vintern. En anläggning utan batteri
-                  producerar fortfarande på vintern, men på fel tid på dagen.
-                  Batteriet flyttar elen till när du faktiskt använder den.
-                </p>
-
-                {/* Faktaruta */}
-                <aside className="rounded-md border border-border-subtle bg-surface p-5 my-6 not-prose">
-                  <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-2 inline-flex items-center gap-1.5">
-                    <Icon name="info" size={14} className="text-brand-accent" filled />
-                    Faktaruta
-                  </p>
-                  <p className="font-medium text-ink mb-2">Vad är "självförsörjning"?</p>
-                  <p className="text-sm leading-relaxed">
-                    Andelen av din årsförbrukning som täcks av el från dina egna paneler.
-                    100 % självförsörjning betyder att du teoretiskt inte behöver köpa el alls.
-                    I praktiken är det sällan möjligt eftersom solen inte producerar dygnet runt.
-                  </p>
-                </aside>
               </section>
             </Annotation>
           ),
@@ -305,56 +243,164 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 6. AVSNITT 2, punktlista + bild + citat ───────── */
+    /* ─── 5. AVSNITT 1: brödtext, statistikruta och faktaruta ─ */
+    {
+      id: "avsnitt-1",
+      label: "Avsnitt 1, Vad batterier gör",
+      variants: [
+        {
+          key: "default",
+          label: "Mellanrubrik, stycken, statistikruta och faktaruta",
+          render: () => (
+            <Annotation
+              label="Brödtext med infällda rutor"
+              audience="redaktör"
+              rationale="Statistikrutan och faktarutan ligger infällda mellan styckena och stannar läsaren vid det viktigaste. Använd högst två rutor per avsnitt. Marginaltextformatet visar samma rutor bredvid brödtexten i stället."
+            >
+              <section className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
+                <Copy
+                  label="Mellanrubrik, avsnitt 1"
+                  category="rubrik"
+                  text="Vad batterier faktiskt gör"
+                  rationale="Mellanrubrikerna är desamma som i innehållsförteckningen, så läsaren känner igen var hen hamnar. 'Faktiskt' knyter an till ingressens löfte om att skilja det som fungerar från det som är överdrivet."
+                >
+                  <h2 id="vad-batterier-gor" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
+                    Vad batterier faktiskt gör
+                  </h2>
+                </Copy>
+                <p>
+                  Det vi ser i våra installationer är att solceller och batteri
+                  tillsammans ger störst skillnad. Solceller ensamma täcker omkring
+                  40 procent av en typvillas årsförbrukning. Med ett batteri på
+                  10 till 13 kWh blir det dubbelt så mycket, eftersom du kan spara elen
+                  från mitt på dagen och använda den på kvällen.
+                </p>
+
+                {/* Statistikruta */}
+                <Annotation
+                  label="Statistikruta"
+                  audience="redaktör"
+                  rationale="Två stora siffror bredvid varandra gör en jämförelse synlig på ett ögonblick. Använd rutan när en siffra bär artikelns argument, och skriv under varje siffra exakt vad den mäter."
+                >
+                  <div className="rounded-md bg-tint-notice p-5 grid grid-cols-2 gap-4 my-4 not-prose">
+                    <div>
+                      <p className="text-display font-medium leading-none">40<span className="text-h3 text-ink-muted"> %</span></p>
+                      <Copy
+                        label="Statistikruta, förklaring under siffran"
+                        category="metadata"
+                        text="Självförsörjning för en typvilla med endast solceller."
+                        rationale="Texten under siffran säger vad den mäter, så att den inte kan missförstås. Fetstilen pekar ut skillnaden mellan siffrorna: endast solceller jämfört med solceller och batteri."
+                      >
+                        <p className="text-xs text-ink-secondary mt-2 leading-snug">
+                          Självförsörjning för en typvilla med <strong>endast solceller</strong>.
+                        </p>
+                      </Copy>
+                    </div>
+                    <div className="border-l border-border-subtle pl-4">
+                      <p className="text-display font-medium leading-none text-brand-accent">80<span className="text-h3 text-ink-muted"> %</span></p>
+                      <p className="text-xs text-ink-secondary mt-2 leading-snug">
+                        Med <strong>solceller och batteri</strong> på 10 till 13 kWh.
+                      </p>
+                    </div>
+                  </div>
+                </Annotation>
+
+                <p>
+                  Skillnaden blir extra tydlig på vintern. Solcellerna producerar el även
+                  då, men vid fel tid på dygnet. Batteriet flyttar elen till när du
+                  faktiskt använder den.
+                </p>
+
+                {/* Faktaruta */}
+                <Annotation
+                  label="Faktaruta"
+                  audience="redaktör"
+                  rationale="Förklarar ett begrepp som läsaren behöver för att förstå resten av texten, utan att brödtexten måste stanna. Rubriken är en fråga som läsaren själv kan ha. Håll svaret till tre korta meningar."
+                >
+                  <aside className="rounded-md border border-border-subtle bg-surface p-5 my-6 not-prose">
+                    <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-2 inline-flex items-center gap-1.5">
+                      <Icon name="info" size={14} className="text-brand-accent" filled />
+                      Faktaruta
+                    </p>
+                    <Copy
+                      label="Faktaruta, rubrik"
+                      category="rubrik"
+                      text={'Vad är "självförsörjning"?'}
+                      rationale="Frågan är formulerad som läsaren skulle ställa den, så det syns direkt om rutan svarar på något hen undrar. Citattecknen visar att det är själva begreppet som förklaras."
+                    >
+                      <p className="font-medium text-ink mb-2">Vad är "självförsörjning"?</p>
+                    </Copy>
+                    <p className="text-sm leading-relaxed">
+                      Andelen av din årsförbrukning som täcks av el från dina egna solceller.
+                      100 % självförsörjning betyder att du i teorin aldrig behöver köpa el.
+                      I praktiken går det sällan, eftersom solen inte lyser dygnet runt.
+                    </p>
+                  </aside>
+                </Annotation>
+              </section>
+            </Annotation>
+          ),
+        },
+      ],
+    },
+
+    /* ─── 6. AVSNITT 2: punktlista, bild och lyft citat ──── */
     {
       id: "avsnitt-2",
       label: "Avsnitt 2, Tre mönster",
       variants: [
         {
           key: "default",
-          label: "Punktlista + inline-bild + citat",
+          label: "Punktlista, infälld bild och lyft citat",
           render: () => (
             <Annotation
-              label="Punktlista + bild + citat, varierad rytm"
+              label="Punktlista, bild och lyft citat"
               audience="redaktör"
-              rationale="Tre format på rad bryter monotoni: punktlista för skanbarhet, bild med bildtext för andrum, indraget citat som markerar redaktionellt grepp. Användaren upplever det som att läsa något skrivet av en människa, inte en SEO-text."
+              rationale="Tre olika format i rad ger texten variation: punktlistan går att skumma, bilden ger andrum och det lyfta citatet markerar författarens slutsats. Texten känns skriven av en människa, inte som en sökoptimerad text."
             >
               <section className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
-                <h2 id="tre-monster" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
-                  Tre mönster vi ser fungera
-                </h2>
+                <Copy
+                  label="Mellanrubrik, avsnitt 2"
+                  category="rubrik"
+                  text="Tre mönster som fungerar"
+                  rationale="Siffran i rubriken säger hur mycket som kommer, och det gör avsnittet lätt att skumma. 'Som fungerar' är enklare svenska än 'vi ser fungera'."
+                >
+                  <h2 id="tre-monster" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
+                    Tre mönster som fungerar
+                  </h2>
+                </Copy>
                 <p>
-                  När vi tittar på vilka anläggningar som ger störst utdelning ser vi tre
-                  beteenden som återkommer:
+                  När vi tittar på vilka anläggningar som ger mest ser vi tre vanor som
+                  återkommer:
                 </p>
                 <ul className="list-disc list-inside space-y-1.5 pl-2">
-                  <li><strong className="text-ink">Smart styrning av varmvatten.</strong> Att värma vatten under solens timmar gör en konkret skillnad.</li>
-                  <li><strong className="text-ink">Elbilsladdning på dagen.</strong> Hemmakontoret + elbilen = perfekt match med produktionen.</li>
-                  <li><strong className="text-ink">Värmepump kopplad till smart styrning.</strong> Värm huset när elen är gratis.</li>
+                  <li><strong className="text-ink">Smart styrning av varmvatten.</strong> Att värma vattnet när solen lyser gör konkret skillnad.</li>
+                  <li><strong className="text-ink">Elbilsladdning på dagen.</strong> Jobbar du hemifrån passar laddningen perfekt ihop med solproduktionen.</li>
+                  <li><strong className="text-ink">Värmepump kopplad till smart styrning.</strong> Huset värms när elen är gratis.</li>
                 </ul>
 
-                {/* Inline-bild */}
+                {/* Infälld bild */}
                 <figure className="my-8 not-prose">
                   <div className="rounded-md bg-tint-info aspect-[16/9] flex items-center justify-center border border-border-subtle">
                     <Icon name="battery_charging_full" size={48} className="text-ink-muted" />
                   </div>
                   <figcaption className="text-xs text-ink-muted mt-2">
-                    Solcellsbatteri monterat i Helsingborg-villa. Ett batteri på 10–13 kWh
-                    räcker för en typisk villa. Foto: Öresundskraft / Maria Söderström
+                    Solcellsbatteri monterat i en villa i Helsingborg. Ett batteri på 10 till
+                    13 kWh räcker för en typisk villa. Foto: Öresundskraft / Maria Söderström
                   </figcaption>
                 </figure>
 
-                {/* Inline pull-quote */}
+                {/* Lyft citat */}
                 <Copy
-                  label="Pull quote, författarens slutsats"
+                  label="Lyft citat"
                   category="ton"
-                  text="Den största förändringen är inte att solceller blivit billigare, det är att de börjar prata med resten av huset."
-                  rationale="Pull-quote är editorial-konvention: en mening lyfts ut ur brödtexten i större typ för att ankra läsarens minne. Inte ett externt citat utan författarens egen slutsats."
+                  text="Den största förändringen är inte att solceller blivit billigare, utan att de börjar prata med resten av huset."
+                  rationale="Det lyfta citatet är författarens egen slutsats, inte ett citat från en källa. Bilden av solceller som 'pratar med resten av huset' gör smart styrning begriplig utan tekniska ord."
                 >
                   <blockquote className="my-8 border-l-4 border-brand-accent pl-6 py-2 not-prose">
                     <p className="text-h4 font-medium leading-snug text-ink">
-                      "Den största förändringen är inte att solceller blivit billigare, det
-                      är att de börjar prata med resten av huset."
+                      "Den största förändringen är inte att solceller blivit billigare, utan
+                      att de börjar prata med resten av huset."
                     </p>
                   </blockquote>
                 </Copy>
@@ -365,48 +411,55 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 7. AVSNITT 3, fancy numrerad lista + tips&trick ── */
+    /* ─── 7. AVSNITT 3: numrerad lista och tipsruta ──── */
     {
       id: "avsnitt-3",
       label: "Avsnitt 3, Smart styrning",
       variants: [
         {
           key: "default",
-          label: "Numrerad lista med färgade siffror + tips-ruta",
+          label: "Numrerad lista med färgade siffror och tipsruta",
           render: () => (
-            <Annotation
-              label="Numrerad lista, fancy circle numbers"
-              audience="design"
-              rationale="Numrerade listor i editorial-format är inte default <ol> utan fina siffror på färgad cirkel, visuellt distinkt från punktlistan ovan, gör steg-för-steg-innehåll lätt att skanna. Varje punkt har titel + utvecklingstext (subtitle-style)."
-            >
-              <section className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
+            <section className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
+              <Copy
+                label="Mellanrubrik, avsnitt 3"
+                category="rubrik"
+                text="Smart styrning binder ihop allt"
+                rationale="Rubriken är ett påstående som sammanfattar avsnittet. Läsaren som bara skummar rubrikerna får ändå med sig poängen."
+              >
                 <h2 id="smart-styrning" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
-                  Smart styrning, det som binder ihop
+                  Smart styrning binder ihop allt
                 </h2>
-                <p>
-                  Det är inte teknik i sig som ger besparingen, det är att tekniken
-                  pratar med varandra. Här är de fyra integrationerna vi rekommenderar
-                  i ordning av ROI:
-                </p>
+              </Copy>
+              <p>
+                Det är inte tekniken i sig som ger besparingen, utan att prylarna
+                pratar med varandra. Här är de fyra kopplingar vi rekommenderar, i
+                ordning efter hur snabbt de lönar sig:
+              </p>
 
-                {/* Fancy numbered list */}
+              {/* Numrerad lista */}
+              <Annotation
+                label="Numrerad lista med rubriker"
+                audience="redaktör"
+                rationale="Stora siffror i färgade cirklar visar att ordningen spelar roll, här efter hur snabbt varje steg lönar sig. Varje punkt har en kort rubrik och en förklarande mening. Använd formatet för steg eller rangordning, inte för vanliga uppräkningar."
+              >
                 <ol className="space-y-4 my-6 not-prose">
                   {[
                     {
                       titel: "Varmvattenberedaren",
-                      text: "Lägsta tröskel, många elcentraler stödjer det redan. Värmer vatten 09–14 när solen producerar.",
+                      text: "Lägst tröskel, eftersom många elcentraler redan har stöd för det. Värmer vattnet mellan klockan 9 och 14, när solcellerna producerar.",
                     },
                     {
                       titel: "Elbilsladdaren",
-                      text: "Smart laddning som följer din solproduktion. Kräver Easee, Zaptec eller liknande.",
+                      text: "Smart laddning som följer din solproduktion. Kräver en laddbox från Easee, Zaptec eller liknande.",
                     },
                     {
                       titel: "Värmepumpen",
-                      text: "Schemaläggning eller direkt API-koppling. Ger störst absolut besparing per år.",
+                      text: "Styrs med schema eller en direkt koppling till styrsystemet. Ger störst besparing i kronor per år.",
                     },
                     {
                       titel: "Batteriet",
-                      text: "Tar hand om det som blir över. Bör läggas till sist, när andra integrationer är på plats.",
+                      text: "Tar hand om överskottet. Lägg till det sist, när de andra kopplingarna är på plats.",
                     },
                   ].map((s, i) => (
                     <li key={s.titel} className="flex items-start gap-4">
@@ -420,54 +473,58 @@ export function ArtikelGalleri() {
                     </li>
                   ))}
                 </ol>
+              </Annotation>
 
-                <p>
-                  Det är värt att notera att den första integrationen ofta gör 60–70 procent
-                  av jobbet. Om du är osäker, börja där och utvärdera innan du investerar
-                  i fler.
-                </p>
+              <p>
+                Den första kopplingen står ofta för 60 till 70 procent av besparingen.
+                Är du osäker, börja där och utvärdera innan du investerar i mer.
+              </p>
 
-                {/* Tips & trick callout */}
-                <Copy
-                  label="Tips & trick-ruta"
-                  category="reassurance"
-                  text="Tips: börja med varmvattnet, det ger 60-70 % av besparingen direkt"
-                  rationale="Editorial 'tips'-rutor är välkända i populärvetenskaplig press. Visuellt skild med gul/varning-bakgrund + glödlampa-ikon. Pausar läsaren med en konkret handling att ta med sig."
-                >
-                  <aside className="rounded-md bg-tint-notice border-l-4 border-brand-highlight p-5 my-6 not-prose">
-                    <p className="text-[11px] uppercase tracking-wider text-brand-highlight font-bold mb-2 inline-flex items-center gap-1.5">
-                      <Icon name="lightbulb" size={14} filled />
-                      Tips & trick
-                    </p>
-                    <p className="font-medium text-ink mb-2">Börja smått, testa varmvattnet först</p>
-                    <p className="text-sm leading-relaxed">
-                      Många elcentraler har redan stöd för smart styrning av varmvatten utan att
-                      du behöver ny utrustning. Kontakta din elektriker, det tar oftast under
-                      en timme att aktivera och du ser resultatet på elräkningen redan första
-                      månaden.
-                    </p>
-                  </aside>
-                </Copy>
-              </section>
-            </Annotation>
+              {/* Tipsruta */}
+              <Annotation
+                label="Tipsruta"
+                audience="redaktör"
+                rationale="Ger läsaren en konkret sak att göra, mitt i texten. Den gula bakgrunden och glödlampan skiljer tipset från faktarutan, som förklarar i stället för att uppmana. Skriv ett tips per ruta."
+              >
+                <aside className="rounded-md bg-tint-notice border-l-4 border-brand-highlight p-5 my-6 not-prose">
+                  <p className="text-[11px] uppercase tracking-wider text-brand-highlight font-bold mb-2 inline-flex items-center gap-1.5">
+                    <Icon name="lightbulb" size={14} filled />
+                    Tips
+                  </p>
+                  <Copy
+                    label="Tipsruta, rubrik"
+                    category="reassurance"
+                    text="Börja smått: testa varmvattnet först"
+                    rationale="Rubriken säger vad läsaren ska göra och sänker tröskeln med 'börja smått'. Texten under svarar på det läsaren oroar sig för: kostnad, tid och när resultatet syns."
+                  >
+                    <p className="font-medium text-ink mb-2">Börja smått: testa varmvattnet först</p>
+                  </Copy>
+                  <p className="text-sm leading-relaxed">
+                    Många elcentraler kan redan styra varmvattnet smart, utan ny utrustning.
+                    Kontakta din elektriker. Det tar oftast mindre än en timme att aktivera,
+                    och du ser resultatet på elräkningen redan första månaden.
+                  </p>
+                </aside>
+              </Annotation>
+            </section>
           ),
         },
       ],
     },
 
-    /* ─── 8. KUNDBERÄTTELSE, social proof inline ──────────── */
+    /* ─── 8. KUNDBERÄTTELSE, infälld i texten ──────────── */
     {
       id: "kundberattelse",
-      label: "Kundberättelse, proof of concept",
+      label: "Kundberättelse",
       variants: [
         {
           key: "default",
-          label: "Foto + pull-quote + kontext",
+          label: "Foto, kundcitat och sammanhang",
           render: () => (
             <Annotation
-              label="Kundberättelse, social proof i editorial-format"
+              label="Kundberättelse"
               audience="user"
-              rationale="Mellan smart-styrning-avsnittet (teori) och 'vad du kan göra själv' (handling), bryter med konkret bevis att rådet fungerar. Editorial-stil (foto + citat + kontext) snarare än generisk testimonial-card. Stärker artikelns trovärdighet på samma sätt som en case-studie gör i en längre essä."
+              rationale="Ett verkligt exempel mellan teorin och de egna stegen visar att råden fungerar. Foto, citat och sammanhang ger mer trovärdighet än ett anonymt omdöme. Marginaltextformatet visar en kortare version bredvid texten."
             >
               <section className="max-w-reading my-10">
                 <div className="rounded-md border-l-4 border-brand-accent bg-tint-info p-6 sm:p-7">
@@ -486,19 +543,20 @@ export function ArtikelGalleri() {
 
                     <div className="flex-1 min-w-0">
                       <Copy
-                        label="Kundberättelse, pull-quote"
+                        label="Kundcitat"
                         category="ton"
-                        text="Vi sänkte elkostnaden med 38 % första året, och vi gjorde inget alls med vanorna."
-                        rationale="Konkret siffra (38 %) + 'vi gjorde inget alls med vanorna' = motbevis mot 'detta kräver att jag ändrar livsstil'. Ger läsaren tillåtelse att tro att förändringen är hanterbar."
+                        text="Vi sänkte elkostnaden med 38 % första året, och vi ändrade inte våra vanor alls."
+                        rationale="En konkret siffra och beskedet att vanorna inte behövde ändras bemöter oron för att det kräver en ny livsstil. Kundens egna ord väger tyngre än våra. Använd riktiga siffror från kunden."
                       >
                         <p className="text-h4 font-medium leading-snug text-ink mb-3">
-                          "Vi sänkte elkostnaden med 38 % första året, och vi gjorde inget alls med vanorna."
+                          "Vi sänkte elkostnaden med 38 % första året, och vi ändrade inte våra vanor alls."
                         </p>
                       </Copy>
 
                       <p className="text-sm text-ink-secondary leading-relaxed mb-2">
-                        Anna och Per installerade panel + batteri våren 2024. De aktiverade smart styrning av
-                        varmvatten direkt. Bilen laddas på dagen när hemmet är tomt och produktionen är som högst.
+                        Anna och Per installerade solceller och batteri våren 2024 och slog på smart
+                        styrning av varmvattnet direkt. Bilen laddas på dagen, när ingen är hemma och
+                        produktionen är som högst.
                       </p>
                       <p className="text-sm text-ink-secondary leading-relaxed">
                         "Det enda vi behövde göra var att ringa elektrikern. Resten skötte sig självt."
@@ -513,47 +571,60 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 9. AVSNITT 4, slutord + handling ──────────────── */
+    /* ─── 9. AVSNITT 4: avslutning med egna steg ────────── */
     {
       id: "avsnitt-4",
-      label: "Avsnitt 4, Vad du kan göra själv",
+      label: "Avsnitt 4, Det här kan du göra själv",
       variants: [
         {
           key: "default",
-          label: "Avslutande paragrafer + numrerad call-to-action",
+          label: "Avslutande stycken och numrerade steg",
           render: () => (
             <section className="max-w-reading space-y-5 text-ink-secondary leading-relaxed">
-              <h2 id="vad-du-kan-gora" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
-                Vad du kan göra själv
-              </h2>
+              <Copy
+                label="Mellanrubrik, avsnitt 4"
+                category="rubrik"
+                text="Det här kan du göra själv"
+                rationale="Du-tilltal och ett löfte om handling. Rubriken markerar övergången från förklaring till egna steg."
+              >
+                <h2 id="vad-du-kan-gora" className="text-h3 font-medium text-ink mt-8 mb-3 scroll-mt-20">
+                  Det här kan du göra själv
+                </h2>
+              </Copy>
               <p>
-                Innan du investerar i ett batteri eller smart styrning är det värt att
-                veta din nuvarande förbrukningsprofil. Tre konkreta steg du kan ta i
+                Innan du investerar i batteri eller smart styrning är det bra att veta
+                hur din förbrukning ser ut i dag. Här är tre steg du kan ta redan i
                 kväll:
               </p>
 
-              <ol className="space-y-3 my-4 not-prose">
-                {[
-                  { titel: "Logga in på Mina sidor", text: "Och titta på din timmesvis förbrukning för senaste månaden." },
-                  { titel: "Notera när du använder mest", text: "Är det morgon, kväll eller dygnet runt? Det styr om batteri är värt det." },
-                  { titel: "Boka en kostnadsfri rådgivning", text: "Vi tittar på din specifika profil och föreslår vad som ger störst nytta för just dig." },
-                ].map((s, i) => (
-                  <li key={s.titel} className="flex items-start gap-3">
-                    <span className="shrink-0 w-7 h-7 rounded-full bg-tint-info text-brand-primary grid place-items-center font-bold text-xs border border-brand-accent/30">
-                      {i + 1}
-                    </span>
-                    <div className="pt-0.5">
-                      <p className="font-medium text-ink">{s.titel}</p>
-                      <p className="text-sm">{s.text}</p>
-                    </div>
-                  </li>
-                ))}
-              </ol>
+              <Annotation
+                label="Numrerade steg"
+                audience="redaktör"
+                rationale="Mindre siffror än i listan ovan visar att det här är en enkel checklista, inte en rangordning. Varje steg börjar med ett verb, så läsaren ser direkt vad hen ska göra. Håll dig till tre steg."
+              >
+                <ol className="space-y-3 my-4 not-prose">
+                  {[
+                    { titel: "Logga in på Mina sidor", text: "Titta på din förbrukning timme för timme under förra månaden." },
+                    { titel: "Se när du använder mest", text: "Är det morgon, kväll eller jämnt över dygnet? Det avgör om ett batteri lönar sig." },
+                    { titel: "Boka en kostnadsfri rådgivning", text: "Vi går igenom din förbrukning och föreslår det som ger mest nytta för just dig." },
+                  ].map((s, i) => (
+                    <li key={s.titel} className="flex items-start gap-3">
+                      <span className="shrink-0 w-7 h-7 rounded-full bg-tint-info text-brand-primary grid place-items-center font-bold text-xs border border-brand-accent/30">
+                        {i + 1}
+                      </span>
+                      <div className="pt-0.5">
+                        <p className="font-medium text-ink">{s.titel}</p>
+                        <p className="text-sm">{s.text}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ol>
+              </Annotation>
 
               <p>
-                Om du redan har solceller utan batteri är det ofta värt att vänta in
-                nästa generation batterier (väntat hösten 2026) som är 15–20 % billigare per kWh
-                lagring jämfört med dagens.
+                Har du redan solceller utan batteri kan det löna sig att vänta på nästa
+                generation batterier. De väntas hösten 2026 och blir 15 till 20 procent
+                billigare per kWh lagring än dagens.
               </p>
             </section>
           ),
@@ -561,28 +632,28 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 9. KÄLLOR + TAGGAR ─────────────────────────────── */
+    /* ─── 10. KÄLLOR OCH TAGGAR ─────────────────────────── */
     {
       id: "kallor",
-      label: "Källor + taggar",
+      label: "Källor och taggar",
       variants: [
         {
           key: "default",
-          label: "Källista + ämnestaggar",
+          label: "Källista och ämnestaggar",
           render: () => (
             <Annotation
-              label="Källor, trovärdighet via transparens"
+              label="Källor och taggar"
               audience="redaktör"
-              rationale="Editorial-konvention: artiklar med statistik och fakta avslutas med källor. Skiljer från press-boilerplate (faktaruta om avsändaren), detta är externa referenser. Taggar bredvid gör artikeln upptäckbar via filter."
+              rationale="Källorna visar var siffrorna i artikeln kommer ifrån och gör texten trovärdig. Taggarna leder vidare till fler texter om samma ämne. Ange källan till varje siffra, även när det är Öresundskrafts egen statistik."
             >
               <section className="py-8 max-w-reading border-t border-border-subtle mt-10">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
                     <Copy
-                      label="Källor, eyebrow"
+                      label="Rubrik: Källor"
                       category="metadata"
                       text="Källor"
-                      rationale="Genrekonvention. Externa belägg för det som påstås, skiljer sig från press-boilerplate (faktaruta om avsändaren). Konsekvens: samma 'Källor'-eyebrow i både Artikel och ArtikelGalleri."
+                      rationale="Ett ord som alla känner igen. 'Referenser' känns akademiskt och 'Mer information' säger inte att det handlar om belägg. Samma rubrik används i alla artikelformat."
                     >
                       <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
                         Källor
@@ -590,16 +661,16 @@ export function ArtikelGalleri() {
                     </Copy>
                     <ul className="text-sm space-y-1.5 text-ink-secondary">
                       <li>Energimyndighetens årsrapport 2025</li>
-                      <li>Öresundskrafts installationsstatistik 2023–2026</li>
-                      <li>Svenska Solcellsföreningen: marknadsöversikt 2026 Q1</li>
+                      <li>Öresundskrafts installationsstatistik 2023 till 2026</li>
+                      <li>Svenska Solcellsföreningen: marknadsöversikt, första kvartalet 2026</li>
                     </ul>
                   </div>
                   <div>
                     <Copy
-                      label="Taggar, eyebrow"
+                      label="Rubrik: Taggar"
                       category="metadata"
                       text="Taggar"
-                      rationale="Konsekvent med Artikel.tsx, samma label, samma plats. Två sidtyper, en vokabulär."
+                      rationale="Samma ord som i Nyhetsrummets lista, så läsaren känner igen funktionen. Växla inte mellan 'Ämnen', 'Kategorier' och 'Taggar', då tror läsaren att det är olika saker."
                     >
                       <p className="text-[11px] uppercase tracking-wider text-ink-muted font-bold mb-3">
                         Taggar
@@ -625,19 +696,19 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 10. FÖRFATTAR-BIO ──────────────────────────────── */
+    /* ─── 11. FÖRFATTARBIO ──────────────────────────────── */
     {
       id: "forfattar-bio",
-      label: "Författar-bio",
+      label: "Författarbio",
       variants: [
         {
           key: "default",
-          label: "Bio + andra artiklar av samma författare",
+          label: "Bio och fler artiklar av samma skribent",
           render: () => (
             <Annotation
-              label="Författar-bio, bygger förtroende"
+              label="Författarbio"
               audience="user"
-              rationale="Längre bio i fot är editorial-konvention: läsaren har just investerat 6 minuter och vill veta vem som skrev. Bio + 2-3 andra artiklar av samma författare ökar trolighet att de klickar vidare på samma röst."
+              rationale="Efter en längre text vill läsaren veta vem som skrivit den. Bion visar varför skribenten kan ämnet, och länkarna till fler artiklar av samma person gör det lätt att läsa vidare."
             >
               <section className="py-8 max-w-reading border-t border-border-subtle">
                 <div className="flex flex-col sm:flex-row gap-5 items-start">
@@ -646,21 +717,21 @@ export function ArtikelGalleri() {
                   </span>
                   <div className="flex-1">
                     <Copy
-                      label="Bio, rubrik"
+                      label="Författarbio, rubrik"
                       category="rubrik"
                       text={`Om ${POST.forfattare?.namn}`}
-                      rationale="'Om [namn]' är genrekonvention för bio i editorial-format. Personlig, namn istället för titel, bygger förtroende. 'Författaren' eller 'Skribent' skulle vara distanserande och formellt."
+                      rationale="'Om' följt av namnet är personligt och bygger förtroende. 'Författaren' eller 'Skribent' känns distanserat och formellt."
                     >
                       <p className="font-medium mb-0.5">Om {POST.forfattare?.namn}</p>
                     </Copy>
                     <p className="text-sm text-ink-muted mb-3">{POST.forfattare?.roll} på Öresundskraft</p>
                     <p className="text-sm text-ink-secondary leading-relaxed mb-4">
                       Erik har arbetat med energirådgivning till privatkunder i tio år och är
-                      certifierad solcellsinstallatör. Han bor i Höganäs med familj och har
-                      själv installerat solceller och batteri 2023.
+                      certifierad solcellsinstallatör. Han bor med sin familj i Höganäs och
+                      installerade själv solceller och batteri 2023.
                     </p>
                     <p className="text-xs text-ink-muted">
-                      Senaste artiklar:{" "}
+                      Fler artiklar av Erik:{" "}
                       <Link to="/sidtyper/artikel" className="text-brand-accent hover:underline">
                         Effekttariffer förklarade
                       </Link>{" "}
@@ -678,97 +749,116 @@ export function ArtikelGalleri() {
       ],
     },
 
-    /* ─── 11. PRENUMERERA ──────────────────────────────── */
+    /* ─── 12. PRENUMERERA ──────────────────────────────── */
     {
       id: "subscribe",
-      label: "Prenumerera, softer-CTA",
+      label: "Prenumerera",
       variants: [
         {
           key: "default",
-          label: "Tycker du om det här?",
+          label: "Rubrik om nyttan och knapp",
           render: () => (
-            <section className="py-8 max-w-reading">
-              <div className="rounded-lg bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
-                <div className="flex-1">
+            <Annotation
+              label="Prenumeration"
+              audience="user"
+              rationale="En lugn uppmaning efter artikeln, när läsaren redan har fått ut något av texten. Rutan är diskret och lovar få utskick, så den känns som en tjänst och inte som reklam."
+            >
+              <section className="py-8 max-w-reading">
+                <div className="rounded-lg bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                  <Icon name="mail" size={28} className="text-brand-accent shrink-0" />
+                  <div className="flex-1">
+                    <Copy
+                      label="Prenumeration, rubrik"
+                      category="rubrik"
+                      text="Få fler artiklar i mejlen"
+                      rationale="Rubriken säger vad läsaren får: fler artiklar i mejlen. Den ersatte 'Tycker du om det här?', som frågade efter en känsla i stället för att beskriva nyttan."
+                    >
+                      <p className="font-medium">Få fler artiklar i mejlen</p>
+                    </Copy>
+                    <Copy
+                      label="Prenumeration, trygghetstext"
+                      category="reassurance"
+                      text="Vi skickar högst ett mejl i månaden, och du kan avsluta när du vill."
+                      rationale="Svarar på den vanligaste invändningen, att det blir för många mejl, innan läsaren hinner ställa den. 'Avsluta när du vill' är enklare än 'avregistrera'."
+                    >
+                      <p className="text-sm text-ink-secondary">
+                        Vi skickar högst ett mejl i månaden, och du kan avsluta när du vill.
+                      </p>
+                    </Copy>
+                  </div>
                   <Copy
-                    label="Subscribe, outcome-rubrik"
-                    category="rubrik"
-                    text="Få fler artiklar i mejlen"
-                    rationale="Konsekvent med Artikel.tsx, samma utfallsorienterade rubrik på båda sidtyperna. Subscribe-blocket är funktionellt, inte editorial, därför förmår användaren det utfall de får (artiklar i mejlen) snarare än känslo-opener."
+                    label="Prenumeration, knapp"
+                    category="cta"
+                    text="Prenumerera"
+                    rationale="Rubriken beskriver vad läsaren får, så knappen behöver bara säga handlingen. Ett ord uppfattas snabbt. Samma knapptext används i alla artikelformat."
                   >
-                    <p className="font-medium">Få fler artiklar i mejlen</p>
+                    <a
+                      href="/sidtyper/startsida-nyhetsrum#prenumerera"
+                      className="inline-flex items-center gap-1.5 border border-border-strong bg-canvas font-medium px-4 py-2.5 rounded text-sm hover:bg-tint-info hover:border-brand-accent shrink-0"
+                    >
+                      Prenumerera
+                      <Icon name="arrow_forward" size={14} />
+                    </a>
                   </Copy>
-                  <p className="text-sm text-ink-secondary">
-                    Vi skickar inte oftare än en gång i månaden, avregistrera när du vill.
-                  </p>
                 </div>
-                <Copy
-                  label="Subscribe, CTA"
-                  category="cta"
-                  text="Prenumerera"
-                  rationale="Enstavig action-verb. Rubriken bär outcome; knappen bär bara handlingen. Konsekvent med Artikel.tsx."
-                >
-                  <a
-                    href="/sidtyper/startsida-nyhetsrum#prenumerera"
-                    className="inline-flex items-center gap-1.5 border border-border-strong bg-canvas font-medium px-4 py-2.5 rounded text-sm hover:bg-tint-info hover:border-brand-accent shrink-0"
-                  >
-                    Prenumerera
-                    <Icon name="arrow_forward" size={14} />
-                  </a>
-                </Copy>
-              </div>
-            </section>
+              </section>
+            </Annotation>
           ),
         },
       ],
     },
 
-    /* ─── 12. RELATERADE ARTIKLAR ─────────────────────── */
+    /* ─── 13. RELATERADE ARTIKLAR ─────────────────────── */
     {
       id: "related",
       label: "Relaterade artiklar",
       variants: [
         {
           key: "default",
-          label: "Tre kort med samma kategori-färg",
+          label: "Tre kort med kategori och lästid",
           render: () => (
-            <section className="py-10 border-t border-border-subtle">
-              <Copy
-                label="Related, rubrik"
-                category="rubrik"
-                text="Fortsätt läsa"
-                rationale="Konsekvent med Artikel.tsx. Action-fras inviterar till nästa läsning istället för 'Liknande' (passiv)."
-              >
-                <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
-              </Copy>
-              <div className="grid sm:grid-cols-3 gap-4">
-                {[
-                  { rubrik: "Energikartläggningen visade Clemondos besparingspotential", kategori: "Kundcase", lastid: "5 min" },
-                  { rubrik: "Framtidens fjärrvärme: lägre temperatur, smartare distribution", kategori: "Hållbarhet", lastid: "7 min" },
-                  { rubrik: "Effekttariffer förklarade, så undviker du onödiga toppar", kategori: "Utbildning", lastid: "4 min" },
-                ].map((r) => (
-                  <Link
-                    key={r.rubrik}
-                    to="/sidtyper/artikel"
-                    className="group flex flex-col rounded-md border border-border-subtle bg-surface overflow-hidden hover:border-brand-accent hover:shadow-sm transition-all"
-                  >
-                    <div className="bg-tint-info aspect-[16/10] flex items-center justify-center">
-                      <Icon name="image" size={36} className="text-ink-muted" />
-                    </div>
-                    <div className="p-4 flex flex-col flex-1">
-                      <p className="text-[10px] uppercase tracking-wider text-brand-primary font-bold mb-1.5">
-                        {r.kategori}
-                      </p>
-                      <h3 className="font-medium leading-snug mb-2 group-hover:text-brand-accent flex-1">
-                        {r.rubrik}
-                      </h3>
-                      <p className="text-xs text-ink-muted">{r.lastid}</p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </section>
+            <Annotation
+              label="Relaterade artiklar"
+              audience="user"
+              rationale="Tre artiklar ger läsaren ett naturligt nästa steg när texten är slut. Korten visar kategori och lästid, så läsaren kan välja utan att klicka. Välj artiklar i närliggande ämnen, inte bara de senaste."
+            >
+              <section className="py-10 border-t border-border-subtle">
+                <Copy
+                  label="Relaterade artiklar, rubrik"
+                  category="rubrik"
+                  text="Fortsätt läsa"
+                  rationale="'Fortsätt läsa' beskriver det läsaren redan gör och bjuder in till mer. 'Liknande artiklar' och 'Mer från oss' är passiva och säger mindre."
+                >
+                  <h2 className="text-h3 font-medium mb-6">Fortsätt läsa</h2>
+                </Copy>
+                <div className="grid sm:grid-cols-3 gap-4">
+                  {[
+                    { rubrik: "Energikartläggningen visade Clemondos besparingspotential", kategori: "Kundcase", lastid: "5 min" },
+                    { rubrik: "Framtidens fjärrvärme: lägre temperatur, smartare distribution", kategori: "Hållbarhet", lastid: "7 min" },
+                    { rubrik: "Effekttariffer förklarade, så undviker du onödiga toppar", kategori: "Utbildning", lastid: "4 min" },
+                  ].map((r) => (
+                    <Link
+                      key={r.rubrik}
+                      to="/sidtyper/artikel"
+                      className="group flex flex-col rounded-md border border-border-subtle bg-surface overflow-hidden hover:border-brand-accent hover:shadow-sm transition-all"
+                    >
+                      <div className="bg-tint-info aspect-[16/10] flex items-center justify-center">
+                        <Icon name="image" size={36} className="text-ink-muted" />
+                      </div>
+                      <div className="p-4 flex flex-col flex-1">
+                        <p className="text-[10px] uppercase tracking-wider text-brand-primary font-bold mb-1.5">
+                          {r.kategori}
+                        </p>
+                        <h3 className="font-medium leading-snug mb-2 group-hover:text-brand-accent flex-1">
+                          {r.rubrik}
+                        </h3>
+                        <p className="text-xs text-ink-muted">{r.lastid}</p>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            </Annotation>
           ),
         },
       ],
@@ -778,11 +868,11 @@ export function ArtikelGalleri() {
   return (
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
-        kategori="Artikel (skiss · rik editorial-struktur)"
-        syfte="Storytelling-format med editorial primitives: TOC med djuplänkar, sammanfattning, faktarutor, fancy numrerade listor med färgade siffror, tips & trick-rutor, statistik-highlights, författar-bio. Varje element bryter monotoni och ger artikeln rytm, användaren upplever det som skrivet av en människa, inte en SEO-generator."
-        malgrupp="Kunder, allmänhet, journalister. Brett, den som har tid att läsa något längre och vill förstå djupare. Sammanfattning + TOC ger den otåliga ett snabbt värde, fördjupningsformat ger den intresserade rik läsning."
-        primarHandling="Läsa hela artikeln · Hoppa via TOC till relevant sektion · Prenumerera · Klicka vidare till relaterad artikel."
-        ton="Brand voice. Mer personlig än press, mer reflekterande än nyhet. 'Det vi ser i våra installationer ...' inte 'Studier visar att ...'. Rik typografi och format-mix gör texten upplevd som hantverk, inte produktion."
+        kategori="Artikel, formatgalleri (infällda rutor)"
+        syfte="Visar alla redaktionella format i en längre artikel: sammanfattning, innehållsförteckning, statistikruta, faktaruta, numrerade listor, tipsruta, kundberättelse och författarbio. Rutorna ligger infällda i brödtexten. Använd sidan som referens när du väljer format för en ny artikel."
+        malgrupp="Kunder, allmänhet och journalister som har tid att läsa längre och vill förstå på djupet. Sammanfattningen och innehållsförteckningen hjälper den som har bråttom, fördjupningen belönar den som stannar."
+        primarHandling="Läsa hela artikeln · Hoppa till ett avsnitt via innehållsförteckningen · Prenumerera · Gå vidare till en relaterad artikel"
+        ton="Öresundskrafts röst: mer personlig än ett pressmeddelande och mer eftertänksam än en nyhet. Skriv 'det vi ser i våra installationer' i stället för 'studier visar'. Varierade format gör att texten känns som hantverk."
       />
 
       <div className="flex items-center justify-between pt-6">

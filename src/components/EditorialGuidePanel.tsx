@@ -5,7 +5,7 @@ import { Icon } from "./Icon";
 const CAT_LABEL: Record<CopyCategory, string> = {
   rubrik: "Rubrik",
   cta: "CTA",
-  reassurance: "Reassurance",
+  reassurance: "Trygghet",
   faq: "FAQ",
   ton: "Ton",
   metadata: "Metadata",
@@ -33,7 +33,7 @@ export function EditorialGuidePanel() {
           type="button"
           onClick={() => setOpen(true)}
           className="fixed left-0 top-1/2 -translate-y-1/2 z-40 px-3 py-2 rounded-r bg-brand-primary text-white text-xs font-medium shadow-lg hover:opacity-90"
-          aria-label="Öppna copy-guide"
+          aria-label="Öppna copy-guiden"
         >
           ← Copy-guide {list.length > 0 ? `(${list.length})` : ""}
         </button>
@@ -49,14 +49,14 @@ export function EditorialGuidePanel() {
           <div>
             <h2 className="text-h5 font-medium">Copy-guide</h2>
             <p className="text-xs text-ink-muted mt-0.5">
-              Varför orden är valda som de är
+              Varför texterna är formulerade som de är
             </p>
           </div>
           <button
             type="button"
             onClick={() => setOpen(false)}
             className="text-ink-muted hover:text-ink p-1"
-            aria-label="Stäng panel"
+            aria-label="Stäng copy-guiden"
           >
             <Icon name="close" size={18} />
           </button>
@@ -66,7 +66,7 @@ export function EditorialGuidePanel() {
           {brief && (
             <section className="px-5 py-4 bg-tint-info border-b border-border-subtle">
               <h3 className="text-[11px] font-bold uppercase tracking-wider text-brand-primary mb-2">
-                Sidtyp-brief
+                Om sidtypen
               </h3>
               <dl className="space-y-2 text-sm">
                 <div>
@@ -82,7 +82,7 @@ export function EditorialGuidePanel() {
                   <dd>{brief.malgrupp}</dd>
                 </div>
                 <div>
-                  <dt className="text-ink-muted text-xs">Primär handling</dt>
+                  <dt className="text-ink-muted text-xs">Viktigaste handlingen</dt>
                   <dd>{brief.primarHandling}</dd>
                 </div>
                 <div>
@@ -95,7 +95,7 @@ export function EditorialGuidePanel() {
 
           {list.length === 0 ? (
             <p className="px-5 py-6 text-sm text-ink-muted">
-              Ingen copy-guide på denna sida ännu.
+              Den här sidan har inga copy-kommentarer än.
             </p>
           ) : (
             <ul className="divide-y divide-border-subtle">
@@ -133,7 +133,7 @@ export function EditorialGuidePanel() {
         </div>
 
         <footer className="px-5 py-3 border-t border-border-subtle text-xs text-ink-muted">
-          Klicka för att hitta texten på sidan.
+          Klicka på en kommentar för att se texten på sidan.
         </footer>
       </aside>
     </>

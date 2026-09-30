@@ -8,11 +8,11 @@ import { FaqAccordion } from "../moduler/variants/FaqAccordion";
 import { getPostBySlug, KATEGORI_LABEL } from "../moduler/nyhetsrum-data";
 
 /**
- * SIDTYP, Nyhet (skiss)
+ * SIDTYP: Nyhet (skiss)
  *
- * Skiljer sig från Press (formell, citerbar) och Artikel (storytelling).
- * Distinkt: TL;DR-ruta överst, "Vad innebär detta för dig?", FAQ.
- * Kortare än artikel, kund-fokuserad ton.
+ * Skiljer sig från pressmeddelandet (formellt, citerbart) och artikeln
+ * (berättande). Utmärkande: sammanfattning överst, "Vad innebär det här
+ * för dig?" och vanliga frågor. Kortare än en artikel, skriven för kunden.
  */
 
 const POST = getPostBySlug("elnatsavgifter-2026")!;
@@ -27,16 +27,16 @@ export function Nyhet() {
     /* ─── 1. HEADER ────────────────────────────────────────── */
     {
       id: "header",
-      label: "Header, typ + datum",
+      label: "Sidhuvud: typ och datum",
       variants: [
         {
           key: "default",
-          label: "Nyhet-badge + datum + h1",
+          label: "Typetikett, datum och rubrik",
           render: () => (
             <Annotation
-              label="Nyhet-header, datum prominent"
+              label="Sidhuvud med tydligt datum"
               audience="user"
-              rationale="Nyheter handlar om förändringar i tid (priser från visst datum, nya regler etc). Datum måste vara prominent. Typ-badge i blå info-färg signalerar 'detta är information du bör känna till', skiljer från press (grå) och artikel (kategorifärg)."
+              rationale="En nyhet handlar om en förändring som gäller från ett visst datum, så datumet syns direkt. Den blå etiketten Nyhet visar att det är information till kunder och skiljer sidan från pressmeddelanden (grå) och artiklar."
             >
               <header className="py-8 sm:py-10 max-w-reading">
                 <div className="flex flex-wrap items-center gap-2 mb-4 text-xs">
@@ -51,15 +51,22 @@ export function Nyhet() {
                 </div>
 
                 <Copy
-                  label="Nyhet H1, direkt och daterad"
+                  label="Rubrik, vad som ändras och när"
                   category="rubrik"
                   text={POST.rubrik}
-                  rationale="Datum-bunden rubrik ('Nya elnätsavgifter från 1 juli 2026') gör nyheten ögonblicksbar. Använder 'från [datum]' när det är relevant."
+                  rationale="Rubriken säger vad som ändras och från vilket datum, så kunden förstår nyheten utan att läsa vidare. Skriv 'från [datum]' när förändringen börjar gälla ett visst datum. Undvik säljande ord som 'glädjande'."
                 >
                   <h1 className="text-h1 leading-tight mb-3">{POST.rubrik}</h1>
                 </Copy>
 
-                <p className="text-lede text-ink-secondary leading-relaxed">{POST.ingress}</p>
+                <Copy
+                  label="Ingress, varför och vad det betyder"
+                  category="ton"
+                  text={POST.ingress}
+                  rationale="Ingressen säger kort varför förändringen görs och lovar att sidan förklarar vad den betyder för kunden. 'Vi höjer' är rakare än 'avgifterna justeras', som döljer vem som gör vad."
+                >
+                  <p className="text-lede text-ink-secondary leading-relaxed">{POST.ingress}</p>
+                </Copy>
               </header>
             </Annotation>
           ),
@@ -67,27 +74,27 @@ export function Nyhet() {
       ],
     },
 
-    /* ─── 2. TL;DR, sammanfattning ─────────────────────────── */
+    /* ─── 2. SAMMANFATTNING ────────────────────────────────── */
     {
       id: "tldr",
-      label: "TL;DR, sammanfattning",
+      label: "Sammanfattning",
       variants: [
         {
           key: "default",
-          label: "Highlight-ruta med 3-4 punkter",
+          label: "Markerad ruta med 3 till 4 punkter",
           render: () => (
             <Annotation
-              label="TL;DR, det viktigaste först"
-              audience="user"
-              rationale="Briefen: 'Finns behov för att kunna läsa en kort sammanfattning, ofta är nyheterna relativt texttunga, vore bra att kunna highlighta det viktigaste.' TL;DR-rutan ger användaren det viktigaste på 5 sek innan de bestämmer om de vill läsa hela brödtexten."
+              label="Sammanfattning, det viktigaste först"
+              audience="redaktör"
+              rationale="Nyheter blir ofta texttunga. Rutan ger kunden det viktigaste på några sekunder, innan hen bestämmer sig för att läsa vidare. Skriv 3 till 4 korta punkter: vad ändras, när, vad det kostar och om kunden behöver göra något."
             >
               <section className="py-2">
                 <div className="rounded-md bg-tint-notice border-l-4 border-brand-highlight p-5 max-w-reading">
                   <Copy
-                    label="TL;DR-rubrik"
+                    label="Sammanfattning, rubrik"
                     category="rubrik"
                     text="Det viktigaste"
-                    rationale="Försvenskning av TL;DR-konceptet. 'Sammanfattning' är formellt; 'Det viktigaste' är direkt och tjänar samma syfte med vardagsspråk."
+                    rationale="'Det viktigaste' säger vad rutan ger läsaren, med vardagliga ord. 'Sammanfattning' fungerar men känns mer formellt. Undvik engelska förkortningar som TL;DR."
                   >
                     <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-2">
                       Det viktigaste
@@ -118,25 +125,30 @@ export function Nyhet() {
           key: "default",
           label: "Tre korta stycken",
           render: () => (
-            <section className="py-6 max-w-reading space-y-5 text-ink-secondary leading-relaxed">
-              <p>
-                Från och med 1 juli 2026 justeras elnätsavgifterna för
-                Öresundskrafts privatkunder i Helsingborg och Ängelholm.
-                Höjningen finansierar den utbyggnad och modernisering av nätet
-                som krävs för att möta ökad efterfrågan från elbilsladdning,
-                värmepumpar och anslutning av nya bostäder.
-              </p>
-              <p>
-                För en typisk villa med årsförbrukning omkring 20&nbsp;000 kWh
-                innebär det cirka 75 kronor mer per månad. För en lägenhet med
-                årsförbrukning omkring 2&nbsp;000 kWh blir det cirka 25 kronor mer per månad.
-              </p>
-              <p>
-                Avgifterna gäller alla privatkunder anslutna till
-                Öresundskrafts nät. Företagskunder och kommersiella kunder får
-                separata informationsutskick.
-              </p>
-            </section>
+            <Annotation
+              label="Brödtext, kort och konkret"
+              audience="redaktör"
+              rationale="Brödtexten ger bakgrunden för den som vill veta mer än sammanfattningen. Håll den till tre korta stycken: vad och varför, vad det kostar med räkneexempel, och vem som berörs."
+            >
+              <section className="py-6 max-w-reading space-y-5 text-ink-secondary leading-relaxed">
+                <p>
+                  Från 1 juli 2026 höjer vi elnätsavgifterna för privatkunder
+                  i Helsingborg och Ängelholm. Pengarna går till att bygga ut
+                  och förnya elnätet, som behöver klara fler elbilsladdare,
+                  fler värmepumpar och nya bostäder.
+                </p>
+                <p>
+                  För en typisk villa som använder omkring 20&nbsp;000 kWh per år
+                  blir det cirka 75 kronor mer per månad. För en lägenhet som
+                  använder omkring 2&nbsp;000 kWh per år blir det cirka 25 kronor mer per månad.
+                </p>
+                <p>
+                  Höjningen gäller alla privatkunder som är anslutna till
+                  Öresundskrafts elnät. Företagskunder får information i ett
+                  separat utskick.
+                </p>
+              </section>
+            </Annotation>
           ),
         },
       ],
@@ -145,23 +157,23 @@ export function Nyhet() {
     /* ─── 4. VAD INNEBÄR DETTA FÖR DIG? ──────────────────── */
     {
       id: "vad-innebar",
-      label: "Vad innebär detta för dig?",
+      label: "Vad innebär det här för dig?",
       variants: [
         {
           key: "default",
-          label: "Konkret konsekvens-block per situation",
+          label: "En ruta per kundsituation",
           render: () => (
             <Annotation
-              label="Konsekvens, översätt till kundens situation"
+              label="Vad det betyder i din situation"
               audience="user"
-              rationale="Nyheter handlar ofta om förändringar, användaren vill veta 'vad behöver JAG göra?'. Tre tydliga situationer (lägenhet/villa/elbilsladdning) ger praktisk översättning. Bryter texttunghet och fokuserar på handling."
+              rationale="Kunden vill veta vad förändringen betyder för just hen och om hen behöver göra något. Fyra vanliga situationer (lägenhet, villa, elbilsladdning, solceller) gör det lätt att hitta sin egen och bryter upp texten."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
-                  label="Vad innebär-rubrik"
+                  label="Rubrik, kundens egen fråga"
                   category="rubrik"
                   text="Vad innebär det här för dig?"
-                  rationale="Direkt fråga som kunden själv har. 'Konsekvenser' eller 'Påverkan' skulle vara förvaltningssvenska."
+                  rationale="Rubriken ställer den fråga kunden redan har i huvudet. Undvik 'Konsekvenser' eller 'Påverkan', som låter som förvaltningssvenska."
                 >
                   <h2 className="text-h3 font-medium mb-4">Vad innebär det här för dig?</h2>
                 </Copy>
@@ -171,25 +183,25 @@ export function Nyhet() {
                       ikon: "apartment",
                       situation: "Bor du i lägenhet?",
                       konsekvens:
-                        "~25 kronor mer per månad. Du behöver inte göra något, höjningen sker automatiskt på din faktura.",
+                        "Cirka 25 kronor mer per månad. Du behöver inte göra något, höjningen syns automatiskt på din faktura.",
                     },
                     {
                       ikon: "home",
                       situation: "Bor du i villa?",
                       konsekvens:
-                        "~75 kronor mer per månad i genomsnitt. Du kan se din exakta förbrukning på Mina sidor.",
+                        "Cirka 75 kronor mer per månad i genomsnitt. Du ser din exakta förbrukning på Mina sidor.",
                     },
                     {
                       ikon: "ev_station",
                       situation: "Har du elbilsladdning hemma?",
                       konsekvens:
-                        "Höjningen påverkar effekttariffen lite. Smart laddning på natten är fortfarande billigast.",
+                        "Effektavgiften höjs något. Det är fortfarande billigast att ladda bilen på natten.",
                     },
                     {
                       ikon: "solar_power",
                       situation: "Har du solceller?",
                       konsekvens:
-                        "Avgiften för uttagen el höjs, men ersättningen för såld el ändras inte. Egen produktion blir därmed ännu mer värdefull.",
+                        "Avgiften för el du köper höjs, men ersättningen för el du säljer ändras inte. Därför blir din egen solel ännu mer värd.",
                     },
                   ].map((k) => (
                     <div
@@ -198,7 +210,18 @@ export function Nyhet() {
                     >
                       <Icon name={k.ikon} size={24} className="text-brand-accent shrink-0 mt-0.5" />
                       <div>
-                        <p className="font-medium mb-1">{k.situation}</p>
+                        {k.situation === "Bor du i lägenhet?" ? (
+                          <Copy
+                            label="Situationsrutor, rubriker som frågor"
+                            category="reassurance"
+                            text="Bor du i lägenhet?"
+                            rationale="Varje ruta börjar med en ja/nej-fråga så att kunden snabbt hittar sin situation. Svaret ger först summan och sedan om kunden behöver göra något. 'Du behöver inte göra något' lugnar och minskar samtal till kundservice."
+                          >
+                            <p className="font-medium mb-1">{k.situation}</p>
+                          </Copy>
+                        ) : (
+                          <p className="font-medium mb-1">{k.situation}</p>
+                        )}
                         <p className="text-sm text-ink-secondary leading-snug">{k.konsekvens}</p>
                       </div>
                     </div>
@@ -214,16 +237,16 @@ export function Nyhet() {
     /* ─── 5. FAQ ─────────────────────────────────────────── */
     {
       id: "faq",
-      label: "FAQ, vanliga kundfrågor",
+      label: "Vanliga frågor",
       variants: [
         {
           key: "accordion",
-          label: "Accordion (FAQ-modul)",
+          label: "Fällbara frågor och svar",
           render: () => (
             <Annotation
-              label="FAQ, adresserar kundens följdfrågor"
-              audience="user"
-              rationale="Briefen: 'Besvara kundens primära frågor kring ämnet via FAQ.' Återanvänder FAQ-modulen så användaren känner igen mönstret från andra sidor. Frågor svarar på 'varför nu?', 'kan jag undvika?', 'när ser jag det på fakturan?'."
+              label="Vanliga frågor om förändringen"
+              audience="redaktör"
+              rationale="Här besvaras kundens följdfrågor, så att färre behöver kontakta kundservice. Samma frågemodul som på andra sidor gör mönstret igenkännbart. Skriv frågor om just den här nyheten, till exempel 'Varför höjs avgiften nu?' och 'När syns det på fakturan?'."
             >
               <section className="py-10 border-t border-border-subtle [&_section]:max-w-none">
                 <FaqAccordion />
@@ -237,33 +260,45 @@ export function Nyhet() {
     /* ─── 6. KONTAKT KUNDSERVICE ───────────────────────────── */
     {
       id: "kontakt",
-      label: "Frågor, KC-länk",
+      label: "Frågor, länk till kundservice",
       variants: [
         {
           key: "default",
-          label: "Banner till kundservice",
+          label: "Ruta med länk till kundservice",
           render: () => (
+            <Annotation
+              label="Väg vidare till kundservice"
+              audience="user"
+              rationale="Den som inte hittar svar i texten eller bland frågorna ska inte fastna. Rutan ligger direkt efter frågorna, där behovet av hjälp är störst, och leder till kundservice."
+            >
             <section className="py-8 border-t border-border-subtle">
               <div className="rounded-md bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4 max-w-reading">
                 <Icon name="support_agent" size={28} className="text-brand-accent shrink-0" />
                 <div className="flex-1">
                   <Copy
-                    label="KC-banner, rubrik"
+                    label="Kundservice, rubrik"
                     category="rubrik"
                     text="Frågor om elnätsavgiften?"
-                    rationale="Frågeformsrubrik som speglar exakt vad användaren tänker just nu, efter att ha läst nyheten ('jag har en fråga om min specifika räkning'). Aldrig 'Kontakta oss' (generiskt) eller 'Vi hjälper dig' (om sändaren)."
+                    rationale="Rubriken speglar det kunden tänker efter att ha läst nyheten. Undvik 'Kontakta oss', som är för allmänt, och 'Vi hjälper dig', som handlar om avsändaren."
                   >
                     <p className="font-medium">Frågor om elnätsavgiften?</p>
                   </Copy>
-                  <p className="text-sm text-ink-secondary">
-                    Frågor om din egen faktura besvarar vi snabbast direkt.
-                  </p>
+                  <Copy
+                    label="Kundservice, förklarande text"
+                    category="reassurance"
+                    text="Gäller det din egen faktura? Då får du snabbast svar av kundservice."
+                    rationale="Texten säger när det lönar sig att kontakta kundservice: frågor om den egna fakturan. Det hjälper kunden att välja rätt väg och sparar tid för båda."
+                  >
+                    <p className="text-sm text-ink-secondary">
+                      Gäller det din egen faktura? Då får du snabbast svar av kundservice.
+                    </p>
+                  </Copy>
                 </div>
                 <Copy
-                  label="KC-banner, CTA"
+                  label="Kundservice, knapp"
                   category="cta"
                   text="Kontakta kundservice"
-                  rationale="Verb + objekt. Förra versionen var 'Till kundservice' (riktning, inte handling). 'Kontakta' är action-first, användaren vet vad knappen GÖR, inte bara var den TAR dem."
+                  rationale="Verb och objekt säger vad knappen gör. Den tidigare texten 'Till kundservice' sa bara vart knappen leder, inte vad kunden kan göra där."
                 >
                   <Link
                     to="/sidtyper/kundservice-ny"
@@ -275,6 +310,7 @@ export function Nyhet() {
                 </Copy>
               </div>
             </section>
+            </Annotation>
           ),
         },
       ],
@@ -287,14 +323,19 @@ export function Nyhet() {
       variants: [
         {
           key: "default",
-          label: "Liknande ämne, 2 kort",
+          label: "Samma ämne, 2 kort",
           render: () => (
+            <Annotation
+              label="Relaterade nyheter i samma ämne"
+              audience="redaktör"
+              rationale="Ger kunden en väg vidare till fler nyheter i samma ämne i stället för en återvändsgränd. Välj två aktuella nyheter som hör ihop med den här, helst sådana som också påverkar kundens ekonomi eller vardag."
+            >
             <section className="py-10 border-t border-border-subtle">
               <Copy
-                label="Related, rubrik"
+                label="Relaterade nyheter, rubrik"
                 category="rubrik"
                 text={`Mer om ${KATEGORI_LABEL[POST.kategori]}`}
-                rationale="Dynamisk rubrik som speglar nyhetens kategori, 'Mer om Energi'. Förra mönstret 'Liknande nyheter' eller 'Du kanske också vill läsa' är generiskt. Kategorinamnet är konkret och säger exakt vad relationen är."
+                rationale="Rubriken hämtar nyhetens kategori, till exempel 'Mer om Energi', och säger därmed vad nyheterna har gemensamt. 'Liknande nyheter' och 'Du kanske också vill läsa' är mer allmänna."
               >
                 <h2 className="text-h4 font-medium mb-4">Mer om {KATEGORI_LABEL[POST.kategori]}</h2>
               </Copy>
@@ -315,6 +356,7 @@ export function Nyhet() {
                 ))}
               </div>
             </section>
+            </Annotation>
           ),
         },
       ],
@@ -325,10 +367,10 @@ export function Nyhet() {
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
         kategori="Nyhet (skiss)"
-        syfte="Information om förändringar, priser, regler, drift. Inte pressrelease (ingen citerbar formell ton), inte artikel (ingen storytelling). Kund-fokus: TL;DR först, konsekvensblock, FAQ. Kortare format."
-        malgrupp="Befintliga kunder och allmänhet i Helsingborg/Ängelholm. Inte journalister primärt."
-        primarHandling="Skanna TL;DR · Förstå konsekvensen för min situation · Hitta svar i FAQ · Vid frågor → KC."
-        ton="Informativ, direkt, inte säljande. 'Vi justerar' inte 'vi har glädjen att meddela'. Inga superlativ, bara fakta + konsekvens."
+        syfte="Berätta för kunder om förändringar i priser, regler eller drift. Kortare än en artikel och inte formell som ett pressmeddelande. Sidan börjar med en sammanfattning, visar vad förändringen betyder i olika situationer och besvarar vanliga frågor."
+        malgrupp="Befintliga kunder och allmänheten i Helsingborg och Ängelholm. Journalister är inte den främsta målgruppen."
+        primarHandling="Läsa sammanfattningen, förstå vad förändringen betyder för min situation, hitta svar bland vanliga frågor och vid behov kontakta kundservice."
+        ton="Saklig, rak och inte säljande. Skriv 'vi höjer', inte 'avgifterna justeras' eller 'vi har glädjen att meddela'. Inga superlativ, bara fakta och vad det betyder för kunden."
       />
 
       <div className="flex items-center justify-between pt-6">

@@ -8,71 +8,71 @@ const VARIANTS: Variant[] = [
   {
     id: "hero",
     shortName: "A",
-    label: "Hero-banner",
+    label: "Stor banner",
     riskLevel: "låg",
-    oneLiner: "Stor navy-banner med vad-du-kan-göra-lista och primär CTA.",
-    bestFor: "Kundservice-sidan, elavtal-sidan, där self-service ska lyftas.",
+    oneLiner: "Stor mörkblå banner med en lista över vad du kan göra och en tydlig inloggningsknapp.",
+    bestFor: "Kundservicesidan och elavtalssidan, där besökaren ska lockas att lösa ärendet själv.",
     render: () => <MinaSidorHero />,
   },
   {
     id: "split",
     shortName: "B",
-    label: "Split, webb + app",
+    label: "Webb och app",
     riskLevel: "låg",
-    oneLiner: "Två likvärdiga kort: Mina sidor och mobilappen.",
-    bestFor: "När både webb och app är viktiga kanaler att lyfta.",
+    oneLiner: "Två likvärdiga kort sida vid sida: Mina sidor och appen.",
+    bestFor: "När både webben och appen är viktiga kanaler att lyfta.",
     render: () => <MinaSidorSplit />,
   },
   {
     id: "strip",
     shortName: "C",
-    label: "Kompakt strip",
+    label: "Kompakt remsa",
     riskLevel: "låg",
-    oneLiner: "En rad med ikon + CTA. Minimal yta.",
-    bestFor: "Återupprepning på flera sidor, eller som footer-reminder.",
+    oneLiner: "En rad med ikon, kort värde och inloggningsknapp. Tar minimal plats.",
+    bestFor: "Påminnelse på flera sidor, till exempel längst ner på sidan.",
     render: () => <MinaSidorStrip />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Yta",
+    aspect: "Plats på sidan",
     values: {
-      hero: "Stor, dominerar sin sektion.",
+      hero: "Stor, dominerar sin del av sidan.",
       split: "Medel, två kort bredvid varandra.",
-      strip: "Liten, en horisontell rad.",
+      strip: "Liten, en enda rad.",
     },
   },
   {
-    aspect: "Konverteringsfokus",
+    aspect: "Fokus på inloggning",
     values: {
-      hero: "Hög, en tydlig CTA, inget konkurrerande.",
-      split: "Medel, delar mellan webb och app.",
-      strip: "Låg, kompletterande, inte primär.",
+      hero: "Högt. En tydlig knapp och inget som konkurrerar.",
+      split: "Medel. Uppmärksamheten delas mellan webb och app.",
+      strip: "Lågt. Ett komplement, inte huvudvägen.",
     },
   },
   {
-    aspect: "Visar värdet",
+    aspect: "Hur värdet visas",
     values: {
-      hero: "Lista på 5 saker man kan göra.",
-      split: "Lista per kort, 3 per kanal.",
-      strip: "Två korta meningar, 'ingen kötid, dygnet runt'.",
+      hero: "En lista med fem saker du kan göra.",
+      split: "Tre saker per kanal.",
+      strip: "En kort rad: ingen kötid, öppet dygnet runt.",
     },
   },
   {
-    aspect: "App-exponering",
+    aspect: "Lyfter appen",
     values: {
-      hero: "Saknas, endast Mina sidor.",
-      split: "Likvärdig med Mina sidor.",
-      strip: "Saknas.",
+      hero: "Nej, bara Mina sidor.",
+      split: "Ja, lika mycket som Mina sidor.",
+      strip: "Nej.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      hero: "Kundservice-sidan, elavtal-sidan, produktsidan.",
-      split: "Om appen ska marknadsföras, hub-sida, privat/hem.",
-      strip: "Upprepning på alla sidor i inloggat läge, footer.",
+      hero: "Kundservicesidan, elavtalssidan och produktsidan.",
+      split: "När appen ska marknadsföras, på översiktssidor och Privat/Hem.",
+      strip: "Återkommande påminnelse på många sidor, till exempel längst ner.",
     },
   },
 ];
@@ -83,11 +83,12 @@ export function MinaSidor() {
       <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">← Översikt</Link>
 
       <header className="mt-6 mb-8 max-w-reading">
-        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Mina sidor / App-hub</p>
-        <h1 className="text-h1 mb-3">Mina sidor och app</h1>
+        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Mina sidor och appen</p>
+        <h1 className="text-h1 mb-3">Mina sidor och appen</h1>
         <p className="text-lede text-ink-secondary">
-          Tre sätt att lyfta self-service. Hero för stort push, split för
-          kanalval, strip för subtil återupprepning.
+          Tre sätt att få fler kunder att lösa sina ärenden själva. En stor banner när det
+          ska synas mycket, två kort när kunden ska välja mellan webb och app, och en
+          kompakt remsa som diskret påminnelse.
         </p>
       </header>
 

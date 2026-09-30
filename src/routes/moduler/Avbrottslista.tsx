@@ -8,95 +8,95 @@ const VARIANTS: Variant[] = [
   {
     id: "trygg",
     shortName: "A",
-    label: "Trygg",
+    label: "Samlad lista",
     riskLevel: "låg",
-    oneLiner: "Statusgrupperad lista. Allt synligt i en scroll, inga filter.",
-    bestFor: "Snabb överblick. Fungerar utan JS. Noll inlärningskurva.",
+    oneLiner: "Alla avbrott i en lista, grupperade efter läge: pågående, planerade och avslutade. Inga filter.",
+    bestFor: "Snabb överblick, utskrift och skärmläsare. Kräver ingen inlärning.",
     render: () => <AvbrottTrygg />,
   },
   {
     id: "progressiv",
     shortName: "B",
-    label: "Progressiv",
+    label: "Filtrerbar lista",
     riskLevel: "medel",
-    oneLiner: "Filter-tabs + akutbar + expanderbar tidslinje per avbrott.",
-    bestFor: "Användare som vill filtrera och följa ett specifikt avbrott.",
+    oneLiner: "En varningsrad för pågående avbrott, filter per läge och kort som fälls ut med en tidslinje.",
+    bestFor: "Besökare som vill sålla bland avbrotten och följa ett avbrott steg för steg.",
     render: () => <AvbrottProgressiv />,
   },
   {
     id: "experimentell",
     shortName: "C",
-    label: "Karta-first",
+    label: "Kartfokuserad",
     riskLevel: "hög",
-    oneLiner: "Karta som huvudyta, lista som sekundär. Pulserande pins.",
-    bestFor: "\"Är mitt område påverkat?\"-frågan. Geografisk överblick.",
+    oneLiner: "Kartan är huvudytan och listan finns bredvid. Pågående avbrott pulserar på kartan.",
+    bestFor: "Frågan \"Berörs mitt område?\". Ger en geografisk överblick.",
     render: () => <AvbrottKarta />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Strategisk satsning",
+    aspect: "Grundidé",
     values: {
-      trygg: "All info synlig direkt, ingen interaktion krävs. Bulletin-modell.",
-      progressiv: "Filtrera + drilla ner. Användaren styr vad de ser.",
-      experimentell: "Kartan äger svaret. Lista är backup.",
+      trygg: "All information syns direkt, inget behöver klickas fram. Som en anslagstavla.",
+      progressiv: "Besökaren väljer själv vad som visas och kan fälla ut detaljer.",
+      experimentell: "Kartan ger svaret. Listan är ett komplement.",
     },
   },
   {
-    aspect: "\"Är mitt område påverkat?\"",
+    aspect: "\"Berörs mitt område?\"",
     values: {
-      trygg: "Scanna listan efter områdesnamn.",
-      progressiv: "Filtrera + scanna.",
-      experimentell: "Direkt visuellt svar på kartan.",
+      trygg: "Besökaren läser igenom listan och letar efter sitt område.",
+      progressiv: "Besökaren filtrerar först och letar sedan i en kortare lista.",
+      experimentell: "Svaret syns direkt på kartan.",
     },
   },
   {
-    aspect: "Akut-hantering",
+    aspect: "Pågående avbrott",
     values: {
-      trygg: "Pågående avbrott överst med röd punkt.",
-      progressiv: "Akutbar med pulserande punkt + felanmälan.",
-      experimentell: "Pulsande röda pins + info-bubbel vid klick.",
+      trygg: "Hamnar överst med en röd punkt.",
+      progressiv: "En varningsrad överst visar antalet och länkar till felanmälan.",
+      experimentell: "Pulserande röda markeringar. Klick visar en informationsruta.",
     },
   },
   {
-    aspect: "Tidslinje / uppdateringar",
+    aspect: "Tidslinje och uppdateringar",
     values: {
-      trygg: "Inline under varje avbrott, alltid synlig.",
-      progressiv: "Expanderbar: klicka kort → tidslinje glider ut.",
-      experimentell: "I info-bubbel när pin valts. Kompakt.",
+      trygg: "Visas under varje avbrott, alltid synliga.",
+      progressiv: "Visas när besökaren klickar på ett kort.",
+      experimentell: "Kort sammanfattning i informationsrutan för vald markering.",
     },
   },
   {
     aspect: "Mobil",
     values: {
-      trygg: "Lång scroll med 6+ avbrott.",
-      progressiv: "Tabs filtrar bort irrelevant info.",
-      experimentell: "Karta tar mycket yta på liten skärm. Fallback till lista?",
+      trygg: "Blir en lång sida när det finns många avbrott.",
+      progressiv: "Filtren tar bort det som inte är relevant, så sidan blir kortare.",
+      experimentell: "Kartan tar stor plats på en liten skärm. Behöver en listvy som alternativ.",
     },
   },
   {
-    aspect: "WCAG 2.2 AA",
+    aspect: "Tillgänglighet (WCAG 2.2 AA)",
     values: {
-      trygg: "Utmärkt, ren HTML.",
-      progressiv: "Bra, tabs + aria-expanded.",
-      experimentell: "Svår, kartpins behöver alt-text, list-view är obligatorisk fallback.",
+      trygg: "Mycket god. Enkel struktur som fungerar med skärmläsare.",
+      progressiv: "God, om filter och utfällbara kort är korrekt märkta för skärmläsare.",
+      experimentell: "Svår. Varje markering behöver en textbeskrivning och listvyn måste alltid finnas.",
     },
   },
   {
-    aspect: "Implementation",
+    aspect: "Arbetsinsats att bygga",
     values: {
-      trygg: "Lägst, en lista.",
-      progressiv: "Medel, filter + expand-state.",
-      experimentell: "Högst, kartbibliotek (Mapbox/Leaflet), kartdata, geocoding.",
+      trygg: "Liten. En lista.",
+      progressiv: "Mellan. Filter och utfällbara kort.",
+      experimentell: "Stor. Kräver kartunderlag och att varje avbrott kopplas till en plats.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      trygg: "Fallback-vy. Print. Screen-readers.",
-      progressiv: "Default för avbrottssida.",
-      experimentell: "Toppläge på dedikerad avbrottskarta-sida. Inte som enda vy.",
+      trygg: "Reservvy för utskrift och skärmläsare.",
+      progressiv: "Förval på avbrottssidan.",
+      experimentell: "Överst på en egen kartsida för avbrott, aldrig som enda vy.",
     },
   },
 ];
@@ -108,10 +108,10 @@ export function Avbrottslista() {
 
       <header className="mt-6 mb-8 max-w-reading">
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Avbrottslista</p>
-        <h1 className="text-h1 mb-3">Avbrottsinformation</h1>
+        <h1 className="text-h1 mb-3">Avbrottslista: så visar vi läget</h1>
         <p className="text-lede text-ink-secondary">
-          Planerade, pågående och avslutade avbrott i el, fjärrvärme och fiber.
-          Två varianter, från statisk bulletin till filtrerbar lista med tidslinje.
+          Listan visar pågående, planerade och avslutade avbrott i el, fjärrvärme och fiber.
+          Tre varianter, från en enkel lista till en karta. Växla mellan A, B och C och jämför.
         </p>
       </header>
 
@@ -122,22 +122,22 @@ export function Avbrottslista() {
       />
 
       <section className="mt-16 pt-8 border-t border-border-subtle">
-        <h2 className="text-h3 mb-4">Designnotering</h2>
+        <h2 className="text-h3 mb-4">Att tänka på</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Karta-varianten (C) är en prototyp.</strong> Riktig implementation kräver
-            kartbibliotek (Mapbox/Leaflet/MapLibre), geocoding av avbrott, och fallback-vy för
-            screen readers. Jag har skissat interaktionsmönstret med fake-pins på en grid-bakgrund
-            så vi kan diskutera UX-aspekten utan att bygga kartintegrationen.
+            <strong>Kartvarianten (C) är en skiss.</strong> Kartan och markeringarna är påhittade.
+            En riktig version kräver ett kartunderlag, att varje avbrott kopplas till en plats och
+            en listvy för den som använder skärmläsare. Skissen räcker för att diskutera hur
+            besökaren ska använda kartan.
           </p>
           <p>
-            <strong>Rekommendation:</strong> <em>B (Progressiv)</em> som default. <em>C (Karta)</em>
-            som dedikerad avbrottskarta-sida vid sidan om. <em>A (Trygg)</em> behåller vi som
-            tillgänglig fallback (print + screen-reader).
+            <strong>Rekommendation:</strong> <em>B (Filtrerbar lista)</em> som förval på avbrottssidan.{" "}
+            <em>C (Kartfokuserad)</em> på en egen kartsida för avbrott. <em>A (Samlad lista)</em> behåller
+            vi som tillgänglig reservvy för utskrift och skärmläsare.
           </p>
           <p>
-            <strong>Framtida:</strong> Real-time-uppdateringar via WebSocket, SMS-avisering,
-            avbrottsersättning kopplad till avslutat-posterna.
+            <strong>Nästa steg:</strong> uppdateringar i realtid utan att besökaren laddar om sidan,
+            avisering via sms och information om avbrottsersättning på avslutade avbrott.
           </p>
         </div>
       </section>

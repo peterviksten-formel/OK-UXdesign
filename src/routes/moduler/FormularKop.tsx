@@ -1,29 +1,55 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Annotation } from "../../components/Annotation";
+import { Copy } from "../../components/Copy";
 import { Icon } from "../../components/Icon";
 import { VariantSwitcher, type ArgumentRow, type Variant } from "../../components/VariantSwitcher";
 import { FormularKonversation } from "./variants/FormularKonversation";
 
-/* ─── Variant A, Traditional form ──────────────────────────────────── */
+/* ─── Variant A, Klassiskt formulär: allt på en sida ──────────────── */
 function FormTrygg() {
   return (
     <Annotation
-      label="Traditionellt formulär"
+      label="Klassiskt formulär"
       audience="design"
-      rationale="Klassiskt vertikalt formulär med alla fält synliga. En sida, en submit-knapp. Förutsägbart. Inga överraskningar. Bra tillgänglighet med synliga labels."
+      rationale="Alla fält syns på en och samma sida, uppifrån och ned, med en knapp längst ned. Kunden ser direkt hur mycket som ska fyllas i. Förutsägbart och lätt att använda med skärmläsare tack vare synliga fältetiketter."
     >
       <div className="max-w-reading">
         <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
-          {/* Order summary */}
-          <div className="rounded-md bg-tint-info p-4 mb-6">
-            <p className="text-sm font-medium mb-1">Din beställning</p>
-            <p className="text-h4 font-medium">Ladda Smart</p>
-            <p className="text-sm text-ink-muted">Från 14 900 kr inkl. installation</p>
-          </div>
+          {/* Sammanfattning av beställningen */}
+          <Annotation
+            label="Sammanfattning av beställningen"
+            audience="redaktör"
+            rationale="Fyll i produktnamn och pris exakt som på produktsidan, och skriv vad som ingår. Kunden ska känna igen det hen valde innan hen lämnar sina uppgifter."
+          >
+            <div className="rounded-md bg-tint-info p-4 mb-6">
+              <p className="text-sm font-medium mb-1">Din beställning</p>
+              <p className="text-h4 font-medium">Ladda Smart</p>
+              <Copy
+                label="Pris i sammanfattningen"
+                category="metadata"
+                text="Från 14 900 kr, installation ingår"
+                rationale="'Installation ingår' svarar på den vanligaste frågan om priset. Tydligare än förkortningen 'inkl.'."
+              >
+                <p className="text-sm text-ink-muted">Från 14 900 kr, installation ingår</p>
+              </Copy>
+            </div>
+          </Annotation>
 
+          <Annotation
+            label="Kunduppgifter"
+            audience="user"
+            rationale="Varje fält har en etikett ovanför som syns hela tiden, även när kunden skriver. Fält som hör ihop, som förnamn och efternamn, står bredvid varandra så att formuläret känns kortare."
+          >
           <fieldset>
-            <legend className="text-h5 font-medium mb-3">Dina uppgifter</legend>
+            <Copy
+              label="Rubrik för kunduppgifter"
+              category="rubrik"
+              text="Dina uppgifter"
+              rationale="'Dina' gör det personligt och säger att det handlar om kunden. Undvik 'Personuppgifter' eller 'Kunddata', som låter som ett register."
+            >
+              <legend className="text-h5 font-medium mb-3">Dina uppgifter</legend>
+            </Copy>
             <div className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
@@ -38,7 +64,14 @@ function FormTrygg() {
               <div>
                 <label htmlFor="personnr-a" className="block text-sm font-medium mb-1">Personnummer</label>
                 <input id="personnr-a" type="text" placeholder="ÅÅÅÅMMDD-XXXX" className="w-full px-3 py-2.5 rounded border border-border-strong bg-canvas text-sm placeholder:text-ink-muted focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-focus" />
-                <p className="text-xs text-ink-muted mt-1">Behövs för kreditupplysning och rotavdrag.</p>
+                <Copy
+                  label="Hjälptext, personnummer"
+                  category="reassurance"
+                  text="Vi behöver det för kreditupplysningen och för att dra av rotavdraget åt dig."
+                  rationale="Personnummer är det känsligaste fältet. Texten säger varför vi frågar och vad kunden tjänar på det (rotavdraget), innan hen hinner tveka."
+                >
+                  <p className="text-xs text-ink-muted mt-1">Vi behöver det för kreditupplysningen och för att dra av rotavdraget åt dig.</p>
+                </Copy>
               </div>
               <div>
                 <label htmlFor="adress-a" className="block text-sm font-medium mb-1">Installationsadress</label>
@@ -55,52 +88,74 @@ function FormTrygg() {
                 </div>
               </div>
               <div>
-                <label htmlFor="epost-a" className="block text-sm font-medium mb-1">E-post</label>
+                <label htmlFor="epost-a" className="block text-sm font-medium mb-1">E-postadress</label>
                 <input id="epost-a" type="email" className="w-full px-3 py-2.5 rounded border border-border-strong bg-canvas text-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-focus" />
               </div>
               <div>
-                <label htmlFor="telefon-a" className="block text-sm font-medium mb-1">Telefon</label>
+                <label htmlFor="telefon-a" className="block text-sm font-medium mb-1">Telefonnummer</label>
                 <input id="telefon-a" type="tel" className="w-full px-3 py-2.5 rounded border border-border-strong bg-canvas text-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-focus" />
               </div>
             </div>
           </fieldset>
+          </Annotation>
 
           <div className="flex items-start gap-3">
             <input type="checkbox" id="villkor-a" className="mt-1 w-4 h-4 accent-brand-primary" />
-            <label htmlFor="villkor-a" className="text-sm text-ink-secondary">
-              Jag godkänner <a href="#" className="text-brand-accent underline">avtalsvillkoren</a> och{" "}
-              <a href="#" className="text-brand-accent underline">integritetspolicyn</a>.
-            </label>
+            <Copy
+              label="Godkännande av villkor"
+              category="ton"
+              text="Jag godkänner avtalsvillkoren och har läst integritetspolicyn."
+              rationale="Kunden godkänner villkoren men läser integritetspolicyn, eftersom den inte är något man godkänner. Samma formulering i alla varianter."
+            >
+              <label htmlFor="villkor-a" className="text-sm text-ink-secondary">
+                Jag godkänner <a href="#" className="text-brand-accent underline">avtalsvillkoren</a> och har läst{" "}
+                <a href="#" className="text-brand-accent underline">integritetspolicyn</a>.
+              </label>
+            </Copy>
           </div>
 
-          <button type="submit" className="w-full bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity">
-            Skicka beställning
-          </button>
-          <p className="text-xs text-ink-muted text-center">
-            14 dagars ångerrätt · Vi kontaktar dig inom 3 arbetsdagar
-          </p>
+          <Copy
+            label="Skicka-knapp"
+            category="cta"
+            text="Skicka beställning"
+            rationale="Verb plus objekt: kunden vet att beställningen skickas när hen klickar. Aldrig bara 'Skicka' eller 'Submit'."
+          >
+            <button type="submit" className="w-full bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity">
+              Skicka beställning
+            </button>
+          </Copy>
+          <Copy
+            label="Trygghetsrad under knappen"
+            category="reassurance"
+            text="14 dagars ångerrätt · Vi kontaktar dig inom 3 arbetsdagar"
+            rationale="Svarar på två frågor precis när kunden ska bestämma sig: kan jag ångra mig, och vad händer sedan? Kort och konkret, med siffror i stället för 'snart'."
+          >
+            <p className="text-xs text-ink-muted text-center">
+              14 dagars ångerrätt · Vi kontaktar dig inom 3 arbetsdagar
+            </p>
+          </Copy>
         </form>
       </div>
     </Annotation>
   );
 }
 
-/* ─── Variant B, Checkout-style stepper ────────────────────────────── */
+/* ─── Variant B, Stegvis beställning i tre steg ───────────────────── */
 function FormProgressiv() {
   const [step, setStep] = useState(0);
   const steps = [
     { label: "Produkt", icon: "shopping_cart" },
     { label: "Uppgifter", icon: "person" },
-    { label: "Bekräfta", icon: "check" },
+    { label: "Granska", icon: "check" },
   ];
 
   return (
     <div className="max-w-reading">
-      {/* Stepper */}
+      {/* Stegindikator */}
       <Annotation
         label="Stegindikator"
         audience="user"
-        rationale="3 steg synliga hela tiden, du vet var du är och vad som kommer. Minskar osäkerhet. Verb-konsistens: 'Beställ' hela vägen, aldrig 'Sök pris' eller 'Kontakta'."
+        rationale="De tre stegen syns hela tiden, så kunden vet var hen är och vad som återstår. Klara steg får en bock. Stegnamnen matchar knapptexterna, så att kunden känner igen var knapparna leder."
       >
         <div className="flex items-center mb-8">
           {steps.map((s, i) => (
@@ -130,12 +185,12 @@ function FormProgressiv() {
       </Annotation>
 
       <form onSubmit={(e) => e.preventDefault()}>
-        {/* Step 0: Product confirmation */}
+        {/* Steg 1: produkten */}
         {step === 0 && (
           <Annotation
-            label="Steg 1: Produktbekräftelse"
+            label="Steg 1: Produkten"
             audience="design"
-            rationale="Inte ett 'tomt' steg, användaren bekräftar vad de köper och ser pris + villkor innan de lämnar personuppgifter. Minskar avhopp i steg 2."
+            rationale="Kunden ser vad hen köper, priset och hur det går till innan hen lämnar några uppgifter. Steget kräver ingen inmatning men gör det lättare att fortsätta, vilket minskar avhoppen i steg 2."
           >
             <div className="space-y-4">
               <div className="rounded-md border border-border-subtle bg-surface p-5">
@@ -146,7 +201,7 @@ function FormProgressiv() {
                   <div className="flex-1">
                     <p className="text-eyebrow uppercase text-ink-muted mb-1">Elbil & laddning</p>
                     <h3 className="text-h4 font-medium mb-1">Ladda Smart</h3>
-                    <p className="text-sm text-ink-secondary">Smart laddning för elbil, hemma eller på jobbet.</p>
+                    <p className="text-sm text-ink-secondary">Ladda elbilen smart, hemma eller på jobbet.</p>
                   </div>
                   <div className="text-right flex-shrink-0">
                     <p className="text-xs text-ink-muted">Från</p>
@@ -155,33 +210,53 @@ function FormProgressiv() {
                 </div>
               </div>
 
-              <div className="rounded-md bg-tint-notice p-4 text-sm">
-                <p className="font-medium mb-2">Så fungerar det:</p>
-                <ol className="list-decimal list-inside space-y-1 text-ink-secondary">
-                  <li>Du beställer, vi kontaktar dig inom 3 arbetsdagar</li>
-                  <li>Besiktning av din bostad (ingår)</li>
-                  <li>Installation av certifierad elektriker</li>
-                  <li>Klart, börja ladda</li>
-                </ol>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setStep(1)}
-                className="w-full bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity"
+              <Annotation
+                label="Så går det till"
+                audience="redaktör"
+                rationale="Beskriv vad som händer efter beställningen i tre till fem korta steg, i den ordning kunden upplever dem. Skriv vad som ingår i priset och hur lång tid det tar, med siffror."
               >
-                Fortsätt till dina uppgifter →
-              </button>
+                <div className="rounded-md bg-tint-notice p-4 text-sm">
+                  <Copy
+                    label="Rubrik, så går det till"
+                    category="rubrik"
+                    text="Så går det till"
+                    rationale="Vardaglig rubrik som svarar på kundens fråga 'vad händer nu?'. Undvik 'Process' eller 'Leveransflöde'."
+                  >
+                    <p className="font-medium mb-2">Så går det till</p>
+                  </Copy>
+                  <ol className="list-decimal list-inside space-y-1 text-ink-secondary">
+                    <li>Du beställer och vi kontaktar dig inom 3 arbetsdagar</li>
+                    <li>Vi besiktar din bostad (ingår i priset)</li>
+                    <li>En certifierad elektriker installerar laddboxen</li>
+                    <li>Klart, du kan börja ladda</li>
+                  </ol>
+                </div>
+              </Annotation>
+
+              <Copy
+                label="Knapp, till steg 2"
+                category="cta"
+                text="Fortsätt till dina uppgifter →"
+                rationale="Säger vart kunden kommer härnäst. 'Dina uppgifter' matchar rubriken i nästa steg, så kunden känner igen sig."
+              >
+                <button
+                  type="button"
+                  onClick={() => setStep(1)}
+                  className="w-full bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity"
+                >
+                  Fortsätt till dina uppgifter →
+                </button>
+              </Copy>
             </div>
           </Annotation>
         )}
 
-        {/* Step 1: Personal details */}
+        {/* Steg 2: kundens uppgifter */}
         {step === 1 && (
           <Annotation
-            label="Steg 2: Uppgifter"
+            label="Steg 2: Dina uppgifter"
             audience="design"
-            rationale="Formulärfält med synliga labels (inte enbart placeholder). Hjälptexter under känsliga fält (personnummer, adress). Två fält per rad max."
+            rationale="Etiketterna står ovanför fälten och syns hela tiden, inte bara som gråtext i fältet. Känsliga fält som personnummer får en hjälptext. Högst två fält per rad."
           >
             <div className="space-y-4">
               <div className="grid sm:grid-cols-2 gap-4">
@@ -197,7 +272,14 @@ function FormProgressiv() {
               <div>
                 <label htmlFor="personnr-b" className="block text-sm font-medium mb-1">Personnummer</label>
                 <input id="personnr-b" type="text" placeholder="ÅÅÅÅMMDD-XXXX" className="w-full px-3 py-2.5 rounded border border-border-strong bg-canvas text-sm placeholder:text-ink-muted focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-focus" />
-                <p className="text-xs text-ink-muted mt-1">Behövs för kreditupplysning och rotavdrag.</p>
+                <Copy
+                  label="Hjälptext, personnummer"
+                  category="reassurance"
+                  text="Vi behöver det för kreditupplysningen och för att dra av rotavdraget åt dig."
+                  rationale="Samma text som i det klassiska formuläret. Den förklarar varför vi frågar och vad kunden tjänar på det, precis vid det fält där många tvekar."
+                >
+                  <p className="text-xs text-ink-muted mt-1">Vi behöver det för kreditupplysningen och för att dra av rotavdraget åt dig.</p>
+                </Copy>
               </div>
               <div>
                 <label htmlFor="adress-b" className="block text-sm font-medium mb-1">Installationsadress</label>
@@ -215,11 +297,11 @@ function FormProgressiv() {
               </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
-                  <label htmlFor="epost-b" className="block text-sm font-medium mb-1">E-post</label>
+                  <label htmlFor="epost-b" className="block text-sm font-medium mb-1">E-postadress</label>
                   <input id="epost-b" type="email" className="w-full px-3 py-2.5 rounded border border-border-strong bg-canvas text-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-focus" />
                 </div>
                 <div>
-                  <label htmlFor="telefon-b" className="block text-sm font-medium mb-1">Telefon</label>
+                  <label htmlFor="telefon-b" className="block text-sm font-medium mb-1">Telefonnummer</label>
                   <input id="telefon-b" type="tel" className="w-full px-3 py-2.5 rounded border border-border-strong bg-canvas text-sm focus:border-brand-accent focus:outline-none focus:ring-2 focus:ring-focus" />
                 </div>
               </div>
@@ -228,26 +310,40 @@ function FormProgressiv() {
                 <button type="button" onClick={() => setStep(0)} className="flex-1 border border-border-strong text-ink-secondary font-medium py-3 rounded hover:bg-tint-info transition-colors">
                   ← Tillbaka
                 </button>
-                <button type="button" onClick={() => setStep(2)} className="flex-1 bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity">
-                  Granska beställning →
-                </button>
+                <Copy
+                  label="Knapp, till steg 3"
+                  category="cta"
+                  text="Granska beställning →"
+                  rationale="'Granska' lovar att inget skickas ännu. Kunden vågar klicka eftersom hen får se allt en gång till innan beställningen går iväg."
+                >
+                  <button type="button" onClick={() => setStep(2)} className="flex-1 bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity">
+                    Granska beställning →
+                  </button>
+                </Copy>
               </div>
             </div>
           </Annotation>
         )}
 
-        {/* Step 2: Confirmation */}
+        {/* Steg 3: granska och skicka */}
         {step === 2 && (
           <Annotation
-            label="Steg 3: Granska & bekräfta"
+            label="Steg 3: Granska och skicka"
             audience="user"
-            rationale="Sista steget: granska allt innan du skickar. Redigerbar, klicka 'Ändra' för att gå tillbaka. Villkor-kryssrutan och ångerrätt-texten sitter här, inte i steg 1."
+            rationale="Kunden ser allt hen har fyllt i innan beställningen skickas och kan ändra varje del med 'Ändra'. Villkoren och ångerrätten står här, precis före beslutet, inte i början."
           >
             <div className="space-y-4">
               <div className="rounded-md border border-border-subtle bg-surface p-5">
                 <div className="flex justify-between items-start mb-3">
                   <h3 className="font-medium">Produkt</h3>
-                  <button type="button" onClick={() => setStep(0)} className="text-sm text-brand-accent hover:underline">Ändra</button>
+                  <Copy
+                    label="Ändra-länk"
+                    category="cta"
+                    text="Ändra"
+                    rationale="Ett kort, välkänt verb som tar kunden direkt till rätt steg. Samma ord i varje ruta. Undvik 'Redigera', som låter mer tekniskt."
+                  >
+                    <button type="button" onClick={() => setStep(0)} className="text-sm text-brand-accent hover:underline">Ändra</button>
+                  </Copy>
                 </div>
                 <p className="text-sm text-ink-secondary">Ladda Smart · Från 14 900 kr</p>
               </div>
@@ -267,18 +363,39 @@ function FormProgressiv() {
 
               <div className="flex items-start gap-3">
                 <input type="checkbox" id="villkor-b" className="mt-1 w-4 h-4 accent-brand-primary" />
-                <label htmlFor="villkor-b" className="text-sm text-ink-secondary">
-                  Jag godkänner <a href="#" className="text-brand-accent underline">avtalsvillkoren</a> och har läst{" "}
-                  <a href="#" className="text-brand-accent underline">integritetspolicyn</a>.
-                </label>
+                <Copy
+                  label="Godkännande av villkor"
+                  category="ton"
+                  text="Jag godkänner avtalsvillkoren och har läst integritetspolicyn."
+                  rationale="Kunden godkänner villkoren men läser integritetspolicyn, eftersom den inte är något man godkänner. Samma formulering som i det klassiska formuläret."
+                >
+                  <label htmlFor="villkor-b" className="text-sm text-ink-secondary">
+                    Jag godkänner <a href="#" className="text-brand-accent underline">avtalsvillkoren</a> och har läst{" "}
+                    <a href="#" className="text-brand-accent underline">integritetspolicyn</a>.
+                  </label>
+                </Copy>
               </div>
 
-              <button type="submit" className="w-full bg-brand-highlight text-white font-medium py-3 rounded hover:opacity-90 transition-opacity">
-                Skicka beställning
-              </button>
-              <p className="text-xs text-ink-muted text-center">
-                14 dagars ångerrätt enligt distansavtalslagen · Vi kontaktar dig inom 3 arbetsdagar
-              </p>
+              <Copy
+                label="Skicka-knapp"
+                category="cta"
+                text="Skicka beställning"
+                rationale="Första gången ordet 'Skicka' dyker upp, och först här skickas något. Samma text som i det klassiska formuläret, så att knappen betyder samma sak överallt."
+              >
+                <button type="submit" className="w-full bg-brand-highlight text-white font-medium py-3 rounded hover:opacity-90 transition-opacity">
+                  Skicka beställning
+                </button>
+              </Copy>
+              <Copy
+                label="Trygghetsrad under knappen"
+                category="reassurance"
+                text="14 dagars ångerrätt enligt lag · Vi kontaktar dig inom 3 arbetsdagar"
+                rationale="Står precis under knappen, där kunden bestämmer sig. 'Enligt lag' räcker för att visa att rätten är garanterad; lagens namn säger de flesta ingenting."
+              >
+                <p className="text-xs text-ink-muted text-center">
+                  14 dagars ångerrätt enligt lag · Vi kontaktar dig inom 3 arbetsdagar
+                </p>
+              </Copy>
             </div>
           </Annotation>
         )}
@@ -287,25 +404,25 @@ function FormProgressiv() {
   );
 }
 
-/* ─── Host page ─────────────────────────────────────────────────────── */
+/* ─── Modulsidan ────────────────────────────────────────────────────── */
 
 const VARIANTS: Variant[] = [
   {
     id: "trygg",
     shortName: "A",
-    label: "Formulär",
+    label: "Klassiskt",
     riskLevel: "låg",
-    oneLiner: "Klassiskt vertikalt formulär. Alla fält synliga, en submit.",
-    bestFor: "Enkel implementation. Inga steg-beroenden.",
+    oneLiner: "Alla fält på en sida och en knapp för att skicka.",
+    bestFor: "Korta ärenden där kunden vill se allt på en gång. Enklast att bygga och underhålla.",
     render: () => <FormTrygg />,
   },
   {
     id: "progressiv",
     shortName: "B",
-    label: "Checkout",
+    label: "Stegvis",
     riskLevel: "medel",
-    oneLiner: "3-stegs checkout: produkt → uppgifter → bekräfta.",
-    bestFor: "E-commerce-känsla. Minskar visuellt brus per steg.",
+    oneLiner: "Tre steg som i en webbshop: produkt, uppgifter, granska.",
+    bestFor: "Köp och avtal. Känns som att handla på nätet och visar färre fält åt gången.",
     render: () => <FormProgressiv />,
   },
   {
@@ -313,8 +430,8 @@ const VARIANTS: Variant[] = [
     shortName: "C",
     label: "Konversation",
     riskLevel: "hög",
-    oneLiner: "En fråga per skärm, Typeform-stil. Känns inte som formulär.",
-    bestFor: "Ovana användare, komplexa formulär med få men specifika frågor.",
+    oneLiner: "En fråga åt gången, som ett samtal. Känns inte som ett formulär.",
+    bestFor: "Ovana användare och formulär med få men specifika frågor.",
     render: () => <FormularKonversation />,
   },
 ];
@@ -323,65 +440,65 @@ const ARGUMENTATION: ArgumentRow[] = [
   {
     aspect: "Känsla",
     values: {
-      trygg: "Myndighetsformulär. Förutsägbart, lite tungt.",
-      progressiv: "Webbshop-checkout. Lätt, stegvis, modernt.",
-      experimentell: "Chatt-assistent. Känns inte som ett formulär alls.",
+      trygg: "Som en blankett från en myndighet. Förutsägbart men lite tungt.",
+      progressiv: "Som kassan i en webbshop. Lätt, stegvis och modernt.",
+      experimentell: "Som att chatta med en assistent. Känns inte som ett formulär alls.",
     },
   },
   {
-    aspect: "Antal fält synliga åt gången",
+    aspect: "Fält som syns samtidigt",
     values: {
-      trygg: "Alla (~8 fält + checkbox). Kan kännas mycket.",
-      progressiv: "3–4 per steg. Visuellt lättare, samma data totalt.",
-      experimentell: "En fråga åt gången. Ingen överblick.",
+      trygg: "Alla, runt 8 fält och en kryssruta. Kan kännas mycket.",
+      progressiv: "3-4 per steg. Ser lättare ut, men kunden fyller i lika mycket totalt.",
+      experimentell: "En fråga åt gången. Kunden får ingen överblick.",
     },
   },
   {
-    aspect: "Avhopp-risk",
+    aspect: "Risk för avhopp",
     values: {
-      trygg: "Högre, alla fält synliga skapar 'formulär-ångest'.",
-      progressiv: "Lägre, steget 'Produkt' kräver noll input men skapar commitment.",
-      experimentell: "Lägst för ovana användare. Hög för power-users som vill scanna.",
+      trygg: "Högre. När alla fält syns på en gång kan formuläret kännas överväldigande.",
+      progressiv: "Lägre. Första steget kräver ingen inmatning, och den som har börjat fortsätter oftare.",
+      experimentell: "Lägst för ovana användare. Högre för vana användare som vill se allt och fylla i snabbt.",
     },
   },
   {
     aspect: "Upplevd tid",
     values: {
-      trygg: "Snabbt, se allt, fyll i, klar.",
-      progressiv: "Medium, tre 'sidor' men tydlig progress.",
-      experimentell: "Känns snabb (en fråga i taget) men är långsammast totalt.",
+      trygg: "Snabb: se allt, fyll i, klart.",
+      progressiv: "Mellan: tre vyer, men tydligt hur långt kunden har kommit.",
+      experimentell: "Känns snabb eftersom det är en fråga i taget, men tar längst tid totalt.",
     },
   },
   {
-    aspect: "Validering",
+    aspect: "Felmeddelanden",
     values: {
-      trygg: "Valideras vid submit. Fel högst upp.",
-      progressiv: "Valideras per steg. Användaren fixar fel innan nästa steg.",
-      experimentell: "Per fråga. Fel visas direkt, omöjligt att gå vidare med trasig data.",
+      trygg: "Kontrolleras när kunden skickar. Felen visas samlade högst upp.",
+      progressiv: "Kontrolleras per steg. Kunden rättar felen innan nästa steg.",
+      experimentell: "Kontrolleras per fråga. Felet visas direkt och kunden kan inte gå vidare med ett felaktigt svar.",
     },
   },
   {
-    aspect: "Ångra/ändra",
+    aspect: "Ångra och ändra",
     values: {
-      trygg: "Redigera direkt i formuläret.",
-      progressiv: "Steg 3 har 'Ändra'-länkar per sektion → rätt steg.",
-      experimentell: "'Gå tillbaka'-knapp per fråga. Inget granska-steg.",
+      trygg: "Kunden ändrar direkt i formuläret.",
+      progressiv: "Steg 3 har en 'Ändra'-länk per del som leder till rätt steg.",
+      experimentell: "Knappen 'Ändra förra svaret' finns vid varje fråga. Inget granskningssteg.",
     },
   },
   {
-    aspect: "WCAG",
+    aspect: "Tillgänglighet (WCAG)",
     values: {
-      trygg: "Utmärkt, standard HTML, synliga labels.",
-      progressiv: "Bra, steg-skiften behöver fokus-hantering.",
-      experimentell: "Känsligt, autofocus per steg, men screen-readers behöver aria-live.",
+      trygg: "Mycket god. Vanlig sidstruktur och synliga fältetiketter.",
+      progressiv: "God, men vid varje stegbyte måste fokus flyttas till det nya steget så att skärmläsare hänger med.",
+      experimentell: "Känslig. Varje ny fråga måste läsas upp av skärmläsaren, annars tappar kunden bort sig.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      trygg: "Enkla ärenden som felanmälan, byte av betalsätt.",
-      progressiv: "Default för köp/avtalsflöden.",
-      experimentell: "Onboarding, kampanjer där 'känns nytt' är ett plus.",
+      trygg: "Enkla ärenden som felanmälan eller byte av betalsätt.",
+      progressiv: "Förval för köp och avtal.",
+      experimentell: "Kampanjer och introduktion för nya kunder, där det nya i sig är ett plus.",
     },
   },
 ];
@@ -392,11 +509,11 @@ export function FormularKop() {
       <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">← Översikt</Link>
 
       <header className="mt-6 mb-8 max-w-reading">
-        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Formulär-köp</p>
-        <h1 className="text-h1 mb-3">Beställning som känns som köp</h1>
+        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Formulär och köp</p>
+        <h1 className="text-h1 mb-3">Beställningar som känns som ett köp</h1>
         <p className="text-lede text-ink-secondary">
-          Alla köp hos Öresundskraft är formulärbaserade, men vi kan få dem att <em>kännas</em>{" "}
-          som en checkout istället för ett myndighetsformulär. Två varianter.
+          Alla köp hos Öresundskraft görs via formulär. Men de kan <em>kännas</em>{" "}
+          som kassan i en webbshop i stället för en blankett. Här är tre varianter.
         </p>
       </header>
 
@@ -410,20 +527,21 @@ export function FormularKop() {
         <h2 className="text-h3 mb-4">Designnotering</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Vad vi löser:</strong> Idag känns alla beställningar som ett långt
-            kontaktformulär. Checkout-varianten bryter upp flödet i tre steg där varje steg
-            har ett tydligt jobb. Stegindikatorn skapar förväntan och verbet ('Beställ' →
-            'Granska' → 'Skicka') stannar i samma familj hela vägen.
+            <strong>Vad vi löser:</strong> I dag känns alla beställningar som ett långt
+            kontaktformulär. Den stegvisa varianten delar upp flödet i tre steg där varje steg
+            har en tydlig uppgift. Stegindikatorn visar vad som väntar, och knapptexterna säger
+            vad nästa steg är: 'Fortsätt till dina uppgifter', 'Granska beställning' och till
+            sist 'Skicka beställning'.
           </p>
           <p>
-            <strong>Ångerrätt-texten</strong> sitter i steg 3 (bekräftelse-steget), inte i
-            steg 1. Psykologiskt: den dyker upp som en trygghetssignal precis innan submit,
-            inte som ett varningstecken i början.
+            <strong>Ångerrätten</strong> nämns i steg 3, där kunden granskar och skickar, inte
+            i steg 1. Där fungerar den som en trygghet precis före beslutet, i stället för
+            som en varning i början.
           </p>
           <p>
-            <strong>Rekommendation:</strong> <em>B (Checkout)</em>. Steg 1 ("Produkt") kostar
-            noll ansträngning men skapar commitment-bias: användaren har redan "börjat
-            beställa" innan de fyller i personnummer.
+            <strong>Rekommendation:</strong> <em>B (Stegvis)</em>. Steg 1 ("Produkt") kräver
+            ingen ansträngning, men när kunden väl har börjat beställa är hen mer benägen att
+            slutföra, även när det är dags att fylla i personnummer.
           </p>
         </div>
       </section>

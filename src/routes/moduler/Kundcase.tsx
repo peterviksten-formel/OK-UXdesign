@@ -8,71 +8,71 @@ const VARIANTS: Variant[] = [
   {
     id: "grid",
     shortName: "A",
-    label: "Citatkort-grid",
+    label: "Citatkort",
     riskLevel: "låg",
-    oneLiner: "Tre citatkort, inga bilder. Balanserat och formellt.",
-    bestFor: "Bred social proof på produktsidor och hubbsidor.",
+    oneLiner: "Tre citatkort i rad, utan bilder. Balanserat och sakligt.",
+    bestFor: "Visa flera kunders erfarenheter på produktsidor och översiktssidor.",
     render: () => <KundcaseGrid />,
   },
   {
     id: "hero",
     shortName: "B",
-    label: "Hero-citat",
+    label: "Stort citat",
     riskLevel: "medel",
-    oneLiner: "Ett stort citat dominerar. Hög impact, högre risk.",
-    bestFor: "Kampanjlandningar där ett utvalt citat ska slå.",
+    oneLiner: "Ett stort citat tar hela ytan. Syns mycket, men citatet måste vara starkt.",
+    bestFor: "Kampanjsidor där ett utvalt citat ska fastna.",
     render: () => <KundcaseHero />,
   },
   {
     id: "story",
     shortName: "C",
-    label: "Case-story",
+    label: "Kundberättelse",
     riskLevel: "medel",
-    oneLiner: "Bild + narrativ + siffror. Redaktionell artikel-känsla.",
-    bestFor: "B2B-case. Produktsidor där beslutet kräver djupare övertygelse.",
+    oneLiner: "Bild, berättelse och nyckeltal. Läses som en artikel.",
+    bestFor: "Företagskunder och produktsidor där beslutet är stort och kräver mer övertygelse.",
     render: () => <KundcaseStory />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Produktion",
+    aspect: "Arbetsinsats",
     values: {
-      grid: "Text-only. Intervju + godkännande räcker.",
-      hero: "Text + namn + foto-valfritt. Starkt citat krävs.",
-      story: "Fotografering + intervju + copy. Tyngst.",
+      grid: "Bara text. En kort intervju och kundens godkännande räcker.",
+      hero: "Text, namn och gärna foto. Kräver ett starkt citat.",
+      story: "Fotografering, intervju och text. Mest arbete.",
     },
   },
   {
-    aspect: "Djup vs bredd",
+    aspect: "Djup eller bredd",
     values: {
-      grid: "Bredd, flera röster, olika situationer.",
-      hero: "En tydlig röst i taget. Hög påverkan.",
-      story: "Ett djup-case. Svarar på 'fungerar det för någon som jag?'",
+      grid: "Bredd: flera röster och olika situationer.",
+      hero: "En tydlig röst som gör stort intryck.",
+      story: "Djup: svarar på 'fungerar det för någon som jag?'",
     },
   },
   {
     aspect: "Trovärdighet",
     values: {
-      grid: "Medel, ser ut som typisk testimonial-sektion.",
-      hero: "Beror på citatets kvalitet, kan kännas staged.",
-      story: "Högst, konkreta siffror + bild av verklig person.",
+      grid: "Medel, ser ut som en vanlig sektion med kundomdömen.",
+      hero: "Beror på citatet, kan kännas tillrättalagt.",
+      story: "Högst, konkreta siffror och bild på en verklig kund.",
     },
   },
   {
-    aspect: "Risk för känsla av reklam",
+    aspect: "Risk att kännas som reklam",
     values: {
       grid: "Medel.",
-      hero: "Högre, stort citat läses som marknadsföring.",
-      story: "Lägst, artikel-formatet signalerar journalistik.",
+      hero: "Högre, ett stort citat läses lätt som marknadsföring.",
+      story: "Lägst, artikelformatet känns redaktionellt.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      grid: "Produktsidor, Jämför elavtal, Smarta produkter.",
-      hero: "Sparsamt, kampanjlandningar eller hub-startsida.",
-      story: "Solceller, laddbox, fjärrvärme, där beslutet är större.",
+      grid: "Produktsidor, Jämför elavtal och Smarta produkter.",
+      hero: "Sparsamt: kampanjsidor eller en översiktssida.",
+      story: "Solceller, laddbox och fjärrvärme, där beslutet är större.",
     },
   },
 ];
@@ -83,11 +83,11 @@ export function Kundcase() {
       <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">← Översikt</Link>
 
       <header className="mt-6 mb-8 max-w-reading">
-        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Kundcase och testimonials</p>
-        <h1 className="text-h1 mb-3">Kundcase och testimonials</h1>
+        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Kundcase och omdömen</p>
+        <h1 className="text-h1 mb-3">Kundcase och omdömen</h1>
         <p className="text-lede text-ink-secondary">
-          Tre sätt att visa vad kunder säger. Från breda grid till djupa
-          case-stories med mätbara resultat.
+          Tre sätt att visa vad kunder säger: från flera korta citat till en längre
+          kundberättelse med mätbara resultat.
         </p>
       </header>
 

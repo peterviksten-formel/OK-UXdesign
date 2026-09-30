@@ -8,95 +8,95 @@ const VARIANTS: Variant[] = [
   {
     id: "trygg",
     shortName: "A",
-    label: "Trygg",
+    label: "Ämneslista",
     riskLevel: "låg",
-    oneLiner: "Accordion med native <details>. Alla kategorier synliga direkt.",
-    bestFor: "Äldre kunder, tillgänglighet, noll-JS-fallback.",
+    oneLiner: "Alla ämnen syns direkt som en lista. Kunden fäller ut ett ämne och väljer sin fråga.",
+    bestFor: "Kunder som vill se alla alternativ på en gång, äldre kunder och den som använder skärmläsare.",
     render: () => <KundserviceTrygg />,
   },
   {
     id: "progressiv",
     shortName: "B",
-    label: "Progressiv",
+    label: "Stegvis",
     riskLevel: "medel",
-    oneLiner: "Kategori-kort → underkategori → inline-svar. Två steg.",
-    bestFor: "Mainstream. Snabb scanning utan att överväldiga.",
+    oneLiner: "Kunden väljer ämne, sedan fråga, och får svaret direkt i sidan. Två steg.",
+    bestFor: "De flesta kunder. Går snabbt att överblicka utan att visa allt på en gång.",
     render: () => <KundserviceProgressiv />,
   },
   {
     id: "experimentell",
     shortName: "C",
-    label: "Experimentell",
+    label: "Samtal",
     riskLevel: "hög",
-    oneLiner: "Konversations-tratt. Chatbot-känsla utan chatbot.",
-    bestFor: "Yngre kunder. Personlig, snabb, lekfull.",
+    oneLiner: "Frågorna ställs som i en chatt, men svaren är färdigskrivna. Ingen chattrobot.",
+    bestFor: "Yngre kunder och mobilanvändare. Känns personligt, snabbt och lättsamt.",
     render: () => <KundserviceExperimentell />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Strategisk satsning",
+    aspect: "Syfte",
     values: {
-      trygg: "Förtroende genom överskådlighet. Allt synligt direkt, inga överraskningar.",
-      progressiv: "Tydlig tratt: kategori → fråga → svar. Strukturerar utan att styra.",
-      experimentell: "Konversation istället för navigation. Personligt utan AI-risk.",
+      trygg: "Skapa förtroende genom överblick. Allt syns direkt, inga överraskningar.",
+      progressiv: "Leda kunden i tydliga steg: ämne, fråga, svar. Ger struktur utan att styra för hårt.",
+      experimentell: "Ersätta menyer med ett samtal. Känns personligt utan riskerna med en chattrobot.",
     },
   },
   {
     aspect: "Antal klick till svar",
     values: {
-      trygg: "2 (öppna accordion + klicka länk).",
-      progressiv: "3 (kategori + underkategori + CTA).",
-      experimentell: "3 (kategori + fråga + CTA), men känslan är snabbare, varje steg är lättare.",
+      trygg: "2 (öppna ämnet och klicka på frågan).",
+      progressiv: "3 (ämne, fråga och knapp).",
+      experimentell: "3 (ämne, fråga och knapp), men varje steg känns lättare och flödet upplevs snabbare.",
     },
   },
   {
-    aspect: "Sökbarhet",
+    aspect: "Sökfunktion",
     values: {
-      trygg: "Nej. Användaren scannar visuellt.",
-      progressiv: "Nej. Kort + lista-mönster.",
-      experimentell: "Ja, fritextsök i intro-steget matchar mot alla kategorier/frågor.",
+      trygg: "Nej. Kunden läser igenom listan.",
+      progressiv: "Nej. Kunden väljer bland kort och listor.",
+      experimentell: "Ja. Kunden kan skriva ett ord i första steget, till exempel \"faktura\", och få förslag på ämnen.",
     },
   },
   {
-    aspect: "Mobil-upplevelse",
+    aspect: "I mobilen",
     values: {
-      trygg: "Bra. Accordions fungerar smalt. Kan bli lång scroll med 6 öppna sektioner.",
-      progressiv: "Bra. 2-kolumns grid → staplade kort, kompakt.",
-      experimentell: "Utmärkt. Chat-bubblemönster är native-mobilmönster; alla thumbs reach.",
+      trygg: "Bra. Listan fungerar på smala skärmar, men sidan blir lång om kunden öppnar många ämnen.",
+      progressiv: "Bra. Korten staplas i två kolumner och tar lite plats.",
+      experimentell: "Mycket bra. Chattbubblor är ett välkänt mönster i mobilen och allt nås med tummen.",
     },
   },
   {
-    aspect: "Risk att 'Kontakta oss' blir standard",
+    aspect: "Risk att kunden går direkt till \"Kontakta oss\"",
     values: {
-      trygg: "Låg. Alla alternativ listade inline, kontakt syns sist.",
-      progressiv: "Låg. Badges ('Guide' / 'Mina sidor' / 'Chatt') visar vad varje val är.",
-      experimentell: "Medel. Konversationsmönster kan lura användaren att tro det finns en agent i andra änden.",
+      trygg: "Låg. Alla svar syns i listan och kontaktuppgifterna ligger sist.",
+      progressiv: "Låg. Etiketterna (Guide, Mina sidor, Chatt) visar vad varje val leder till.",
+      experimentell: "Medel. Chattformen kan få kunden att tro att en person svarar.",
     },
   },
   {
-    aspect: "WCAG 2.2 AA",
+    aspect: "Tillgänglighet (WCAG 2.2 AA)",
     values: {
-      trygg: "Utmärkt. Native <details>/<summary>, inga custom ARIA-roller.",
-      progressiv: "Bra. aria-pressed på kort, aria-expanded på lista. Alla interaktiva element tangentbordsnåbara.",
-      experimentell: "Medel. Dynamisk DOM (bubblar läggs till) kräver aria-live-region + fokushantering.",
+      trygg: "Mycket bra. Bygger på webbläsarens egna utfällbara listor som fungerar med skärmläsare och tangentbord.",
+      progressiv: "Bra. Skärmläsare får veta vilket kort som är valt och vilken fråga som är öppen. Allt går att nå med tangentbordet.",
+      experimentell: "Medel. Nya bubblor dyker upp efter hand, så skärmläsare måste få veta när något nytt visas och var fokus ska hamna.",
     },
   },
   {
-    aspect: "Underhåll / redaktörens jobb",
+    aspect: "Redaktörens arbete",
     values: {
-      trygg: "Enklast. En lista i ett CMS-fält.",
-      progressiv: "Medel. Kort-ikoner + badge-logik behöver riktlinjer.",
-      experimentell: "Högt. Konversationskopia måste skrivas per gren; varje kombination av steg 1+2 har en unik svarstext.",
+      trygg: "Enklast. En lista med ämnen och frågor.",
+      progressiv: "Medel. Ikoner och etiketter behöver tydliga riktlinjer.",
+      experimentell: "Störst. Varje fråga behöver en egen svarstext i samtalston, och alla vägar måste skrivas.",
     },
   },
   {
-    aspect: "Konvertering (hypotes)",
+    aspect: "Andel som hittar rätt (hypotes)",
     values: {
-      trygg: "Lägst. Ren information, ingen drift.",
-      progressiv: "Moderat. Strukturen leder, badges och inline-svar minskar exit rate.",
-      experimentell: "Högst. Investerade steg skapar commitment-bias: användaren avslutar tratten.",
+      trygg: "Lägst. Ren information som inte leder kunden vidare.",
+      progressiv: "Medel. Stegen leder kunden, och etiketter och svar i sidan gör att färre lämnar sidan utan svar.",
+      experimentell: "Högst. Den som har tagit ett steg vill gärna slutföra resten.",
     },
   },
 ];
@@ -107,12 +107,12 @@ export function KundserviceTriage() {
       <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">← Översikt</Link>
 
       <header className="mt-6 mb-8 max-w-reading">
-        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Kundservice-triage</p>
-        <h1 className="text-h1 mb-3">Jag behöver hjälp med…</h1>
+        <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · Kundservice</p>
+        <h1 className="text-h1 mb-3">Kundservice: jag behöver hjälp med…</h1>
         <p className="text-lede text-ink-secondary">
-          Interaktiv tratt som leder kunden till rätt svar eller kanal utan att
-          "Kontakta oss" är standardvägen. Tre varianter, från statisk lista
-          till konversationsflöde.
+          Ett stöd som leder kunden till rätt svar eller rätt kontaktväg, så att
+          "Kontakta oss" inte blir första valet. Tre varianter, från en enkel lista
+          till ett samtal i chattform. Växla mellan A, B och C och jämför.
         </p>
       </header>
 
@@ -126,21 +126,20 @@ export function KundserviceTriage() {
         <h2 className="text-h3 mb-4">Designnotering</h2>
         <div className="text-ink-secondary text-sm space-y-3 max-w-reading">
           <p>
-            <strong>Vad vi löser:</strong> Idag finns ingen kundservice-sida som "trattar"
-            kunden, alla landar på en generisk kontakt-sida. Det här blocket ersätter
-            den med self-serve-logik: varje fråga ska antingen besvaras inline, leda till
-            Mina sidor, eller (sista utväg) erbjuda chatt/telefon.
+            <strong>Problemet vi löser:</strong> I dag finns ingen kundservicesida som
+            leder kunden vidare. Alla hamnar på en allmän kontaktsida. Den här modulen
+            ersätter den med självservice: varje fråga ska få svar direkt i sidan, leda
+            till Mina sidor eller, i sista hand, erbjuda chatt eller telefon.
           </p>
           <p>
-            <strong>Data som styr kategorier:</strong> Kategorierna speglar de vanligaste
-            supportärendena: faktura (35%), avtal (20%), flytta (15%), avbrott (25%),
-            elnät (5%). Ordningen sorteras därefter.
+            <strong>Så valdes ämnena:</strong> Ämnena speglar de vanligaste ärendena
+            till kundservice: faktura (35 %), avbrott (25 %), avtal (20 %), flytt (15 %)
+            och elnät (5 %). Ordningen i listan bör följa den fördelningen.
           </p>
           <p>
-            <strong>Rekommendation:</strong> <em>B (Progressiv)</em> som standard.
-            Övervägdes <em>C</em> men konversationsmönstret kräver mer redaktionellt
-            underhåll per gren och risken att användaren tror det finns en person i
-            andra änden är reell.
+            <strong>Rekommendation:</strong> <em>B (Stegvis)</em> som standard.
+            Vi övervägde <em>C (Samtal)</em>, men den kräver mer redaktionellt arbete
+            för varje fråga, och risken att kunden tror att en person svarar är verklig.
           </p>
         </div>
       </section>

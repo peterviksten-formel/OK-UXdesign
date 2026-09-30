@@ -9,70 +9,70 @@ import { WizardProgress, type WizardVariant } from "../../components/WizardProgr
 import { IntentCardGrid, type IntentCardItem, type IntentCardVariant } from "../../components/IntentCardGrid";
 
 /**
- * SIDTYP 8, Kundservice (ny, UX-skill-driven)
+ * SIDTYP 8: Kundservice (ny version)
  *
- * Ersätter dagens separata KC-sida + Kontakta-oss-sida med EN sida.
+ * Ersätter dagens separata kundservicesida och Kontakta oss-sida med EN sida.
  *
- * UX-beslut drivna av:
- *  - Workshop-noter: "Alla kontaktsätt på samma sida", "Snabbknappar för
+ * UX-besluten bygger på:
+ *  - Workshopanteckningar: "Alla kontaktsätt på samma sida", "Snabbknappar för
  *    vanliga ärenden", "Tydlig knapp till Mina sidor", "Nå snabb avbrottsinfo
- *    direkt från KC-sida", "Bra om man kunde beställa samtal".
- *  - ux-web-design-skill: outcome först (användaren ska hitta hjälp snabbt),
- *    alla kontaktvägar synliga samtidigt (recognition > recall), KC-belastning
- *    som systemstatus (visibility of system status), snabbknappar över triage
- *    (edit aggressively, self-service först).
- *  - Konkurrentreferenser: ICA Banken (pill-snabbknappar), Folksam
- *    ("just nu frågar många om"), Vattenfall ("Längre kötider"-banner),
+ *    direkt från kundservicesidan", "Bra om man kunde beställa samtal".
+ *  - UX-principer: besökaren ska hitta hjälp snabbt, alla kontaktvägar syns
+ *    samtidigt (känna igen i stället för att minnas), kundservice visar hur
+ *    belastat det är just nu, och självservice kommer före kontakt.
+ *  - Förebilder: ICA Banken (runda snabbknappar), Folksam
+ *    ("Just nu frågar många om"), Vattenfall (banner om längre kötider),
  *    Länsförsäkringar (öppettider per kanal).
  */
 
 /**
- * Fem ärende-kategorier enligt UX-brief: användaren tänker i ärenden, inte
- * funktioner. "Annat" är medveten escape hatch, signalerar att vi inte
- * gömmer saker bakom "övrigt".
+ * Fem ärendekategorier enligt UX-briefen: besökaren tänker i ärenden, inte
+ * i funktioner. "Annat" är en medveten reservutgång som visar att vi inte
+ * gömmer saker bakom "Övrigt".
  */
 const TOP_INTENTS = [
-  { ikon: "home", label: "Flytta", desc: "Anmäl flytt, byta adress", href: "#flytta" },
-  { ikon: "description", label: "Faktura", desc: "Betala, förstå, ändra betalsätt", href: "#faktura" },
-  { ikon: "bolt", label: "Problem eller fel", desc: "Avbrott, felanmälan, störning", href: "/moduler/avbrottslista" },
-  { ikon: "edit_note", label: "Avtal", desc: "Teckna, byta, säga upp", href: "/moduler/elavtal-jamfor" },
+  { ikon: "home", label: "Flytta", desc: "Anmäl flytt eller ny adress", href: "#flytta" },
+  { ikon: "description", label: "Faktura", desc: "Betala, förstå eller ändra betalsätt", href: "#faktura" },
+  { ikon: "bolt", label: "Problem eller fel", desc: "Avbrott, störning eller felanmälan", href: "/moduler/avbrottslista" },
+  { ikon: "edit_note", label: "Avtal", desc: "Teckna, byta eller säga upp", href: "/moduler/elavtal-jamfor" },
   { ikon: "more_horiz", label: "Annat", desc: "Hittar du inte ditt ärende?", href: "#annat" },
 ];
 
 /**
- * Just nu-frågor med exempel-svar. Svaret öppnas inline som accordion, * samma mönster som FAQ-modulen (FaqAccordion) så modul och sidtyp matchar.
+ * "Just nu"-frågor med exempelsvar. Svaret fälls ut på plats, med samma
+ * mönster som FAQ-modulen (FaqAccordion) så att modul och sidtyp matchar.
  */
 const POPULARA_FRAGOR_JUST_NU = [
   {
     id: "saga-upp",
     q: "Hur säger jag upp mitt elavtal?",
-    a: "Logga in på Mina sidor och välj \"Säg upp avtal\", det tar ca 1 minut. Vid bindningstid visar vi slutdatum och eventuella avgifter innan du bekräftar.",
+    a: "Logga in på Mina sidor och välj \"Säg upp avtal\". Det tar ungefär en minut. Har du bindningstid ser du slutdatum och eventuella avgifter innan du bekräftar.",
   },
   {
     id: "vilket-avtal",
     q: "Vilket elavtal passar mig bäst?",
-    a: "Tre avtal att välja mellan: Månadspris (flexibel), Kvartspris (viss stabilitet) och Säkrat pris (fast hela året). Använd jämförelsen för att se uppskattad månadskostnad per boendetyp.",
+    a: "Du kan välja mellan tre avtal: Månadspris (flexibelt), Kvartspris (lite stabilare) och Säkrat pris (fast hela året). I jämförelsen ser du ungefär vad varje avtal kostar per månad för ditt boende.",
   },
   {
     id: "hog-faktura",
     q: "Varför är min faktura högre än vanligt?",
-    a: "De vanligaste orsakerna är kall månad med hög förbrukning, spotprisvariation eller att en årsavstämning gjorts. På Mina sidor ser du förbrukning per månad och kan jämföra med föregående år.",
+    a: "Oftast beror det på en kall månad med hög förbrukning, ett högre spotpris eller en årsavstämning. På Mina sidor ser du din förbrukning per månad och kan jämföra med förra året.",
   },
   {
     id: "matarstallning",
     q: "Hur rapporterar jag mätarställning?",
-    a: "De flesta kunder har automatisk fjärravläsning och behöver inte rapportera själva. Har du däremot ett gammalt schablonavtal: logga in på Mina sidor → \"Rapportera mätarställning\".",
+    a: "De flesta mätare läses av automatiskt, så du behöver oftast inte göra något. Har du ett äldre schablonavtal loggar du in på Mina sidor och väljer \"Rapportera mätarställning\".",
   },
   {
     id: "elnat-elhandel",
     q: "Vad är skillnaden mellan elnät och elhandel?",
-    a: "Elnät är de fysiska ledningarna, du kan inte välja nätägare, det bestäms av var du bor. Elhandel är vem som säljer själva elen till dig, där väljer du fritt. I Helsingborg och Ängelholm är Öresundskraft elnätsbolag.",
+    a: "Elnätet är ledningarna som leder elen hem till dig. Vilket elnätsbolag du har bestäms av var du bor. Elhandel handlar om vem som säljer elen till dig, och det väljer du själv. I Helsingborg och Ängelholm är Öresundskraft elnätsbolag.",
   },
 ];
 
 /**
- * Mina sidor-listan fokuserar på "rena" self-service-saker. Avtal syns inte
- * här eftersom Avtal numera är en top-intent som har sitt eget flöde.
+ * Mina sidor-listan visar sådant du kan göra helt själv. Avtal syns inte
+ * här eftersom Avtal är ett eget ärende bland snabbknapparna.
  */
 const MINA_SIDOR_SHORTCUTS = [
   "Se och betala fakturor",
@@ -82,21 +82,21 @@ const MINA_SIDOR_SHORTCUTS = [
   "Ändra adress och kontaktuppgifter",
 ];
 
-/** Väntetider för status-bannern, numerisk per kanal, inte "kort/långt". */
+/** Väntetider för statusbannern: siffror per kanal, inte "kort" eller "lång". */
 const VANTETIDER = {
   normal: { chatt: "< 1 min", telefon: "2 min" },
   langre: { chatt: "3 min", telefon: "8 min" },
 } as const;
 
 export function KundserviceNy() {
-  // Accordion-state för "Just nu frågar många om", topp-frågan öppen default.
+  // Vilken fråga i "Just nu frågar många om" som är utfälld. Den översta är öppen från start.
   const [openJustNu, setOpenJustNu] = useState<string | null>("saga-upp");
 
   /**
-   * Kontaktflöde, 3-stegs mini-form enligt brief D.
-   *   1. Välj ärende (chip)  2. Namn + e-post + meddelande  3. Bekräftelse
-   * Demo-state, i produktion skickas svaret till backend och steg 3 visas
-   * efter serversvaret.
+   * Kontaktflöde: kort formulär i tre steg enligt brief D.
+   *   1. Välj ärende  2. Namn, e-post och meddelande  3. Bekräftelse
+   * Endast demo. I skarp drift skickas ärendet till servern och steg 3 visas
+   * när svaret kommit.
    */
   const [flowStep, setFlowStep] = useState<1 | 2 | 3>(1);
   const [flowIntent, setFlowIntent] = useState<string | null>(null);
@@ -120,17 +120,17 @@ export function KundserviceNy() {
     setFlowMessage("");
   }
 
-  // Stabilt per submission-tillfälle, nytt id varje gång flödet går in i steg 3.
+  // Samma nummer under hela bekräftelsen. Nytt nummer varje gång flödet når steg 3.
   const ticketId = useMemo(
     () => "KC-2026-" + (Math.floor(Math.random() * 90000) + 10000),
     [flowStep],
   );
 
   /**
-   * Focus management för multi-step form (a11y). När steget ändras flyttas
-   * fokus till det aktiva stegets rubrik så skärmläsare hör var de är och
-   * tangentbords-användare hamnar i rätt region utan att behöva tabba om.
-   * Kör inte på initial mount för att inte stjäla fokus vid sidladdning.
+   * Fokushantering i flerstegsformuläret (tillgänglighet). När steget ändras
+   * flyttas fokus till stegets rubrik, så skärmläsare läser upp var man är och
+   * tangentbordsanvändare hamnar rätt utan att tabba om.
+   * Körs inte vid första visningen, så fokus inte flyttas när sidan laddas.
    */
   const stepHeadingRef = useRef<HTMLHeadingElement | null>(null);
   const isInitialRender = useRef(true);
@@ -143,9 +143,9 @@ export function KundserviceNy() {
   }, [flowStep]);
 
   /**
-   * Kontaktflödets body, tre block-varianter delar samma innehåll men byter
-   * progress-header (stepper / bar / chips) via WizardProgress-komponenten.
-   * Samma grammatik används i felsökningsguiden så guides känns enhetliga.
+   * Kontaktflödets innehåll. De tre blockvarianterna delar innehåll men visar
+   * stegen på olika sätt (steg med cirklar, stapel eller knappar) via
+   * WizardProgress. Samma mönster används i felsökningsguiden.
    */
   function renderKontaktFlow(progressVariant: WizardVariant) {
     const svarstid = flowIntent ? svarstidPer[flowIntent] : "1 arbetsdag";
@@ -155,22 +155,31 @@ export function KundserviceNy() {
 
     return (
       <Annotation
-        label="Kontaktflöde, förenklat formulär"
+        label="Kontaktformulär i tre korta steg"
         audience="user"
-        rationale="Briefens krav D: 3 steg istället för långt formulär. Progressive disclosure (en fråga i taget) sänker kognitiv belastning. Steg 3 stänger loopen: bekräftelse, svarstid, vad händer nu, ärende-id. Progress-headern (WizardProgress) är delad med felsökningsguiden."
+        rationale="En fråga i taget i stället för ett långt formulär, så det känns lätt att komma igång. Sista steget ger besökaren det den behöver för att släppa ärendet: ärendenummer, svarstid och vad som händer sedan. Stegvisningen är samma som i felsökningsguiden."
       >
         <section id="kontaktflode" className="py-10 border-t border-border-subtle">
-          <WizardProgress
-            variant={progressVariant}
-            title="Skicka ett ärende, tar under en minut"
-            subtitle="Tre korta steg. Du får ett ärendenummer och ser exakt när vi svarar."
-            steps={[
-              { key: "arende", label: "Ärende" },
-              { key: "detaljer", label: "Detaljer" },
-              { key: "klart", label: "Klart" },
-            ]}
-            current={flowStep}
-          />
+          <Copy
+            label="Kontaktformulär, rubrik och tidslöfte"
+            category="rubrik"
+            text="Skicka ett ärende på under en minut. Tre korta steg. Du får ett ärendenummer och ser när vi svarar."
+            rationale="Rubriken lovar en tid, så besökaren vet vad det kostar att börja. Undertexten säger vad man får tillbaka. Lova inte 'exakt' svarstid om den inte kan hållas."
+          >
+            <div>
+              <WizardProgress
+                variant={progressVariant}
+                title="Skicka ett ärende på under en minut"
+                subtitle="Tre korta steg. Du får ett ärendenummer och ser när vi svarar."
+                steps={[
+                  { key: "arende", label: "Ärende" },
+                  { key: "detaljer", label: "Detaljer" },
+                  { key: "klart", label: "Klart" },
+                ]}
+                current={flowStep}
+              />
+            </div>
+          </Copy>
 
           <div className="rounded-md border-2 border-border-subtle bg-surface p-5 sm:p-6 max-w-reading">
             {flowStep === 1 && (
@@ -179,7 +188,7 @@ export function KundserviceNy() {
                   label="Kontaktflöde steg 1, rubrik"
                   category="rubrik"
                   text="Vad gäller det?"
-                  rationale="Samma fråga som snabbknappar-sektionen ovan, medvetet återanvänd så användaren ser att det är samma kategori-val i ett annat sammanhang. Konsekvent vokabulär över stegen sänker kognitiv belastning."
+                  rationale="Samma fråga som över snabbknapparna, med samma kategorier. Besökaren känner igen valet och slipper lära sig nya ord mitt i formuläret."
                 >
                   <h3
                     ref={stepHeadingRef}
@@ -189,9 +198,16 @@ export function KundserviceNy() {
                     Vad gäller det?
                   </h3>
                 </Copy>
-                <p className="text-sm text-ink-secondary mb-4">
-                  Välj kategori så hamnar ditt ärende hos rätt person direkt.
-                </p>
+                <Copy
+                  label="Kontaktflöde steg 1, förklaring"
+                  category="ton"
+                  text="Välj det som passar bäst, så hamnar ditt ärende direkt hos rätt person."
+                  rationale="Förklarar varför vi frågar: valet gör att ärendet går direkt till rätt person. Ett skäl gör det lättare att svara. 'Det som passar bäst' tar bort pressen att välja exakt rätt."
+                >
+                  <p className="text-sm text-ink-secondary mb-4">
+                    Välj det som passar bäst, så hamnar ditt ärende direkt hos rätt person.
+                  </p>
+                </Copy>
                 <div className="flex flex-wrap gap-2 mb-5">
                   {TOP_INTENTS.map((it) => (
                     <button
@@ -210,15 +226,22 @@ export function KundserviceNy() {
                     </button>
                   ))}
                 </div>
-                <button
-                  type="button"
-                  disabled={!kanFortsatta}
-                  onClick={() => setFlowStep(2)}
-                  className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                <Copy
+                  label="Kontaktflöde steg 1, knapp"
+                  category="cta"
+                  text="Fortsätt"
+                  rationale="'Fortsätt' räcker här eftersom stegvisningen ovanför visar vad som kommer härnäst. Knappen går att trycka först när ett ärende är valt."
                 >
-                  Fortsätt
-                  <Icon name="arrow_forward" size={16} />
-                </button>
+                  <button
+                    type="button"
+                    disabled={!kanFortsatta}
+                    onClick={() => setFlowStep(2)}
+                    className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
+                  >
+                    Fortsätt
+                    <Icon name="arrow_forward" size={16} />
+                  </button>
+                </Copy>
               </div>
             )}
 
@@ -230,7 +253,7 @@ export function KundserviceNy() {
                   label="Kontaktflöde steg 2, rubrik"
                   category="rubrik"
                   text="Lägg till detaljer"
-                  rationale="Imperativform + objekt. 'Dina uppgifter' skulle fokusera på användaren, 'Lägg till detaljer' fokuserar på handlingen. Parar med sub-text 'Tre korta fält, inget mer' som sätter förväntan på längden."
+                  rationale="Uppmaning med verb, som säger vad som ska göras. 'Dina uppgifter' låter som en blankett. Undertexten 'Tre korta fält, inget mer' visar att det är snart klart."
                 >
                   <h3
                     ref={stepHeadingRef}
@@ -244,10 +267,16 @@ export function KundserviceNy() {
                   Ärende: <strong className="text-ink">{flowIntent}</strong>.
                   Tre korta fält, inget mer.
                 </p>
+                <Copy
+                  label="Kontaktflöde steg 2, fältetiketter"
+                  category="metadata"
+                  text="Ditt namn / Din e-post / Beskriv ditt ärende kort / Vi hör av oss om vi behöver veta mer."
+                  rationale="Etiketterna står alltid ovanför fälten och försvinner inte när man skriver. 'Ditt' och 'din' gör det personligt. Hjälptexten under meddelandet lugnar: det räcker med en kort beskrivning."
+                >
                 <div className="space-y-3 mb-5">
                   <div>
                     <label htmlFor="flow-name" className="text-sm font-medium block mb-1">
-                      Namn
+                      Ditt namn
                     </label>
                     <input
                       id="flow-name"
@@ -260,7 +289,7 @@ export function KundserviceNy() {
                   </div>
                   <div>
                     <label htmlFor="flow-email" className="text-sm font-medium block mb-1">
-                      E-post
+                      Din e-post
                     </label>
                     <input
                       id="flow-email"
@@ -273,7 +302,7 @@ export function KundserviceNy() {
                   </div>
                   <div>
                     <label htmlFor="flow-message" className="text-sm font-medium block mb-1">
-                      Beskriv kort
+                      Beskriv ditt ärende kort
                     </label>
                     <textarea
                       id="flow-message"
@@ -284,10 +313,17 @@ export function KundserviceNy() {
                       className="w-full border border-border-strong rounded-md px-3 py-2.5 text-base bg-canvas focus:border-brand-accent focus:outline-none resize-y"
                     />
                     <p className="text-xs text-ink-muted mt-1">
-                      Vi frågar om mer bara om det behövs.
+                      Vi hör av oss om vi behöver veta mer.
                     </p>
                   </div>
                 </div>
+                </Copy>
+                <Copy
+                  label="Kontaktflöde steg 2, knappar"
+                  category="cta"
+                  text="Tillbaka / Skicka ärendet"
+                  rationale="'Skicka ärendet' säger vad som händer när man trycker, till skillnad från bara 'Skicka'. 'Tillbaka' ligger som en mindre knapp så att huvudvalet syns tydligt."
+                >
                 <div className="flex flex-wrap gap-2">
                   <button
                     type="button"
@@ -302,10 +338,11 @@ export function KundserviceNy() {
                     disabled={!kanFortsatta}
                     className="inline-flex items-center gap-2 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 disabled:opacity-40 disabled:cursor-not-allowed"
                   >
-                    Skicka
+                    Skicka ärendet
                     <Icon name="send" size={16} />
                   </button>
                 </div>
+                </Copy>
               </form>
             )}
 
@@ -323,7 +360,7 @@ export function KundserviceNy() {
                       label="Kontaktflöde steg 3, bekräftelse"
                       category="rubrik"
                       text="Vi har tagit emot ditt ärende"
-                      rationale="Påstående i perfekt, 'har tagit emot' är fait accompli, användaren kan släppa oron. 'Vi' (institutionell röst) tar ansvar. 'Ditt ärende' (inte 'din förfrågan' eller 'ditt meddelande') matchar termen som används i statusbanner och ärendenummer-formatet."
+                      rationale="'Har tagit emot' säger att det redan är gjort, så besökaren kan släppa oron. 'Vi' visar att vi tar ansvar. Vi skriver 'ärende' överallt, inte 'förfrågan' eller 'meddelande', så att ordet stämmer med ärendenumret."
                     >
                       <h3
                         ref={stepHeadingRef}
@@ -334,10 +371,16 @@ export function KundserviceNy() {
                       </h3>
                     </Copy>
                     <p className="text-sm text-ink-secondary">
-                      En bekräftelse är skickad till <strong className="text-ink">{flowEmail || "din e-post"}</strong>.
+                      Vi har skickat en bekräftelse till <strong className="text-ink">{flowEmail || "din e-post"}</strong>.
                     </p>
                   </div>
                 </div>
+                <Copy
+                  label="Kontaktflöde steg 3, ärendeuppgifter"
+                  category="metadata"
+                  text="Ärendenummer / Kategori / Svar senast / Hanteras av"
+                  rationale="Fyra fakta som besökaren kan spara och hänvisa till. 'Svar senast' är ett löfte vi kan mätas mot, inte ett ungefär. 'Hanteras av' visar att en riktig person i Helsingborg tar hand om ärendet."
+                >
                 <dl className="text-sm grid sm:grid-cols-2 gap-3 mb-5 p-4 rounded-md bg-tint-info">
                   <div>
                     <dt className="text-xs uppercase tracking-wider text-ink-muted font-medium">Ärendenummer</dt>
@@ -356,15 +399,22 @@ export function KundserviceNy() {
                     <dd className="font-medium">Kundservice, Helsingborg</dd>
                   </div>
                 </dl>
+                </Copy>
+                <Copy
+                  label="Kontaktflöde steg 3, nästa steg"
+                  category="reassurance"
+                  text={`Så här går det till: Ärendet är registrerat / En handläggare läser ärendet inom ${svarstid} / Du får svar via e-post. Är något oklart ringer vi dig.`}
+                  rationale="Visar vad som händer efter att man skickat, så ingen behöver undra eller ringa och fråga. Första steget är överstruket för att visa att det redan är klart."
+                >
                 <div className="mb-5">
                   <p className="text-xs uppercase tracking-wider text-ink-muted font-medium mb-2">
-                    Så här händer det
+                    Så här går det till
                   </p>
                   <ol className="space-y-2">
                     {[
-                      "Vi bekräftar att ärendet är registrerat (redan klart)",
+                      "Ärendet är registrerat",
                       `En handläggare läser ärendet inom ${svarstid}`,
-                      "Du får svar via e-post, eller vi ringer om något är oklart",
+                      "Du får svar via e-post. Är något oklart ringer vi dig.",
                     ].map((t, i) => (
                       <li key={i} className="flex gap-3 text-sm">
                         <span className="shrink-0 w-5 h-5 rounded-full bg-brand-primary text-white grid place-items-center text-[11px] font-bold">
@@ -377,6 +427,13 @@ export function KundserviceNy() {
                     ))}
                   </ol>
                 </div>
+                </Copy>
+                <Copy
+                  label="Kontaktflöde steg 3, knappar"
+                  category="cta"
+                  text="Följ ärendet på Mina sidor / Skicka ett nytt ärende"
+                  rationale="Två tydliga vägar vidare: följa ärendet eller skicka ett till. 'Skicka ett nytt ärende' säger vad som händer, till skillnad från 'Starta om' som kan låta som att ärendet raderas."
+                >
                 <div className="flex flex-wrap gap-2">
                   <a
                     href="#"
@@ -391,9 +448,10 @@ export function KundserviceNy() {
                     className="inline-flex items-center gap-1.5 text-ink-secondary hover:text-brand-accent text-sm px-3 py-2.5"
                   >
                     <Icon name="restart_alt" size={16} />
-                    Starta om
+                    Skicka ett nytt ärende
                   </button>
                 </div>
+                </Copy>
               </div>
             )}
           </div>
@@ -403,26 +461,26 @@ export function KundserviceNy() {
   }
 
   const blocks: BlockDef[] = [
-    /* ─── 1. STATUSBANNER, live belastning ─────────────────────── */
+    /* ─── 1. STATUSBANNER: belastning just nu ──────────────────── */
     {
       id: "status",
-      label: "Statusbanner, KC-belastning just nu",
+      label: "Statusbanner: kundservice just nu",
       variants: [
         {
           key: "normal",
-          label: "Normal kötid, numerisk",
+          label: "Normal kötid, i minuter",
           render: () => (
             <Annotation
-              label="Statusbanner: normal drift, numerisk väntetid"
+              label="Statusbanner: normal drift med kötid"
               audience="user"
-              rationale="Briefen: 'Just nu är väntetiden X min'. Numeriska tider slår vaga ord ('kort kötid'), användaren kan välja kanal direkt utan att gissa. Visibility of system status (Nielsen H1) blir operativ, inte dekorativ."
+              rationale="Visar hur lång kön är just nu, i minuter per kanal. Med siffror kan besökaren välja kanal direkt i stället för att gissa. Bannern ska spegla verkligt läge, annars tappar den förtroende."
             >
               <section className="pt-4">
                 <Copy
-                  label="Status normaldrift, systemstatus"
+                  label="Status vid normal drift"
                   category="metadata"
-                  text="Allt fungerar just nu. Kötid: chatt X min · telefon Y min"
-                  rationale="Två delar: påstående (Allt fungerar) + siffror (konkret kötid). 'Allt fungerar' är ärligt utan att vara självberömmande, inte 'Vi är redo för dig' som skulle vara reklam. Numeriska kötider respekterar användarens val: 'under 1 min i chatt' är ett löfte man mäts mot."
+                  text={`Allt fungerar just nu. Kötid: chatt ${VANTETIDER.normal.chatt} · telefon ${VANTETIDER.normal.telefon}`}
+                  rationale="Först läget, sedan siffrorna. 'Allt fungerar' är sakligt, inte säljande som 'Vi är redo för dig'. Kötid i minuter är ett löfte vi mäts mot, så skriv aldrig 'kort kö'."
                 >
                   <div className="rounded-md bg-tint-info border-l-4 border-brand-accent px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                     <span className="inline-flex items-center gap-2">
@@ -441,14 +499,20 @@ export function KundserviceNy() {
         },
         {
           key: "langre",
-          label: "Längre kötider, styr till self-service",
+          label: "Längre kötider, hänvisa till Mina sidor",
           render: () => (
             <Annotation
               label="Statusbanner: längre kötider"
               audience="user"
-              rationale="Briefens trafikstyrning: visa faktisk kötid + föreslå snabbare väg. Inte en ursäkt, ett konkret erbjudande. Vattenfall-stil men med siffror istället för adjektiv."
+              rationale="När det är långa köer visar bannern den faktiska kötiden och föreslår en snabbare väg. Det är ett konkret erbjudande, inte en ursäkt, och minskar trycket på telefon och chatt."
             >
               <section className="pt-4">
+                <Copy
+                  label="Status vid längre kötider"
+                  category="metadata"
+                  text={`Längre kötider just nu. Chatt ${VANTETIDER.langre.chatt} · telefon ${VANTETIDER.langre.telefon}. Snabbare väg: Mina sidor.`}
+                  rationale="Säger ärligt att det är kö och hur lång, och ger direkt ett alternativ. Siffror i stället för ord som 'hög belastning'. Undvik ursäkter som tar plats utan att hjälpa."
+                >
                 <div className="rounded-md bg-tint-notice border-l-4 border-brand-highlight px-4 py-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm">
                   <span className="inline-flex items-center gap-2">
                     <Icon name="schedule" size={20} className="text-brand-highlight" />
@@ -461,6 +525,7 @@ export function KundserviceNy() {
                     <a href="#mina-sidor" className="text-brand-primary font-medium underline underline-offset-2">Mina sidor</a>.
                   </span>
                 </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -472,22 +537,29 @@ export function KundserviceNy() {
             <Annotation
               label="Statusbanner: pågående avbrott"
               audience="user"
-              rationale="Vid avbrott ska användaren INTE gå via kundservice, de ska se status direkt. Banner:n lyfter länken till avbrottslistan så att KC inte överbelastas av folk som vill veta 'finns det ett avbrott?'"
+              rationale="Vid avbrott vill besökaren veta läget, inte prata med kundservice. Bannern leder direkt till avbrottssidan, så att färre behöver ringa och fråga om det är ett avbrott."
             >
               <section className="pt-4">
+                <Copy
+                  label="Status vid pågående avbrott"
+                  category="metadata"
+                  text="Avbrott pågår i ditt område. Vi arbetar med att få tillbaka strömmen. Se status för avbrottet"
+                  rationale="Först vad som händer, sedan att vi jobbar på det. Knappen säger var man får veta mer. Skriv inte ut tider här om de inte är säkra, dem visar avbrottssidan."
+                >
                 <div className="rounded-md bg-tint-highlight border-l-4 border-brand-highlight px-4 py-3 flex items-center gap-3 text-sm">
                   <Icon name="bolt" size={20} className="text-brand-highlight" filled />
                   <span className="flex-1">
-                    <strong>Avbrott pågår i ditt område.</strong> Vi jobbar på att få tillbaka strömmen.
+                    <strong>Avbrott pågår i ditt område.</strong> Vi arbetar med att få tillbaka strömmen.
                   </span>
                   <Link
                     to="/moduler/avbrottslista"
                     className="inline-flex items-center gap-1.5 bg-brand-primary text-white font-medium px-3 py-1.5 rounded text-xs hover:opacity-90"
                   >
-                    Se status
+                    Se status för avbrottet
                     <Icon name="arrow_forward" size={14} />
                   </Link>
                 </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -495,38 +567,45 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 2. HERO, fråga + sök ─────────────────────────────────── */
+    /* ─── 2. HERO: fråga och sök ───────────────────────────────── */
     {
       id: "hero",
       label: "Hero",
       variants: [
         {
           key: "sok-first",
-          label: "Sök-first, stort sökfält",
+          label: "Sökfokuserad, stort sökfält",
           render: () => (
             <Annotation
-              label="Hero: fråga + sök"
+              label="Hero med fråga och sökfält"
               audience="user"
-              rationale="H1 är en användarfråga, inte ett varumärkesord ('Kundservice'). Folksam-stil: sök dominerar. 70% av KC-besökare kommer med en specifik fråga, sök ska vara det första de kan göra, inte klicka sig genom en meny."
+              rationale="Sju av tio besökare kommer med en bestämd fråga. Därför är sökfältet det första de kan använda, i stället för en meny att klicka sig igenom. Rubriken är en fråga till besökaren, inte ordet 'Kundservice'."
             >
               <section className="py-10 sm:py-14">
                 <Copy
                   label="H1, användarfråga"
                   category="rubrik"
                   text="Vad behöver du hjälp med?"
-                  rationale="Direkt fråga till användaren. 'Kundservice' som rubrik säger vad sidan är; 'Vad behöver du hjälp med?' säger vad användaren kan göra. Matchar det mentala tillståndet när man landar hit, man har ett problem."
+                  rationale="'Kundservice' säger vad sidan är. 'Vad behöver du hjälp med?' säger vad besökaren kan göra här, och möter hen där hen är: med ett problem att lösa."
                 >
                   <h1 className="text-display leading-tight mb-2">Vad behöver du hjälp med?</h1>
                 </Copy>
-                <p className="text-lede text-ink-secondary mb-6 max-w-reading">
-                  Sök bland svar, välj ett vanligt ärende, eller kontakta oss direkt.
-                </p>
+                <Copy
+                  label="Ingress, tre vägar"
+                  category="ton"
+                  text="Sök bland svaren, välj ett vanligt ärende eller kontakta oss direkt."
+                  rationale="Ingressen räknar upp sidans tre vägar i samma ordning som de kommer på sidan. Besökaren får en karta på en rad."
+                >
+                  <p className="text-lede text-ink-secondary mb-6 max-w-reading">
+                    Sök bland svaren, välj ett vanligt ärende eller kontakta oss direkt.
+                  </p>
+                </Copy>
 
                 <Copy
                   label="Sökfält"
                   category="cta"
                   text="Sök bland frågor och svar"
-                  rationale="Placeholder på sökfältet säger både vad man kan göra och vart resultatet kommer ifrån. Inte bara 'Sök', det är för vagt."
+                  rationale="Texten i sökfältet säger både vad man kan göra och var svaren kommer ifrån. Bara 'Sök' är för vagt."
                 >
                   <form
                     role="search"
@@ -560,18 +639,32 @@ export function KundserviceNy() {
         },
         {
           key: "intent-first",
-          label: "Intent-first, utan sök",
+          label: "Ärendefokuserad, utan sök",
           render: () => (
             <Annotation
-              label="Hero (alt): direkt till snabbknappar"
+              label="Hero utan sök, direkt till snabbknapparna"
               audience="design"
-              rationale="Alternativ om data visar att användare inte söker. Sparar vertikal yta och sätter fokus på snabbknapparna direkt. Sök flyttas till sticky header eller tas bort helt."
+              rationale="Ett alternativ om statistiken visar att få söker. Heron blir lägre och snabbknapparna hamnar högre upp. Sökfältet flyttas då till det fasta sidhuvudet eller tas bort."
             >
               <section className="py-8 sm:py-10">
-                <h1 className="text-h1 leading-tight mb-3">Vad behöver du hjälp med?</h1>
-                <p className="text-lede text-ink-secondary max-w-reading">
-                  Välj ett vanligt ärende nedan, eller kontakta oss direkt.
-                </p>
+                <Copy
+                  label="H1, användarfråga"
+                  category="rubrik"
+                  text="Vad behöver du hjälp med?"
+                  rationale="Samma fråga som i sökvarianten, så rubriken är densamma oavsett vilken hero som används."
+                >
+                  <h1 className="text-h1 leading-tight mb-3">Vad behöver du hjälp med?</h1>
+                </Copy>
+                <Copy
+                  label="Ingress, två vägar"
+                  category="ton"
+                  text="Välj ett vanligt ärende nedan eller kontakta oss direkt."
+                  rationale="Utan sökfält finns två vägar, och ingressen nämner bara dem. Nämn inte sök om det inte finns på sidan."
+                >
+                  <p className="text-lede text-ink-secondary max-w-reading">
+                    Välj ett vanligt ärende nedan eller kontakta oss direkt.
+                  </p>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -579,86 +672,108 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 3. SNABBKNAPPAR, delad komponent, 3 layout-varianter ─── */
+    /* ─── 3. SNABBKNAPPAR: delad komponent med tre layouter ───── */
     {
       id: "snabb",
-      label: "Snabbknappar, topp ärenden",
+      label: "Snabbknappar, vanligaste ärendena",
       variants: (() => {
         const items: IntentCardItem[] = TOP_INTENTS;
         const renderWith = (v: IntentCardVariant) => (
           <Annotation
-            label="Snabbknappar, 5 ärende-kategorier"
+            label="Snabbknappar för fem vanliga ärenden"
             audience="user"
-            rationale="Briefens kärninsikt: kunden tänker i ärenden, inte funktioner. Fem kort enligt briefens taxonomi, Flytta, Faktura, Problem/fel, Avtal, Annat. Samma IntentCardGrid-komponent som StartsidaUndersidaUX så mönstret är delat, sidtypen väljer bara layout."
+            rationale="Kunder tänker i ärenden, inte i funktioner. Fem kort täcker det vanligaste: Flytta, Faktura, Problem eller fel, Avtal och Annat. Samma mönster finns på startsidans undersida, bara layouten skiljer."
           >
             <section className="py-8 border-t border-border-subtle">
               <Copy
                 label="Sektionsrubrik, snabbknappar"
                 category="rubrik"
                 text="Vad gäller det?"
-                rationale="Direkt användarfråga, inte kategori-etikett. 'Vanligaste ärendena' är redaktörens språk; 'Vad gäller det?' är användarens."
+                rationale="En fråga till besökaren i stället för en kategorirubrik. 'Vanligaste ärendena' är vårt språk, 'Vad gäller det?' är besökarens."
               >
                 <h2 className="text-h4 font-medium mb-4">Vad gäller det?</h2>
               </Copy>
-              <IntentCardGrid items={items} variant={v} columns={5} />
+              <Copy
+                label="Snabbknapparnas etiketter"
+                category="cta"
+                text={items.map((i) => i.label).join(" / ")}
+                rationale="Korta ord som kunderna själva använder, med exempel under. 'Annat' finns med så att ingen känner sig bortglömd. Håll antalet till fem, fler gör valet svårare."
+              >
+                <div>
+                  <IntentCardGrid items={items} variant={v} columns={5} />
+                </div>
+              </Copy>
             </section>
           </Annotation>
         );
         return [
-          { key: "vertical", label: "Vertikal, ikon över text (default)", render: () => renderWith("vertical") },
-          { key: "horizontal", label: "Horisontell, ikon vänster om text", render: () => renderWith("horizontal") },
-          { key: "chips", label: "Chips, kompakt pill-rad", render: () => renderWith("chips") },
+          { key: "vertical", label: "Vertikal, ikon ovanför texten (standard)", render: () => renderWith("vertical") },
+          { key: "horizontal", label: "Horisontell, ikon till vänster om texten", render: () => renderWith("horizontal") },
+          { key: "chips", label: "Kompakta knappar på en rad", render: () => renderWith("chips") },
         ];
       })(),
     },
 
-    /* ─── 5. MINA SIDOR-CALLOUT, självhjälp-push ──────────────── */
+    /* ─── 4. MINA SIDOR: lyft självservice ─────────────────────── */
     {
       id: "mina-sidor",
-      label: "Mina sidor, stor CTA",
+      label: "Mina sidor, stor knapp",
       variants: [
         {
           key: "banner-stor",
-          label: "Stor banner med topp 5-listor",
+          label: "Stor banner med lista över vanliga ärenden",
           render: () => (
             <Annotation
-              label="Mina sidor, prominent, inte gömd"
+              label="Mina sidor syns tydligt"
               audience="user"
-              rationale="Workshop-önskan: 'Tydlig knapp till Mina Sidor, STOR TYDLIG KNAPP'. De flesta KC-ärenden är faktiskt självbetjänings-saker, men användare vet inte alltid det. Visa vad man KAN göra själv."
+              rationale="De flesta ärenden kan kunden lösa själv på Mina sidor, men många vet inte om det. Bannern visar vad man kan göra där och har en stor, tydlig knapp, precis som workshopen önskade."
             >
               <section className="py-10 border-t border-border-subtle">
                 <div className="rounded-lg bg-brand-primary text-white p-6 sm:p-8 grid md:grid-cols-2 gap-6 items-center">
                   <div>
                     <Copy
-                      label="Mina sidor-rubrik"
-                      category="cta"
+                      label="Mina sidor, rubrik"
+                      category="rubrik"
                       text="De flesta ärenden löser du snabbast själv"
-                      rationale="Påstående, inte fråga. Säger rakt ut att Mina sidor är snabbaste vägen. Ingen 'kanske' eller 'kan också'."
+                      rationale="Ett påstående, inte en fråga. Säger rakt ut att Mina sidor är snabbaste vägen. Undvik reservationer som 'kanske' eller 'kan också'."
                     >
                       <h2 className="text-h2 mb-2 text-white">De flesta ärenden löser du snabbast själv</h2>
                     </Copy>
                     <Copy
                       label="Mina sidor, tre konkreta fördelar"
                       category="reassurance"
-                      text="Ingen kötid. Fungerar när som helst. Tar 1 minut istället för 10."
-                      rationale="Tre korta meningar, inga adjektiv. Varje sats är en jämförelse med alternativet (kontakt): ingen kö vs kö, dygnet runt vs öppettider, 1 min vs 10 min. Parallell struktur gör jämförelsen lättare att scanna."
+                      text="Ingen kö. Öppet dygnet runt. Tar 1 minut i stället för 10."
+                      rationale="Tre korta meningar utan adjektiv. Var och en jämför med att kontakta oss: ingen kö mot kö, dygnet runt mot öppettider, 1 minut mot 10. Samma form gör dem lätta att skumma."
                     >
                       <p className="text-sm opacity-90 mb-4">
-                        Ingen kötid. Fungerar när som helst. Tar 1 minut istället för 10.
+                        Ingen kö. Öppet dygnet runt. Tar 1 minut i stället för 10.
                       </p>
                     </Copy>
-                    <a
-                      href="#"
-                      className="inline-flex items-center gap-2 bg-white text-brand-primary font-medium px-5 py-3 rounded hover:opacity-90 transition-opacity"
+                    <Copy
+                      label="Mina sidor, knapp"
+                      category="cta"
+                      text="Logga in på Mina sidor"
+                      rationale="Verb plus plats, samma formulering som i sidhuvudet. Samma ord överallt gör att besökaren känner igen knappen."
                     >
-                      <Icon name="person" size={18} />
-                      Logga in på Mina sidor
-                      <Icon name="arrow_forward" size={16} />
-                    </a>
+                      <a
+                        href="#"
+                        className="inline-flex items-center gap-2 bg-white text-brand-primary font-medium px-5 py-3 rounded hover:opacity-90 transition-opacity"
+                      >
+                        <Icon name="person" size={18} />
+                        Logga in på Mina sidor
+                        <Icon name="arrow_forward" size={16} />
+                      </a>
+                    </Copy>
                   </div>
+                  <Copy
+                    label="Mina sidor, lista över vad du kan göra"
+                    category="reassurance"
+                    text={`Det här kan du göra på Mina sidor: ${MINA_SIDOR_SHORTCUTS.join(" / ")}`}
+                    rationale="Varje rad börjar med ett verb, så det blir tydligt vad man kan göra själv. Redaktören håller listan till de fem vanligaste ärendena som går att lösa helt på Mina sidor."
+                  >
                   <div className="bg-white/10 rounded-md p-5">
                     <p className="text-xs uppercase tracking-wider font-medium mb-3 opacity-80">
-                      Här kan du bland annat:
+                      Det här kan du göra på Mina sidor
                     </p>
                     <ul className="space-y-2">
                       {MINA_SIDOR_SHORTCUTS.map((s) => (
@@ -669,6 +784,7 @@ export function KundserviceNy() {
                       ))}
                     </ul>
                   </div>
+                  </Copy>
                 </div>
               </section>
             </Annotation>
@@ -676,27 +792,41 @@ export function KundserviceNy() {
         },
         {
           key: "kompakt",
-          label: "Kompakt, horisontell",
+          label: "Kompakt, en rad",
           render: () => (
             <Annotation
-              label="Mina sidor (kompakt): en rad"
+              label="Mina sidor i kompakt format"
               audience="design"
-              rationale="Alternativ om stor banner dominerar för mycket när sidan är tung. Samma budskap, mindre yta."
+              rationale="Ett alternativ när den stora bannern tar för mycket plats på en redan lång sida. Samma budskap på en rad."
             >
               <section className="py-6 border-t border-border-subtle">
                 <div className="rounded-md bg-tint-info p-5 flex flex-col sm:flex-row items-start sm:items-center gap-4">
                   <Icon name="person" size={28} className="text-brand-primary" />
+                  <Copy
+                    label="Mina sidor kompakt, budskap"
+                    category="reassurance"
+                    text="De flesta ärenden löser du snabbast själv på Mina sidor. Ingen kö · öppet dygnet runt"
+                    rationale="Samma budskap som den stora bannern, kortat till en rad och två fördelar. Använd samma ord som i den stora varianten så budskapet känns igen."
+                  >
                   <div className="flex-1">
                     <p className="font-medium">De flesta ärenden löser du snabbast själv på Mina sidor.</p>
-                    <p className="text-sm text-ink-secondary">Ingen kötid · fungerar dygnet runt</p>
+                    <p className="text-sm text-ink-secondary">Ingen kö · öppet dygnet runt</p>
                   </div>
-                  <a
-                    href="#"
-                    className="inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 whitespace-nowrap"
+                  </Copy>
+                  <Copy
+                    label="Mina sidor kompakt, knapp"
+                    category="cta"
+                    text="Logga in"
+                    rationale="Kort eftersom meningen bredvid redan nämner Mina sidor. Står knappen ensam ska den heta 'Logga in på Mina sidor'."
                   >
-                    Logga in
-                    <Icon name="arrow_forward" size={16} />
-                  </a>
+                    <a
+                      href="#"
+                      className="inline-flex items-center gap-1.5 bg-brand-primary text-ink-onbrand font-medium px-5 py-2.5 rounded hover:opacity-90 whitespace-nowrap"
+                    >
+                      Logga in
+                      <Icon name="arrow_forward" size={16} />
+                    </a>
+                  </Copy>
                 </div>
               </section>
             </Annotation>
@@ -705,32 +835,45 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 6. KONTAKTVÄGAR, alla synliga samtidigt ──────────────── */
+    /* ─── 5. KONTAKTVÄGAR: alla synliga samtidigt ──────────────── */
     {
       id: "kontakt",
       label: "Kontaktvägar",
       variants: [
         {
           key: "fyra-kanaler",
-          label: "Fyra kanaler, inkl. bokning",
+          label: "Fyra kanaler, med bokning",
           render: () => (
             <Annotation
-              label="Kontaktvägar, alla synliga"
+              label="Alla kontaktvägar på samma ställe"
               audience="user"
-              rationale="Workshop: 'Alla kontaktsätt på samma sida' + 'Bra om man kunde beställa samtal/möten'. Varje kanal har tydlig förväntan (svarstid + öppettider + vad kanalen passar för). Vattenfall-modell. Chatt föreslås överst, snabbast + AI-assistans via Ebbot."
+              rationale="Alla sätt att nå oss syns samtidigt, som workshopen önskade, inklusive att boka samtal. Varje kanal visar svarstid, öppettider och vad den passar för, så besökaren kan välja själv. Chatten ligger först eftersom den är snabbast."
             >
               <section className="py-10 border-t border-border-subtle">
                 <Copy
                   label="Sektionsrubrik, kontakt"
                   category="rubrik"
                   text="Eller kontakta oss direkt"
-                  rationale="'Eller' signalerar att detta är alternativet till self-service, inte första steget. Ordvalet styr användaren till Mina sidor först, kontakt sedan."
+                  rationale="'Eller' visar att kontakt är alternativet till att lösa ärendet själv, inte första steget. Ordvalet leder besökaren till Mina sidor först och kontakt sedan."
                 >
                   <h2 className="text-h2 mb-2">Eller kontakta oss direkt</h2>
                 </Copy>
-                <p className="text-ink-secondary mb-6 max-w-reading">
-                  Olika kanaler passar olika ärenden. Välj efter hur snabbt du behöver svar.
-                </p>
+                <Copy
+                  label="Kontakt, ingress"
+                  category="ton"
+                  text="Olika kanaler passar olika ärenden. Välj efter hur snabbt du behöver svar."
+                  rationale="Ger besökaren en enkel regel för att välja kanal: hur bråttom är det? Då behövs ingen lång förklaring av varje kanal."
+                >
+                  <p className="text-ink-secondary mb-6 max-w-reading">
+                    Olika kanaler passar olika ärenden. Välj efter hur snabbt du behöver svar.
+                  </p>
+                </Copy>
+                <Copy
+                  label="Kontaktkort, knappar och förväntan"
+                  category="cta"
+                  text="Starta chatt / Ring 042-490 32 00 / Skicka meddelande / Boka tid"
+                  rationale="Varje knapp säger exakt vad som händer. Telefonknappen visar numret så att man kan ringa direkt eller skriva av det. Svarstid och öppettider står på varje kort, så ingen behöver leta."
+                >
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <ContactCard
                     icon="smart_toy"
@@ -745,7 +888,7 @@ export function KundserviceNy() {
                   <ContactCard
                     icon="call"
                     kanal="Telefon"
-                    lead="För komplexa ärenden"
+                    lead="För krångligare ärenden"
                     svar="Kötid 2 min"
                     oppettider="Mån–tor 08–16 · Fre 10–15"
                     cta="Ring 042-490 32 00"
@@ -770,11 +913,12 @@ export function KundserviceNy() {
                     ctaHref="#"
                   />
                 </div>
+                </Copy>
                 <Copy
-                  label="Språk-fallback"
+                  label="Kontakt på andra språk"
                   category="reassurance"
-                  text="Contact us in other languages, English · العربية · Polski"
-                  rationale="Länsförsäkringar-inspiration. En rad längst ner är en signal om att sidan tänker på användare som inte har svenska som första språk, utan att tränga undan huvudflödet."
+                  text="Contact us in other languages: English · العربية · Polski"
+                  rationale="Raden är på engelska eftersom den riktar sig till den som inte läser svenska. Varje språk står på sitt eget språk. En rad längst ner räcker och tar inte plats från huvudflödet."
                 >
                   <p className="text-sm text-ink-muted mt-6">
                     <strong className="text-ink-secondary">Contact us in other languages:</strong>{" "}
@@ -792,20 +936,41 @@ export function KundserviceNy() {
           label: "Tre kanaler, utan bokning",
           render: () => (
             <Annotation
-              label="Kontaktvägar (tre kanaler)"
+              label="Kontaktvägar med tre kanaler"
               audience="design"
-              rationale="Klassiska tre. Alternativ om bokning inte är live ännu. Samma förväntan-format på varje kanal."
+              rationale="Chatt, telefon och e-post. Används så länge det inte går att boka samtal. Varje kanal visar svarstid och öppettider på samma sätt."
             >
               <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h2 mb-2">Eller kontakta oss direkt</h2>
-                <p className="text-ink-secondary mb-6 max-w-reading">
-                  Välj kanal efter hur snabbt du behöver svar.
-                </p>
+                <Copy
+                  label="Sektionsrubrik, kontakt"
+                  category="rubrik"
+                  text="Eller kontakta oss direkt"
+                  rationale="Samma rubrik som i varianten med fyra kanaler. 'Eller' visar att kontakt är alternativet till att lösa ärendet själv."
+                >
+                  <h2 className="text-h2 mb-2">Eller kontakta oss direkt</h2>
+                </Copy>
+                <Copy
+                  label="Kontakt, ingress"
+                  category="ton"
+                  text="Välj kanal efter hur snabbt du behöver svar."
+                  rationale="En enkel regel för att välja kanal. Kortare än i varianten med fyra kanaler eftersom valet är mindre."
+                >
+                  <p className="text-ink-secondary mb-6 max-w-reading">
+                    Välj kanal efter hur snabbt du behöver svar.
+                  </p>
+                </Copy>
+                <Copy
+                  label="Kontaktkort, knappar och förväntan"
+                  category="cta"
+                  text="Starta chatt / Ring 042-490 32 00 / Skicka meddelande"
+                  rationale="Varje knapp säger exakt vad som händer. Svarstid och öppettider står på varje kort, så ingen behöver leta."
+                >
                 <div className="grid sm:grid-cols-3 gap-4">
                   <ContactCard icon="smart_toy" kanal="Chatt" lead="Snabbast för enkla frågor" svar="Under 1 min" oppettider="Dygnet runt · AI-assistent" cta="Starta chatt" ctaHref="#" primary />
-                  <ContactCard icon="call" kanal="Telefon" lead="För komplexa ärenden" svar="Kötid 2 min" oppettider="Mån–tor 08–16 · Fre 10–15" cta="Ring 042-490 32 00" ctaHref="tel:0424903200" />
+                  <ContactCard icon="call" kanal="Telefon" lead="För krångligare ärenden" svar="Kötid 2 min" oppettider="Mån–tor 08–16 · Fre 10–15" cta="Ring 042-490 32 00" ctaHref="tel:0424903200" />
                   <ContactCard icon="mail" kanal="E-post" lead="När det inte är bråttom" svar="Inom 1 arbetsdag" oppettider="Dygnet runt" cta="Skicka meddelande" ctaHref="#kontaktflode" />
                 </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -813,46 +978,66 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 7. KONTAKTFLÖDE, 3-stegs demo enligt brief D ─────────── */
+    /* ─── 6. KONTAKTFLÖDE: tre steg enligt brief D ─────────────── */
     {
       id: "kontaktflode",
-      label: "Kontaktflöde, 3-stegs mini-form",
+      label: "Kontaktformulär i tre steg",
       variants: [
         {
           key: "stepper",
-          label: "Stepper, cirklar med etiketter (default)",
+          label: "Steg med cirklar och etiketter (standard)",
           render: () => renderKontaktFlow("stepper"),
         },
         {
           key: "bar",
-          label: "Progress-bar, kompakt (bäst på mobil)",
+          label: "Stapel, kompakt (bäst i mobilen)",
           render: () => renderKontaktFlow("bar"),
         },
         {
           key: "chips",
-          label: "Pill-chips, samma vikt per steg",
+          label: "Knappar, alla steg lika stora",
           render: () => renderKontaktFlow("chips"),
         },
       ],
     },
 
-    /* ─── 8. POPULÄRA FRÅGOR "JUST NU" ──────────────────────────── */
+    /* ─── 7. POPULÄRA FRÅGOR "JUST NU" ─────────────────────────── */
     {
       id: "just-nu",
       label: "Populära frågor just nu",
       variants: [
         {
           key: "accordion",
-          label: "Accordion med exempel-svar",
+          label: "Utfällbara frågor med svar",
           render: () => (
             <Annotation
-              label="Just nu-frågor, accordion"
+              label="Frågor som många ställer just nu"
               audience="redaktör"
-              rationale="Folksam-inspiration: 'Just nu frågar många om'. Redaktionellt kurerad lista, uppdateras veckovis från supportdata. Samma accordion-mönster som FAQ-modulen (FaqAccordion), svaret öppnas inline och animeras smidigt via grid-template-rows så modul och sidtyp matchar visuellt."
+              rationale="Uppdatera listan varje vecka utifrån de vanligaste ärendena hos kundservice. Håll den till fem frågor, skrivna som kunden skulle fråga, med korta svar som leder vidare. Svaren fälls ut på samma sätt som i FAQ-modulen."
             >
               <section className="py-10 border-t border-border-subtle">
-                <h2 className="text-h3 font-medium mb-2">Just nu frågar många om</h2>
-                <p className="text-sm text-ink-muted mb-4">Baserat på senaste veckans ärenden</p>
+                <Copy
+                  label="Just nu-frågor, rubrik"
+                  category="rubrik"
+                  text="Just nu frågar många om"
+                  rationale="Visar att listan är aktuell och att andra undrar samma sak, vilket gör det lättare att fråga. Mer levande än 'Vanliga frågor'."
+                >
+                  <h2 className="text-h3 font-medium mb-2">Just nu frågar många om</h2>
+                </Copy>
+                <Copy
+                  label="Just nu-frågor, källa"
+                  category="metadata"
+                  text="Baserat på senaste veckans ärenden"
+                  rationale="Säger var listan kommer ifrån, så den känns trovärdig. Texten stämmer bara om listan faktiskt uppdateras varje vecka."
+                >
+                  <p className="text-sm text-ink-muted mb-4">Baserat på senaste veckans ärenden</p>
+                </Copy>
+                <Copy
+                  label="Just nu-frågor, frågor och svar"
+                  category="faq"
+                  text={POPULARA_FRAGOR_JUST_NU.map((f) => f.q).join(" / ")}
+                  rationale="Frågorna är skrivna i jagform, som kunden själv skulle fråga. Svaren börjar med det viktigaste och säger var man gör saken, oftast på Mina sidor."
+                >
                 <ul className="space-y-2 max-w-reading">
                   {POPULARA_FRAGOR_JUST_NU.map((f) => {
                     const isOpen = openJustNu === f.id;
@@ -894,6 +1079,7 @@ export function KundserviceNy() {
                     );
                   })}
                 </ul>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -901,36 +1087,49 @@ export function KundserviceNy() {
       ],
     },
 
-    /* ─── 9. FOOTER, driftstörning + öppettider återupprepas ───── */
+    /* ─── 8. SIDFOT: driftstörning och öppettider igen ─────────── */
     {
       id: "fot",
-      label: "Fot, driftstörning + öppettider",
+      label: "Sidfot: driftstörning och öppettider",
       variants: [
         {
           key: "kompakt",
           label: "Kompakt",
           render: () => (
             <Annotation
-              label="Fot-sektion: driftstörning + återupprepa öppettider"
+              label="Sidfot med driftstörning och öppettider"
               audience="design"
-              rationale="Recognition över recall: öppettider för kundtjänst ska vara synliga nära sidans slut också, för den som skrollat förbi kontaktvägarna. Driftstörnings-länk ligger kvar som fallback även när bannern är 'normal'."
+              rationale="Den som scrollat förbi kontaktvägarna ska ändå se öppettiderna utan att scrolla tillbaka. Länken till avbrottsinformation finns alltid kvar, även när statusbannern visar normal drift."
             >
               <section className="py-10 border-t border-border-subtle grid md:grid-cols-2 gap-6">
+                <Copy
+                  label="Sidfot, driftstörning"
+                  category="rubrik"
+                  text="Driftstörning? Se om det är avbrott eller planerade arbeten i ditt område, eller gör en felanmälan. Se avbrott och planerade arbeten"
+                  rationale="Rubriken är frågan besökaren ställer sig. Texten nämner de tre saker man kan göra, och länken säger vad man hittar. Undvik bara 'Avbrottsinformation' som länktext."
+                >
                 <div>
                   <h3 className="text-h5 font-medium mb-3">Driftstörning?</h3>
                   <p className="text-sm text-ink-secondary mb-2">
-                    Se om det pågår ett avbrott i ditt område, planerade arbeten, eller gör en felanmälan.
+                    Se om det är avbrott eller planerade arbeten i ditt område, eller gör en felanmälan.
                   </p>
                   <Link
                     to="/moduler/avbrottslista"
                     className="inline-flex items-center gap-1.5 text-sm text-brand-accent hover:underline"
                   >
-                    Avbrottsinformation
+                    Se avbrott och planerade arbeten
                     <Icon name="arrow_forward" size={14} />
                   </Link>
                 </div>
+                </Copy>
+                <Copy
+                  label="Sidfot, öppettider"
+                  category="metadata"
+                  text="Öppettider för kundservice: Chatt: Dygnet runt / Telefon: Mån–tor 08–16 · Fre 10–15 / E-post: Svar inom 1 arbetsdag"
+                  rationale="Samma tider som på kontaktkorten, så att uppgifterna aldrig säger emot varandra. Vi skriver 'kundservice' överallt, inte 'kundtjänst'. Ändras tiderna ska de ändras på båda ställena."
+                >
                 <div>
-                  <h3 className="text-h5 font-medium mb-3">Kundtjänst öppettider</h3>
+                  <h3 className="text-h5 font-medium mb-3">Öppettider för kundservice</h3>
                   <dl className="text-sm text-ink-secondary space-y-1">
                     <div className="flex gap-3">
                       <dt className="font-medium min-w-[80px]">Chatt</dt>
@@ -946,6 +1145,7 @@ export function KundserviceNy() {
                     </div>
                   </dl>
                 </div>
+                </Copy>
               </section>
             </Annotation>
           ),
@@ -957,14 +1157,19 @@ export function KundserviceNy() {
   return (
     <div className="max-w-content mx-auto px-4 sm:px-6">
       <PageBrief
-        kategori="Kundservice (Sidtyp 8, ersätter KC + Kontakta-oss)"
-        syfte="Snabbast möjliga väg till lösning, antingen self-service eller rätt kontaktväg med rätt förväntan. Minska belastning på KC genom att göra självhjälp tydligare än kontakt."
-        malgrupp="Privatkund med ett konkret ärende. Ofta stressad, ibland osäker på om ärendet är akut. Toppen av tratten = distraherad användare från sökträff."
-        primarHandling="Hitta svar direkt (sök eller snabbknapp) ELLER nå rätt kontaktkanal med känd svarstid."
-        ton="Direkt, konkret, respektfull mot användarens tid. Inga marknadsföringsfraser. Säger ärligt vilken kanal som är snabbast för vilket ärende."
+        kategori="Kundservice (Sidtyp 8, ersätter kundservicesidan och Kontakta oss)"
+        syfte="Ge kunden snabbaste vägen till en lösning: antingen att lösa ärendet själv eller att hitta rätt kontaktväg och veta när svaret kommer. Självservice lyfts före kontakt för att minska trycket på kundservice."
+        malgrupp="Privatkunder med ett konkret ärende. Ofta stressade och ibland osäkra på om ärendet är akut. Många kommer direkt från en sökträff."
+        primarHandling="Hitta svaret direkt via sök eller snabbknapp, eller välja rätt kontaktväg med känd svarstid."
+        ton="Rak, konkret och respektfull mot kundens tid. Inga säljfraser. Säg ärligt vilken kanal som är snabbast för vilket ärende."
       />
 
-      {/* Utility-rad */}
+      {/* Rad med tillbakalänk och inloggning */}
+      <Annotation
+        label="Inloggning alltid synlig"
+        audience="design"
+        rationale="Många som besöker kundservice är redan kunder och vill till Mina sidor. Inloggningen ligger uppe till höger, där folk brukar leta, redan innan sidan börjar."
+      >
       <div className="flex items-center justify-between pt-6">
         <Link to="/" className="text-sm text-ink-muted hover:text-brand-accent">
           ← Översikt
@@ -974,9 +1179,17 @@ export function KundserviceNy() {
           className="inline-flex items-center gap-1.5 text-sm text-ink-secondary hover:text-brand-accent"
         >
           <Icon name="person" size={16} />
-          Logga in på Mina sidor
+          <Copy
+            label="Inloggningslänk"
+            category="cta"
+            text="Logga in på Mina sidor"
+            rationale="Verb plus plats: besökaren vet vart länken leder. Samma formulering som på den stora Mina sidor-knappen längre ner."
+          >
+            Logga in på Mina sidor
+          </Copy>
         </a>
       </div>
+      </Annotation>
 
       <nav aria-label="Breadcrumb" className="text-xs text-ink-muted mt-4 mb-2">
         <ol className="flex gap-1">

@@ -17,9 +17,12 @@ export function AnnotationPanel() {
     a === "redaktör" ? "bg-tint-notice text-brand-primary" :
     "bg-tint-highlight text-brand-primary";
 
+  const audienceLabel = (a: string) =>
+    a === "user" ? "Användare" : a === "redaktör" ? "Redaktör" : "Design";
+
   return (
     <>
-      {/* Toggle tab ,  visible when panel is closed */}
+      {/* Toggle tab, visible when panel is closed */}
       {!open && (
         <button
           type="button"
@@ -27,7 +30,7 @@ export function AnnotationPanel() {
           className="fixed right-0 top-1/2 -translate-y-1/2 z-40 px-3 py-2 rounded-l bg-brand-highlight text-white text-xs font-medium shadow-lg hover:opacity-90"
           aria-label="Öppna designanteckningar"
         >
-          {list.length} anteckningar →
+          Visa {list.length} anteckningar →
         </button>
       )}
 
@@ -41,14 +44,14 @@ export function AnnotationPanel() {
           <div>
             <h2 className="text-h5 font-medium">Designanteckningar</h2>
             <p className="text-xs text-ink-muted mt-0.5">
-              {list.length} på denna sida
+              {list.length} på den här sidan
             </p>
           </div>
           <button
             type="button"
             onClick={() => setOpen(false)}
             className="text-ink-muted hover:text-ink p-1"
-            aria-label="Stäng panel"
+            aria-label="Stäng designanteckningar"
           >
             <Icon name="close" size={18} />
           </button>
@@ -71,7 +74,7 @@ export function AnnotationPanel() {
                     <div className="flex items-baseline justify-between gap-2 mb-1">
                       <span className="font-medium truncate">{a.label}</span>
                       <span className={`text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded ${audienceColor(a.audience)}`}>
-                        {a.audience}
+                        {audienceLabel(a.audience)}
                       </span>
                     </div>
                     <p className="text-sm text-ink-secondary leading-relaxed">{a.rationale}</p>
@@ -82,7 +85,7 @@ export function AnnotationPanel() {
           ))}
         </ul>
         <footer className="px-5 py-3 border-t border-border-subtle text-xs text-ink-muted">
-          Klicka på en rad för att hitta elementet på sidan.
+          Klicka på en anteckning för att se var den hör hemma på sidan.
         </footer>
       </aside>
     </>

@@ -8,10 +8,10 @@ const VARIANTS: Variant[] = [
   {
     id: "accordion",
     shortName: "A",
-    label: "Accordion",
+    label: "Utfällbar lista",
     riskLevel: "låg",
-    oneLiner: "5 frågor staplade. Native details/summary. Den mest välkända FAQ-typen.",
-    bestFor: "Liten FAQ (≤8 frågor). Sidtyper där FAQ är ett av flera block.",
+    oneLiner: "Fem frågor under varandra. Svaret fälls ut när du klickar. Den mest välkända FAQ-formen.",
+    bestFor: "Korta FAQ:er med upp till 8 frågor, som ett av flera block på en sida.",
     render: () => <FaqAccordion />,
   },
   {
@@ -19,60 +19,60 @@ const VARIANTS: Variant[] = [
     shortName: "B",
     label: "Grupperad",
     riskLevel: "låg",
-    oneLiner: "Tre kolumner efter mental tidslinje, innan / under / efter.",
-    bestFor: "Mellanstor FAQ (8–15 frågor). Sidor där frågor faller naturligt i faser.",
+    oneLiner: "Tre kolumner efter var besökaren befinner sig: innan, under och efter.",
+    bestFor: "Mellanstora FAQ:er med 8-15 frågor som naturligt hör till olika skeden.",
     render: () => <FaqGrupperad />,
   },
   {
     id: "sok",
     shortName: "C",
-    label: "Sök + topplista",
+    label: "Sök och topplista",
     riskLevel: "medel",
-    oneLiner: "Sökfält + kuraterad topp-5. Skalar till stora kunskapsbaser.",
-    bestFor: "Dedikerad FAQ-sida med 30+ frågor. Kundservice-sidor.",
+    oneLiner: "Sökfält och en utvald lista med de fem vanligaste frågorna. Fungerar även med många frågor.",
+    bestFor: "En egen FAQ-sida med 30 frågor eller fler, till exempel kundservice.",
     render: () => <FaqSokTopplista />,
   },
 ];
 
 const ARGUMENTATION: ArgumentRow[] = [
   {
-    aspect: "Skalar till",
+    aspect: "Fungerar för",
     values: {
-      accordion: "~8 frågor innan sidan blir oöversiktlig.",
-      grupperad: "~15 frågor om grupperna är balanserade.",
-      sok: "50+ frågor. Sökningen gör listan navigerbar.",
+      accordion: "Upp till cirka 8 frågor, sedan blir listan svår att överblicka.",
+      grupperad: "Upp till cirka 15 frågor, om grupperna är ungefär lika stora.",
+      sok: "50 frågor eller fler. Sökningen gör det lätt att hitta rätt.",
     },
   },
   {
-    aspect: "Tekniskt",
+    aspect: "Hur den fungerar",
     values: {
-      accordion: "Native details/summary. Fungerar utan JS.",
-      grupperad: "Statisk HTML. Grupper bestäms i innehållet.",
-      sok: "Kräver sök-filter (client-side JS) eller backend-API.",
+      accordion: "Svaren fälls ut i sidan. Enkel teknik som fungerar överallt.",
+      grupperad: "Vanliga länkar. Grupperna bestäms av redaktören.",
+      sok: "Kräver en sökfunktion som filtrerar frågorna medan besökaren skriver.",
     },
   },
   {
     aspect: "Tillgänglighet",
     values: {
-      accordion: "Perfekt, semantic HTML hanterar allt.",
-      grupperad: "Bra, heading-hierarkin är tydlig.",
-      sok: "Kräver aria-live för resultat + tangentbords-shortcut.",
+      accordion: "Mycket god, fungerar med skärmläsare och tangentbord.",
+      grupperad: "God, rubrikerna ger en tydlig struktur.",
+      sok: "Kräver att sökresultaten läses upp för skärmläsare och att allt går att nå med tangentbord.",
     },
   },
   {
     aspect: "Underhåll",
     values: {
-      accordion: "Lågt, lägg till/ta bort fråga i listan.",
-      grupperad: "Medel, tänka om vilken fas frågan hör till.",
-      sok: "Medel, topp-5 behöver kuratering varje/varannan vecka.",
+      accordion: "Lite, lägg till eller ta bort frågor i listan.",
+      grupperad: "Medel, varje ny fråga måste placeras i rätt grupp.",
+      sok: "Medel, topplistan behöver ses över varje eller varannan vecka.",
     },
   },
   {
     aspect: "Rekommendation",
     values: {
-      accordion: "Default-mönster för FAQ på inre sidor.",
-      grupperad: "Elhandel-sidan, produktsidan, där tidslinjen är naturlig.",
-      sok: "Endast på dedikerad Kundservice/hjälpcenter-sida.",
+      accordion: "Förval för FAQ på undersidor.",
+      grupperad: "Elhandel och produktsidor, där frågorna följer ett förlopp.",
+      sok: "Bara på en egen sida för kundservice eller hjälp.",
     },
   },
 ];
@@ -86,9 +86,9 @@ export function Faq() {
         <p className="text-eyebrow uppercase text-ink-muted mb-3">Modul · FAQ</p>
         <h1 className="text-h1 mb-3">Vanliga frågor</h1>
         <p className="text-lede text-ink-secondary">
-          Tre strategier för FAQ, valet beror på hur många frågor ni har och var
-          modulen sitter. Accordion är default för block-nivå, sök för dedikerad
-          hjälpsida.
+          Tre sätt att visa vanliga frågor. Valet beror på hur många frågor ni har och var
+          på sidan de ska stå. Den utfällbara listan är förval för ett block på en sida,
+          sök passar en egen hjälpsida.
         </p>
       </header>
 

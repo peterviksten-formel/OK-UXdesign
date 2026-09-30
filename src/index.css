@@ -177,7 +177,7 @@
     pointer-events: none;
   }
 
-  /* Copy-guide overlay — navy pill, underlined text */
+  /* Copy-guide overlay: navy pill, underlined text */
   [data-copy-guide="true"] {
     position: relative;
     background: linear-gradient(to top, rgba(0, 32, 91, 0.08) 0%, rgba(0, 32, 91, 0.08) 2px, transparent 2px);

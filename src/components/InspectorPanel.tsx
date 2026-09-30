@@ -7,9 +7,9 @@ import { Icon } from "./Icon";
 
 /**
  * Inspector-panel (höger kolumn) som samlar tre vyer bakom tabs:
- *   1. UX-guide    ,  designanteckningar per sida
- *   2. Copy-guide  ,  copy-rationaler + sidtyp-brief
- *   3. Redigera    ,  preset + reset + status för aktiv sida
+ *   1. Design    (designanteckningar per sida)
+ *   2. Copy      (copy-motiveringar och sidtypens brief)
+ *   3. Redigera  (sparade vyer, återställning och status för aktiv sida)
  *
  * Panelen visas när minst ett av de tre lägena är aktivt (flaggorna
  * kontrolleras fortfarande via respektive toggle i headern).
@@ -22,7 +22,7 @@ export function InspectorPanel() {
 
   const anyEnabled = uxOn || copyOn || editMode.enabled;
 
-  // Om aktiv tab hör till ett avstängt läge ,  hoppa till första aktiva.
+  // Om aktiv tab hör till ett avstängt läge: hoppa till första aktiva.
   useEffect(() => {
     if (!anyEnabled) return;
     const tabEnabled: Record<InspectorTab, boolean> = {
@@ -52,7 +52,7 @@ export function InspectorPanel() {
           type="button"
           onClick={() => setPanelOpen(true)}
           className="fixed right-0 top-1/2 -translate-y-1/2 z-40 px-3 py-2 rounded-l bg-brand-primary text-white text-xs font-medium shadow-lg hover:opacity-90"
-          aria-label="Öppna inspector-panel"
+          aria-label="Öppna UX-guiden"
         >
           UX-guide →
         </button>
@@ -70,7 +70,7 @@ export function InspectorPanel() {
             type="button"
             onClick={() => setPanelOpen(false)}
             className="text-ink-muted hover:text-ink p-1 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent"
-            aria-label="Stäng panel"
+            aria-label="Stäng UX-guiden"
           >
             <Icon name="close" size={18} />
           </button>
@@ -101,7 +101,7 @@ export function InspectorPanel() {
                     ? "border-transparent text-ink-secondary hover:text-ink hover:bg-tint-info/50"
                     : "border-transparent text-ink-muted/50 cursor-not-allowed"
                 }`}
-                title={t.enabled ? t.label : `${t.label} (avaktiverad ,  slå på i headern)`}
+                title={t.enabled ? t.label : `${t.label} (avstängd, slå på med UX-guide-knappen i sidhuvudet)`}
               >
                 {t.label}
                 {t.enabled && t.count > 0 && (
@@ -163,7 +163,7 @@ function UxTab({
   if (list.length === 0) {
     return (
       <p className="px-4 py-6 text-sm text-ink-muted">
-        Inga UX-anteckningar på denna sida ännu.
+        Den här sidan har inga designanteckningar än.
       </p>
     );
   }
@@ -175,10 +175,13 @@ function UxTab({
       ? "bg-tint-notice text-brand-primary"
       : "bg-tint-highlight text-brand-primary";
 
+  const audienceLabel = (a: string) =>
+    a === "user" ? "Användare" : a === "redaktör" ? "Redaktör" : "Design";
+
   return (
     <>
       <p className="px-4 pt-4 text-xs text-ink-muted">
-        {list.length} designbeslut på denna sida. Klicka en rad för att hitta elementet.
+        {list.length} designbeslut på den här sidan. Klicka på ett beslut för att se var det hör hemma.
       </p>
       <ul className="divide-y divide-border-subtle mt-2">
         {list.map((a) => (
@@ -200,7 +203,7 @@ function UxTab({
                     <span
                       className={`text-[10px] font-medium uppercase tracking-wider px-1.5 py-0.5 rounded ${audienceColor(a.audience)}`}
                     >
-                      {a.audience}
+                      {audienceLabel(a.audience)}
                     </span>
                   </div>
                   <p className="text-sm text-ink-secondary leading-relaxed">{a.rationale}</p>
@@ -222,7 +225,7 @@ type Brief = ReturnType<typeof useEditorialGuide>["brief"];
 const CAT_LABEL: Record<CopyCategory, string> = {
   rubrik: "Rubrik",
   cta: "CTA",
-  reassurance: "Reassurance",
+  reassurance: "Trygghet",
   faq: "FAQ",
   ton: "Ton",
   metadata: "Metadata",
@@ -253,7 +256,7 @@ function CopyTab({
       {brief && (
         <section className="px-4 py-4 bg-tint-info border-b border-border-subtle">
           <h3 className="text-[11px] font-bold uppercase tracking-wider text-brand-primary mb-2">
-            Sidtyp-brief
+            Om sidtypen
           </h3>
           <dl className="space-y-2 text-sm">
             <div>
@@ -269,7 +272,7 @@ function CopyTab({
               <dd>{brief.malgrupp}</dd>
             </div>
             <div>
-              <dt className="text-ink-muted text-xs">Primär handling</dt>
+              <dt className="text-ink-muted text-xs">Viktigaste handlingen</dt>
               <dd>{brief.primarHandling}</dd>
             </div>
             <div>
@@ -282,7 +285,7 @@ function CopyTab({
 
       {list.length === 0 ? (
         <p className="px-4 py-6 text-sm text-ink-muted">
-          Ingen copy-guide på denna sida ännu.
+          Den här sidan har inga copy-kommentarer än.
         </p>
       ) : (
         <ul className="divide-y divide-border-subtle">
@@ -348,7 +351,7 @@ function EditTab() {
   if (!activePageId) {
     return (
       <p className="px-4 py-6 text-sm text-ink-muted">
-        Redigeringsläget är på, men öppna en sidtyp för att göra ändringar.
+        Redigeringsläget är på. Öppna en sidtyp för att byta varianter, flytta eller dölja block.
       </p>
     );
   }
@@ -388,7 +391,7 @@ function EditTab() {
           </div>
           <div className="flex items-baseline justify-between gap-2 text-xs">
             <dt className="text-ink-muted">Ändringar</dt>
-            <dd className="font-medium">{dirty ? "ja" : "nej"}</dd>
+            <dd className="font-medium">{dirty ? "Ja" : "Nej"}</dd>
           </div>
         </dl>
       </section>
@@ -405,22 +408,22 @@ function EditTab() {
           className="w-full inline-flex items-center gap-2 border border-border-strong px-3 py-2 rounded text-sm text-ink hover:bg-tint-info disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <Icon name="restart_alt" size={16} className="text-ink-muted" />
-          Återställ sidan till rekommendation
+          Återställ till rekommenderad vy
         </button>
         <p className="text-xs text-ink-muted mt-1.5">
-          Nollställer variant, ordning och dolt-status för alla block på denna sida.
+          Alla block på sidan får tillbaka rekommenderad variant, ordning och synlighet.
         </p>
       </section>
 
       {/* Presets */}
       <section className="border-t border-border-subtle pt-4">
         <h3 className="text-[11px] font-bold uppercase tracking-wider text-brand-primary mb-2">
-          Sparade presets{presets.length > 0 && ` (${presets.length})`}
+          Sparade vyer{presets.length > 0 && ` (${presets.length})`}
         </h3>
 
         {presets.length === 0 ? (
           <p className="text-xs text-ink-muted italic mb-3">
-            Inga sparade varianter för denna sidtyp ännu.
+            Du har inga sparade vyer för den här sidtypen än.
           </p>
         ) : (
           <ul className="mb-3 space-y-1">
@@ -434,19 +437,19 @@ function EditTab() {
                   <Icon name="bookmark" size={14} className="text-brand-accent" filled />
                   <span className="flex-1 truncate">{name}</span>
                   <span className="text-[10px] text-ink-muted opacity-0 group-hover:opacity-100">
-                    ladda
+                    öppna
                   </span>
                 </button>
                 <button
                   type="button"
                   onClick={() => {
-                    if (confirm(`Radera presetet "${name}"?`)) {
+                    if (confirm(`Vill du radera vyn "${name}"?`)) {
                       deletePreset(activePageId, name);
                     }
                   }}
                   className="p-1 rounded hover:bg-tint-highlight text-ink-muted hover:text-brand-highlight opacity-0 group-hover:opacity-100 focus:opacity-100"
-                  aria-label={`Radera ${name}`}
-                  title="Radera preset"
+                  aria-label={`Radera vyn ${name}`}
+                  title="Radera vyn"
                 >
                   <Icon name="delete" size={14} />
                 </button>
@@ -468,7 +471,7 @@ function EditTab() {
               type="text"
               value={presetName}
               onChange={(e) => setPresetName(e.target.value)}
-              placeholder="Namn på preset…"
+              placeholder="T.ex. Förslag till ledningsgruppen"
               className="flex-1 min-w-0 border border-border-strong rounded px-2 py-1.5 text-sm bg-surface focus:outline-none focus:border-brand-accent"
             />
             <button
@@ -495,18 +498,18 @@ function EditTab() {
             onClick={() => setSaveMode(true)}
             disabled={!dirty}
             className="w-full inline-flex items-center gap-2 border border-dashed border-border-strong px-3 py-2 rounded text-sm text-ink-secondary hover:bg-tint-info hover:text-ink disabled:opacity-40 disabled:cursor-not-allowed"
-            title={dirty ? "Spara nuvarande variant-kombination" : "Inga ändringar att spara"}
+            title={dirty ? "Spara de varianter du valt som en egen vy" : "Du har inga ändringar att spara"}
           >
             <Icon name="add" size={16} className="text-brand-accent" />
-            Spara nuvarande som preset
+            Spara som ny vy
           </button>
         )}
       </section>
 
       {/* Hjälptext */}
       <section className="border-t border-border-subtle pt-4 text-xs text-ink-muted leading-relaxed">
-        Varje block har en egen verktygsrad direkt på sidan där du kan byta
-        variant, flytta upp/ner och dölja.
+        Varje block har en egen verktygsrad på sidan. Där byter du variant,
+        flyttar blocket upp eller ner, eller döljer det.
       </section>
     </div>
   );

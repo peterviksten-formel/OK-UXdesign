@@ -1,41 +1,42 @@
 import { useState } from "react";
 import { Annotation } from "../../../components/Annotation";
+import { Copy } from "../../../components/Copy";
 import { BOENDE_KWH, PLANS, type BoendeTyp, type PlanId } from "../elavtal-data";
 
 /**
- * Format integer with Swedish non-breaking space as thousand separator.
- * "2000" → "2 000", "20000" → "20 000".
+ * Skriver heltal med mellanslag som tusentalsavgränsare, som i svensk text.
+ * "2000" blir "2 000", "20000" blir "20 000".
  */
 function formatSvInt(n: number): string {
-  return n.toLocaleString("sv-SE").replace(/\u00a0/g, " ");
+  return n.toLocaleString("sv-SE").replace(/ /g, " ");
 }
 
-/** Round to nearest 5 so prisvisningen känns jämn. */
+/** Avrundar till närmaste 5 kr så att priserna känns jämna. */
 function roundKr(n: number): number {
   return Math.round(n / 5) * 5;
 }
 
 /**
- * Ordningen i jämförelsekorten: "Vanligaste valet" (Månadspris) först så det
- * blir det läsögat landar på. De övriga två behåller sin relativa ordning.
- * Rör inte PLANS-datan, den används av Trygg-variantens semantiska tabell
- * som har sin egen logik.
+ * Ordningen på jämförelsekorten: Vanligaste valet (Månadspris) först, så att
+ * blicken landar där. De två andra behåller sin inbördes ordning.
+ * Ändra inte ordningen i det gemensamma innehållet, den trygga varianten
+ * använder det för sin tabell.
  */
 const KORT_ORDNING: PlanId[] = ["manadspris", "sakrat", "kvartspris"];
 
 /**
  * VARIANT B, Progressiv
  *
- * Strategy: middle path. Quiz-style boendeväljare → comparison cards with
- * progressive disclosure. Sticky elnät callout. Keeps cognitive load low
- * while still being engaging. The "vanligaste valet" badge nudges without
- * forcing.
+ * Idé: en mellanväg. Kunden väljer först boende (och kan skriva in sin
+ * egen förbrukning), sedan kommer jämförelsekort där detaljerna fälls ut
+ * vid behov. Det håller den upplevda ansträngningen låg men gör sidan
+ * engagerande. Märkningen Vanligaste valet ger en knuff utan att tvinga.
  */
 export function VariantProgressiv() {
   const [boende, setBoende] = useState<BoendeTyp>("lagenhet");
-  // Förbrukning i kWh/år. Sätts till boendetypens schablon när man växlar
-  // pill, men kan finjusteras fritt i input-fältet (schablonen är en startpunkt,
-  // inte en låsning).
+  // Förbrukning i kWh per år. Sätts till ett typiskt värde för boendetypen
+  // när kunden byter boende, men kan ändras fritt i fältet. Det typiska
+  // värdet är en startpunkt, inte en låsning.
   const [kwh, setKwh] = useState<number>(BOENDE_KWH.lagenhet);
   const [kwhInput, setKwhInput] = useState<string>(formatSvInt(BOENDE_KWH.lagenhet));
   const [openPlan, setOpenPlan] = useState<string | null>(null);
@@ -61,18 +62,25 @@ export function VariantProgressiv() {
 
   return (
     <div>
-      {/* ─── Förbrukningsväljare: boende-pill + kWh-input ──────────── */}
+      {/* ─── Förbrukning: boendeval och eget kWh-värde ─────────────── */}
       <Annotation
-        label="Förbrukningsväljare, boende + kWh"
+        label="Boendeval och egen förbrukning"
         audience="user"
-        rationale="Briefens krav: visa exakt pris direkt. Pill-knapparna sätter schablonen för bostadstypen (Lägenhet ≈ 2 000 kWh, Villa ≈ 20 000 kWh). Fältet intill är editerbart så användaren kan mata in sin riktiga årsförbrukning från senaste fakturan, priset i varje kort räknas om live."
+        rationale="Kunden ser ett pris direkt. Boendevalet fyller i en typisk förbrukning (lägenhet cirka 2 000 kWh, villa cirka 20 000 kWh). Den som vill kan skriva in sin egen förbrukning från fakturan, och priset i varje kort räknas om direkt."
       >
         <div className="mb-8 grid grid-cols-1 sm:grid-cols-[auto_auto_minmax(0,1fr)] gap-x-6 gap-y-4 items-end">
           {/* Boendetyp */}
           <div>
-            <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-1.5">
-              Jag bor i
-            </p>
+            <Copy
+              label="Rubrik för boendeval"
+              category="rubrik"
+              text="Jag bor i"
+              rationale="Skrivet i jagform så att knapparna läses som en mening: 'Jag bor i lägenhet'. Kortare och mer personligt än 'Välj bostadstyp'."
+            >
+              <p className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-1.5">
+                Jag bor i
+              </p>
+            </Copy>
             <div
               role="radiogroup"
               aria-label="Bostadstyp"
@@ -103,13 +111,13 @@ export function VariantProgressiv() {
             </div>
           </div>
 
-          {/* Årlig förbrukning */}
+          {/* Förbrukning per år */}
           <div>
             <label
               htmlFor="elavtal-kwh"
               className="text-[11px] uppercase tracking-wider text-ink-muted font-medium mb-1.5 block"
             >
-              Årlig förbrukning
+              Förbrukning per år
             </label>
             <div className="inline-flex items-stretch h-11 rounded-md border border-border-subtle bg-surface focus-within:border-brand-accent focus-within:ring-2 focus-within:ring-brand-accent/30 transition-colors overflow-hidden">
               <input
@@ -128,31 +136,61 @@ export function VariantProgressiv() {
             </div>
           </div>
 
-          {/* Hjälp-text, baseline-linjerad med kontrollerna */}
-          <p
-            id="elavtal-kwh-hint"
-            className="text-xs text-ink-muted leading-snug max-w-[260px] py-2"
+          {/* Hjälptext, i linje med fälten */}
+          <Copy
+            label="Hjälptext för förbrukning"
+            category="ton"
+            text="Vi har fyllt i en vanlig förbrukning för ditt boende. Skriv in din egen för ett säkrare pris. Du hittar den på din senaste årsfaktura."
+            rationale="Förklarar varför det redan står en siffra och var kunden hittar sin egen. Undvik tekniska ord som 'autofylld' och 'schablon', de betyder inget för kunden."
           >
-            Auto-fylld från bostadstypen. Ändra för en exaktare uppskattning, du hittar din förbrukning på senaste årsfakturan.
-          </p>
+            <p
+              id="elavtal-kwh-hint"
+              className="text-xs text-ink-muted leading-snug max-w-[260px] py-2"
+            >
+              Vi har fyllt i en vanlig förbrukning för ditt boende. Skriv in din egen för ett
+              säkrare pris. Du hittar den på din senaste årsfaktura.
+            </p>
+          </Copy>
         </div>
       </Annotation>
 
-      {/* Elnät/elhandel-callouten är borttagen ur modulen. Den hör till
-         sidtyp-nivån (se t.ex. 'elnat-callout'-blocket i StartsidaUndersidaUX)
-         så placeringen styrs per sida där informationen är relevant. */}
+      {/* Rutan om elnät och elhandel finns inte i modulen. Den hör hemma på
+         sidnivå (se till exempel blocket om elnät på startsidans undersida),
+         så att varje sida kan visa den där informationen behövs. */}
 
-      {/* ─── Jämförelsetabell ───────────────────────────────────────── */}
+      {/* ─── Jämförelsekort ─────────────────────────────────────────── */}
       <Annotation
         label="Jämförelsekort"
         audience="design"
-        rationale="Tre kort med samma fältordning, symmetri = jämförbarhet. 'Vanligaste valet' ligger först (vänster) så läsögat landar där. Banner-fliken ligger absolut-positionerad ovanför Månadspris-kortet så övriga kort behåller samma höjd. Den tidigare 'Bäst för'-boxen är borttagen, sentensen läggs i subhead-position istället, vilket minskar antalet visuella behållare per kort från fyra till två."
+        rationale="Tre kort med samma uppgifter i samma ordning gör avtalen lätta att jämföra. Vanligaste valet står först så att blicken landar där. Märkningen ligger ovanför kortet, så alla kort är lika höga. Varje kort har bara två ytor, uppgifter och pris, för att hålla det luftigt."
       >
         <div className="grid md:grid-cols-3 gap-4 mb-6 mt-8">
-          {KORT_ORDNING.map((id) => {
+          {KORT_ORDNING.map((id, idx) => {
             const p = PLANS.find((pl) => pl.id === id);
             if (!p) return null;
             const isHighlight = p.id === "manadspris";
+            const forst = idx === 0;
+
+            const bastFor = <p className="text-sm text-ink-secondary mb-5 leading-relaxed">{p.bastFor}</p>;
+            const prisRubrik = (
+              <p className="text-xs text-ink-muted uppercase tracking-wider mb-1">
+                Uppskattad månadskostnad
+              </p>
+            );
+            const tecknaKnapp = (
+              <button
+                type="button"
+                className="mt-auto w-full bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity"
+              >
+                Teckna {p.kortNamn.toLowerCase()}
+              </button>
+            );
+            const trygghet = (
+              <p className="text-xs text-ink-muted text-center mt-2">
+                Tar cirka 3 minuter · Du behöver personnummer och adress
+              </p>
+            );
+
             return (
             <article
               key={p.id}
@@ -163,16 +201,34 @@ export function VariantProgressiv() {
               }`}
             >
               {isHighlight && (
-                <div
-                  className="absolute -top-[30px] left-[-2px] right-[-2px] bg-brand-accent text-white text-xs font-bold uppercase tracking-wider py-2 rounded-t-md text-center"
-                  aria-label="Vanligaste valet"
+                <Copy
+                  label="Märkning Vanligaste valet"
+                  category="ton"
+                  text="Vanligaste valet"
+                  rationale="Beskriver vad andra kunder har valt, inte vad vi tycker. Det är en mjukare knuff än 'Rekommenderas' eller 'Bäst'. Påståendet måste stämma med verklig statistik."
                 >
-                  Vanligaste valet
-                </div>
+                  <div
+                    className="absolute -top-[30px] left-[-2px] right-[-2px] bg-brand-accent text-white text-xs font-bold uppercase tracking-wider py-2 rounded-t-md text-center"
+                    aria-label="Vanligaste valet"
+                  >
+                    Vanligaste valet
+                  </div>
+                </Copy>
               )}
               <div className="p-5 flex-1 flex flex-col">
                 <h3 className="text-h4 mb-1">{p.namn}</h3>
-                <p className="text-sm text-ink-secondary mb-5 leading-relaxed">{p.bastFor}</p>
+                {forst ? (
+                  <Copy
+                    label="Vem avtalet passar"
+                    category="ton"
+                    text={p.bastFor}
+                    rationale="Alla kort inleds med 'Bäst för dig som' och ett behov kunden känner igen. Det hjälper kunden att välja utifrån sin situation i stället för att jämföra siffror."
+                  >
+                    {bastFor}
+                  </Copy>
+                ) : (
+                  bastFor
+                )}
 
                 <dl className="text-sm space-y-2 mb-4">
                   <div className="flex justify-between gap-3">
@@ -180,7 +236,7 @@ export function VariantProgressiv() {
                     <dd className="text-right font-medium">{p.prismekanism}</dd>
                   </div>
                   <div className="flex justify-between gap-3">
-                    <dt className="text-ink-muted">Bindning</dt>
+                    <dt className="text-ink-muted">Bindningstid</dt>
                     <dd className="text-right font-medium">{p.bindning}</dd>
                   </div>
                   <div className="flex justify-between gap-3">
@@ -190,9 +246,18 @@ export function VariantProgressiv() {
                 </dl>
 
                 <div className="rounded-md bg-tint-notice p-3 mb-4" aria-live="polite">
-                  <p className="text-xs text-ink-muted uppercase tracking-wider mb-1">
-                    Uppskattad månadskostnad
-                  </p>
+                  {forst ? (
+                    <Copy
+                      label="Prisrubrik i kortet"
+                      category="rubrik"
+                      text="Uppskattad månadskostnad"
+                      rationale="Ordet 'uppskattad' är viktigt: det faktiska priset beror på förbrukning och elpris. Utan det kan kunden uppfatta siffran som ett löfte."
+                    >
+                      {prisRubrik}
+                    </Copy>
+                  ) : (
+                    prisRubrik
+                  )}
                   <p className="text-h3 font-medium">
                     ~{formatSvInt(roundKr((p.krPerKwh * kwh) / 12))} kr/mån
                   </p>
@@ -227,15 +292,30 @@ export function VariantProgressiv() {
                   </div>
                 )}
 
-                <button
-                  type="button"
-                  className="mt-auto w-full bg-brand-primary text-ink-onbrand font-medium py-3 rounded hover:opacity-90 transition-opacity"
-                >
-                  Teckna {p.kortNamn.toLowerCase()}
-                </button>
-                <p className="text-xs text-ink-muted text-center mt-2">
-                  Tar ca 3 min · Personnummer + adress
-                </p>
+                {forst ? (
+                  <Copy
+                    label="Knapp för att teckna avtal"
+                    category="cta"
+                    text={`Teckna ${p.kortNamn.toLowerCase()}`}
+                    rationale="Verb och avtalets namn, samma mönster i alla kort. Knappen säger vilket avtal den gäller, även om kunden bara läser den. Undvik 'Välj' eller 'Beställ', de säger inte att det är ett avtal."
+                  >
+                    {tecknaKnapp}
+                  </Copy>
+                ) : (
+                  tecknaKnapp
+                )}
+                {forst ? (
+                  <Copy
+                    label="Tid och underlag under knappen"
+                    category="reassurance"
+                    text="Tar cirka 3 minuter · Du behöver personnummer och adress"
+                    rationale="Svarar på två frågor kunden har precis innan klicket: hur lång tid tar det och vad behöver jag ha framme. Ange bara tider som stämmer i den riktiga tecknarvägen."
+                  >
+                    {trygghet}
+                  </Copy>
+                ) : (
+                  trygghet
+                )}
               </div>
             </article>
             );
@@ -243,11 +323,11 @@ export function VariantProgressiv() {
         </div>
       </Annotation>
 
-      {/* ─── Tillägg: Framtidspengen ────────────────────────────────── */}
+      {/* ─── Tillval: Framtidspengen ────────────────────────────────── */}
       <Annotation
-        label="Framtidspengen som tillägg"
+        label="Framtidspengen som tillval"
         audience="design"
-        rationale="Tidigare presenterad som ett fjärde 'avtal', felaktigt. Det är ett påslag, inte ett val mellan fyra. Här som opt-in toggle UNDER jämförelsen, kopplad till valt avtal."
+        rationale="Framtidspengen visades tidigare som ett fjärde avtal, vilket var fel. Det är ett tillägg till priset. Därför ligger den under jämförelsen som en ruta kunden själv kryssar i."
       >
         <div className="rounded-md border border-border-subtle bg-surface p-5 flex items-start gap-4">
           <input
@@ -256,10 +336,17 @@ export function VariantProgressiv() {
             className="mt-1 w-5 h-5 rounded border-border-strong accent-brand-primary"
           />
           <label htmlFor="framtidspengen-b" className="flex-1 cursor-pointer">
-            <span className="font-medium block mb-1">Lägg till Framtidspengen</span>
+            <Copy
+              label="Tillvalets rubrik"
+              category="cta"
+              text="Lägg till Framtidspengen"
+              rationale="Verb och objekt, så att kryssrutan läses som ett aktivt val. 'Lägg till' visar att det är frivilligt och kommer utöver avtalet."
+            >
+              <span className="font-medium block mb-1">Lägg till Framtidspengen</span>
+            </Copy>
             <span className="text-sm text-ink-secondary block">
-              +3 öre/kWh som går till lokala miljöprojekt i nordvästra Skåne. Du kan slå
-              av det när som helst.
+              Du betalar 3 öre extra per kWh, som går till lokala miljöprojekt i nordvästra
+              Skåne. Du kan ta bort tillägget när du vill.
             </span>
           </label>
         </div>
@@ -267,22 +354,29 @@ export function VariantProgressiv() {
 
       {/* ─── Trygghetsrad ───────────────────────────────────────────── */}
       <Annotation
-        label="Trygghetsrad"
-        audience="user"
-        rationale="Reducerar osäkerhet i sista sekunden innan klick på 'Teckna'. Tre faktiska påståenden, inga superlativ utan källa."
+        label="Trygghetsrad med nyckeltal"
+        audience="redaktör"
+        rationale="Tre fakta som minskar osäkerheten precis innan kunden tecknar. Uppdatera siffrorna minst en gång per år och ha en källa för varje. Skriv inga superlativ som inte går att belägga."
       >
         <div className="mt-6 p-5 rounded-md bg-tint-highlight grid sm:grid-cols-3 gap-4 text-center text-sm">
           <div>
             <p className="font-medium">4,3 av 5</p>
-            <p className="text-ink-secondary">NKI / kundnöjdhet</p>
+            <p className="text-ink-secondary">Kundnöjdhet (NKI)</p>
           </div>
           <div>
-            <p className="font-medium">Under 2 min i chatt</p>
-            <p className="text-ink-secondary">Svarstid kundservice</p>
+            <Copy
+              label="Nyckeltal om kundservice"
+              category="reassurance"
+              text="Under 2 min i chatten"
+              rationale="Ett konkret löfte om snabb hjälp väger tyngre än 'Vi finns här för dig'. Siffran måste stämma med den faktiska svarstiden."
+            >
+              <p className="font-medium">Under 2 min i chatten</p>
+            </Copy>
+            <p className="text-ink-secondary">Svarstid i kundservice</p>
           </div>
           <div>
             <p className="font-medium">~125 000</p>
-            <p className="text-ink-secondary">Antal kunder i regionen</p>
+            <p className="text-ink-secondary">Kunder i regionen</p>
           </div>
         </div>
       </Annotation>

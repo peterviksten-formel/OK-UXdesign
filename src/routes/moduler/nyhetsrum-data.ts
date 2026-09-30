@@ -1,9 +1,9 @@
 /**
- * Nyhetsrum, delad data för Press, Nyheter och Artiklar.
+ * Nyhetsrum: delad innehållsdata för pressmeddelanden, nyheter och artiklar.
  *
- * Tre publicistiska "typer" lever sida vid sida: typen styr layout, ton och
- * målgrupp. Kategorier är tvärgående (Energi, Klimat, CCS osv) och används
- * för filtrering på Startsida Nyhetsrum.
+ * Tre innehållstyper lever sida vid sida. Typen styr layout, ton och
+ * målgrupp. Kategorierna (Energi, Klimat, CCS osv.) går tvärs över typerna
+ * och används för filtrering på startsidan för Nyhetsrummet.
  */
 
 export type NyhetsrumTyp = "press" | "nyhet" | "artikel";
@@ -41,14 +41,14 @@ export type NyhetsrumPost = {
   /** ISO-datum: "2026-04-22" */
   datum: string;
   bildAlt: string;
-  /** Pressmeddelande: kontakt visas som sidebar-card */
+  /** Pressmeddelande: presskontakten visas i en fast ruta bredvid texten */
   presskontakt?: Presskontakt;
-  /** Artikel: byline med foto + lästid */
+  /** Artikel: författarrad med foto och lästid */
   forfattare?: Forfattare;
   lastid?: string;
-  /** Nyhet: TL;DR-punkter visas överst */
+  /** Nyhet: sammanfattningspunkter visas överst */
   sammanfattning?: string[];
-  /** Featured på startsidan (en post i taget) */
+  /** Utvald post överst på startsidan (en i taget) */
   utvald?: boolean;
 };
 
@@ -68,7 +68,7 @@ export const TYP_LABEL: Record<NyhetsrumTyp, string> = {
   artikel: "Artikel",
 };
 
-/** Type-färger, formell grå för press, accent-blå för nyhet, kategori-färg för artikel */
+/** Färg per typ: formell grå för press, blå för nyhet, accentfärg för artikel */
 export const TYP_COLOR: Record<NyhetsrumTyp, string> = {
   press: "bg-ink/10 text-ink-secondary",
   nyhet: "bg-tint-info text-brand-primary",
@@ -101,9 +101,9 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     slug: "fjarrvarmepris-2026",
     typ: "press",
     kategori: "energi",
-    rubrik: "Öresundskraft justerar fjärrvärmepriset i Helsingborg och Ängelholm 2026",
+    rubrik: "Öresundskraft höjer fjärrvärmepriset med 3,9 procent och lovar förutsägbara priser till 2028",
     ingress:
-      "Nytt prisåtagande till 2028 ger förutsägbara kostnader för 110 000 hushåll. Genomsnittlig prisökning blir 3,9 procent.",
+      "Ett nytt prisåtagande till och med 2028 ger 110 000 fjärrvärmekunder i Helsingborg och Ängelholm förutsägbara kostnader. Höjningen gäller från 1 januari 2026.",
     datum: "2026-04-15",
     bildAlt: "Filbornaverket i Helsingborg sett från avstånd",
     presskontakt: ANNA,
@@ -117,7 +117,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     rubrik:
       "Industriklivet beviljar 228 miljoner till CCS på Filbornaverket",
     ingress:
-      "Energimyndighetens stöd till koldioxidinfångning på Filbornaverket gör Helsingborg till nationell pilotanläggning för negativa utsläpp.",
+      "Energimyndighetens stöd till koldioxidinfångning på Filbornaverket gör anläggningen i Helsingborg till en nationell pilot för negativa utsläpp.",
     datum: "2026-03-28",
     bildAlt: "Anläggning för koldioxidinfångning",
     presskontakt: ANNA,
@@ -129,14 +129,15 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "energi",
     rubrik: "Nya elnätsavgifter från 1 juli 2026",
     ingress:
-      "Vi justerar elnätsavgifterna i takt med ökade investeringar i nätet. Här är vad det innebär för dig som privatkund.",
+      "Vi höjer elnätsavgifterna för att kunna bygga ut och förnya elnätet. Här ser du vad det betyder för dig som privatkund.",
     datum: "2026-04-08",
     bildAlt: "Elnätstation",
     sammanfattning: [
       "Höjningen gäller från 1 juli 2026",
-      "Genomsnittlig villakund: ~75 kr/månad mer",
-      "Lägenhet: ~25 kr/månad mer",
-      "Vi använder höjningen till att förstärka och förnya nätet",
+      "Villa: cirka 75 kronor mer per månad",
+      "Lägenhet: cirka 25 kronor mer per månad",
+      "Pengarna går till att förstärka och förnya elnätet",
+      "Du behöver inte göra något, ändringen syns automatiskt på fakturan",
     ],
   },
   {
@@ -146,13 +147,13 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "infrastruktur",
     rubrik: "Du kan nu hämta dina mätvärden direkt i appen",
     ingress:
-      "Från och med april kan du som privatkund se din timmesvis förbrukning direkt i Mina sidor, perfekt för dig som vill optimera elanvändningen.",
+      "Från april kan du som privatkund se din elförbrukning timme för timme i appen och på Mina sidor. Då ser du när på dygnet du använder mest el.",
     datum: "2026-04-02",
     bildAlt: "Skärmdump av app med timmesvis förbrukning",
     sammanfattning: [
-      "Timmesvis data direkt i appen",
-      "Funktion finns för alla nätkunder i Helsingborg och Ängelholm",
-      "Inget extra abonnemang krävs",
+      "Se din förbrukning timme för timme i appen",
+      "Gäller alla elnätskunder i Helsingborg och Ängelholm",
+      "Kostar inget extra",
     ],
   },
   {
@@ -162,7 +163,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "utbildning",
     rubrik: "Hur kan solceller ge större nytta i hushållen framöver?",
     ingress:
-      "Med rätt kombination av panel, batteri och styrning kan en typvilla dubbla sin självförsörjning. Vi går igenom vad som faktiskt fungerar, och vad som är överreklam.",
+      "Med rätt kombination av panel, batteri och styrning kan en typvilla dubbla sin självförsörjning. Vi går igenom vad som faktiskt fungerar och vad som är överdrivet.",
     datum: "2026-04-12",
     bildAlt: "Villa med solceller på taket i kvällsljus",
     forfattare: ERIK,
@@ -189,7 +190,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "hallbarhet",
     rubrik: "Framtidens fjärrvärme: lägre temperatur, smartare distribution",
     ingress:
-      "Vi sänker framledningstemperaturen från 90 till 70 grader. Det låter teknisk men sparar 8 % energi och möjliggör nya värmekällor.",
+      "Vi sänker framledningstemperaturen från 90 till 70 grader. Det låter tekniskt, men det sparar 8 procent energi och gör det möjligt att använda nya värmekällor.",
     datum: "2026-03-10",
     bildAlt: "Fjärrvärmeledning i schaktet vid utgrävning",
     forfattare: MARIA,
@@ -202,13 +203,13 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "infrastruktur",
     rubrik: "Byggstart för förstärkning av nätet i Rydebäck",
     ingress:
-      "Mellan 6 och 28 maj förstärker vi elnätet i Rydebäck för att möta de senaste årens ökade förbrukning från elbilsladdning och värmepumpar.",
+      "Mellan 6 och 28 maj förstärker vi elnätet i Rydebäck. Fler elbilsladdare och värmepumpar har ökat förbrukningen i området de senaste åren.",
     datum: "2026-04-22",
     bildAlt: "Schaktning för elkabel",
     sammanfattning: [
-      "Pågår 6–28 maj 2026",
+      "Pågår 6 till 28 maj 2026",
       "Berör Rydebäck och Gantofta",
-      "Inga längre avbrott planerade, kortare omkopplingar kan förekomma",
+      "Inga längre avbrott är planerade, men korta avbrott vid omkopplingar kan förekomma",
     ],
   },
   {
@@ -242,13 +243,13 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "infrastruktur",
     rubrik: "Ladda Smart-appen får schemaläggning och spotpris-styrning",
     ingress:
-      "Tre nya funktioner rullar ut i april, du kan nu ställa in schema per veckodag, koppla till spotpriset och få push-notiser när elen är extra billig.",
+      "I april får appen tre nya funktioner. Du kan ställa in ett laddschema per veckodag, låta bilen ladda när spotpriset är lägst och få en notis när elen är extra billig.",
     datum: "2026-04-18",
     bildAlt: "Skärmdump av Ladda Smart-appen",
     sammanfattning: [
-      "Schemaläggning per veckodag",
-      "Auto-laddning vid lägsta spotpris",
-      "Push-notiser när elen är extra billig",
+      "Laddschema per veckodag",
+      "Automatisk laddning när spotpriset är lägst",
+      "Notis när elen är extra billig",
     ],
   },
   {
@@ -258,7 +259,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "energi",
     rubrik: "Uppdaterade villkor för Mina sidor, gäller från 1 juni",
     ingress:
-      "Vi har förenklat språket och förtydligat hanteringen av personuppgifter. Inga ekonomiska villkor ändras.",
+      "Vi har gjort språket enklare och beskriver tydligare hur vi hanterar dina personuppgifter. Priser och andra ekonomiska villkor ändras inte.",
     datum: "2026-04-05",
     bildAlt: "Skärmdump av Mina sidor",
     sammanfattning: [
@@ -274,7 +275,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
     kategori: "utbildning",
     rubrik: "Effekttariffer förklarade, så undviker du onödiga toppar",
     ingress:
-      "Effekttariffen straffar inte hur mycket el du använder, utan när du använder den mest. En liten ändring i vanor kan ge större besparing än man tror.",
+      "Effekttariffen handlar inte om hur mycket el du använder, utan om när du använder mest. Små ändringar i vardagen kan spara mer än du tror.",
     datum: "2026-02-28",
     bildAlt: "Effektdiagram över ett dygn",
     forfattare: ERIK,
@@ -295,7 +296,7 @@ export const NYHETSRUM: NyhetsrumPost[] = [
   },
 ];
 
-/** Helper, hämtar typsäkert en post via slug */
+/** Hämtar en post via dess slug */
 export function getPostBySlug(slug: string): NyhetsrumPost | undefined {
   return NYHETSRUM.find((p) => p.slug === slug);
 }
