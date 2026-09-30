@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { useTheme } from "../lib/ThemeContext";
+import { useTheme, DesignTheme } from "../lib/ThemeContext";
 import { useAnnotations } from "../lib/AnnotationContext";
 import { useEditorialGuide } from "../lib/EditorialGuideContext";
 import { useEditMode } from "../lib/EditModeContext";
@@ -60,10 +60,22 @@ export function Layout() {
   const isFramedChild = typeof window !== "undefined" &&
     new URLSearchParams(window.location.search).get("framed") === "1";
 
+  // Sidtyper är genererad design i sin helhet och följer valt tema.
+  // Modulsidor är verktyg, där bara själva varianten följer temat
+  // (se VariantSwitcher). Översikten är alltid ljus.
+  const isDesignPage = location.pathname.startsWith("/sidtyper/");
+  const page = isDesignPage ? (
+    <DesignTheme className="flex-1">
+      <Outlet />
+    </DesignTheme>
+  ) : (
+    <Outlet />
+  );
+
   if (isFramedChild) {
     return (
-      <main id="main" className="min-h-screen bg-canvas text-ink">
-        <Outlet />
+      <main id="main" className="min-h-screen bg-canvas text-ink flex flex-col">
+        {page}
       </main>
     );
   }
@@ -152,8 +164,8 @@ export function Layout() {
               type="button"
               onClick={toggle}
               className="p-1.5 rounded border border-border-strong text-ink-secondary hover:bg-tint-info flex items-center justify-center"
-              aria-label={theme === "light" ? "Aktivera mörkt läge" : "Aktivera ljust läge"}
-              title={theme === "light" ? "Mörkt läge" : "Ljust läge"}
+              aria-label={theme === "light" ? "Visa designen i mörkt läge" : "Visa designen i ljust läge"}
+              title={theme === "light" ? "Mörkt läge för designen" : "Ljust läge för designen"}
             >
               <Icon
                 name={theme === "light" ? "dark_mode" : "light_mode"}
@@ -194,8 +206,8 @@ export function Layout() {
           </div>
         </div>
       ) : (
-        <main id="main" className="flex-1">
-          <Outlet />
+        <main id="main" className="flex-1 flex flex-col">
+          {page}
         </main>
       )}
 

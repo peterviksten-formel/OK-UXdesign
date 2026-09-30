@@ -1,4 +1,5 @@
 import { useState, type ReactNode } from "react";
+import { DesignTheme } from "../lib/ThemeContext";
 
 export type Variant = {
   id: string;
@@ -143,7 +144,10 @@ export function VariantSwitcher({ variants, argumentation, defaultId }: VariantS
       )}
 
       {/* ─── Active variant ─────────────────────────────────────────────── */}
-      <div key={active.id}>{active.render()}</div>
+      {/* Bara varianten följer valt tema, verktyget runt omkring är ljust. */}
+      <DesignTheme key={active.id} className="-mx-4 sm:-mx-6 px-4 sm:px-6 py-6 rounded-xl">
+        {active.render()}
+      </DesignTheme>
     </div>
   );
 }

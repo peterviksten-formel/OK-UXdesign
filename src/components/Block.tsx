@@ -107,7 +107,7 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
   return (
     <div data-block-id={def.id} className="relative">
       {editEnabled && (
-        <div className="sticky top-14 z-20 pointer-events-none">
+        <div data-theme="light" className="sticky top-14 z-20 pointer-events-none">
           <div className="flex justify-end pr-1">
             <div className="pointer-events-auto -mt-1 inline-flex items-center gap-1 rounded-md border border-brand-primary bg-elevated shadow-md px-1.5 py-1 text-xs">
               <span className="font-medium text-brand-primary px-1.5">
@@ -220,7 +220,7 @@ function BlockRenderer({ pageId, def, isFirst, isLast, editEnabled, onMoveUp, on
       )}
 
       {editEnabled && state.hidden ? (
-        <div className="py-6 px-4 my-2 border-2 border-dashed border-border-strong rounded-md text-center text-sm text-ink-muted">
+        <div data-theme="light" className="py-6 px-4 my-2 bg-canvas border-2 border-dashed border-border-strong rounded-md text-center text-sm text-ink-muted">
           <span className="font-medium">{def.label}</span> är dolt.
           Klicka på <strong>Visa igen</strong> i verktygsraden ovanför.
         </div>
